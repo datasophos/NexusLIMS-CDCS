@@ -2111,7 +2111,21 @@ Use it like:
                                                             title="Click to view this dataset's unique metadata">
                                                                 <i class='fa fa-tasks fa-border param-button' style='margin-left:0;'/>
                                                             </a>
-                                                            <xsl:variable name="json-location"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="nx:location"/>.json</xsl:variable>
+                                                            <xsl:variable name="json-location-raw">
+                                                                <xsl:choose>
+                                                                    <xsl:when test="nx:preview">
+                                                                        <xsl:value-of select="$previewBaseUrl"/>
+                                                                        <xsl:value-of select="substring-before(nx:preview, '.thumb.png')"/>
+                                                                        <xsl:text>.json</xsl:text>
+                                                                    </xsl:when>
+                                                                    <xsl:otherwise>
+                                                                        <xsl:value-of select="$previewBaseUrl"/>
+                                                                        <xsl:value-of select="nx:location"/>
+                                                                        <xsl:text>.json</xsl:text>
+                                                                    </xsl:otherwise>
+                                                                </xsl:choose>
+                                                            </xsl:variable>
+                                                            <xsl:variable name="json-location" select="normalize-space($json-location-raw)"/>
                                                             <xsl:element name='a'>
                                                                 <xsl:attribute name="href"><xsl:value-of select="$json-location"/></xsl:attribute>
                                                                 <xsl:attribute name="onclick">
@@ -2513,7 +2527,21 @@ Use it like:
                                                           </xsl:when>
                                                       </xsl:choose>
                                                       <td class='text-center'>
-                                                          <xsl:variable name="json-location"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="nx:location"/>.json</xsl:variable>
+                                                          <xsl:variable name="json-location-raw">
+                                                              <xsl:choose>
+                                                                  <xsl:when test="nx:preview">
+                                                                      <xsl:value-of select="$previewBaseUrl"/>
+                                                                      <xsl:value-of select="substring-before(nx:preview, '.thumb.png')"/>
+                                                                      <xsl:text>.json</xsl:text>
+                                                                  </xsl:when>
+                                                                  <xsl:otherwise>
+                                                                      <xsl:value-of select="$previewBaseUrl"/>
+                                                                      <xsl:value-of select="nx:location"/>
+                                                                      <xsl:text>.json</xsl:text>
+                                                                  </xsl:otherwise>
+                                                              </xsl:choose>
+                                                          </xsl:variable>
+                                                          <xsl:variable name="json-location" select="normalize-space($json-location-raw)"/>
                                                           <xsl:element name='a'>
                                                               <xsl:attribute name="href"><xsl:value-of select="$json-location"/></xsl:attribute>
                                                               <xsl:attribute name="onclick">
@@ -3796,10 +3824,15 @@ Use it like:
                           else {
                             // check to make sure adding this file would not
                             // put us over the zip size limit
-                            let new_size = window.file_sizes[this_data_url] +
-                              window.file_sizes[this_json_url] +
-                              this_zip_size;
-                            if (! isNaN(window.file_sizes[this_aux_url])) {
+                            // For multi-signal datasets, don't count duplicate files
+                            let new_size = this_zip_size;
+                            if (! zip_url_listing[cur_zip_idx].includes(this_data_url) && !isNaN(window.file_sizes[this_data_url])) {
+                              new_size += window.file_sizes[this_data_url];
+                            }
+                            if (! zip_url_listing[cur_zip_idx].includes(this_json_url) && !isNaN(window.file_sizes[this_json_url])) {
+                              new_size += window.file_sizes[this_json_url];
+                            }
+                            if (! isNaN(window.file_sizes[this_aux_url]) && ! zip_url_listing[cur_zip_idx].includes(this_aux_url)) {
                               new_size += window.file_sizes[this_aux_url];
                             }
                             // if we're over the limit, end this zip, start
@@ -3821,10 +3854,22 @@ Use it like:
                           }
 
                           // assign file to zip
-                          zip_url_listing[cur_zip_idx].push(this_data_url);
-                          zip_url_listing[cur_zip_idx].push(this_json_url);
-                          zip_path_listing[cur_zip_idx].push(full_data_path);
-                          zip_path_listing[cur_zip_idx].push(full_json_path);
+                          // For multi-signal datasets, multiple datasets may share the same source file,
+                          // so check to make sure we do not add it twice
+                          let added_data = false;
+                          let added_json = false;
+                          let added_aux = false;
+
+                          if (! zip_url_listing[cur_zip_idx].includes(this_data_url)){
+                            zip_url_listing[cur_zip_idx].push(this_data_url);
+                            zip_path_listing[cur_zip_idx].push(full_data_path);
+                            added_data = true;
+                          }
+                          if (! zip_url_listing[cur_zip_idx].includes(this_json_url)){
+                            zip_url_listing[cur_zip_idx].push(this_json_url);
+                            zip_path_listing[cur_zip_idx].push(full_json_path);
+                            added_json = true;
+                          }
                           // only add zip file if we have a size for it
                           if (! isNaN(window.file_sizes[this_aux_url])) {
                             // multiple ser files could have the same emi, so 
@@ -3832,19 +3877,21 @@ Use it like:
                             if (! zip_url_listing[cur_zip_idx].includes(this_aux_url)){
                               zip_url_listing[cur_zip_idx].push(this_aux_url);
                               zip_path_listing[cur_zip_idx].push(full_aux_path);
+                              added_aux = true;
                             }
                           }
 
-                          console.debug('Adding', humanFileSize(window.file_sizes[this_data_url]), 'file:', full_data_path, 'to zip #:', cur_zip_idx);
-                          console.debug('Adding', humanFileSize(window.file_sizes[this_json_url]), 'file:', full_data_path, 'to zip #:', cur_zip_idx);
-                          if (! isNaN(window.file_sizes[this_aux_url])) {
-                            console.debug('Adding', humanFileSize(window.file_sizes[this_aux_url]), 'file:', full_aux_path, 'to zip #:', cur_zip_idx);
+                          // Only count file sizes if the file was actually added (not a duplicate) and has a valid size
+                          if (added_data && !isNaN(window.file_sizes[this_data_url])) {
+                            console.debug('Adding', humanFileSize(window.file_sizes[this_data_url]), 'file:', full_data_path, 'to zip #:', cur_zip_idx);
+                            this_zip_size += window.file_sizes[this_data_url];
                           }
-
-                          this_zip_size += window.file_sizes[this_data_url];
-                          this_zip_size += window.file_sizes[this_json_url];
-                          // only add to the zip size if we actually have a file
-                          if (! isNaN(window.file_sizes[this_aux_url])) {
+                          if (added_json && !isNaN(window.file_sizes[this_json_url])) {
+                            console.debug('Adding', humanFileSize(window.file_sizes[this_json_url]), 'file:', full_json_path, 'to zip #:', cur_zip_idx);
+                            this_zip_size += window.file_sizes[this_json_url];
+                          }
+                          if (added_aux && !isNaN(window.file_sizes[this_aux_url])) {
+                            console.debug('Adding', humanFileSize(window.file_sizes[this_aux_url]), 'file:', full_aux_path, 'to zip #:', cur_zip_idx);
                             this_zip_size += window.file_sizes[this_aux_url];
                           }
                         }
@@ -4011,6 +4058,20 @@ Use it like:
                         // used to convert the response of a fetch api to a modern ReadableStream with pipeThrough
                         toPonyRS = WebStreamsAdapter.createReadableStreamWrapper(ponyfill.ReadableStream)
 
+                        // Deduplicate individual_files array to handle multi-signal datasets
+                        // where multiple datasets share the same source file location
+                        individual_files = [...new Set(individual_files)];
+
+                        // Also remove any files from individual_files that are already in the zips
+                        // to prevent "File already exists" errors
+                        const files_in_zips = new Set();
+                        for (let zip_urls of zip_url_listing) {
+                          for (let url of zip_urls) {
+                            files_in_zips.add(url);
+                          }
+                        }
+                        individual_files = individual_files.filter(url => !files_in_zips.has(url));
+
                         for (var i = 0; i < individual_files.length; i++) {
                           let url = individual_files[i];
                           let filename = decodeURIComponent(url.replace(/.*\//g, ""));
@@ -4149,7 +4210,18 @@ Use it like:
                         var combinedArray = $.map(combinedObject, function(value, index) {
                             return [value];
                         });
-                                                
+
+                        // Deduplicate URLs for multi-signal datasets where multiple datasets share the same source file
+                        // Use a Map to track unique combinations of URLs, keyed by data_url
+                        var uniqueMap = new Map();
+                        combinedArray.forEach(function(item) {
+                            var data_url = item[0];
+                            if (!uniqueMap.has(data_url)) {
+                                uniqueMap.set(data_url, item);
+                            }
+                        });
+                        combinedArray = Array.from(uniqueMap.values());
+
                         var total_size = 0;
                         promList = [];
                         sizeList = [];
@@ -5306,7 +5378,21 @@ Use it like:
                         </td>
                         <td>
                             <!-- metadata -->
-                            <xsl:variable name="json-location"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="nx:location"/>.json</xsl:variable>
+                            <xsl:variable name="json-location-raw">
+                                <xsl:choose>
+                                    <xsl:when test="nx:preview">
+                                        <xsl:value-of select="$previewBaseUrl"/>
+                                        <xsl:value-of select="substring-before(nx:preview, '.thumb.png')"/>
+                                        <xsl:text>.json</xsl:text>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="$previewBaseUrl"/>
+                                        <xsl:value-of select="nx:location"/>
+                                        <xsl:text>.json</xsl:text>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="json-location" select="normalize-space($json-location-raw)"/>
                             <xsl:element name='a'>
                                 <xsl:attribute name="href"><xsl:value-of select="$json-location"/></xsl:attribute>
                                 <xsl:attribute name="onclick">
