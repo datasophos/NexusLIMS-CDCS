@@ -2177,7 +2177,12 @@ Use it like:
     -->
                                                                                             <tr>
                                                                                                 <!-- Populate table values with the metadata name and value -->
-                                                                                                <td><b><xsl:value-of select="@name"/></b>
+                                                                                                <td><b><xsl:value-of select="@name"/>
+                                                                                                <xsl:if test="@unit">
+                                                                                                    <xsl:text> (</xsl:text>
+                                                                                                    <xsl:value-of select="@unit"/>
+                                                                                                    <xsl:text>)</xsl:text>
+                                                                                                </xsl:if></b>
                                                                                                 <!-- If this parameter has a warning attribute, then add warning tooltip -->
                                                                                                 <xsl:if test="@warning = 'true'"><xsl:text> </xsl:text>
                                                                                                     <xsl:call-template name="warning-tip">
@@ -2313,7 +2318,12 @@ Use it like:
     -->
                                                             <tr>
                                                                 <!-- Populate setup table with parameter name and value -->
-                                                                <td><b><xsl:value-of select="@name"/></b>
+                                                                <td><b><xsl:value-of select="@name"/>
+                                                                <xsl:if test="@unit">
+                                                                    <xsl:text> (</xsl:text>
+                                                                    <xsl:value-of select="@unit"/>
+                                                                    <xsl:text>)</xsl:text>
+                                                                </xsl:if></b>
                                                                 <xsl:if test="@warning = 'true'"><xsl:text> </xsl:text>
                                                                     <xsl:call-template name="warning-tip">
                                                                         <xsl:with-param name="tip-placement">right</xsl:with-param>
