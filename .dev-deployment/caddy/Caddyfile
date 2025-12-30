@@ -1,0 +1,35 @@
+{
+    # Global options
+    admin off
+}
+
+https://nexuslims-dev.localhost {
+    # Use Caddy's automatic local HTTPS
+    tls internal
+
+    # Reverse proxy to the NexusLIMS-CDCS application via HTTP
+    reverse_proxy cdcs:8000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+    }
+
+    # Serve static files
+    handle_path /static/* {
+        root * /srv/curator_static
+        file_server
+    }
+
+    # Enable file uploads up to 100MB (for NexusLIMS data files)
+    request_body {
+        max_size 100MB
+    }
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}

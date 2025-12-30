@@ -1,0 +1,13 @@
+# Environment files with secrets (except the template)
+# .env
+
+# Local overrides
+.env.local
+docker-compose.override.yml
+
+# Logs
+*.log
+
+# Caddy data
+caddy/data/
+caddy/config/
