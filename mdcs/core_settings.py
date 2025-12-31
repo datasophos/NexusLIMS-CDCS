@@ -15,7 +15,12 @@ CUSTOM_DATA = "Materials Data"
 CUSTOM_NAME = (
     os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "Curator"
 )
-CUSTOM_TITLE = "Materials Data Curation System"
+CUSTOM_TITLE = "Welcome to NexusLIMS!"
+
+NX_HOMEPAGE_TEXT = "This laboratory information management system (LIMS) allows for the automated creation and curation of microscopy experimental records using the schema co-developed by ODI and the MML Electron Microscopy Nexus Facility. Experimental records are automatically harvested from multiple data sources to facilitate browsing and searching of data collected from the varied instruments in the Nexus Facility."
+NX_DOCUMENTATION_LINK = "http://documentation.com"
+NX_HOMEPAGE_LOGO = "nexuslims/img/logo_horizontal_text.png"  # Path relative to static/
+
 CUSTOM_SUBTITLE = "Part of the Materials Genome Initiative"
 CURATE_MENU_NAME = "Data Curation"
 WEBSITE_ADMIN_COLOR = "yellow"

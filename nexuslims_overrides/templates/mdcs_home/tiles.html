@@ -1,0 +1,21 @@
+{# NexusLIMS Tiles Template #}
+{# Migrated from templates/mdcs_home/tiles.html #}
+{# Customizations: Removed "Available Options" header, added tile IDs, hover effects, clickable tiles #}
+{# JavaScript: Hover effects and color changes are implemented in nexuslims_overrides/static/nexuslims/js/tiles.js #}
+
+<!-- <h2 id="available-options">Available Options</h2> -->
+{% for tile in tiles %}
+<div class="tile" id="{{ tile.id }}">
+    <a href="{{ tile.link }}">
+        <div class="icon">
+            <i class="fas {{ tile.logo }}"></i>
+        </div>
+    </a>
+    <div class="text">
+        <h3><a href="{{ tile.link }}">{{ tile.title }}</a></h3>
+        <p>
+            {{ tile.text }}
+        </p>
+    </div>
+</div>
+{% endfor %}

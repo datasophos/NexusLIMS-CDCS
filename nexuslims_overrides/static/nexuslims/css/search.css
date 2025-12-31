@@ -1,0 +1,29 @@
+/**
+ * NexusLIMS Search/Results Page Styles
+ */
+
+.search-results-table {
+    width: 100%;
+}
+
+.search-results-table thead th {
+    background-color: var(--nx-primary-color, #005a9c);
+    color: white;
+}
+
+.search-results-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* DataTables customization */
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+}

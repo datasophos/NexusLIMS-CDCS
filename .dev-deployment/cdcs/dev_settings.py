@@ -35,3 +35,6 @@ ALLOWED_HOSTS = ['*']
 
 # Development-specific CORS settings (if needed)
 # CORS_ALLOW_ALL_ORIGINS = True
+
+NX_DOCUMENTATION_LINK = "https://examplechanged.com"
+# NX_HOMEPAGE_TEXT = "dev_settings HOMEPAGE_TEXT content."

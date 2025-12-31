@@ -1,0 +1,83 @@
+/**
+ * NexusLIMS Main Stylesheet
+ *
+ * Central location for all NexusLIMS customizations.
+ * Import this in base templates to apply all customizations.
+ */
+
+/* Import individual component styles */
+@import url('homepage.css');
+@import url('detail.css');
+@import url('search.css');
+@import url('toolbar.css');
+
+/* Global NexusLIMS styles */
+:root {
+    --nx-primary-color: #11659c;
+    --nx-secondary-color: #6c757d;
+    --nx-success-color: #28a745;
+    --nx-danger-color: #dc3545;
+    --nx-warning-color: #ffc107;
+    --nx-info-color: #17a2b8;
+}
+
+/* NexusLIMS branding */
+.nexuslims-nav-logo {
+    max-height: 60px;
+}
+
+.nexuslims-custom-header {
+    background-color: var(--nx-primary-color);
+    color: white;
+    padding: 1rem;
+}
+
+/* Instrument badges */
+.instrument-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+}
+
+.instrument-badge.badge-primary {
+    background-color: var(--nx-primary-color);
+    color: white;
+}
+
+.instrument-badge.badge-success {
+    background-color: var(--nx-success-color);
+    color: white;
+}
+
+/* Units display */
+.units {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-left: 0.25rem;
+}
+
+/* Custom toolbar */
+.nexuslims-custom-toolbar {
+    margin-bottom: 1rem;
+}
+
+/* Download buttons */
+.nexuslims-download-buttons {
+    margin-top: 1rem;
+}
+
+/* Override #content from static/css/extra.css
+   to increase the width of the main content region
+*/
+#content {
+    /*width: calc(100% - 3em);*/
+    width: calc(100% - 1.5em);
+    min-height: calc(100% - 151px);
+    background-color: #fff;
+    /*margin: 0 1.5em;*/
+    margin: 0 0.75em;
+    padding: 4.5rem 1.5em 2.5em 1.5em;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+}

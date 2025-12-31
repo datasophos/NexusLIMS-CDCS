@@ -102,6 +102,10 @@ INSTALLED_APPS = (
     "captcha",
     "django_celery_beat",
     "fontawesomefree",
+
+    # NexusLIMS customizations (must come before core apps)
+    'nexuslims_overrides',
+
     # Core apps
     "core_main_app",
     "core_exporters_app",
@@ -160,6 +164,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "core_main_app.utils.custom_context_processors.domain_context_processor",  # Needed by any curator app
                 "django.template.context_processors.i18n",
+                'nexuslims_overrides.context_processors.nexuslims_settings',
+                'nexuslims_overrides.context_processors.nexuslims_features',
             ],
         },
     },

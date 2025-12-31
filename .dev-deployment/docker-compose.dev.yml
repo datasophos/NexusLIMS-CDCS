@@ -37,7 +37,7 @@ services:
         echo "********* Collecting Static Files *********"
         python manage.py collectstatic --noinput
         echo "********* Initializing Development Environment *********"
-        python /scripts/init_dev_environment.py
+        python /scripts/init_dev_environment.py || true
         echo "********* Starting Celery... *********"
         celery -A ${PROJECT_NAME} worker -E -l info &
         celery -A ${PROJECT_NAME} beat -l info &

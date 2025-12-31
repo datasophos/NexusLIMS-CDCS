@@ -29,6 +29,7 @@ urlpatterns = [
         r"^o/", include("oauth2_provider.urls", namespace="oauth2_provider")
     ),
     re_path(r"^", include("core_main_app.urls")),
+    re_path(r"^", include("nexuslims_overrides.urls")),  # NexusLIMS overrides (must come before mdcs_home)
     re_path(r"^home/", include("mdcs_home.urls")),
     re_path(r"^", include("core_website_app.urls")),
     re_path(r"^curate/", include("core_curate_app.urls")),

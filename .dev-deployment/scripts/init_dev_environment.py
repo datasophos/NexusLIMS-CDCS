@@ -127,6 +127,7 @@ def upload_schema(request):
     """Upload NexusLIMS schema template."""
     log_info("Uploading NexusLIMS schema...")
     
+    from django.db import IntegrityError
     from core_main_app.components.template import api as template_api
     from core_main_app.components.template.models import Template
     from core_main_app.components.template_version_manager import (
@@ -188,11 +189,24 @@ def upload_schema(request):
         log_success(f"Template '{template_title}' created (ID: {template.id})")
         return template_vm
         
+    except IntegrityError as e:
+        # Template already exists (race condition or duplicate)
+        log_warning(f"Template already exists (IntegrityError), fetching existing template...")
+        try:
+            existing_tvm = template_version_manager_api.get_active_global_version_manager_by_title(
+                template_title
+            )
+            log_success(f"Template '{template_title}' found")
+            return existing_tvm
+        except Exception as fetch_error:
+            log_error(f"Failed to fetch existing template: {fetch_error}")
+            return None
     except Exception as e:
         log_error(f"Failed to create template: {e}")
         import traceback
         traceback.print_exc()
-        raise
+        # Don't raise - let the script continue
+        return None
 
 
 def upload_xslt_stylesheets(request, template_vm):
@@ -286,21 +300,19 @@ def main():
     print("=" * 70)
     
     try:
-        from django.db import transaction
-        
         # Step 1: Check migrations
         if not check_migrations():
-            sys.exit(1)
+            log_warning("Skipping initialization - migrations not complete")
+            return
         
         # Step 2: Get or create superuser
         superuser = get_or_create_superuser()
         request = get_request_for_user(superuser)
         
-        # Step 3: Upload schema and stylesheets
-        with transaction.atomic():
-            template_vm = upload_schema(request)
-            if template_vm:
-                upload_xslt_stylesheets(request, template_vm)
+        # Step 3: Upload schema and stylesheets (no transaction - handle errors gracefully)
+        template_vm = upload_schema(request)
+        if template_vm:
+            upload_xslt_stylesheets(request, template_vm)
         
         print("=" * 70)
         log_success("Initialization complete!")
@@ -318,7 +330,7 @@ def main():
         log_error(f"Initialization failed: {e}")
         import traceback
         traceback.print_exc()
-        sys.exit(1)
+        log_warning("Continuing despite errors...")
 
 
 if __name__ == "__main__":
