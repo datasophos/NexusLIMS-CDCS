@@ -23,15 +23,44 @@ This directory contains Docker Compose configuration for local development of Ne
    # docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
    ```
 
-4. **Access the application:**
-   - URL: https://nexuslims-dev.localhost
-   - The browser will warn about the self-signed certificate - this is expected for local development
+4. **Trust the development certificate** (one-time setup):
+   
+   The development environment uses a persistent self-signed certificate. To avoid browser warnings, import the CA certificate as a trusted authority:
+   
+   **On macOS:**
+   ```bash
+   sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain caddy/certs/ca.crt
+   ```
+   
+   **Or import manually:**
+   1. Open Keychain Access
+   2. File → Import Items
+   3. Select `caddy/certs/ca.crt`
+   4. Double-click the imported cert and set "When using this certificate" to "Always Trust"
+   5. Close and re-open your browser
+   
+   **Or trust directly in your browser:**
+   Most browsers allow you to import the CA certificate directly through their settings:
+   - **Chrome/Edge**: Settings → Privacy and security → Security → Manage certificates → Import `caddy/certs/ca.crt`
+   - **Firefox**: Preferences → Privacy & Security → Certificates → View Certificates → Import `caddy/certs/ca.crt`
+   - **Safari**: Open `caddy/certs/ca.crt` with Safari, then follow prompts to add to keychain
 
-5. **Create a superuser:**
+5. **Access the application:**
+   - URL: https://nexuslims-dev.localhost
+   - After importing the certificate, the connection will be trusted with no browser warnings
+
+6. **Create a superuser:**
    ```bash
    dev-superuser
    # Or without aliases:
    # docker compose exec cdcs python manage.py createsuperuser
+   ```
+
+7. **Initialize NexusLIMS schema** (optional, but recommended):
+   ```bash
+   dev-init-schema
+   # This registers the Nexus Experiment XSD template and XSLT stylesheets
+   # Use --force to re-initialize: docker exec nexuslims_dev_cdcs python manage.py init_nexus_schema --force
    ```
 
 ## Configuration
@@ -73,6 +102,8 @@ The development setup mounts your local source code at `..` (parent directory) i
 - **curator_mongo**: MongoDB database
 - **curator_redis**: Redis cache
 - **cdcs**: Django application (NexusLIMS-CDCS)
+- **celery_worker**: Celery worker for async tasks (MongoDB document creation, etc.)
+- **celery_beat**: Celery beat scheduler for periodic tasks
 
 ## Development Helper Commands
 
@@ -146,7 +177,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
 ## Troubleshooting
 
 ### Certificate warnings
-The self-signed certificate is expected. Click through the browser warning or add the certificate to your system's trusted certificates.
+If you see browser certificate warnings, you haven't imported the CA certificate yet. Follow the "Trust the development certificate" instructions in the Quick Start section above. After importing `caddy/certs/ca.crt`, the connection will be fully trusted.
 
 ### Database connection errors
 Ensure the containers are fully started. The Django container waits for PostgreSQL to be ready before starting.

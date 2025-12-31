@@ -1,3 +1,7 @@
+### bind mount of dev deployment files
+mdcs/*.xsl
+mdcs/*.xsd
+
 ### VS Code
 .vscode
 
@@ -244,4 +248,3 @@ venv/
 
 # Celery files
 celerybeat-schedule.*
-

@@ -320,18 +320,18 @@ Browser (HTTPS) → Caddy:443 → Django runserver:8000 → NexusLIMS-CDCS App
   - **Command**: `python manage.py collectstatic --noinput` (after dependencies installed)
 
 ### Phase 1 Completion Checklist
-- [ ] All git branches created and verified
-- [ ] Development environment functional
-- [ ] All reference files exported
-- [ ] Test server can start (even if with errors)
-- [ ] **Phase Lead Sign-off**: _______________ Date: ___________
+- [x] All git branches created and verified
+- [x] Development environment functional
+- [x] All reference files exported
+- [x] Test server can start (even if with errors)
+- [x] **Phase Lead Sign-off**: _______________ Date: ___________
 
 ---
 
 ## Phase 2: Clean Base Creation
 
 **Estimated Duration**: 1 day  
-**Status**: 🔴 Not Started  
+**Status**: 🟢 Completed 2025-12-30  
 **Dependencies**: Phase 1 complete  
 **Assignee**: TBD
 
@@ -343,75 +343,83 @@ Browser (HTTPS) → Caddy:443 → Django runserver:8000 → NexusLIMS-CDCS App
 ### Tasks
 
 #### 2.1. Base Verification
-- [ ] **Task**: Checkout v3.18.0 on working branch
-  - **Status**: 🔴
-  - **Branch**: `upgrade/v3.18.0-working`
-  - **Command**: `git checkout upgrade/v3.18.0-working`
+- [x] **Task**: Checkout v3.18.0 on working branch
+  - **Status**: 🟢
+  - **Branch**: `upgrade/v3.18.0-manual`
+  - **Command**: `git checkout upgrade/v3.18.0-manual`
   - **Verification**: `git log -1` shows v3.18.0 tag
 
-- [ ] **Task**: Install v3.18.0 dependencies
-  - **Status**: 🔴
-  - **Command**: `pip install -r requirements.txt`
-  - **Expected Issues**: May fail due to Python version requirements
+- [x] **Task**: Build Docker image with v3.18.0
+  - **Status**: 🟢
+  - **Command**: `dev-build` (or `dev-build-clean` for no cache)
+  - **Expected Issues**: May fail due to dependency conflicts
   - **Resolution**: Document all errors
 
-- [ ] **Task**: Run database migrations on test DB
-  - **Status**: 🔴
-  - **Command**: `python manage.py migrate`
-  - **Result**: Success ✓ / Failed ✗
-  - **Errors**: (document here)
+- [x] **Task**: Start development environment
+  - **Status**: 🟢
+  - **Command**: `dev-up`
+  - **Result**: Services running ✓ / Failed ✗
+  - **Containers**: All 5 services should be up (caddy, postgres, mongo, redis, cdcs)
 
-- [ ] **Task**: Collect static files
-  - **Status**: 🔴
-  - **Command**: `python manage.py collectstatic --noinput`
+- [x] **Task**: Verify database migrations
+  - **Status**: 🟢
+  - **Command**: `dev-migrate` (auto-runs during startup)
   - **Result**: Success ✓ / Failed ✗
+  - **Errors**: Check with `dev-logs-app`
 
-- [ ] **Task**: Start test server
-  - **Status**: 🔴
-  - **Command**: `python manage.py runserver 8001`
-  - **Result**: Starts ✓ / Errors ✗
-  - **Notes**: (document any startup warnings)
+- [x] **Task**: Verify static files are collected
+  - **Status**: 🟢
+  - **Command**: `dev-collectstatic`
+  - **Result**: Success ✓ / Failed ✗
 
 #### 2.2. Baseline Testing
-- [ ] **Task**: Access admin interface
-  - **Status**: 🔴
-  - **URL**: `http://localhost:8001/admin`
+- [x] **Task**: Access admin interface
+  - **Status**: 🟢
+  - **URL**: `https://nexuslims-dev.localhost/staff-core-admin/dashboard` and `https://nexuslims-dev.localhost/staff-admin/`
   - **Result**: Loads ✓ / 500 Error ✗
 
-- [ ] **Task**: Create test superuser
-  - **Status**: 🔴
-  - **Command**: `python manage.py createsuperuser`
-  - **Username**: `test_admin`
+- [x] **Task**: Create test superuser
+  - **Status**: 🟢
+  - **Command**: `dev-superuser`
+  - **Username**: `admin` / `admin@admin.com` / `admin` (password)
 
-- [ ] **Task**: Upload test template (if possible)
-  - **Status**: 🔴
+- [x] **Task**: Upload test template (if possible)
+  - **Status**: 🟢
   - **Purpose**: Verify basic MDCS functionality works
   - **Template**: Use simple XSD for testing
+  
+- [x] **Task**: Upload test document
+  - **Status**: 🟢
+  - **Purpose**: Verify basic MDCS functionality works
+  - **Template**: Use simple XSD for testing
+  - **Issue Found**: Records created in PostgreSQL but not MongoDB
+  - **Root Cause**: Celery workers not running
+  - **Fix**: Added celery services to dev container
 
-- [ ] **Task**: Document baseline behavior
-  - **Status**: 🔴
-  - **What Works**: (list here)
-  - **What Doesn't Work**: (list here)
+- [x] **Task**: Document baseline behavior
+  - **Status**: 🟢
+  - **What Works**: Basic app loading, uploading template, registering XSLT, uploading records, viewing records in list (with broken XSLT)
+  - **What Doesn't Work**: No NexusLIMS customizations, detail XSLT doesn't display at all (but it is being applied/working)
   - **Expected Issues**: NexusLIMS customizations not present
 
 #### 2.3. Component Version Documentation
-- [ ] **Task**: Record installed app versions
-  - **Status**: 🔴
+- [x] **Task**: Record installed app versions
+  - **Status**: 🟢
   - **Command**: `pip freeze > requirements_v3.18.0_baseline.txt`
   - **Key Versions to Note**:
-    - Django: 
-    - djangorestframework: 
-    - django-allauth: 
-    - core_main_app: 
-    - core_explore_common_app: 
-    - core_explore_keyword_app: 
+    - Django: 4.2.27
+    - djangorestframework: 3.16.1
+    - django-allauth: (not directly installed - may be a transitive dependency)
+    - core_main_app: 2.18.0
+    - core_explore_common_app: 2.18.0
+    - core_explore_keyword_app: 2.18.0 
 
 ### Phase 2 Completion Checklist
-- [ ] v3.18.0 base confirmed working
-- [ ] All component versions documented
-- [ ] Test database migrated successfully
-- [ ] Admin interface accessible
-- [ ] **Phase Lead Sign-off**: _______________ Date: ___________
+- [x] v3.18.0 base confirmed working
+- [x] All component versions documented
+- [x] Test database migrated successfully
+- [x] Admin interface accessible
+- [x] **Phase Lead Sign-off**: _______________ Date: ___________
 
 ---
 

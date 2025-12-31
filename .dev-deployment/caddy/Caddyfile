@@ -4,8 +4,8 @@
 }
 
 https://nexuslims-dev.localhost {
-    # Use Caddy's automatic local HTTPS
-    tls internal
+    # Use persistent self-signed certificates
+    tls /etc/caddy/certs/server.crt /etc/caddy/certs/server.key
 
     # Reverse proxy to the NexusLIMS-CDCS application via HTTP
     reverse_proxy cdcs:8000 {

@@ -41,11 +41,12 @@ RUN pip install -r requirements.txt && \
     pip install -r requirements.core.txt
 
 # Create necessary directories
-RUN mkdir -p /srv/curator/media /srv/curator/static.prod
+RUN mkdir -p /srv/curator/media /srv/curator/static.prod /srv/curator/mdcs
 
-# Set up entrypoint
+# Set up entrypoints and scripts
 COPY .dev-deployment/docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY .dev-deployment/scripts /scripts
+RUN chmod +x /docker-entrypoint.sh  /scripts/*.py
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["mdcs", "runserver"]

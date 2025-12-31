@@ -36,6 +36,11 @@ services:
         python manage.py migrate --noinput
         echo "********* Collecting Static Files *********"
         python manage.py collectstatic --noinput
+        echo "********* Initializing Development Environment *********"
+        python /scripts/init_dev_environment.py
+        echo "********* Starting Celery... *********"
+        celery -A ${PROJECT_NAME} worker -E -l info &
+        celery -A ${PROJECT_NAME} beat -l info &
         echo "********* Starting Django Development Server with Auto-Reload *********"
         echo "********* NexusLIMS-CDCS available at https://nexuslims-dev.localhost *********"
         python manage.py runserver 0.0.0.0:8000
