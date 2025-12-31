@@ -25,8 +25,11 @@ CURATE_MENU_NAME = "Data Curation"
 WEBSITE_ADMIN_COLOR = "yellow"
 # black, black-light, blue, blue-light, green, green-light, purple, purple-light, red, red-light, yellow, yellow-light
 
+# Federated search disabled for NexusLIMS - only searching local instance
+# This setting controls which apps provide data sources for exploration
+# Commented out to disable federated (multi-instance) search capability
 DATA_SOURCES_EXPLORE_APPS = [
-    "core_explore_federated_search_app",
+    # "core_explore_federated_search_app",
 ]
 
 # Lists in data not stored if number of elements is over the limit (e.g. 100)

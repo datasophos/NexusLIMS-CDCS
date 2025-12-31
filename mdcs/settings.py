@@ -116,8 +116,11 @@ INSTALLED_APPS = (
     "core_parser_app.tools.modules",  # FIXME: make modules an app
     "core_parser_app.tools.parser",  # FIXME: make parser an app
     "core_composer_app",
-    "core_explore_federated_search_app",
-    "core_federated_search_app",
+    # Federated search apps disabled - NexusLIMS doesn't use multi-instance search
+    # These apps enable searching across multiple remote CDCS instances
+    # Disabled to reduce complexity and unused features
+    # "core_explore_federated_search_app",
+    # "core_federated_search_app",
     "core_explore_common_app",
     "core_explore_example_app",
     "core_explore_keyword_app",
