@@ -16,8 +16,10 @@ class NexusLIMSOverridesConfig(AppConfig):
         Called when Django starts.
         Use this to register signal handlers, apply patches, etc.
         """
+        # Import menu configuration to register menu items
+        from . import menus  # noqa: F401
+        
         # Import any signal handlers or patches here
         # Example:
         # from . import signals
         # from . import patches
-        pass

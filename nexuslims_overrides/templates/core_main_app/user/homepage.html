@@ -11,10 +11,12 @@
                 {{ NX_HOMEPAGE_TEXT }}
             </p>
             <p>
-                To learn more about how to use NexusLIMS, please take the
-                <a id="homepage-tutorial" href="#">interactive tutorial</a>,
-                or visit the
-                <a href="{{ NX_DOCUMENTATION_LINK }}" target="_blank">documentation page</a>.
+                To learn more about how to use NexusLIMS,
+                {% if NX_ENABLE_TUTORIALS %}please take the
+                <a id="homepage-tutorial" href="#">interactive tutorial</a>{% if NX_DOCUMENTATION_LINK %}, or{% endif %}
+                {% endif %}
+                {% if NX_DOCUMENTATION_LINK %}visit the
+                <a href="{{ NX_DOCUMENTATION_LINK }}" target="_blank">documentation page</a>{% endif %}.
                 To get started, please click the link below to start
                 browsing experimental records:
             </p>

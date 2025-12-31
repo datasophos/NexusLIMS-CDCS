@@ -36,6 +36,13 @@ ALLOWED_HOSTS = ['*']
 # Development-specific CORS settings (if needed)
 # CORS_ALLOW_ALL_ORIGINS = True
 
-NX_DOCUMENTATION_LINK = "https://examplechanged.com"
+# NX_DOCUMENTATION_LINK = "https://examplechanged.com"
 # NX_HOMEPAGE_TEXT = "dev_settings HOMEPAGE_TEXT content."
 # NX_FOOTER_LINK = "https://example.com"
+NX_CUSTOM_MENU_LINKS = [
+    {"title": "LINK 1", "url": "https://datasophos.co", "icon": "anchor"},
+    # {"title": "LINK 2", "url": "https://example.com", "icon": "fish"},
+    # {"title": "LINK 3", "url": "https://example.com", "icon": "users"},
+]
+NX_ENABLE_TUTORIALS = True
+# NX_NAV_LOGO = "nexuslims/img/nav_logo.png"

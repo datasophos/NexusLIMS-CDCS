@@ -17,9 +17,8 @@ CUSTOM_NAME = (
 )
 CUSTOM_TITLE = "Welcome to NexusLIMS!"
 
-NX_HOMEPAGE_TEXT = "This laboratory information management system (LIMS) allows for the automated creation and curation of microscopy experimental records using the schema co-developed by ODI and the MML Electron Microscopy Nexus Facility. Experimental records are automatically harvested from multiple data sources to facilitate browsing and searching of data collected from the varied instruments in the Nexus Facility."
-NX_DOCUMENTATION_LINK = "http://documentation.com"
-NX_HOMEPAGE_LOGO = "nexuslims/img/logo_horizontal_text.png"  # Path relative to static/
+# Import NexusLIMS-specific settings
+from nexuslims_overrides.settings import *
 
 CUSTOM_SUBTITLE = "Part of the Materials Genome Initiative"
 CURATE_MENU_NAME = "Data Curation"
