@@ -38,3 +38,4 @@ ALLOWED_HOSTS = ['*']
 
 NX_DOCUMENTATION_LINK = "https://examplechanged.com"
 # NX_HOMEPAGE_TEXT = "dev_settings HOMEPAGE_TEXT content."
+# NX_FOOTER_LINK = "https://example.com"
