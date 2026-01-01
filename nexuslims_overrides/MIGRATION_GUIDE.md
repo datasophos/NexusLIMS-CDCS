@@ -25,7 +25,51 @@ Current overrides to migrate:
 - [ ] `templates/core_main_app/_render/user/theme_base.html`
 - [ ] `templates/core_explore_common_app/user/results/data_source_info.html`
 - [ ] `templates/core_explore_common_app/user/results/data_source_results.html`
+      - **Simplified XSLT Transformation**: The original template has complex logic for different template formats (XSD vs others) and uses `result_list_html` tag. The override simplifies this to always use XSLT transformation directly.
+      - **Fixed Variable Names**: The override uses `result.xml_content` instead of `result.content`, and `xml_representation` instead of `html_string`.
+      - **Compatibility with Custom `data_source_info.html`**: The override is designed to work with the custom `data_source_info.html` template that was also overridden in 2.21.0.
+      - **Consistent Styling**: The "No results found" message uses a different color (#a94442 vs red) and slightly different text.
+      - **Removed Complex Conditional Logic**: The override eliminates the complex if/else structure for different template formats.
 - [ ] `templates/core_explore_common_app/user/results/data_sources_results.html`
+- [x] `results_override` application
+  - [x] **Major Functional Changes in `get_data_source_results`:**
+    - [x] Added result page hiding/showing with fade effects for better UX
+    - [x] Added loading placeholder removal logic
+    - [x] Commented out the `leaveNotice` functionality
+    - [x] Added proper fade-in/fade-out animations for result loading
+  - [x] **Specific Changes in Success Callback:**
+    - [x] Added `result_page.hide()` to hide the result page initially
+    - [x] Added fade-out animation for loading placeholder
+    - [x] Commented out the `leaveNotice` call
+    - [x] Added fade-in animation for showing results
+  - [x] **Changes in Error Callback:**
+    - [x] Added `result_page.hide()` to hide the result page initially
+    - [x] Added fade-out animation for loading placeholder
+    - [x] Added fade-in animation for showing error results
+  - [x] **`query_result.css` Changes:** 
+    - **`.xmlResult`:** (changed to `.content-result` to follow new class name)
+      - [x] Removed `background-color: #F8F8F8;`
+      - [x] Removed `display:none;
+  - [x] **`results.css` Changes:**
+    - [x] **`.data-info-right-container`:**
+      - [x] Commented out `float: right;`
+      - [x] Added `flex-grow: 1;`
+      - [x] Changed `width: auto;` to `width: auto !important;`
+    - [x] **`.data-info-left-container`:**
+      - [x] Commented out `float: left;`
+      - [x] Added `display: flex;`
+      - [x] Added `align-items: center;`
+      - [x] Added `justify-content: space-between;`
+    - [x] **`.xmlResult`:** (changed to `.content-result` to follow new class name)
+      - [x] Added `flex-grow: 1;`
+      - [x] Added `margin-left: 1em;`
+      - [x] Added `margin-right: 1em;`
+      - [x] Added comment "jat additions"
+    - [x] **New CSS classes added:**
+      - [x] `.exporter-checkbox` with fixed height and width (24px)
+      - [x] `.explore-bar` with flex display and styling
+      - [x] `.toggle-container label` with display and vertical-align overrides
+      - [x] `#loading-placeholder` with flex-grow and text alignment
 
 ### Step 2: Categorize Overrides
 
