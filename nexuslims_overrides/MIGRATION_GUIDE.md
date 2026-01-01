@@ -30,7 +30,26 @@ Current overrides to migrate:
       - **Compatibility with Custom `data_source_info.html`**: The override is designed to work with the custom `data_source_info.html` template that was also overridden in 2.21.0.
       - **Consistent Styling**: The "No results found" message uses a different color (#a94442 vs red) and slightly different text.
       - **Removed Complex Conditional Logic**: The override eliminates the complex if/else structure for different template formats.
-- [ ] `templates/core_explore_common_app/user/results/data_sources_results.html`
+- [x] `templates/core_explore_common_app/user/results/data_sources_results.html`
+  - [x] Replace Bootstrap nav-tabs structure with custom flex-based tab layout
+  - [x] Move toolbar from inside tab panels to main navigation bar (`explore-bar`)
+  - [x] Change results counter from Bootstrap badges to plain `<span>` elements
+  - [x] Simplify data source labels from "From {{ data_source.name }}" to "Found X Results:" format
+  - [x] Remove Bootstrap version conditional checks (BOOTSTRAP_VERSION)
+  - [x] Add `flex-grow: 1` and `text-align: left` styling to tab list items
+  - [x] Update tab navigation to use `explore-bar` class instead of `nav nav-tabs`
+  - [x] Move sorting menu include to main toolbar section
+  - [x] Move persistent query button to main toolbar
+  - [x] Move linked records button to main toolbar
+  - [x] Move export button to main toolbar
+  - [x] Move date toggle to main toolbar
+  - [x] Add "Please wait while records are loading..." loading placeholder message
+  - [x] Remove individual `result-toolbar` divs from each tab panel
+  - [x] Consolidate toolbar controls into single unified bar
+  - [x] Update tab panel structure to reference new toolbar location
+  - [x] Test tab switching functionality with unified toolbar
+  - [x] Verify loading placeholder displays correctly during data loading
+  - [ ] Ensure all toolbar buttons function correctly with new layout
 - [x] `results_override` application
   - [x] **Major Functional Changes in `get_data_source_results`:**
     - [x] Added result page hiding/showing with fade effects for better UX

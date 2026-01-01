@@ -81,11 +81,18 @@ var get_data_source_results = function(result_page, data_source_url) {
             // NexusLIMS: make sure result_page is hidden
             var nb_results_id = result_page.attr('nb_results_id');
             $("#" + nb_results_id).html(data.nb_results);
-            // NexusLIMS: remove "please be patient" placeholder
+            // NexusLIMS: update pluralization of Results label
+            var resultsLabel = $("#" + nb_results_id).closest('.nav-link').find('.results-label');
+            if (data.nb_results === 1) {
+                resultsLabel.text('result:');
+            } else {
+                resultsLabel.text('results:');
+            }
+            // NexusLIMS: remove "please wait" placeholder
             $("#loading-placeholder").fadeOut("normal", function() {
                 $(this).hide();
             });
-            // NexusLIMS: remove "please be patient" placeholder
+            // NexusLIMS: remove "please wait" placeholder
             // set html of result_page (still hidden)
             result_page.html(data.results);
             // display the date
@@ -116,7 +123,7 @@ var get_data_source_results = function(result_page, data_source_url) {
         error: function(data) {
             // NexusLIMS: make sure result_page is hidden
             result_page.hide();
-            // remove "please be patient" placeholder
+            // remove "please wait" placeholder
             $("#loading-placeholder").fadeOut("normal", function() {
                 $(this).hide();
             });
