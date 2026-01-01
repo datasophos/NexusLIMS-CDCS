@@ -6,5 +6,11 @@
  * This override disables that functionality for a smoother user experience.
  */
 
-// Empty file - disables the leave notice functionality
-// The core CDCS leave_notice.js will not be loaded when this override exists
+/**
+ * Stub function - does nothing
+ * Prevents "leaveNotice is not defined" errors when other code tries to call it
+ */
+function leaveNotice() {
+    // Intentionally empty - disables the leave notice functionality
+    return;
+}

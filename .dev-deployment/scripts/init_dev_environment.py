@@ -5,7 +5,8 @@ Complete development environment initialization for NexusLIMS-CDCS.
 This script handles:
 1. Verifying database migrations are complete
 2. Creating default superuser (if needed): username=admin, password=admin
-3. Uploading NexusLIMS schema and XSLT templates
+3. Configuring anonymous group permissions for explore keyword app
+4. Uploading NexusLIMS schema and XSLT templates
 
 Usage:
     docker exec nexuslims_dev_cdcs python /scripts/init_dev_environment.py
@@ -30,6 +31,10 @@ sys.path.insert(0, "/srv/curator")
 import django
 
 django.setup()
+
+# Suppress verbose logging from core_main_app
+import logging
+logging.getLogger("core_main_app").setLevel(logging.ERROR)
 
 
 def log_success(msg):
@@ -123,6 +128,49 @@ def get_request_for_user(user):
     return request
 
 
+def grant_anonymous_explore_permission():
+    """Grant the anonymous group permission to access explore keyword app."""
+    log_info("Configuring anonymous group permissions...")
+    
+    from django.contrib.auth.models import Group, Permission
+    
+    try:
+        # Get or create the anonymous group
+        anonymous_group, created = Group.objects.get_or_create(name="anonymous")
+        
+        if created:
+            log_info("Created 'anonymous' group")
+        
+        # Get the permission for core_explore_keyword_app
+        # The permission is: core_explore_keyword_app | access_explore_keyword | Can access explore keyword
+        # Look for permissions with the codename 'access_explore_keyword'
+        try:
+            permission = Permission.objects.get(codename='access_explore_keyword')
+            
+            # Add permission to anonymous group
+            anonymous_group.permissions.add(permission)
+            log_success(f"Granted 'core_explore_keyword_app' permission to 'anonymous' group")
+            
+        except Permission.DoesNotExist:
+            log_warning(
+                "Could not find 'core_explore_keyword_app' permission. "
+                "It may not be installed or the codename might be different."
+            )
+            # List available permissions for debugging
+            log_info("Available permissions with 'explore' in codename:")
+            for perm in Permission.objects.filter(codename__icontains='explore'):
+                log_info(f"  - {perm.content_type.app_label} | {perm.codename} | {perm.name}")
+        except Permission.MultipleObjectsReturned:
+            log_warning(
+                "Multiple 'core_explore_keyword_app' permissions found. "
+                "Skipping permission assignment."
+            )
+            
+    except Exception as e:
+        log_error(f"Failed to configure anonymous group permissions: {e}")
+        # Don't raise - let the script continue
+
+
 def upload_schema(request):
     """Upload NexusLIMS schema template."""
     log_info("Uploading NexusLIMS schema...")
@@ -137,7 +185,7 @@ def upload_schema(request):
         TemplateVersionManager,
     )
     
-    schema_path = Path("/srv/curator/mdcs/nexus-experiment.xsd")
+    schema_path = Path("/srv/curator/cdcs_config/nexus-experiment.xsd")
     if not schema_path.exists():
         log_error(f"Schema file not found at {schema_path}")
         return None
@@ -209,6 +257,70 @@ def upload_schema(request):
         return None
 
 
+def upload_example_record(request, template_vm):
+    """Upload example record associated with the schema."""
+    log_info("Uploading example record...")
+    
+    from core_main_app.components.data import api as data_api
+    from core_main_app.components.workspace import api as workspace_api
+    from core_main_app.components.data.models import Data
+    
+    record_path = Path("/srv/curator/cdcs_config/example_record.xml")
+    if not record_path.exists():
+        log_warning(f"Example record not found at {record_path}")
+        return None
+    
+    try:
+        # Read the example record
+        with record_path.open(encoding="utf-8") as f:
+            record_content = f.read()
+        
+        # Get the current template
+        from core_main_app.components.template import api as template_api
+        template = template_api.get_by_id(template_vm.current, request=request)
+        
+        # Create the data record
+        data_record = Data(
+            template=template,
+            title="Example NexusLIMS Record"
+        )
+        
+        # Set the XML content and user
+        data_record.xml_content = record_content
+        data_record.user_id = request.user.id
+        
+        # Save the data record
+        data_record = data_api.upsert(data_record, request=request)
+        
+        log_success(f"Example record uploaded (ID: {data_record.id})")
+        
+        # Get or create the global public workspace
+        try:
+            public_workspace = workspace_api.get_global_workspace()
+        except Exception:
+            # If no global workspace exists, create one
+            log_warning("Global workspace not found, creating one...")
+            try:
+                public_workspace = workspace_api.create_and_get_global_workspace()
+            except Exception as ws_error:
+                log_warning(f"Could not create global workspace: {ws_error}")
+                return data_record
+        
+        # Assign record to the public workspace
+        data_record.workspace = public_workspace
+        data_record = data_api.upsert(data_record, request=request)
+        
+        log_success(f"Example record assigned to global public workspace")
+        return data_record
+        
+    except Exception as e:
+        log_error(f"Failed to upload example record: {e}")
+        import traceback
+        traceback.print_exc()
+        # Don't raise - let the script continue
+        return None
+
+
 def upload_xslt_stylesheets(request, template_vm):
     """Upload XSLT stylesheets for the template."""
     log_info("Uploading XSLT stylesheets...")
@@ -230,7 +342,7 @@ def upload_xslt_stylesheets(request, template_vm):
     # Get the current template
     template = template_api.get_by_id(template_vm.current, request=request)
     
-    stylesheet_dir = Path("/srv/curator/mdcs")
+    stylesheet_dir = Path("/srv/curator/cdcs_config")
     stylesheets = {
         "detail": stylesheet_dir / "detail_stylesheet.xsl",
         "list": stylesheet_dir / "list_stylesheet.xsl",
@@ -309,10 +421,14 @@ def main():
         superuser = get_or_create_superuser()
         request = get_request_for_user(superuser)
         
-        # Step 3: Upload schema and stylesheets (no transaction - handle errors gracefully)
+        # Step 3: Configure anonymous group permissions
+        grant_anonymous_explore_permission()
+        
+        # Step 4: Upload schema and stylesheets (no transaction - handle errors gracefully)
         template_vm = upload_schema(request)
         if template_vm:
             upload_xslt_stylesheets(request, template_vm)
+            upload_example_record(request, template_vm)
         
         print("=" * 70)
         log_success("Initialization complete!")
@@ -323,6 +439,8 @@ def main():
         print("You can now:")
         print("  - Access the site: https://nexuslims-dev.localhost")
         print("  - Login with: admin / admin")
+        print("  - View example record: https://nexuslims-dev.localhost/data?id=1")
+        print("  - Explore data: https://nexuslims-dev.localhost/explore/keyword/")
         print("  - Start uploading data using the Nexus Experiment Schema")
         print("=" * 70)
         

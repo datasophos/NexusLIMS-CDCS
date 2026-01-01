@@ -199,9 +199,10 @@ ENABLE_XML_ENTITIES_TOOLTIPS = True
 """ :py:class:`bool`: Enable XML entities tooltips during curation.
 """
 
-CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = False
+CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = True
 """ :py:class:`bool`: Can anonymous user access public document.
 """
+VERIFY_DATA_ACCESS = False
 
 BOOTSTRAP_VERSION = os.getenv("BOOTSTRAP_VERSION", "5.1.3")
 """ :py:class:`str`: Version of the boostrap library.

@@ -19,13 +19,13 @@ Current overrides to migrate:
 - [x] `templates/theme/footer/default.html`
 - [x] `templates/mdcs_home/tiles.html`
 - [x] `templates/theme/menu.html`
+- [x] `templates/core_explore_keyword_app/user/index.html`
 - [ ] `templates/core_main_app/user/data/detail.html`
 - [ ] `templates/core_main_app/common/data/detail_data.html`
 - [ ] `templates/core_main_app/_render/user/theme_base.html`
 - [ ] `templates/core_explore_common_app/user/results/data_source_info.html`
 - [ ] `templates/core_explore_common_app/user/results/data_source_results.html`
 - [ ] `templates/core_explore_common_app/user/results/data_sources_results.html`
-- [ ] `templates/core_explore_keyword_app/user/index.html`
 
 ### Step 2: Categorize Overrides
 

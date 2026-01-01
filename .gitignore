@@ -4,6 +4,7 @@ mdcs/*.xsd
 
 ### VS Code
 .vscode
+.playwright-mcp
 
 ### Eclipse template
 *.pydevproject

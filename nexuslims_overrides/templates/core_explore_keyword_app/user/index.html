@@ -1,0 +1,44 @@
+{% comment %}
+Template override for core_explore_keyword_app/user/index.html
+
+Purpose: Remove the "Filter by Template" left sidebar to simplify the explore interface UI.
+This was accomplished by commenting out the template filter inclusion while preserving
+all other functionality.
+
+Original template location:
+core_explore_keyword_app/templates/core_explore_keyword_app/user/index.html
+{% endcomment %}
+<div>
+{% if data.error %}
+    <div class="alert alert-danger"><i class="fas fa-times-circle"></i>
+        {{ data.error }}
+    </div>
+{% else %}
+    {% if data.warning %}
+        <div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i>
+            {{ data.warning }}
+        </div>
+    {% endif %}
+    <form id="form_search" action="{% url 'core_explore_keyword_app_search' %}" method="POST">
+        {% csrf_token %}
+        {% include data.query_builder_interface %}
+
+
+        <div class="d-inline-flex col-sm-12 extra-padding">
+            {% comment %} Removed template filter to simplify UI {% endcomment %}
+            {% comment %}
+            <div class="col-sm-3 extra-padding">
+                {% include data.data_sources_selector_template %}
+                {% include 'core_explore_keyword_app/user/template_filter.html' %}
+            </div>
+            {% endcomment %}
+            {% comment %} Make results column full width (12 vs. 9): {% endcomment %}
+            {% comment %}<div class="col-sm-9 extra-padding">{% endcomment %}
+            <div class="col-sm-12 extra-padding">
+                {% include "core_explore_common_app/user/results/results.html" %}
+            </div>
+        </div>
+    </form>
+{% endif %}
+{% include "core_explore_keyword_app/user/extras.html" %}
+</div>

@@ -52,10 +52,8 @@ services:
       - cdcs_static:/srv/curator/static.prod
       # Uncomment to mount additional settings file
       - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
-      # Mount NexusLIMS schema and XSLT files
-      - ./cdcs/nexus-experiment.xsd:/srv/curator/mdcs/nexus-experiment.xsd:ro
-      - ./cdcs/detail_stylesheet.xsl:/srv/curator/mdcs/detail_stylesheet.xsl:ro
-      - ./cdcs/list_stylesheet.xsl:/srv/curator/mdcs/list_stylesheet.xsl:ro
+      # Mount CDCS configuration and assets folder
+      - ./cdcs:/srv/curator/cdcs_config:ro
     environment:
       - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
