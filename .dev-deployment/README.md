@@ -23,31 +23,44 @@ This directory contains Docker Compose configuration for local development of Ne
    # docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
    ```
 
-4. **Trust the development certificate** (one-time setup):
-   
-   The development environment uses a persistent self-signed certificate. To avoid browser warnings, import the CA certificate as a trusted authority:
-   
+4. **Trust the development CA certificate** (one-time setup):
+
+   The development environment uses a local Certificate Authority (CA) to generate secure HTTPS certificates. To avoid browser warnings, you need to trust the CA certificate once. Caddy will then automatically generate short-lived certificates for all local domains.
+
    **On macOS:**
    ```bash
    sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain caddy/certs/ca.crt
    ```
-   
-   **Or import manually:**
+
+   **On Linux (Ubuntu/Debian):**
+   ```bash
+   sudo cp caddy/certs/ca.crt /usr/local/share/ca-certificates/nexuslims-dev-ca.crt
+   sudo update-ca-certificates
+   ```
+
+   **On Linux (Fedora/RHEL):**
+   ```bash
+   sudo cp caddy/certs/ca.crt /etc/pki/ca-trust/source/anchors/nexuslims-dev-ca.crt
+   sudo update-ca-trust
+   ```
+
+   **On Windows:**
+   1. Open `certmgr.msc`
+   2. Navigate to "Trusted Root Certification Authorities" → "Certificates"
+   3. Right-click → "All Tasks" → "Import"
+   4. Select `caddy/certs/ca.crt`
+
+   **Or import manually (macOS):**
    1. Open Keychain Access
    2. File → Import Items
    3. Select `caddy/certs/ca.crt`
    4. Double-click the imported cert and set "When using this certificate" to "Always Trust"
    5. Close and re-open your browser
-   
-   **Or trust directly in your browser:**
-   Most browsers allow you to import the CA certificate directly through their settings:
-   - **Chrome/Edge**: Settings → Privacy and security → Security → Manage certificates → Import `caddy/certs/ca.crt`
-   - **Firefox**: Preferences → Privacy & Security → Certificates → View Certificates → Import `caddy/certs/ca.crt`
-   - **Safari**: Open `caddy/certs/ca.crt` with Safari, then follow prompts to add to keychain
 
 5. **Access the application:**
-   - URL: https://nexuslims-dev.localhost
-   - After importing the certificate, the connection will be trusted with no browser warnings
+   - Main app: https://nexuslims-dev.localhost
+   - File server: https://files.nexuslims-dev.localhost
+   - After trusting the CA certificate, both domains will have valid HTTPS with no browser warnings
 
 6. **Create a superuser:**
    ```bash
@@ -88,6 +101,17 @@ Edit `.env` to configure:
 ### Development Settings
 The `cdcs/dev_settings.py` file extends the main `mdcs/settings.py` with development-specific configurations.
 
+### Test Data
+
+The development environment includes test data to fully test the serving of data files, preview images, and metadata files. This test data consists of sample microscopy images and metadata that is automatically extracted when you run `dev-up`.
+
+The test data is stored in a compressed archive (`cdcs/nexuslims-test-data.tar.gz`, ~1.4MB) and extracted on the host to:
+- `cdcs/nx-data/` - Preview images and metadata (served via file server at `https://files.nexuslims-dev.localhost/data`)
+- `cdcs/nx-instrument-data/` - Raw instrument data files (served via file server at `https://files.nexuslims-dev.localhost/instrument-data`)
+- `cdcs/example_record.xml` - Example NexusLIMS record
+
+The extraction script (`scripts/setup-test-data.sh`) runs automatically as part of `dev-up` and only extracts the data if it doesn't already exist. These directories are git-ignored to keep the repository size small (~149MB uncompressed).
+
 ## Live Development
 
 The development setup mounts your local source code at `..` (parent directory) into the container, enabling:
@@ -97,10 +121,10 @@ The development setup mounts your local source code at `..` (parent directory) i
 
 ## Services
 
-- **curator_caddy**: Reverse proxy with automatic HTTPS
-- **curator_postgres**: PostgreSQL database
-- **curator_mongo**: MongoDB database
-- **curator_redis**: Redis cache
+- **caddy**: Reverse proxy with automatic HTTPS
+- **postgres**: PostgreSQL database
+- **mongo**: MongoDB database
+- **redis**: Redis cache
 - **cdcs**: Django application (NexusLIMS-CDCS)
 - **celery_worker**: Celery worker for async tasks (MongoDB document creation, etc.)
 - **celery_beat**: Celery beat scheduler for periodic tasks
@@ -114,8 +138,9 @@ source dev-commands.sh
 
 ### Lifecycle Commands
 ```bash
-dev-up              # Start development environment
-dev-down            # Stop development environment  
+dev-up              # Start development environment (auto-extracts test data if needed)
+dev-down            # Stop development environment
+dev-clean           # Stop and remove volumes + extracted test data (clean slate)
 dev-restart         # Restart CDCS app only
 dev-restart-all     # Restart all services
 ```
@@ -170,14 +195,17 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml exec cdcs python 
 # Stop all services
 docker compose -f docker-compose.yml -f docker-compose.dev.yml down
 
-# Stop and remove volumes (clean slate)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+# Stop and remove volumes + test data (clean slate)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v && \
+  rm -rf cdcs/nx-data cdcs/nx-instrument-data cdcs/example_record.xml
 ```
 
 ## Troubleshooting
 
 ### Certificate warnings
-If you see browser certificate warnings, you haven't imported the CA certificate yet. Follow the "Trust the development certificate" instructions in the Quick Start section above. After importing `caddy/certs/ca.crt`, the connection will be fully trusted.
+If you see browser certificate warnings, you need to trust the CA certificate. Follow the "Trust the development CA certificate" instructions in the Quick Start section above. After trusting `caddy/certs/ca.crt`, all HTTPS connections will be trusted with no warnings.
+
+**Note:** Caddy automatically generates short-lived server certificates from the trusted CA, so you only need to trust the CA once.
 
 ### Database connection errors
 Ensure the containers are fully started. The Django container waits for PostgreSQL to be ready before starting.

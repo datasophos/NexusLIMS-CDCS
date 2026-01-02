@@ -83,9 +83,37 @@ Current overrides to migrate:
 - [x] `mdcs_home/templatetags/xsl_transform_tag.py` - copied as `nexuslims_overrides/templatetags/nexuslims_xsl_transform.py`
 - [x] `mdcs_home/utils/xml.py` - copied as is to nexuslims_overrides.xml
 - [x] `templates/core_explore_common_app/user/results/data_source_results.html`
-- [ ] `templates/core_main_app/user/data/detail.html`
-- [ ] `templates/core_main_app/common/data/detail_data.html`
-- [ ] `templates/core_main_app/_render/user/theme_base.html`
+- [x] `templates/core_main_app/user/data/detail.html`
+  - [x] Comment out title section (h2 with data.data.title and template.display_name)
+  - [x] Comment out tools_data.html include (removes XSLT selector toolbar)
+  - [x] Keep only the detail_data.html include for clean content-only view
+- [x] `templates/core_main_app/common/data/detail_data.html`
+  - [x] Wrap content in Bootstrap container-fluid/row structure instead of plain div
+  - [x] Pass xmlName=data.data.title parameter to xsl_transform_detail tag
+  - [x] Preserve new 2.18.0 features (data_detail_html tag, JSON/XSD format handling)
+  - [x] Keep request parameter for XSLT context (unlike 2.21.0 version which removed it)
+- [x] `templates/core_main_app/_render/user/theme_base.html`
+
+Current status:
+- [x] Homepage
+- [ ] Explore page
+  - [ ] Download/export button not working
+- [ ] Record page
+  - [ ] wonky styling
+  - [x] `xmlName` parameter should get passed into
+    - `<span id="xmlName" style="display: none;"></span>`
+  - [ ] ZIP downloads
+  - [x] top toolbar
+  - [ ] page jumps when closing modal
+  - [ ] "InstallTrigger is deprecated and will be removed in the future."
+  - [x] how to include instrument data (maybe init_dev_environment expands a .tar.gz?)
+
+Other TODOs:
+- [ ] Tutorials
+- [x] Javascript libraries for detail XSLT (maybe better in an app, or override?)
+- [x] overall spacing on explore page
+- [x] search bar overlaps search button on explore
+- [x] color of search button on explore page
 
 
 ### Step 2: Categorize Overrides

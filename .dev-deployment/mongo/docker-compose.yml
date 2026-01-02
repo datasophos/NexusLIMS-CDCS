@@ -1,5 +1,5 @@
 services:
-  curator_mongo:
+  mongo:
     image: mongo:${MONGO_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_cdcs_mongo
     restart: always
