@@ -1,0 +1,32 @@
+/**
+ * NexusLIMS Detail Page - Tooltips
+ * Tooltip positioning and styling (Bootstrap 5)
+ */
+
+.tooltip {
+    z-index: 100001;
+    position: fixed;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: opacity 0.25s linear;
+    -moz-transition: opacity 0.25s linear;
+    -o-transition: opacity 0.25s linear;
+    transition: opacity 0.25s linear;
+    white-space: pre-wrap;
+}
+
+.tooltip-inner {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.btn-sidebar-tooltip {
+    top: 69px !important;
+}
+.btn-sidebar-tooltip .tooltip-arrow{
+    top: 50% !important;
+}

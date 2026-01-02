@@ -1,0 +1,116 @@
+/**
+ * NexusLIMS Detail Page - Base Styles
+ * Typography, links, colors, and general page elements
+ */
+
+/* Navigation z-index */
+#nav {
+    z-index: 100000 !important;
+}
+
+/* Horizontal rules */
+hr {
+    border-top: solid 1px #e0e0e0;
+    border: unset;
+}
+
+/* Link colors */
+a:link {
+    color: #3865a3;
+}
+a:visited {
+    color: #3865a3;
+}
+a:hover {
+    color: #5e7ca3;
+}
+
+/* Typography */
+th,td {
+    font-size: 14px;
+}
+
+code {
+    font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+    font-size: small;
+}
+
+/* Activity header styling */
+.aa_header {
+    font-size: 19px;
+    text-decoration: none;
+    color: black;
+}
+
+.aa_header:hover {
+    cursor: default;
+    color: black;
+}
+
+/* Anchor positioning to avoid header overlap */
+a.aa_anchor {
+    display: block;
+    position: relative;
+    top: -3.5em;
+    visibility: hidden;
+}
+
+a.dataset_anchor {
+   display: block;
+   position: relative;
+   top: -15em;
+   visibility: hidden;
+}
+
+/* PID row styling */
+.pid-row {
+    overflow-wrap: anywhere;
+}
+
+/* Badge links */
+.badge a {
+    color: #fff;
+}
+
+/* Help and warning tooltips */
+.help-tip {
+    color: #eee;
+}
+.help-tip:hover {
+    color: #aaa;
+}
+
+.warning-tip {
+    color: #f5c636;
+}
+
+td.has-warning {
+    color:  #a3a3a3;
+}
+
+.no-cal-warning {
+    color: #a94442;
+    font-style: italic;
+}
+
+.sup-link {
+    font-size: 0.5em;
+    top: -1em;
+}
+
+/* Utility classes */
+.no-top-padding {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.row.vertical-align {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.xslt_render {
+    visibility: hidden;
+    opacity: 0;
+}

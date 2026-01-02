@@ -1,0 +1,101 @@
+/**
+ * NexusLIMS Detail Page - Modals
+ * Modal dialog boxes for metadata tables and file listing
+ */
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1001;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(209,203,203,0.7);
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: max-content;
+}
+
+.close-modal {
+    color: #000;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #525252;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* File listing modal */
+#filelist-modal .modal-body .filelist-header-row {
+    justify-content: space-between;
+}
+
+.help-filelist-modal {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 4.5px;
+    vertical-align: top;
+}
+
+i.help-filelist-modal > div.tooltip {
+    opacity: 1;
+}
+i.help-filelist-modal > div.tooltip > div.arrow,
+i.help-filelist-modal > div.tooltip > div.arrow::before {
+    border-bottom-color: #3a65a2;
+}
+i.help-filelist-modal > div.tooltip > div.tooltip-inner {
+    background-color: #e5ecf6;
+    color: #474747;
+    max-width: unset;
+    border: solid #3a65a2 3px;
+    font-size: large;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    text-align: justify;
+    width: 500px;
+}
+
+/* Modal metadata */
+.modal-expTitle {
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.modal-expDate {
+    font-size: smaller;
+    font-style: oblique;
+}
+
+/* Modal table styling */
+.modal table{
+  margin: 0 auto;
+  width: auto;
+  clear: both;
+  border-collapse: collapse;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.modal div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin-left: 1em;
+    white-space: nowrap;
+}

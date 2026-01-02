@@ -1,0 +1,55 @@
+{% extends "core_main_app/_render/user/theme_base.html" %}
+{% load static %}
+
+{% comment %}
+NexusLIMS override of theme_base.html to load additional libraries
+needed for detail page functionality (DataTables, Shepherd.js, StreamSaver)
+
+This template extends the v3.18.0 base theme_base.html and adds:
+- DataTables 1.13.11 for interactive tables
+- Shepherd.js 14.5.1 for guided tours
+- StreamSaver.js 2.0.6 for large file downloads
+
+Libraries are loaded early in the body so XSLT-generated HTML can use them.
+{% endcomment %}
+
+{% block core_css %}
+    {{ block.super }}
+
+    {# NexusLIMS additional library styles #}
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables/1.13.11/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-select/1.7.0/dataTables.select.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-buttons/2.4.2/buttons.dataTables.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/shepherd.js/11.2.0/shepherd.min.css' %}">
+{% endblock %}
+
+{% block body %}
+    {# Render the actual body content from base template #}
+    {{ block.super }}
+{% endblock %}
+
+{% block app_js %}
+    {{ block.super }}
+
+    {# NexusLIMS additional libraries (must load before detail modules) #}
+    <script type="text/javascript" src="{% static 'libs/datatables/1.13.11/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/web-streams-polyfill/3.3.3/ponyfill.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/streamsaver/2.0.6/StreamSaver.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/shepherd.js/14.5.1/shepherd.min.js' %}"></script>
+
+    {# Configure StreamSaver service worker paths #}
+    <script type="text/javascript">
+        // Set StreamSaver service worker and MITM paths
+        if (typeof streamSaver !== 'undefined') {
+            streamSaver.mitm = '/static/libs/streamsaver/2.0.6/mitm.html';
+        }
+    </script>
+
+    {# NexusLIMS detail page JavaScript modules #}
+    {# These modules check for #simpleDisplay element and only run on detail pages #}
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/utils.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/tour.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/main.js' %}"></script>
+{% endblock %}

@@ -4,6 +4,8 @@
  * Central location for all NexusLIMS customizations.
  */
 
+// TODO: a lot of this was hallucinated by claude and not actually used
+
 (function() {
     'use strict';
 

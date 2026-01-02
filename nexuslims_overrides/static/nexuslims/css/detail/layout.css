@@ -1,0 +1,178 @@
+/**
+ * NexusLIMS Detail Page - Layout
+ * Sidebar, main content area, scroll management, responsive breakpoints
+ */
+
+/* Scroll management */
+.scrollDisabled {
+    position: fixed;
+    width: 100%;
+    overflow-y:scroll;
+}
+
+/* Sidebar */
+.sidebar {
+    display: block;
+    position: fixed;
+    left: -400px;
+    width: 180px;
+    font-size: 14px;
+    -webkit-transition: all 0.5s ease-in-out 0s;
+    -moz-transition: all 0.5s ease-in-out 0s;
+    -o-transition: all 0.5s ease-in-out 0s;
+    transition: all 0.5s ease-in-out 0s;
+    height: 90vh;
+    visibility: hidden; /* Make hidden, to be revealed when jQuery is done paginating results */
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+         position: fixed;
+         top: 5em;
+         bottom: 0;
+         left: 0;
+         z-index: 1000;
+         display: block;
+         padding: 20px;
+         overflow-x: visible;
+         overflow-y: auto;
+    }
+}
+
+.sidebar.side-expanded {
+    left: 0;
+    padding: 20px;
+    background-color: white;
+    z-index: 100;
+    border: 1px solid #eee;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Sidebar content styling */
+.sidebar a, .sidebar h1 {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sidebar .pagination > li > a, .pagination > li > span {
+    padding: 6px 10px;
+}
+
+.sidebar .cdatatableDetails {
+    float: left;
+    margin: 0 0.5em;
+}
+
+.sidebar div.dataTables_paginate {
+    text-align: center !important;
+}
+
+.sidebar div.dataTables_paginate li.paginate_button a i {
+    vertical-align: middle;
+}
+
+.sidebar .table-sm td {
+    padding: 5px;
+    line-height: 1.5em;
+}
+
+.sidebar div {
+    font-size: 12px;
+}
+
+#nav-table tbody tr {
+    cursor: pointer;
+}
+
+/* Sidebar toggle button */
+#btn-sidebar {
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    top: 69px;
+    left: 20px;
+    font-size: 20px;
+    -webkit-transition: opacity 0.5s ease-in-out 0s;
+    -moz-transition: opacity 0.5s ease-in-out 0s;
+    -o-transition: opacity 0.5s ease-in-out 0s;
+    transition: opacity 0.5s ease-in-out 0s;
+    z-index: 50;
+}
+
+@media screen and (max-width: 768px) {
+    #btn-sidebar {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+/* Main content area */
+.main {
+    padding: 20px;
+    -webkit-transition: padding 0.5s ease-in-out 0s;
+    -moz-transition: padding 0.5s ease-in-out 0s;
+    -o-transition: padding 0.5s ease-in-out 0s;
+    transition: padding 0.5s ease-in-out 0s;
+    padding-top: 5px;
+}
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 40px;
+        padding-left: 220px; /* 180 + 40 */
+    }
+}
+
+.main .page-header {
+    margin-top: 0;
+    border-bottom: none;
+}
+
+.main h1 {
+    font-size: 1.5em;
+}
+
+.main h3 {
+    font-size: 1.1em;
+    margin-bottom: 0.1em;
+}
+
+/* Simple display mode */
+.simple-warning {
+    font-size: smaller;
+    text-align: center;
+    line-height: 1.25em;
+}
+
+img.simple-filelist-preview {
+    display: none;
+    position: absolute;
+    left: -500px;
+    top: -250px;
+}
+
+/* Sidebar control buttons */
+#close-accords-btn, #open-accords-btn, #to-top-btn {
+    margin: 0.5em auto;
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    z-index: 101;
+}
+
+#to-top-btn {
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.25s linear, opacity 0.25s linear;
+    -moz-transition: visibility 0.25s linear, opacity 0.25s linear;
+    -o-transition: visibility 0.25s linear, opacity 0.25s linear;
+    transition: visibility 0.25s linear, opacity 0.25s linear;
+}
+
+/* Top button group */
+#top-button-div {
+    flex-direction: row-reverse;
+}

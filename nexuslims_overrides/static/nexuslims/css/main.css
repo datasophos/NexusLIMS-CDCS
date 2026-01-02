@@ -7,7 +7,6 @@
 
 /* Import individual component styles */
 @import url('homepage.css');
-@import url('detail.css');
 @import url('search.css');
 @import url('toolbar.css');
 @import url('login.css');

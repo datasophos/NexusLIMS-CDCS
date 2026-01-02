@@ -1,0 +1,208 @@
+/**
+ * NexusLIMS Detail Page - Tables
+ * DataTables, metadata tables, file listing tables, sample tables
+ */
+
+/* General table sizing */
+table.meta-table,
+table.filelist-table {
+    min-width: 25vw;
+}
+
+/* Upper table styling */
+table.upper-table > tbody > tr > * {
+    border: 0;
+    padding: .1rem;
+    line-height: 1.5;
+    font-size: 0.75em;
+}
+table.upper-table th {
+    font-weight: bold;
+}
+
+/* Preview and table layout */
+table.preview-and-table {
+    margin: 2em auto;
+}
+
+table.preview-and-table td {
+    vertical-align: middle;
+    font-size: 0.9em;
+}
+
+/* Standard tables */
+table.meta-table,
+table.aa-table,
+table.filelist-table,
+table.sample-table {
+    border-collapse: collapse;
+}
+
+table.meta-table td, table.meta-table th,
+table.aa-table td, table.aa-table th,
+table.filelist-table td, table.filelist-table th,
+table.sample-table td, table.sample-table th {
+    padding: 0.3em;
+}
+
+table.meta-table th,
+table.aa-table th,
+table.filelist-table th,
+table.sample-table th {
+    background-color: #3a65a2;
+    border-color: black;
+    color: white;
+}
+
+/* Sample table specific */
+table.sample-table td {
+    text-align: center;
+    line-height: 1.2em;
+    vertical-align: middle;
+}
+
+table.sample-table p {
+   margin-bottom: 0.25em;
+   margin-top: 0.25em;
+}
+
+/* File listing table */
+table.filelist-table.dataTable tbody td.select-checkbox:before {
+    top: 64%;
+}
+table.filelist-table.dataTable tr.selected td.select-checkbox:after {
+    top: 44%;
+}
+.filelist-btn {
+    font-weight: 300;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* DataTables selection styling */
+table.filelist-table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+    background-color: #e5ecf6;
+}
+table.filelist-table.dataTable tbody tr.selected, table.dataTable tbody th.selected,
+table.filelist-table.dataTable tbody td.selected {
+    color: #474747;
+}
+table.filelist-table.dataTable tbody tr.selected i {
+    border: solid 0.1em #ddd;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    transition-property: none;
+}
+table.filelist-table.dataTable tbody tr i {
+    border: solid 0.1em #ddd;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    transition-property: none;
+}
+table.filelist-table.dataTable tbody tr.selected a, table.dataTable tbody th.selected a,
+table.filelist-table.dataTable tbody td.selected a {
+    color: #3865a3;
+}
+
+/* File listing modal table info */
+div#filelist-table_info {
+    font-size: smaller;
+    font-style: italic;
+    padding-top: 0;
+}
+#filelist_info_row {
+    margin-top: 0;
+}
+#filelist-table_wrapper > .row {
+    margin: 0;
+    align-items: center;
+    margin-top: 0.1em;
+}
+
+/* File listing table buttons */
+div.dt-buttons.btn-group > button {
+    font-size: small;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#filelist-json_dl-col,
+#filelist-data_dl-col {
+    padding-right: 5px;
+}
+
+/* Download result and progress */
+#download-result {
+    font-size: small;
+    padding: 0px 10px;
+    white-space: pre-wrap;
+}
+#download-extra{
+    font-size: small;
+    padding: 0.5em 10px;
+    white-space: break-spaces;
+    line-height: 1.5em;
+}
+#progress_bar {
+    margin-top: 10px;
+}
+#btn-cancel-row {
+    text-align: center;
+    margin-top: 10px;
+}
+#btn-cancel-row button {
+   font-size: small;
+   padding-top: 4px;
+   padding-bottom: 4px;
+}
+.progress-bar {
+    transition: width .1s ease;
+    -o-transition: width .1s ease;
+    -o-transition: width .1s ease;
+}
+
+/* Parameter name column */
+th.parameter-name {
+    font-weight: bold;
+}
+
+td.aa-meta-col {
+    white-space: nowrap;
+}
+
+.table-col {
+    width: 100%;
+}
+
+/* DataTables wrapper adjustments */
+.main .dataTables_wrapper .row {
+    margin: 0;
+    align-items: center;
+    margin-top: 0.5em;
+}
+.main .dataTables_wrapper .row > * {
+    padding: 0;
+}
+.main .dataTables_wrapper ul.pagination > li > a {
+    padding: 0px 8px;
+}
+.main .dataTables_wrapper label {
+    font-size: smaller;
+}
+
+/* Pagination */
+.dataTables_paginate {
+    font-size: 14px;
+}
+.pager-col {
+    padding-top: 20px;
+    width: 100%;
+}
+
+/* Activity table column */
+.aa-table-col {
+    margin-top: 1em;
+}

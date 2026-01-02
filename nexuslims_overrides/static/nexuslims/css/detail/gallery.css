@@ -1,0 +1,149 @@
+/**
+ * NexusLIMS Detail Page - Image Gallery
+ * Slideshow, gallery navigation, captions, and preview images
+ */
+
+/* Slideshow container */
+.slide {
+    display: none;
+}
+
+.slideshow-container {
+    position: relative;
+    margin: auto;
+    margin-bottom: 2em;
+}
+
+.slideshow-col {
+    padding: 0;
+    margin-top: 1em;
+    margin-bottom: -1em;
+}
+
+/* Gallery images */
+img.nx-img {
+   max-height: 500px;
+   max-width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+}
+
+img.nx-img.aa-img {
+    display: block;
+    width: 400px;
+}
+
+img.nx-img.aa-img.hidden {
+    display: none;
+}
+
+img.dataset-preview-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    max-width: 400px;
+}
+
+/* Gallery navigation */
+.gal-nav {
+    /* Parameters for the 'next' and 'prev' buttons on the slideshow gallery */
+}
+
+.gal-prev:hover, .gal-next:hover {
+    /* Have a background appear when the prev/next buttons are hovered over */
+}
+
+/* Gallery selection */
+div#img_gallery {
+  /* Make entire gallery unselectable to prevent highlighting when clicking nav buttons */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.gallery-caption > span, .gallery-caption > a {
+    /* Make caption spans selectable */
+    -webkit-touch-callout: text !important;
+    -webkit-user-select: text !important;
+    -khtml-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+}
+
+div#img_gallery .fa-stack-2x{
+    color: #aaa;
+    -webkit-transition: color 0.25s linear;
+    -moz-transition: color 0.25s linear;
+    -o-transition: color 0.25s linear;
+    transition: color 0.25s linear;
+}
+
+div#img_gallery:hover .fa-stack-2x {
+    color: #337ab7;
+}
+
+div#img_gallery .fa-stack:hover .fa-stack-2x {
+    color: #23527c;
+}
+
+/* Gallery caption */
+.gallery-caption {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.nx-caption {
+    color: black;
+    font-size: 14px;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+    line-height: 150%;
+}
+
+.nx-caption .row {
+    margin: 0;
+}
+.nx-caption .row > * {
+    padding: 0;
+}
+
+.gallery-filename {
+    width: 50vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #4b65a0
+}
+
+@media (min-width: 768px) {
+    .gallery-filename {
+        width: 150px;
+    }
+}
+
+@media (min-width: 992px) {
+    .gallery-filename {
+        width: 230px;
+    }
+}
+
+@media (min-width: 1200px) {
+   .gallery-filename {
+        width: 350px;
+   }
+}
+
+/* Activity images */
+.aa-img-col {
+    padding-top: 10px;
+    margin-top: 1em;
+}

@@ -1,0 +1,66 @@
+/**
+ * NexusLIMS Detail Page - Buttons
+ * Button styles for top group, parameters, preview, and controls
+ */
+
+/* General button styling */
+button {
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* Override bootstrap button outline styling */
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+    background-color: #ccc;
+}
+
+/* Top button group */
+.btn-top-group {
+    margin: 0.25em;
+}
+
+@media screen and (max-width: 768px) {
+    .btn-top-group {
+        font-size: 10px;
+    }
+}
+
+/* Parameter button */
+i.param-button {
+    margin-left: 0.5em;
+    font-size: medium;
+    color: #aaa;
+    border: solid 0.1em #eee;
+    -webkit-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+    -moz-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+    -o-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+    transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+}
+i.param-button:hover:not([disabled]) {
+   margin-left: 0.5em;
+   font-size: medium;
+   color: #5e7ca3;
+   border: solid 0.1em #999;
+   background: #eee;
+}
+
+/* Preview button */
+i.preview-button {
+  margin-left: 0.5em;
+  font-size: medium;
+  color: #686d97;
+  border: solid 0.1em #eee;
+  -webkit-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+  -moz-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+  -o-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+  transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
+}
+i.preview-button:hover {
+  margin-left: 0.5em;
+  font-size: medium;
+  color: #5e7ca3;
+  border: solid 0.1em #999;
+  background: #eee;
+}

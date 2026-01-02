@@ -1,0 +1,32 @@
+{% load nexuslims_xsl_transform %}
+{% load blob_tags %}
+{% load format_json %}
+{% load data_to_html %}
+
+{# NexusLIMS override: Custom wrapper and pass xmlName to XSLT #}
+{# Base: core_main_app 2.18.0 - using nexuslims_xsl_transform for parameter passing #}
+
+{% data_detail_html data=data.data as html_string %}
+
+{% if html_string %}
+    {{html_string}}
+{% else %}
+<div class="container-fluid">
+    <div class="row">
+        <div id="xslt-representation">
+            {% if data.data.template.format == "XSD" %}
+                {# NexusLIMS: Pass xmlName to XSLT for custom rendering #}
+                {% xsl_transform_detail xmlName=data.data.title xml_content=data.data.content template_id=data.data.template.id template_hash=data.data.template.hash request=request as html_string %}
+                {% if 'core_file_preview_app' in INSTALLED_APPS %}
+                    {% render_blob_links_in_span xml_string=html_string as html_string %}
+                {% endif %}
+                {{ html_string|safe}}
+            {% elif data.data.template.format == "JSON" %}
+                <pre class="display-detail"><code>{{data.data.content|format_json}}</code></pre>
+            {% else %}
+                {{data.data.content}}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
