@@ -31,6 +31,17 @@
     <link rel="stylesheet" href="{% static 'nexuslims/css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'nexuslims/css/explore_results.css' %}" />
 
+    {# NexusLIMS detail page styles (modular) - loaded AFTER main.css to override CSS reset #}
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/gallery.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/accordions.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/modals.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/tables.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/buttons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/tooltips.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/loading.css' %}">
+
 {% endblock %}
 {% block theme_js %}
     <script src="{% static 'js/util.js' %}"></script>
@@ -41,6 +52,33 @@
 
     {# NexusLIMS custom JavaScript #}
     <script src="{% static 'nexuslims/js/main.js' %}"></script>
+
+    {# NexusLIMS detail page libraries (DataTables, Shepherd, StreamSaver, JSZip) #}
+    <script type="text/javascript" src="{% static 'libs/datatables/1.13.11/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-select/1.7.0/dataTables.select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/jszip/3.10.1/jszip.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-buttons/2.4.2/dataTables.buttons.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-buttons/2.4.2/buttons.html5.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-buttons/2.4.2/buttons.print.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/web-streams-polyfill/3.3.3/ponyfill.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/streamsaver/2.0.6/StreamSaver.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/shepherd.js/11.2.0/shepherd.min.js' %}"></script>
+
+    {# Configure StreamSaver service worker paths #}
+    <script type="text/javascript">
+        // Set StreamSaver service worker and MITM paths
+        if (typeof streamSaver !== 'undefined') {
+            streamSaver.mitm = '/static/libs/streamsaver/2.0.6/mitm.html';
+        }
+    </script>
+
+    {# NexusLIMS detail page JavaScript modules #}
+    {# These modules check for #simpleDisplay element and only run on detail pages #}
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/utils.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/tour.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/main.js' %}"></script>
 
 {% endblock %}
 

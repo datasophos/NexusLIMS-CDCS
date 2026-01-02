@@ -112,6 +112,14 @@ def _render_xml_as_html(xslt_type, *args, **kwargs):
     template_id = kwargs.pop("template_id", None)
     template_hash = kwargs.pop("template_hash", None)
     xsl_transform_id = kwargs.pop("xslt_id", None)
+    request = kwargs.pop("request", None)
+
+    # Extract useful string values from request if provided
+    # (request object itself can't be serialized for XSLT)
+    if request:
+        pass
+        # Could add base URL or other request info as XSLT parameters if needed
+        # e.g., kwargs['baseUrl'] = f'"{request.build_absolute_uri("/")}"'
 
     # NexusLIMS custom parameters xmlName and detail_url are
     # still in kwargs and should be passed to xsl_transform()
