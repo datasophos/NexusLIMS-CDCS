@@ -4,6 +4,40 @@ This guide helps migrate existing scattered template overrides into the centrali
 
 ## Migration Strategy
 
+
+### Current status:
+- [x] Homepage
+- [x] Explore page
+  - [x] Download/export button not working
+- [ ] Record page
+  - [ ] wonky styling
+    - [ ] paginate on left side bar
+    - [ ] paginate on file list tables
+    - [ ] badge font is too large
+    - [ ] datatable search and paginate on metadata modal
+    - [ ] "X" button is not clickable on activity metadata modal
+    - [ ] Buttons and header styling on download file modal
+    - [ ] preview gallery caption styling is super wide
+  - [ ] Tooltips stay visible when clicking a link with one
+  - [ ] Edit button doesn't work, and should only show when the user is logged in and has permissions
+  - [x] `xmlName` parameter should get passed into
+    - `<span id="xmlName" style="display: none;"></span>`
+  - [ ] ZIP downloads
+  - [x] top toolbar
+  - [ ] page jumps when closing modal
+  - [ ] "InstallTrigger is deprecated and will be removed in the future."
+  - [x] how to include instrument data (maybe init_dev_environment expands a .tar.gz?)
+  - [ ] feat: easily configurable badge colors?
+
+### Other TODOs:
+- [ ] Tutorials
+- [x] Javascript libraries for detail XSLT (maybe better in an app, or override?)
+- [x] overall spacing on explore page
+- [x] search bar overlaps search button on explore
+- [x] color of search button on explore page
+
+
+
 ### Step 1: Audit Current Overrides
 
 List all current template overrides:
@@ -93,28 +127,6 @@ Current overrides to migrate:
   - [x] Preserve new 2.18.0 features (data_detail_html tag, JSON/XSD format handling)
   - [x] Keep request parameter for XSLT context (unlike 2.21.0 version which removed it)
 - [x] `templates/core_main_app/_render/user/theme_base.html`
-
-Current status:
-- [x] Homepage
-- [ ] Explore page
-  - [ ] Download/export button not working
-- [ ] Record page
-  - [ ] wonky styling
-  - [x] `xmlName` parameter should get passed into
-    - `<span id="xmlName" style="display: none;"></span>`
-  - [ ] ZIP downloads
-  - [x] top toolbar
-  - [ ] page jumps when closing modal
-  - [ ] "InstallTrigger is deprecated and will be removed in the future."
-  - [x] how to include instrument data (maybe init_dev_environment expands a .tar.gz?)
-
-Other TODOs:
-- [ ] Tutorials
-- [x] Javascript libraries for detail XSLT (maybe better in an app, or override?)
-- [x] overall spacing on explore page
-- [x] search bar overlaps search button on explore
-- [x] color of search button on explore page
-
 
 ### Step 2: Categorize Overrides
 

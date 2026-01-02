@@ -1,9 +1,12 @@
 /**
  * NexusLIMS Detail Page - Modals
  * Modal dialog boxes for metadata tables and file listing
+ *
+ * NOTE: These styles are for custom NexusLIMS modals, not Bootstrap modals.
+ * We use .nexuslims-modal class to avoid overriding Bootstrap modal styles.
  */
 
-.modal {
+.nexuslims-modal {
     display: block;
     position: fixed;
     z-index: 1001;
@@ -22,7 +25,7 @@
     opacity: 0;
 }
 
-.modal-content {
+.nexuslims-modal .modal-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
@@ -75,18 +78,18 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
 }
 
 /* Modal metadata */
-.modal-expTitle {
+.nexuslims-modal .modal-expTitle {
     font-size: smaller;
     font-weight: normal;
 }
 
-.modal-expDate {
+.nexuslims-modal .modal-expDate {
     font-size: smaller;
     font-style: oblique;
 }
 
 /* Modal table styling */
-.modal table{
+.nexuslims-modal table{
   margin: 0 auto;
   width: auto;
   clear: both;
@@ -95,7 +98,12 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
   word-wrap: break-word;
 }
 
-.modal div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+.nexuslims-modal div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     margin-left: 1em;
     white-space: nowrap;
+}
+
+/* Bootstrap modal positioning - ensure modals appear below the navigation bar */
+.modal-dialog {
+    margin-top: 100px;
 }

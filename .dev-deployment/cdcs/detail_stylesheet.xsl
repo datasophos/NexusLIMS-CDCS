@@ -1196,7 +1196,7 @@ Use it like:
                                                                 <xsl:attribute name="title">Click to download this dataset's metadata in JSON format</xsl:attribute>
                                                                 <i class='fa fa-download fa-border param-button' style='margin-left:0;'/>
                                                             </xsl:element>
-                                                            <div id="{generate-id(current())}-modal" class="modal">
+                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal">
                                                                 <div class="modal-content">
                                                                     <div class="container-fluid">
                                                                         <div class="row"
@@ -1323,7 +1323,7 @@ Use it like:
                                 </div>
                             </div>
                             <!-- Generate unique modal box for each AA which contains the setup params, accessed via a button -->
-                            <div id="{generate-id(current())}-modal" class="modal">
+                            <div id="{generate-id(current())}-modal" class="nexuslims-modal">
                                 <div class="modal-content">
                                     <div class="container-fluid">
                                         <div class="row" style="">
@@ -1434,7 +1434,7 @@ Use it like:
                </xsl:choose>
                <xsl:if test="not($simpleDisplay)">
 
-                  <div id="filelist-modal" class="modal">
+                  <div id="filelist-modal" class="nexuslims-modal">
                       <div class="modal-content" style="width: 65vw;">
                           <div class="modal-body">
                               <div class="row filelist-header-row">

@@ -429,6 +429,52 @@ def upload_xslt_stylesheets(request, template_vm):
             raise
 
 
+def load_exporters():
+    """Load the exporters into the database."""
+    log_info("Loading exporters...")
+
+    try:
+        from core_exporters_app.components.exporter import api as exporter_api
+
+        # Check if exporters already exist
+        existing_exporters = exporter_api.get_all()
+        if len(existing_exporters) > 0:
+            log_info(f"Exporters already loaded ({len(existing_exporters)} found)")
+
+            # Remove BLOB exporter if it exists (NexusLIMS doesn't use blobs)
+            blob_exporters = [exp for exp in existing_exporters if exp.name.upper() == 'BLOB']
+            if blob_exporters:
+                for blob_exp in blob_exporters:
+                    blob_exp.delete()
+                    log_info(f"Removed BLOB exporter (ID: {blob_exp.id})")
+
+                remaining = exporter_api.get_all()
+                log_success(f"Exporters configured: {', '.join(exp.name for exp in remaining)}")
+            else:
+                log_success(f"Exporters configured: {', '.join(exp.name for exp in existing_exporters)}")
+            return
+
+        # Load exporters using Django management command
+        from django.core.management import call_command
+        call_command('loadexporters')
+
+        # Remove BLOB exporter (NexusLIMS doesn't use blobs)
+        all_exporters = exporter_api.get_all()
+        blob_exporters = [exp for exp in all_exporters if exp.name.upper() == 'BLOB']
+        if blob_exporters:
+            for blob_exp in blob_exporters:
+                blob_exp.delete()
+                log_info(f"Removed BLOB exporter (ID: {blob_exp.id})")
+
+        # Verify final state
+        exporters = exporter_api.get_all()
+        log_success(f"Loaded {len(exporters)} exporters: {', '.join(exp.name for exp in exporters)}")
+
+    except Exception as e:
+        log_error(f"Failed to load exporters: {e}")
+        # Don't raise - let the script continue
+
+
 def main():
     """Main entry point."""
     print("=" * 70)
@@ -444,15 +490,18 @@ def main():
         # Step 2: Get or create superuser
         superuser = get_or_create_superuser()
         request = get_request_for_user(superuser)
-        
+
         # Step 3: Configure anonymous group permissions
         grant_anonymous_explore_permission()
-        
+
         # Step 4: Upload schema and stylesheets (no transaction - handle errors gracefully)
         template_vm = upload_schema(request)
         if template_vm:
             upload_xslt_stylesheets(request, template_vm)
             upload_example_record(request, template_vm)
+
+        # Step 5: Load exporters
+        load_exporters()
         
         print("=" * 70)
         log_success("Initialization complete!")

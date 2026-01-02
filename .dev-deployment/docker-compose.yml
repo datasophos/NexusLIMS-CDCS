@@ -48,6 +48,10 @@ services:
     depends_on:
       - redis
       - postgres
+    extra_hosts:
+      # allows access from Celery processes to caddy reverse proxy network
+      # (the query exporter was failing without this addition)
+      - "nexuslims-dev.localhost:host-gateway"
     volumes:
       - cdcs_media:/srv/curator/media
       - cdcs_socket:/tmp/curator/
@@ -56,6 +60,8 @@ services:
       - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
       # Mount CDCS configuration and assets folder
       - ./cdcs:/srv/curator/cdcs_config:ro
+      # Mount Caddy's root CA certificate for SSL verification
+      - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
     environment:
       - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
@@ -63,6 +69,11 @@ services:
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
       - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
       - SERVER_NAME=${SERVER_NAME:-}
+      # Use Caddy's root CA certificate for development
+      # (allows celery and other requests to verify SSL requests against
+      # Caddy's self-signed cert)
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
+      - CURL_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
       - MONGO_HOST=${COMPOSE_PROJECT_NAME}_cdcs_mongo
       - MONGO_PORT=27017
       - MONGO_DB=${MONGO_DB}
