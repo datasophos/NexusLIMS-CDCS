@@ -1,11 +1,27 @@
 {
     # Global options
     admin off
+
+    # Configure PKI to use custom CA for automatic certificate generation
+    pki {
+        ca local {
+            name "NexusLIMS Local CA"
+            root {
+                format pem_file
+                cert /etc/caddy/certs/ca.crt
+                key /etc/caddy/certs/ca.key
+            }
+        }
+    }
 }
 
 https://nexuslims-dev.localhost {
-    # Use persistent self-signed certificates
-    tls /etc/caddy/certs/server.crt /etc/caddy/certs/server.key
+    # Auto-generate short-lived certificates from custom CA
+    tls {
+        issuer internal {
+            ca local
+        }
+    }
 
     # Reverse proxy to the NexusLIMS-CDCS application via HTTP
     reverse_proxy cdcs:8000 {
@@ -25,6 +41,62 @@ https://nexuslims-dev.localhost {
     # Enable file uploads up to 100MB (for NexusLIMS data files)
     request_body {
         max_size 100MB
+    }
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}
+
+https://files.nexuslims-dev.localhost {
+    # Auto-generate short-lived certificates from custom CA
+    tls {
+        issuer internal {
+            ca local
+        }
+    }
+
+    # Redirect paths without trailing slash to include it
+    @dataNoSlash path /data
+    redir @dataNoSlash /data/ permanent
+
+    @instrumentDataNoSlash path /instrument-data
+    redir @instrumentDataNoSlash /instrument-data/ permanent
+
+    # Serve NexusLIMS data files
+    handle_path /data/* {
+        # CORS headers for file size checking
+        header Access-Control-Allow-Origin "*"
+        header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+        header Access-Control-Allow-Headers "*"
+
+        # Handle preflight requests
+        @options method OPTIONS
+        respond @options 204
+
+        root * /srv/nx-data
+        file_server {
+            browse
+        }
+    }
+
+    # Serve NexusLIMS instrument data files
+    handle_path /instrument-data/* {
+        # CORS headers for file size checking
+        header Access-Control-Allow-Origin "*"
+        header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+        header Access-Control-Allow-Headers "*"
+
+        # Handle preflight requests
+        @options method OPTIONS
+        respond @options 204
+
+        root * /srv/nx-instrument-data
+        file_server {
+            browse
+        }
     }
 
     # Logging
