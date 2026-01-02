@@ -8,12 +8,12 @@ alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
 alias dev-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs'
 
 # Start in development mode (with local code mounting)
-alias dev-up='docker compose up -d'
-alias dev-up-logs='docker compose up -d && docker compose logs -f'
+alias dev-up='bash scripts/setup-test-data.sh && docker compose up -d'
+alias dev-up-logs='bash scripts/setup-test-data.sh && docker compose up -d && docker compose logs -f'
 
 # Stop development environment
 alias dev-down='docker compose down'
-alias dev-clean='docker compose down -v'
+alias dev-clean='docker compose down -v && rm -rf cdcs/nx-data cdcs/nx-instrument-data cdcs/example_record.xml'
 
 # View logs
 alias dev-logs='docker compose logs -f'
@@ -53,10 +53,10 @@ echo "    dev-build           - Build CDCS container (with cache)"
 echo "    dev-build-clean     - Build CDCS container (no cache, clean build)"
 echo ""
 echo "  🚀 Lifecycle:"
-echo "    dev-up              - Start development environment"
+echo "    dev-up              - Start development environment (auto-extracts test data if needed)"
 echo "    dev-up-logs         - Start development environment and immediately log output"
 echo "    dev-down            - Stop development environment"
-echo "    dev-clean           - Stop and remove volumes (clean slate)"
+echo "    dev-clean           - Stop and remove volumes + test data (clean slate)"
 echo "    dev-restart         - Restart CDCS app only"
 echo "    dev-restart-all     - Restart all services"
 echo ""

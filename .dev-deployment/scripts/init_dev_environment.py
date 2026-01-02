@@ -369,7 +369,31 @@ def upload_xslt_stylesheets(request, template_vm):
         # Read and create stylesheet
         with stylesheet_path.open(encoding="utf-8") as f:
             stylesheet_content = f.read()
-        
+
+        # Patch URLs for file serving
+        log_info(f"Patching URLs in {stylesheet_name}...")
+
+        # Perform replacements
+        stylesheet_content = stylesheet_content.replace(
+            '<xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
+            '<xsl:variable name="datasetBaseUrl">https://files.nexuslims-dev.localhost/instrument-data</xsl:variable>'
+        )
+        stylesheet_content = stylesheet_content.replace(
+            '<xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
+            '<xsl:variable name="previewBaseUrl">https://files.nexuslims-dev.localhost/data</xsl:variable>'
+        )
+
+        # Verify replacements
+        if 'https://files.nexuslims-dev.localhost/instrument-data' in stylesheet_content:
+            log_success("  ✓ datasetBaseUrl patched")
+        else:
+            log_warning("  ✗ datasetBaseUrl patch failed or not found")
+
+        if 'https://files.nexuslims-dev.localhost/data' in stylesheet_content:
+            log_success("  ✓ previewBaseUrl patched")
+        else:
+            log_warning("  ✗ previewBaseUrl patch failed or not found")
+
         try:
             xslt = XslTransformation()
             xslt.name = stylesheet_name
@@ -410,13 +434,13 @@ def main():
     print("=" * 70)
     print("NexusLIMS Development Environment Initialization")
     print("=" * 70)
-    
+
     try:
         # Step 1: Check migrations
         if not check_migrations():
             log_warning("Skipping initialization - migrations not complete")
             return
-        
+
         # Step 2: Get or create superuser
         superuser = get_or_create_superuser()
         request = get_request_for_user(superuser)
