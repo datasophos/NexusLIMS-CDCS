@@ -20,16 +20,6 @@ Current overrides to migrate:
 - [x] `templates/mdcs_home/tiles.html`
 - [x] `templates/theme/menu.html`
 - [x] `templates/core_explore_keyword_app/user/index.html`
-- [ ] `templates/core_main_app/user/data/detail.html`
-- [ ] `templates/core_main_app/common/data/detail_data.html`
-- [ ] `templates/core_main_app/_render/user/theme_base.html`
-- [ ] `templates/core_explore_common_app/user/results/data_source_info.html`
-- [ ] `templates/core_explore_common_app/user/results/data_source_results.html`
-      - **Simplified XSLT Transformation**: The original template has complex logic for different template formats (XSD vs others) and uses `result_list_html` tag. The override simplifies this to always use XSLT transformation directly.
-      - **Fixed Variable Names**: The override uses `result.xml_content` instead of `result.content`, and `xml_representation` instead of `html_string`.
-      - **Compatibility with Custom `data_source_info.html`**: The override is designed to work with the custom `data_source_info.html` template that was also overridden in 2.21.0.
-      - **Consistent Styling**: The "No results found" message uses a different color (#a94442 vs red) and slightly different text.
-      - **Removed Complex Conditional Logic**: The override eliminates the complex if/else structure for different template formats.
 - [x] `templates/core_explore_common_app/user/results/data_sources_results.html`
   - [x] Replace Bootstrap nav-tabs structure with custom flex-based tab layout
   - [x] Move toolbar from inside tab panels to main navigation bar (`explore-bar`)
@@ -89,6 +79,14 @@ Current overrides to migrate:
       - [x] `.explore-bar` with flex display and styling
       - [x] `.toggle-container label` with display and vertical-align overrides
       - [x] `#loading-placeholder` with flex-grow and text alignment
+- [x] `templates/core_explore_common_app/user/results/data_source_info.html`
+- [x] `mdcs_home/templatetags/xsl_transform_tag.py` - copied as `nexuslims_overrides/templatetags/nexuslims_xsl_transform.py`
+- [x] `mdcs_home/utils/xml.py` - copied as is to nexuslims_overrides.xml
+- [x] `templates/core_explore_common_app/user/results/data_source_results.html`
+- [ ] `templates/core_main_app/user/data/detail.html`
+- [ ] `templates/core_main_app/common/data/detail_data.html`
+- [ ] `templates/core_main_app/_render/user/theme_base.html`
+
 
 ### Step 2: Categorize Overrides
 
@@ -140,7 +138,7 @@ Example migration for `homepage.html`:
 {# Note: extends the ORIGINAL template from core_main_app #}
 
 {% load static %}
-{% load nexuslims_extras %}
+{% load nexuslims_templatetags %}
 
 {% block extra_head %}
     {{ block.super }}
@@ -258,7 +256,7 @@ TEMPLATES = [
 - Custom XSLT transformation tags
 - Scattered across mdcs_home
 
-**After** (`nexuslims_overrides/templatetags/nexuslims_extras.py`):
+**After** (`nexuslims_overrides/templatetags/nexuslims_templatetags.py`):
 - All custom tags in one place
 - Properly namespaced
 - Well documented
@@ -299,7 +297,7 @@ After migration, test:
 - [ ] All static files load (check browser console)
 - [ ] Templates use correct inheritance
 - [ ] Context processors provide expected variables
-- [ ] Custom template tags work (`{% load nexuslims_extras %}`)
+- [ ] Custom template tags work (`{% load nexuslims_templatetags %}`)
 - [ ] Toolbar appears and functions
 - [ ] Download buttons work
 - [ ] Search results display correctly

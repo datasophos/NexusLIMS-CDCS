@@ -17,7 +17,7 @@ nexuslims_overrides/
 │
 ├── templatetags/                    # Custom template tags
 │   ├── __init__.py
-│   └── nexuslims_extras.py         # Custom tags and filters
+│   └── nexuslims_templatetags.py   # Custom tags and filters
 │
 ├── templates/                       # Template overrides
 │   └── nexuslims_overrides/
@@ -116,7 +116,7 @@ Available in all templates:
 Load the custom tags in any template:
 
 ```django
-{% load nexuslims_extras %}
+{% load nexuslims_templatetags %}
 
 {# Display version #}
 {% nexuslims_version %}
@@ -154,7 +154,7 @@ Then use template inheritance to minimize duplication:
 {% extends "core_main_app/user/data/detail.html" %}
 
 {% load static %}
-{% load nexuslims_extras %}
+{% load nexuslims_templatetags %}
 
 {% block extra_head %}
     {{ block.super }}
@@ -217,7 +217,7 @@ Add functionality to `static/nexuslims/js/main.js` or create new files and inclu
 
 ### Adding New Template Tags
 
-Add new tags to `templatetags/nexuslims_extras.py`:
+Add new tags to `templatetags/nexuslims_templatetags.py`:
 
 ```python
 @register.simple_tag

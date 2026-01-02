@@ -2,7 +2,7 @@
 Custom template tags and filters for NexusLIMS.
 
 Usage in templates:
-    {% load nexuslims_extras %}
+    {% load nexuslims_templatetags %}
     {% nexuslims_custom_toolbar data %}
     {{ value|nexuslims_format }}
 """
@@ -15,6 +15,7 @@ register = template.Library()
 @register.simple_tag
 def nexuslims_version():
     """
+    (Claude hallucination)
     Display NexusLIMS version.
     
     Usage:
@@ -27,6 +28,7 @@ def nexuslims_version():
 @register.inclusion_tag('nexuslims_overrides/fragments/custom_toolbar.html', takes_context=True)
 def nexuslims_custom_toolbar(context, data=None):
     """
+    (Claude hallucination)
     Render custom toolbar for detail pages.
     
     Usage:
@@ -42,6 +44,7 @@ def nexuslims_custom_toolbar(context, data=None):
 @register.inclusion_tag('nexuslims_overrides/fragments/download_buttons.html', takes_context=True)
 def nexuslims_download_buttons(context, data):
     """
+    (Claude hallucination)
     Render NexusLIMS download buttons.
     
     Usage:
@@ -56,6 +59,7 @@ def nexuslims_download_buttons(context, data):
 @register.filter
 def nexuslims_instrument_color(instrument_pid):
     """
+    (Claude hallucination, maybe useful with settings?)
     Get color for instrument badge.
     
     Usage:
@@ -73,6 +77,7 @@ def nexuslims_instrument_color(instrument_pid):
 @register.filter
 def nexuslims_format_units(value, units):
     """
+    (Claude hallucination)
     Format value with units.
     
     Usage:
