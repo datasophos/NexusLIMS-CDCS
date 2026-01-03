@@ -3,6 +3,196 @@
  * DataTables, metadata tables, file listing tables, sample tables
  */
 
+/* ============================================================================
+   ACTIVE STYLES
+   ============================================================================ */
+
+/* Activity table - prevent columns from growing beyond specified widths */
+table.aa-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table.aa-table th {
+    font-weight: normal;
+}
+
+/* Maintain consistent height for aa-table column to prevent jumping on pagination */
+.aa-table-col {
+    position: relative;
+    min-height: calc(6 * 2.2em /*+ 4em*/); /* 5 rows + header + padding - scales with font size */
+}
+
+/* Keep table at top, reserve space at bottom for pagination */
+.aa-table-col .dt-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(6 * 2.2em /*+ 4em*/); /* Match parent */
+}
+
+/* Table wrapper maintains height for 5 rows */
+.aa-table-col .dt-layout-table {
+    min-height: calc(6 * 2.2em /*+ 3em*/); /* 5 rows + header */
+}
+
+/* Pagination always stays at the same position */
+.aa-table-col .dt-layout-row {
+    margin-top: auto; /* Push to bottom of container */
+}
+
+/* Align aa-table pagination to the right (but not inside modals) */
+.aa-table-col .dt-layout-end:not(.nexuslims-modal .dt-layout-end) {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+/* add a bit of space between pagination buttons and table */
+/* and right-align the row */
+.aa-table-col .dt-layout-row .dt-paging:not(.nexuslims-modal .dt-paging) {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.25em;
+}
+
+
+
+/* DataTables pagination - solid bar styling with colors */
+.dt-paging nav {
+    display: flex;
+    gap: 0;
+}
+
+/* Base button styling - all buttons */
+.dt-container .dt-paging .dt-paging-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    margin: 0;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0;
+    color: #3a65a2 !important;
+    background: transparent !important;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    min-height: auto;
+    height: auto;
+    line-height: 1;
+    font-size: 0.875rem;
+}
+
+/* Remove left border from all buttons except first to prevent doubling */
+.dt-container .dt-paging .dt-paging-button + .dt-paging-button {
+    border-left: none !important;
+}
+
+/* Round corners on first and last buttons only */
+.dt-container .dt-paging .dt-paging-button.previous {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+/* Hover state for enabled buttons */
+.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) {
+    background-color: #e9ecef !important;
+    color: #3a65a2 !important;
+    cursor: pointer;
+}
+
+.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) i {
+    color: #3a65a2 !important;
+}
+
+/* Disabled state - grayed out */
+.dt-container .dt-paging .dt-paging-button.disabled,
+.dt-container .dt-paging .dt-paging-button.disabled:hover,
+.dt-container .dt-paging .dt-paging-button.disabled:active {
+    border-color: #ccc !important;
+    color: #ccc !important;
+    background: transparent !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+}
+
+.dt-container .dt-paging .dt-paging-button.disabled i {
+    color: #ccc !important;
+}
+
+/* Current/active page */
+.dt-container .dt-paging .dt-paging-button.current,
+.dt-container .dt-paging .dt-paging-button.current:hover {
+    background-color: #3a65a2 !important;
+    color: white !important;
+    border-color: #3a65a2 !important;
+}
+
+/* Arrow icons - colored when active */
+.dt-container .dt-paging .dt-paging-button:not(.disabled) i {
+    color: #3a65a2 !important;
+}
+
+.dt-container .dt-paging .dt-paging-button.current i {
+    color: white !important;
+}
+
+/* Center icons within buttons */
+.dt-container .dt-paging .dt-paging-button i {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+table.aa-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Keep button columns on single line - prevent icon wrapping */
+table.aa-table td.text-center {
+    white-space: nowrap;
+}
+
+/* Meta column with two buttons - enforce minimum width to fit both buttons */
+table.aa-table td.aa-meta-col {
+    white-space: nowrap;
+    min-width: 100px;  /* Adjust based on actual button width */
+    overflow: visible;  /* Don't ellipse buttons */
+}
+
+/* Download column - single button */
+table.aa-table td.aa-dl-col {
+    white-space: nowrap;
+    min-width: 50px;
+    overflow: visible;
+}
+
+/* Reduce button/icon size at narrow widths to prevent overlap */
+@media (max-width: 992px) {
+    table.aa-table td.aa-meta-col i.fa-border,
+    table.aa-table td.aa-dl-col i.fa-border {
+        font-size: 0.85em;
+        padding: 0.15em 0.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    table.aa-table td.aa-meta-col i.fa-border,
+    table.aa-table td.aa-dl-col i.fa-border {
+        font-size: 0.75em;
+        padding: 0.1em 0.15em;
+    }
+
+    table.aa-table td.aa-meta-col {
+        min-width: 80px;
+    }
+}
+
+/* ============================================================================
+   COMMENTED OUT STYLES
+   ============================================================================ */
+
 /* General table sizing */
 table.meta-table,
 table.filelist-table {
@@ -179,17 +369,27 @@ td.aa-meta-col {
     width: 100%;
 }
 
+/* Navigation table pagination - info positioned between buttons via JavaScript */
 #nav-table_wrapper .dt-paging > nav {
     display: flex;
-    justify-content: space-between;
-    align-items: center;;
+    align-items: center;
 }
 
-#nav-table thead,
+#nav-table_wrapper .dt-info,
+#nav-table_wrapper .nav-page-info {
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0 0.5rem;
+    display: inline-block;
+    white-space: nowrap;
+}
+
 #nav-table tbody {
     border-top: 1px solid var(--nx-light-gray)
 }
-
+#nav-table thead {
+    border: none;
+}
 
 /* DataTables wrapper adjustments */
 /* .main .dataTables_wrapper .row,
@@ -227,103 +427,7 @@ td.aa-meta-col {
     margin-left: 0 !important;
 } */
 
-/* Modern pagination button styling - DataTables 2.x with Bootstrap 5 */
-.dt-container .dt-paging .page-link,
-.dt-container .dt-paging .dt-paging-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    margin: 0 3px;
-    border: 1px solid #3a65a2 !important;
-    border-radius: 4px;
-    color: #3a65a2 !important;
-    background: transparent !important;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    min-height: 28px;
-}
-
-/* Previous/Next arrow buttons - smaller */
-.dt-container .dt-paging .page-item.previous .page-link,
-.dt-container .dt-paging .page-item.next .page-link,
-.dt-container .dt-paging .dt-paging-button.previous,
-.dt-container .dt-paging .dt-paging-button.next {
-    padding: 8px 8px;
-    min-height: auto;
-}
-
-/* Hover state for enabled buttons */
-.dt-container .dt-paging .page-item:not(.disabled) .page-link:hover,
-.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) {
-    background-color: #3a65a2 !important;
-    color: white !important;
-    cursor: pointer;
-}
-
-.dt-container .dt-paging .page-item:not(.disabled) .page-link:hover i,
-.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) i {
-    color: white !important;
-}
-
-/* Disabled state - grayed out */
-.dt-container .dt-paging .page-item.disabled .page-link,
-.dt-container .dt-paging .page-item.disabled .page-link:hover,
-.dt-container .dt-paging .page-item.disabled .page-link:active,
-.dt-container .dt-paging .dt-paging-button.disabled,
-.dt-container .dt-paging .dt-paging-button.disabled:hover,
-.dt-container .dt-paging .dt-paging-button.disabled:active {
-    border-color: #ccc !important;
-    color: #ccc !important;
-    background: transparent !important;
-    cursor: not-allowed !important;
-    opacity: 0.6;
-    height: fit-content;
-}
-
-.dt-container .dt-paging .page-item.disabled .page-link i,
-.dt-container .dt-paging .dt-paging-button.disabled i {
-    color: #ccc !important;
-}
-
-/* Current/active page */
-.dt-container .dt-paging .page-item.active .page-link,
-.dt-container .dt-paging .page-item.active .page-link:hover,
-.dt-container .dt-paging .dt-paging-button.current,
-.dt-container .dt-paging .dt-paging-button.current:hover {
-    background-color: #3a65a2 !important;
-    color: white !important;
-    border-color: #3a65a2 !important;
-}
-
-/* Arrow icons - colored when active */
-.dt-container .dt-paging .page-item:not(.disabled) .page-link i,
-.dt-container .dt-paging .dt-paging-button:not(.disabled) i {
-    color: #3a65a2 !important;
-}
-
-.dt-container .dt-paging .page-item.active .page-link i,
-.dt-container .dt-paging .dt-paging-button.current i {
-    color: white !important;
-}
-
-/* Center icons within buttons */
-.dt-container .dt-paging .page-link i,
-.dt-container .dt-paging .dt-paging-button i {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
-}
-
-/* Page info text */
-.dt-container .dt-paging .cdatatableDetails {
-    display: inline-block;
-    padding: 6px 8px;
-    color: #666;
-    font-size: 1em;
-    white-space: nowrap;
-    vertical-align: middle;
-}
+/* OLD pagination styles - REMOVED - now handled by unified pagination section at top of file */
 
 /* Activity table column */
 /* .aa-table-col {

@@ -29,11 +29,35 @@
                 return false;
             });
 
+            // Helper function to inject page info into nav
+            function injectNavPageInfo() {
+                var $nav = $('#nav-table_wrapper .dt-paging nav');
+                var $nextBtn = $nav.find('button[data-dt-idx="next"]');
+                var $existingSpan = $nav.find('.nav-page-info');
+                
+                if ($nextBtn.length) {
+                    var info = navTable.page.info();
+                    var text = 'Page ' + (info.page + 1) + ' of ' + info.pages;
+                    
+                    if ($existingSpan.length) {
+                        // Update existing
+                        $existingSpan.text(text);
+                    } else {
+                        // Create new
+                        var $span = $('<span>', {
+                            'class': 'nav-page-info',
+                            'text': text
+                        });
+                        $nextBtn.before($span);
+                    }
+                }
+            }
+
             // Navigation table in sidebar
             var navTable = new DataTable('#nav-table', {
                 destroy: true,
                 pagingType: "simple",
-                info: false,
+                info: false,  // Disable built-in info - we'll create our own
                 ordering: false,
                 processing: false,
                 searching: false,
@@ -45,7 +69,7 @@
                         next: "<i class='fa fa-angle-double-right'></i>"
                     }
                 },
-                responsive: true,
+                responsive: false,
                 altEditor: false,
                 layout: {
                     topStart: null,
@@ -53,36 +77,45 @@
                     bottomStart: null,
                     bottomEnd: null
                 },
+                initComplete: function() {
+                    setTimeout(injectNavPageInfo, 0);
+                },
                 drawCallback: function() {
-                    $('.dt-paging-button.next', this.api().table().container())
-                        .on('click', function() {
-                            var info = navTable.page.info();
-                            $('.cdatatableDetails').remove();
-                            $('.sidebar .dt-paging-button.next').before($('<span>', {
-                                'text': ' Page ' + (info.page + 1) + ' of ' + info.pages + ' ',
-                                class: 'cdatatableDetails'
-                            }));
-                            $('.sidebar .dt-paging').first().addClass('vertical-align');
-                        });
-                    $('.dt-paging-button.previous', this.api().table().container())
-                        .on('click', function() {
-                            var info = navTable.page.info();
-                            $('.cdatatableDetails').remove();
-                            $('.sidebar .dt-paging-button.next').before($('<span>', {
-                                'text': 'Page ' + (info.page + 1) + ' of ' + info.pages,
-                                class: 'cdatatableDetails'
-                            }));
-                            $('.sidebar .dt-paging').first().addClass('vertical-align');
-                        });
+                    setTimeout(injectNavPageInfo, 0);
                 }
             });
 
-            var info = navTable.page.info();
-            $('.sidebar .dt-paging-button.next').before($('<span>', {
-                'text': ' Page ' + (info.page + 1) + ' of ' + info.pages + ' ',
-                class: 'cdatatableDetails'
-            }));
-            $('.sidebar .dt-paging').first().addClass('vertical-align');
+            // Watch for nav changes and immediately re-inject page info
+            if (window.MutationObserver) {
+                var isInjecting = false;
+                var navObserver = new MutationObserver(function(mutations) {
+                    if (isInjecting) return; // Prevent infinite loop
+                    
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                            var $nav = $(mutation.target);
+                            if ($nav.is('nav[aria-label="pagination"]')) {
+                                var hasButtons = $nav.find('button[data-dt-idx]').length > 0;
+                                var hasInfo = $nav.find('.nav-page-info').length > 0;
+                                
+                                if (hasButtons && !hasInfo) {
+                                    isInjecting = true;
+                                    injectNavPageInfo();
+                                    isInjecting = false;
+                                }
+                            }
+                        }
+                    });
+                });
+                
+                // Observe the entire table wrapper to catch nav creation/updates
+                setTimeout(function() {
+                    var $wrapper = $('#nav-table_wrapper');
+                    if ($wrapper.length) {
+                        navObserver.observe($wrapper[0], { childList: true, subtree: true });
+                    }
+                }, 100);
+            }
 
             // Metadata tables
             $('.meta-table').each(function() {
@@ -134,11 +167,29 @@
                             next: "<i class='fa fa-angle-double-right'></i>"
                         }
                     },
+                    // Column width definitions:
+                    // 0: Dataset Name (flexible, takes remaining space)
+                    // 1: Creation Time (fixed width for timestamp)
+                    // 2: Type (compact)
+                    // 3: Role (compact)
+                    // 4: Format (compact, conditional column)
+                    // 5/4: Meta (two icon buttons: modal + JSON download)
+                    // 6/5: D/L (single icon button: file download)
                     columnDefs: [
-                        { "width": "53%", "targets": 0 }
+                        { "width": "38%", "targets": 0 },  // Dataset Name - main content
+                        { "width": "20%", "targets": 1 },  // Creation Time
+                        { "width": "10%", "targets": 2 },  // Type
+                        { "width": "12%", "targets": 3 },  // Role
+                        // { "width": "15%", "targets": -2, "className": "text-center" },  // Meta (2 buttons)
+                        // { "width": "8%", "targets": -1, "className": "text-center" }   // D/L (1 button)
                     ],
                     responsive: true,
-                    dom: '<"row table-row"<"col-xs-12 table-col"t>><"row pager-row"<"col-xs-12 pager-col"p>>'
+                    layout: {
+                        topStart: null,
+                        topEnd: null,
+                        bottomStart: null,
+                        bottomEnd: 'paging'
+                    }
                 });
 
                 // Image preview on row hover
@@ -150,9 +201,27 @@
                     img_to_show.addClass('visible').removeClass('hidden');
                 });
 
-                var new_container = $(this).closest('.aa-content-row').next('.dt_paginate_container');
-                var to_move = $(this).closest('.table-row').next('.pager-row').find('.pager-col');
-                new_container.append(to_move);
+                // Move pagination to custom container for layout purposes
+                // DataTables 2.x uses .dt-layout-row and .dt-layout-end for pagination
+                // var new_container = $(this).closest('.aa-content-row').next('.dt_paginate_container');
+                // var to_move = $(this).closest('.table-row').next('.pager-row').find('.pager-col');
+                // var dt_paging = $(this).closest('.dt-container').find('.dt-layout-row .dt-layout-end');
+
+                // console.log('AA Table pagination move debug:');
+                // console.log('  to_move:', to_move, 'length:', to_move.length);
+                // console.log('  new_container:', new_container, 'length:', new_container.length);
+                // console.log('  dt_paging:', dt_paging, 'length:', dt_paging.length);
+                // console.log('  dt-container:', $(this).closest('.dt-container'));
+                // console.log('    ')
+                // console.log('    ')
+                // console.log('    ')
+
+                // if (new_container.length && dt_paging.length) {
+                //     console.log('  -> Moving pagination to custom container');
+                //     new_container.append(dt_paging);
+                // } else {
+                //     console.log('  -> Skipping pagination move (container or paging not found)');
+                // }
             });
         }
 
