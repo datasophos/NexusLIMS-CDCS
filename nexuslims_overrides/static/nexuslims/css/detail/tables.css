@@ -188,6 +188,7 @@ td.aa-meta-col {
 }
 .main .dataTables_wrapper ul.pagination > li > a {
     padding: 0px 8px;
+    font-size: 0.6em;
 }
 .main .dataTables_wrapper label {
     font-size: smaller;
@@ -195,11 +196,16 @@ td.aa-meta-col {
 
 /* Pagination */
 .dataTables_paginate {
-    font-size: 14px;
+    font-size: 0.6em;
 }
 .pager-col {
     padding-top: 20px;
     width: 100%;
+}
+
+/* Fix pagination container alignment */
+.dt_paginate_container {
+    margin-left: 0 !important;
 }
 
 /* Activity table column */

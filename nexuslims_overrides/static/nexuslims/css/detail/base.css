@@ -67,9 +67,13 @@ a.dataset_anchor {
     overflow-wrap: anywhere;
 }
 
-/* Badge links */
+/* Badge links and sizing */
 .badge a {
     color: #fff;
+}
+
+.badge {
+    font-size: 0.6em !important;
 }
 
 /* Help and warning tooltips */

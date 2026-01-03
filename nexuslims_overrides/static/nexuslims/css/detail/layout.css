@@ -58,7 +58,8 @@
 }
 
 .sidebar .pagination > li > a, .pagination > li > span {
-    padding: 6px 10px;
+    padding: 4px 8px;
+    font-size: 0.6em;
 }
 
 .sidebar .cdatatableDetails {

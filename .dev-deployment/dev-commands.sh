@@ -46,6 +46,11 @@ alias dev-djshell='docker exec -it nexuslims_dev_cdcs python manage.py shell'
 alias dev-init='docker exec nexuslims_dev_cdcs python /scripts/init_dev_environment.py'
 alias dev-init-schema='docker exec nexuslims_dev_cdcs python /scripts/init_nexus_schema.py'
 
+# XSLT stylesheet updates
+alias dev-update-xslt='bash scripts/update-xslt.sh'
+alias dev-update-xslt-detail='bash scripts/update-xslt.sh detail'
+alias dev-update-xslt-list='bash scripts/update-xslt.sh list'
+
 echo "NexusLIMS-CDCS Development aliases loaded! Available commands:"
 echo ""
 echo "  🏗️  Build:"
@@ -84,6 +89,11 @@ echo ""
 echo "  🔧 NexusLIMS Setup:"
 echo "    dev-init            - Complete environment setup (superuser + schema)"
 echo "    dev-init-schema     - Initialize schema only (requires superuser exists)"
+echo ""
+echo "  🎨 XSLT Stylesheets:"
+echo "    dev-update-xslt        - Update both detail and list stylesheets in database"
+echo "    dev-update-xslt-detail - Update detail_stylesheet.xsl only"
+echo "    dev-update-xslt-list   - Update list_stylesheet.xsl only"
 echo ""
 echo "To use these aliases, run: source dev-commands.sh"
 echo ""

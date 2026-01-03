@@ -6,12 +6,15 @@
 /* Slideshow container */
 .slide {
     display: none;
+    margin: 0 auto;
+    width: fit-content;
 }
 
 .slideshow-container {
     position: relative;
     margin: auto;
     margin-bottom: 2em;
+    max-width: max-content;
 }
 
 .slideshow-col {
@@ -66,6 +69,11 @@ div#img_gallery {
   user-select: none;
 }
 
+.gallery-caption > * {
+    /* make the rows of the caption take the full */
+    width: 100%;
+}
+
 .gallery-caption > span, .gallery-caption > a {
     /* Make caption spans selectable */
     -webkit-touch-callout: text !important;
@@ -97,6 +105,10 @@ div#img_gallery .fa-stack:hover .fa-stack-2x {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    flex: 0 1 auto;
+    max-width: 400px;
+    margin: 0 auto;
+    align-items: center;
 }
 
 .nx-caption {
@@ -105,7 +117,6 @@ div#img_gallery .fa-stack:hover .fa-stack-2x {
     padding: 8px 12px;
     width: 100%;
     text-align: center;
-    margin-top: 0;
     line-height: 150%;
 }
 
@@ -114,6 +125,21 @@ div#img_gallery .fa-stack:hover .fa-stack-2x {
 }
 .nx-caption .row > * {
     padding: 0;
+}
+
+.gallery-caption-row {
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.gal-nav-container {
+    flex: 0 0 auto;
+    width: auto;
+}
+
+sup.link-icon {
+    font-size: xx-small;
 }
 
 .gallery-filename {

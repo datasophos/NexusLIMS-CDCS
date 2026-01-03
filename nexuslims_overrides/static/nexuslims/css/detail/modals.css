@@ -103,6 +103,24 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
     white-space: nowrap;
 }
 
+.nexuslims-modal div.dataTables_wrapper div.dataTables_paginate ul.pagination > li > a {
+    padding: 0px 8px;
+    font-size: 0.6em;
+}
+
+.nexuslims-modal div.dataTables_wrapper .dataTables_filter label {
+    font-size: 0.75em;
+}
+
+.nexuslims-modal div.dataTables_wrapper .dataTables_filter input {
+    font-size: 0.75em;
+}
+
+.nexuslims-modal div.dataTables_wrapper .row {
+    margin: 0;
+    align-items: center;
+}
+
 /* Bootstrap modal positioning - ensure modals appear below the navigation bar */
 .modal-dialog {
     margin-top: 100px;

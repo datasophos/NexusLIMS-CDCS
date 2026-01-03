@@ -17,43 +17,19 @@ Important information for working with this codebase.
 2. **Update the database** (REQUIRED - changes won't appear otherwise):
 
 ```bash
-docker compose -f .dev-deployment/docker-compose.yml exec -T cdcs python manage.py shell << 'EOF'
-from core_main_app.components.xsl_transformation import api as xsl_transformation_api
-from pathlib import Path
-
-stylesheet_path = Path("/srv/curator/cdcs_config/detail_stylesheet.xsl")
-with stylesheet_path.open(encoding="utf-8") as f:
-    stylesheet_content = f.read()
-
-# Patch URLs for file serving
-print("Patching URLs in detail_stylesheet.xsl...")
-stylesheet_content = stylesheet_content.replace(
-    '<xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-    '<xsl:variable name="datasetBaseUrl">https://files.nexuslims-dev.localhost/instrument-data</xsl:variable>'
-)
-stylesheet_content = stylesheet_content.replace(
-    '<xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-    '<xsl:variable name="previewBaseUrl">https://files.nexuslims-dev.localhost/data</xsl:variable>'
-)
-
-# Verify replacements
-if 'https://files.nexuslims-dev.localhost/instrument-data' in stylesheet_content:
-    print("  ✓ datasetBaseUrl patched")
-else:
-    print("  ✗ datasetBaseUrl patch failed or not found")
-
-if 'https://files.nexuslims-dev.localhost/data' in stylesheet_content:
-    print("  ✓ previewBaseUrl patched")
-else:
-    print("  ✗ previewBaseUrl patch failed or not found")
-
-# Update the stylesheet in the database
-xslt = xsl_transformation_api.get_by_name("detail_stylesheet.xsl")
-xslt.content = stylesheet_content
-xslt = xsl_transformation_api.upsert(xslt)
-print(f"Updated stylesheet '{xslt.name}' (ID: {xslt.id})")
-EOF
+# From the .dev-deployment directory:
+source dev-commands.sh
+dev-update-xslt        # Updates both detail and list stylesheets
+# OR
+dev-update-xslt-detail # Updates only detail_stylesheet.xsl
+dev-update-xslt-list   # Updates only list_stylesheet.xsl
 ```
+
+The update script (`.dev-deployment/scripts/update-xslt.sh`) automatically:
+- Loads the XSL file from `.dev-deployment/cdcs/`
+- Patches the `datasetBaseUrl` and `previewBaseUrl` variables for detail stylesheet
+- Updates the stylesheet in the Django database
+- Verifies the changes were applied
 
 ### Notes
 - Just editing the file is NOT enough - you must update the database

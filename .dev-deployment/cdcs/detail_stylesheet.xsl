@@ -922,9 +922,9 @@ Use it like:
                                 <figure class="slide">
                                     <img class="nx-img"><xsl:attribute name="src"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="nx:preview"/></xsl:attribute></img>
                                     <figcaption class="nx-caption">
-                                        <div class="row" style="justify-content: space-evenly; align-items: center; flex-wrap: nowrap;">
-                                            <div class="" style="">
-                                               <a  class="gal-nav" onclick="window.NexusLIMSDetail.plusSlide(-1); window.NexusLIMSDetail.disable_gallery_tooltips();"
+                                        <div class="row gallery-caption-row">
+                                            <div class="gal-nav-container">
+                                               <a  class="gal-nav gal-prev" onclick="window.NexusLIMSDetail.plusSlide(-1); window.NexusLIMSDetail.disable_gallery_tooltips();"
                                                    data-bs-toggle="tooltip" data-bs-placement="left" 
                                                    title="The left/right arrow keys can also be used to navigate the image gallery">
                                                    <span class="fa-stack fa-lg">
@@ -945,7 +945,7 @@ Use it like:
                                                                    title='Jump to dataset {$dataset-number} details'
                                                                    onclick='$("#simple-filelist-table tr").removeClass("table-warning"); $("a[name={generate-id(current())}").parent().parent().addClass("table-warning")'>
                                                                     dataset #<xsl:value-of select="$dataset-number"/><xsl:text> </xsl:text>
-                                                                    <sup style="font-size: xx-small;"><i class='fa fa-link'/></sup><xsl:text> </xsl:text>
+                                                                    <sup class="link-icon"><i class='fa fa-link'/></sup><xsl:text> </xsl:text>
                                                                 </a>
                                                             </xsl:when>
                                                             <!-- if not simple, make dataset text just text -->
@@ -970,13 +970,13 @@ Use it like:
                                                            data-bs-placement='bottom'
                                                            title='Jump to activity {$aa_num} in record'>
                                                             Activity <xsl:value-of select="$aa_num"/> of <xsl:value-of select="count(//nx:acquisitionActivity)"/>
-                                                            <xsl:text> </xsl:text><sup style="font-size: xx-small;"><i class='fa fa-link'/></sup></a>
+                                                            <xsl:text> </xsl:text><sup class="link-icon"><i class='fa fa-link'/></sup></a>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
 
                                             </div>
-                                            <div class='' style="">
-                                                <a  class="gal-nav" onclick="window.NexusLIMSDetail.plusSlide(1); window.NexusLIMSDetail.disable_gallery_tooltips();"
+                                            <div class="gal-nav-container">
+                                                <a  class="gal-nav gal-next" onclick="window.NexusLIMSDetail.plusSlide(1); window.NexusLIMSDetail.disable_gallery_tooltips();"
                                                 data-bs-toggle="tooltip" data-bs-placement="right" 
                                                 title="The left/right arrow keys can also be used to navigate the image gallery">
                                                 <span class="fa-stack fa-lg">
