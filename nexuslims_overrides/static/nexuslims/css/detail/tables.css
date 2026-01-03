@@ -49,9 +49,9 @@ table.meta-table th,
 table.aa-table th,
 table.filelist-table th,
 table.sample-table th {
-    background-color: #3a65a2;
-    border-color: black;
-    color: white;
+    background-color: #3a65a2 !important;
+    border-color: black !important;
+    color: white !important;
 }
 
 /* Sample table specific */
@@ -108,7 +108,8 @@ table.filelist-table.dataTable tbody td.selected a {
 }
 
 /* File listing modal table info */
-div#filelist-table_info {
+div#filelist-table_info,
+div.dt-info {
     font-size: smaller;
     font-style: italic;
     padding-top: 0;
@@ -116,7 +117,8 @@ div#filelist-table_info {
 #filelist_info_row {
     margin-top: 0;
 }
-#filelist-table_wrapper > .row {
+#filelist-table_wrapper > .row,
+.dt-container > .row {
     margin: 0;
     align-items: center;
     margin-top: 0.1em;
@@ -177,38 +179,189 @@ td.aa-meta-col {
     width: 100%;
 }
 
+#nav-table_wrapper .dt-paging > nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;;
+}
+
+#nav-table thead,
+#nav-table tbody {
+    border-top: 1px solid var(--nx-light-gray)
+}
+
+
 /* DataTables wrapper adjustments */
-.main .dataTables_wrapper .row {
+/* .main .dataTables_wrapper .row,
+.main .dt-container .row {
     margin: 0;
     align-items: center;
     margin-top: 0.5em;
 }
-.main .dataTables_wrapper .row > * {
+.main .dataTables_wrapper .row > *,
+.main .dt-container .row > * {
     padding: 0;
 }
-.main .dataTables_wrapper ul.pagination > li > a {
+.main .dataTables_wrapper ul.pagination > li > a,
+.main .dt-container .dt-paging .pagination > li > a {
     padding: 0px 8px;
     font-size: 0.6em;
 }
-.main .dataTables_wrapper label {
+.main .dataTables_wrapper label,
+.main .dt-container label {
     font-size: smaller;
-}
+} */
 
 /* Pagination */
-.dataTables_paginate {
+/* .dataTables_paginate,
+.dt-paging {
     font-size: 0.6em;
 }
 .pager-col {
     padding-top: 20px;
     width: 100%;
-}
+} */
 
 /* Fix pagination container alignment */
-.dt_paginate_container {
+/* .dt_paginate_container {
     margin-left: 0 !important;
+} */
+
+/* Modern pagination button styling - DataTables 2.x with Bootstrap 5 */
+.dt-container .dt-paging .page-link,
+.dt-container .dt-paging .dt-paging-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    margin: 0 3px;
+    border: 1px solid #3a65a2 !important;
+    border-radius: 4px;
+    color: #3a65a2 !important;
+    background: transparent !important;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    min-height: 28px;
+}
+
+/* Previous/Next arrow buttons - smaller */
+.dt-container .dt-paging .page-item.previous .page-link,
+.dt-container .dt-paging .page-item.next .page-link,
+.dt-container .dt-paging .dt-paging-button.previous,
+.dt-container .dt-paging .dt-paging-button.next {
+    padding: 8px 8px;
+    min-height: auto;
+}
+
+/* Hover state for enabled buttons */
+.dt-container .dt-paging .page-item:not(.disabled) .page-link:hover,
+.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) {
+    background-color: #3a65a2 !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+.dt-container .dt-paging .page-item:not(.disabled) .page-link:hover i,
+.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) i {
+    color: white !important;
+}
+
+/* Disabled state - grayed out */
+.dt-container .dt-paging .page-item.disabled .page-link,
+.dt-container .dt-paging .page-item.disabled .page-link:hover,
+.dt-container .dt-paging .page-item.disabled .page-link:active,
+.dt-container .dt-paging .dt-paging-button.disabled,
+.dt-container .dt-paging .dt-paging-button.disabled:hover,
+.dt-container .dt-paging .dt-paging-button.disabled:active {
+    border-color: #ccc !important;
+    color: #ccc !important;
+    background: transparent !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    height: fit-content;
+}
+
+.dt-container .dt-paging .page-item.disabled .page-link i,
+.dt-container .dt-paging .dt-paging-button.disabled i {
+    color: #ccc !important;
+}
+
+/* Current/active page */
+.dt-container .dt-paging .page-item.active .page-link,
+.dt-container .dt-paging .page-item.active .page-link:hover,
+.dt-container .dt-paging .dt-paging-button.current,
+.dt-container .dt-paging .dt-paging-button.current:hover {
+    background-color: #3a65a2 !important;
+    color: white !important;
+    border-color: #3a65a2 !important;
+}
+
+/* Arrow icons - colored when active */
+.dt-container .dt-paging .page-item:not(.disabled) .page-link i,
+.dt-container .dt-paging .dt-paging-button:not(.disabled) i {
+    color: #3a65a2 !important;
+}
+
+.dt-container .dt-paging .page-item.active .page-link i,
+.dt-container .dt-paging .dt-paging-button.current i {
+    color: white !important;
+}
+
+/* Center icons within buttons */
+.dt-container .dt-paging .page-link i,
+.dt-container .dt-paging .dt-paging-button i {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+/* Page info text */
+.dt-container .dt-paging .cdatatableDetails {
+    display: inline-block;
+    padding: 6px 8px;
+    color: #666;
+    font-size: 1em;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 /* Activity table column */
-.aa-table-col {
+/* .aa-table-col {
     margin-top: 1em;
+} */
+
+/* Compact pagination for meta-table */
+/* .dataTables_wrapper:has(.meta-table) .dataTables_paginate .paginate_button {
+    padding: 4px 8px !important;
+    margin: 0 !important;
+    min-height: auto !important;
+    font-size: 0.9em;
+    background-color: #f5f5f5 !important;
+} */
+
+/* Arrow buttons - no background */
+/* .dataTables_wrapper:has(.meta-table) .dataTables_paginate .paginate_button.previous,
+.dataTables_wrapper:has(.meta-table) .dataTables_paginate .paginate_button.next {
+    background-color: transparent !important;
+} */
+
+/* Remove gray background on hover and current for proper state display */
+/* .dataTables_wrapper:has(.meta-table) .dataTables_paginate .paginate_button:hover:not(.disabled):not(.current) {
+    background-color: #e8e8e8 !important;
 }
+
+.dataTables_wrapper:has(.meta-table) .dataTables_paginate .paginate_button.current {
+    background-color: #3a65a2 !important;
+}
+
+.dataTables_wrapper:has(.meta-table) .dataTables_paginate .paginate_button.disabled {
+    background-color: transparent !important;
+}
+
+.dataTables_wrapper:has(.meta-table) .dataTables_paginate {
+    display: inline-block;
+}
+
+.dataTables_wrapper:has(.meta-table) .dataTables_paginate span {
+    display: inline-block;
+} */

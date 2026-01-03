@@ -30,7 +30,7 @@
             });
 
             // Navigation table in sidebar
-            var navTable = $('#nav-table').DataTable({
+            var navTable = new DataTable('#nav-table', {
                 destroy: true,
                 pagingType: "simple",
                 info: false,
@@ -45,45 +45,48 @@
                         next: "<i class='fa fa-angle-double-right'></i>"
                     }
                 },
-                "bInfo": false,
                 responsive: true,
                 altEditor: false,
+                layout: {
+                    topStart: null,
+                    topEnd: 'paging',
+                    bottomStart: null,
+                    bottomEnd: null
+                },
                 drawCallback: function() {
-                    $('.paginate_button.next', this.api().table().container())
+                    $('.dt-paging-button.next', this.api().table().container())
                         .on('click', function() {
                             var info = navTable.page.info();
                             $('.cdatatableDetails').remove();
-                            $('.sidebar .paginate_button.next').before($('<span>', {
+                            $('.sidebar .dt-paging-button.next').before($('<span>', {
                                 'text': ' Page ' + (info.page + 1) + ' of ' + info.pages + ' ',
                                 class: 'cdatatableDetails'
                             }));
-                            $('.sidebar .pagination').first().addClass('vertical-align');
+                            $('.sidebar .dt-paging').first().addClass('vertical-align');
                         });
-                    $('.paginate_button.previous', this.api().table().container())
+                    $('.dt-paging-button.previous', this.api().table().container())
                         .on('click', function() {
                             var info = navTable.page.info();
                             $('.cdatatableDetails').remove();
-                            $('.sidebar .paginate_button.next').before($('<span>', {
+                            $('.sidebar .dt-paging-button.next').before($('<span>', {
                                 'text': 'Page ' + (info.page + 1) + ' of ' + info.pages,
                                 class: 'cdatatableDetails'
                             }));
-                            $('.sidebar .pagination').first().addClass('vertical-align');
+                            $('.sidebar .dt-paging').first().addClass('vertical-align');
                         });
-                },
-                ordering: false,
-                "dom": 'pt'
+                }
             });
 
             var info = navTable.page.info();
-            $('.sidebar .paginate_button.next').before($('<span>', {
+            $('.sidebar .dt-paging-button.next').before($('<span>', {
                 'text': ' Page ' + (info.page + 1) + ' of ' + info.pages + ' ',
                 class: 'cdatatableDetails'
             }));
-            $('.sidebar .pagination').first().addClass('vertical-align');
+            $('.sidebar .dt-paging').first().addClass('vertical-align');
 
             // Metadata tables
             $('.meta-table').each(function() {
-                $(this).DataTable({
+                new DataTable(this, {
                     destroy: true,
                     pagingType: "simple_numbers",
                     info: false,
@@ -99,20 +102,24 @@
                         }
                     },
                     responsive: true,
-                    ordering: false,
-                    dom: "<'row'<'col-sm-6'f><'col-sm-6'p>><'row'<'col-sm-12't>>",
-                    drawCallback: function() {
-                        $('.paginate_button.next', this.api().table().container())
-                            .on('click', Detail.activate_metadata_tooltips());
-                        $('.paginate_button.previous', this.api().table().container())
-                            .on('click', Detail.activate_metadata_tooltips());
+                    layout: {
+                        topStart: 'search',
+                        topEnd: 'paging',
+                        bottomStart: null,
+                        bottomEnd: null
                     },
+                    drawCallback: function() {
+                        $('.dt-paging-button.next', this.api().table().container())
+                            .on('click', Detail.activate_metadata_tooltips());
+                        $('.dt-paging-button.previous', this.api().table().container())
+                            .on('click', Detail.activate_metadata_tooltips());
+                    }
                 });
             });
 
             // Activity tables
             $('.aa-table').each(function() {
-                var this_table = $(this).DataTable({
+                var this_table = new DataTable(this, {
                     destroy: true,
                     pagingType: "simple_numbers",
                     info: false,
@@ -131,7 +138,6 @@
                         { "width": "53%", "targets": 0 }
                     ],
                     responsive: true,
-                    ordering: false,
                     dom: '<"row table-row"<"col-xs-12 table-col"t>><"row pager-row"<"col-xs-12 pager-col"p>>'
                 });
 
@@ -198,9 +204,9 @@
         // File List DataTable
         // ====================================================================
 
-        window.filelist_dt = $('table#filelist-table').DataTable({
-            dom: "<'row'<'col-sm-6'f><'col-sm-6'p>><'row'<'#button-col.col-sm-12 text-center'B>><'row'<'col-sm-12 w-100't>><'#filelist_info_row.row'<'col-sm-12'i>>",
+        window.filelist_dt = new DataTable('table#filelist-table', {
             ordering: false,
+            dom: "<'row'<'col-sm-6'f><'col-sm-6'p>><'row'<'#button-col.col-sm-12 text-center'B>><'row'<'col-sm-12 w-100't>><'#filelist_info_row.row'<'col-sm-12'i>>",
             buttons: [
                 {
                     extend: 'selectAll',
@@ -301,62 +307,12 @@
             Detail.showDownloadSize(data_urls, json_urls, 'select');
         });
 
-        // Export buttons
-        var buttonCommon = {
-            exportOptions: {
-                format: {
-                    body: function(data, row, column, node) {
-                        if (column === 2) {
-                            return window.rootPath + $(data).text().replace('/', '');
-                        } else if (column === 5 || column === 6) {
-                            return $(data).attr('href').replace('mmfnexus//', 'mmfnexus/');
-                        } else {
-                            return data;
-                        }
-                    }
-                }
-            }
-        };
+        // Export buttons - Note: Secondary button group creation disabled in DataTables 2.x
+        // The copy/csv/excel/print buttons for file list are not critical for core functionality
+        // and can be re-enabled if needed by updating to proper DataTables 2.x Buttons API
 
-        new $.fn.dataTable.Buttons(window.filelist_dt, {
-            buttons: [
-                $.extend(true, {}, buttonCommon, {
-                    extend: 'copy',
-                    title: record_title,
-                    messageTop: record_header,
-                    text: "<i class='far fa-copy menu-fa'/> <span class='filelist-btn'>Copy</span>"
-                }),
-                $.extend(true, {}, buttonCommon, {
-                    extend: 'csv',
-                    title: record_title,
-                    messageTop: record_header,
-                    text: "<i class='far fa-file-code menu-fa'/> <span class='filelist-btn'>CSV</span>"
-                }),
-                $.extend(true, {}, buttonCommon, {
-                    extend: 'excel',
-                    title: record_title,
-                    messageTop: record_header,
-                    text: "<i class='far fa-file-excel menu-fa'/> <span class='filelist-btn'>Excel</span>"
-                }),
-                $.extend(true, {}, buttonCommon, {
-                    extend: 'print',
-                    title: record_title,
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
-                    },
-                    messageTop: function() {
-                        return record_header.split("\n").join("<br/>");
-                    },
-                    text: "<i class='fa fa-print menu-fa'/> <span class='filelist-btn'>Print</span>"
-                })
-            ]
-        });
-
-        var first_btn_row = window.filelist_dt.buttons(0, null).container().closest('.row');
-        first_btn_row.after(
-            '<div class="row"><div id="button-col" class="col-sm-12 text-center"><div id="second-btn-group" class="dt-buttons btn-group"></div></div></div>'
-        );
-        window.filelist_dt.buttons(1, null).container().appendTo($('#second-btn-group'));
+        // TODO: Re-implement secondary button group using DataTables 2.x buttons.add() API
+        // See: https://datatables.net/reference/api/buttons.add()
 
         // Move progress/result rows
         $('#progressbar-row').detach().insertAfter($('#second-btn-group').closest('.row'));

@@ -6,7 +6,7 @@ NexusLIMS override of theme_base.html to load additional libraries
 needed for detail page functionality (DataTables, Shepherd.js, StreamSaver)
 
 This template extends the v3.18.0 base theme_base.html and adds:
-- DataTables 1.13.11 for interactive tables
+- DataTables 2.3.6 with Bootstrap 5 integration for interactive tables
 - Shepherd.js 14.5.1 for guided tours
 - StreamSaver.js 2.0.6 for large file downloads
 
@@ -17,9 +17,9 @@ Libraries are loaded early in the body so XSLT-generated HTML can use them.
     {{ block.super }}
 
     {# NexusLIMS additional library styles #}
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables/1.13.11/jquery.dataTables.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-select/1.7.0/dataTables.select.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-buttons/2.4.2/buttons.dataTables.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-bs5/2.3.6/dataTables.bootstrap5.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-select-bs5/3.1.3/select.bootstrap5.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-buttons-bs5/3.2.6/buttons.bootstrap5.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'libs/shepherd.js/11.2.0/shepherd.min.css' %}">
 {% endblock %}
 
@@ -32,7 +32,19 @@ Libraries are loaded early in the body so XSLT-generated HTML can use them.
     {{ block.super }}
 
     {# NexusLIMS additional libraries (must load before detail modules) #}
-    <script type="text/javascript" src="{% static 'libs/datatables/1.13.11/jquery.dataTables.min.js' %}"></script>
+    {# Core DataTables - must be first #}
+    <script type="text/javascript" src="{% static 'libs/datatables/2.3.6/dataTables.min.js' %}"></script>
+
+    {# JSZip for Excel export - must load before buttons.html5 #}
+    <script type="text/javascript" src="{% static 'libs/jszip/3.10.1/jszip.min.js' %}"></script>
+
+    {# DataTables extensions - load base versions only (Bootstrap 5 styling via CSS) #}
+    <script type="text/javascript" src="{% static 'libs/datatables-select/3.1.3/select.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-buttons/3.2.6/buttons.dataTables.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-buttons/3.2.6/buttons.html5.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/datatables-buttons/3.2.6/buttons.print.min.js' %}"></script>
+
+    {# Other libraries #}
     <script type="text/javascript" src="{% static 'libs/web-streams-polyfill/3.3.3/ponyfill.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/streamsaver/2.0.6/StreamSaver.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/shepherd.js/14.5.1/shepherd.min.js' %}"></script>

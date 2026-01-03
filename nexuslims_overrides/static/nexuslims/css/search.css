@@ -16,13 +16,15 @@
 }
 
 /* DataTables customization */
-.dataTables_wrapper .dataTables_filter input {
+.dataTables_wrapper .dataTables_filter input,
+.dt-container .dt-search input {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     padding: 0.375rem 0.75rem;
 }
 
-.dataTables_wrapper .dataTables_length select {
+.dataTables_wrapper .dataTables_length select,
+.dt-container .dt-length select {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     padding: 0.375rem 0.75rem;

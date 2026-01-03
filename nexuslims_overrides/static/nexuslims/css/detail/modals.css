@@ -97,7 +97,7 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
   table-layout: fixed;
   word-wrap: break-word;
 }
-
+/* 
 .nexuslims-modal div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     margin-left: 1em;
     white-space: nowrap;
@@ -119,7 +119,7 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
 .nexuslims-modal div.dataTables_wrapper .row {
     margin: 0;
     align-items: center;
-}
+} */
 
 /* Bootstrap modal positioning - ensure modals appear below the navigation bar */
 .modal-dialog {

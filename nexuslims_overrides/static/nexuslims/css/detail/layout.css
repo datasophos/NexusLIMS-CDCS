@@ -61,19 +61,26 @@
     padding: 4px 8px;
     font-size: 0.6em;
 }
-
+/* 
 .sidebar .cdatatableDetails {
-    float: left;
-    margin: 0 0.5em;
+    display: inline-block !important;
+    margin: 0;
 }
 
-.sidebar div.dataTables_paginate {
+.sidebar div.dataTables_paginate,
+.sidebar div.dt-paging {
     text-align: center !important;
+    float: none !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
-.sidebar div.dataTables_paginate li.paginate_button a i {
+.sidebar div.dataTables_paginate li.paginate_button a i,
+.sidebar div.dt-paging li.dt-paging-button a i {
     vertical-align: middle;
-}
+} */
 
 .sidebar .table-sm td {
     padding: 5px;

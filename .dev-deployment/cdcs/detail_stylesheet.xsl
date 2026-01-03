@@ -395,7 +395,7 @@ Use it like:
             
             <!-- Main content -->
             <span id='xmlName' style='display: none;'><xsl:value-of select="$xmlName"/></span>
-            <div class="row">
+            <div class="row align-items-center">
             <div class="main col-sm-12" id="main-column">                        
                 <xsl:variable name="expTitle">
                     <xsl:choose>
@@ -1041,7 +1041,7 @@ Use it like:
                                         </xsl:call-template>
                                     </div>
                                 </div>
-                                <div class="row aa-content-row" style="margin-top: -20px;">
+                                <div class="row aa-content-row align-items-center" style="margin-top: -20px;">
                                     <!-- preview image column -->
                                     <div class="col-lg-4 aa-img-col">
                                         <xsl:for-each select="nx:dataset">
