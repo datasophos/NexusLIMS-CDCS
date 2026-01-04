@@ -207,7 +207,7 @@
                     promList.push(aux_prom);
                     aux_prom.then(res => {
                         if (res !== null) {
-                            console.debug(`Adding ${res.size} for ${res.url}`);
+                            // console.debug(`Adding ${res.size} for ${res.url}`);
                             if (!isNaN(res.size)) {
                                 total_size += res.size;
                             }
@@ -252,8 +252,8 @@
     // ============================================================================
 
     Detail.downloadFn = function(data_urls, json_urls, paths, zip_title) {
-        if (!(Detail.isChrome || Detail.isOpera || Detail.isFirefox || Detail.isEdgeChromium)) {
-            alert('Due to browser limitations, downloading of files into a zip archive is only supported in up-to-date versions of Chrome, Firefox, Opera, and Edge browsers. Please either download the files individually using the buttons in the table, or download them manually from the central file server instead.');
+        if (!Detail.supportsClientSideZip) {
+            alert('Due to browser limitations, downloading of files into a zip archive is not supported in your current browser. Please either download the files individually using the buttons in the table, or download them manually from the central file server instead.');
             $('button.dl-btns').removeClass('disabled');
             if (window.filelist_dt) window.filelist_dt.select.style('multi');
             return;

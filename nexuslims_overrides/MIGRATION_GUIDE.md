@@ -24,10 +24,11 @@ This guide helps migrate existing scattered template overrides into the centrali
     - `<span id="xmlName" style="display: none;"></span>`
   - [ ] ZIP downloads
   - [x] top toolbar
-  - [ ] page jumps when closing modal
-  - [ ] "InstallTrigger is deprecated and will be removed in the future."
+  - [x] page jumps when closing modal
+  - [x] "InstallTrigger is deprecated and will be removed in the future."
   - [x] how to include instrument data (maybe init_dev_environment expands a .tar.gz?)
   - [ ] feat: easily configurable badge colors?
+- [ ] Simple display should be checked
 
 ### Other TODOs:
 - [ ] Tutorials

@@ -182,3 +182,9 @@ img.simple-filelist-preview {
 #top-button-div {
     flex-direction: row-reverse;
 }
+
+/* Acquisition activity header info - raise badges to prevent aa-content-row from overlapping tooltips */
+.aa-header-info {
+    position: relative;
+    z-index: 1;
+}

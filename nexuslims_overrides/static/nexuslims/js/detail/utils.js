@@ -11,25 +11,23 @@
     window.NexusLIMSDetail = window.NexusLIMSDetail || {};
 
     // ============================================================================
-    // Browser Detection
+    // Feature Detection
     // ============================================================================
 
-    // Opera 8.0+
-    window.NexusLIMSDetail.isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-    // Firefox 1.0+
-    window.NexusLIMSDetail.isFirefox = typeof InstallTrigger !== 'undefined';
-    // Safari 3.0+
-    window.NexusLIMSDetail.isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-    // Internet Explorer 6-11
-    window.NexusLIMSDetail.isIE = /*@cc_on!@*/false || !!document.documentMode;
-    // Edge 20+
-    window.NexusLIMSDetail.isEdge = !window.NexusLIMSDetail.isIE && !!window.StyleMedia;
-    // Chrome 1 - 79
-    window.NexusLIMSDetail.isChrome = !!window.chrome;
-    // Edge (based on chromium)
-    window.NexusLIMSDetail.isEdgeChromium = window.NexusLIMSDetail.isChrome && (navigator.userAgent.indexOf("Edg") != -1);
-    // Blink engine
-    window.NexusLIMSDetail.isBlink = (window.NexusLIMSDetail.isChrome || window.NexusLIMSDetail.isOpera) && !!window.CSS;
+    /**
+     * Check if browser supports client-side zip creation and downloads
+     * Requires: Blob API, URL.createObjectURL, and modern fetch/XMLHttpRequest
+     */
+    window.NexusLIMSDetail.supportsClientSideZip = (function() {
+        try {
+            return typeof Blob !== 'undefined' &&
+                   typeof URL !== 'undefined' &&
+                   typeof URL.createObjectURL === 'function' &&
+                   typeof Uint8Array !== 'undefined';
+        } catch (e) {
+            return false;
+        }
+    })();
 
     // ============================================================================
     // Path Manipulation Functions

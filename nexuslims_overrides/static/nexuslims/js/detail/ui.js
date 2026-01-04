@@ -243,20 +243,7 @@
         });
     };
 
-    Detail.activate_modal_tooltips = function(id) {
-        // Bootstrap 5: Dispose old tooltips and create new ones
-        var modalTooltipElements = document.querySelectorAll(`#${id} [data-bs-toggle="tooltip"]`);
-        modalTooltipElements.forEach(function(el) {
-            var tooltip = bootstrap.Tooltip.getInstance(el);
-            if (tooltip) {
-                tooltip.dispose();
-            }
-            new bootstrap.Tooltip(el, {
-                trigger: 'hover',
-                container: `#${id}`
-            });
-        });
-    };
+
 
     // ============================================================================
     // Keyboard Handlers
