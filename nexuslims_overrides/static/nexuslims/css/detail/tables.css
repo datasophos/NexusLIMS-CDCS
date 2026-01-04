@@ -47,7 +47,7 @@
 
 .meta-table-col .dt-input {
     max-width: 300px;
-    padding: 0.25rem 0.5rem;
+    padding: var(--spacing-xs) var(--spacing-sm);  /* 0.25rem 0.5rem */
     font-size: 0.875rem;
     line-height: 1.5;
     height: auto;
@@ -127,7 +127,7 @@ table.aa-table th {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 10px;
+    padding: var(--spacing-xs) 0.625rem;  /* 4px 10px */
     margin: 0;
     border: 1px solid #dee2e6 !important;
     border-radius: 0;
@@ -295,7 +295,7 @@ table.meta-table td, table.meta-table th,
 table.aa-table td, table.aa-table th,
 table.filelist-table td, table.filelist-table th,
 table.sample-table td, table.sample-table th {
-    padding: 0.3em;
+    padding: var(--spacing-xs);  /* 0.25rem, was 0.3em */
 }
 
 table.meta-table th,
@@ -393,12 +393,12 @@ div.dt-buttons.btn-group > button {
 /* Download result and progress */
 #download-result {
     font-size: small;
-    padding: 0px 10px;
+    padding: 0 0.625rem;  /* 0px 10px */
     white-space: pre-wrap;
 }
 #download-extra{
     font-size: small;
-    padding: 0.5em 10px;
+    padding: var(--spacing-sm) 0.625rem;  /* 0.5rem 10px */
     white-space: break-spaces;
     line-height: 1.5em;
 }
@@ -454,39 +454,3 @@ td.aa-meta-col {
 #nav-table thead {
     border: none;
 }
-
-/* DataTables wrapper adjustments */
-/* .main .dataTables_wrapper .row,
-.main .dt-container .row {
-    margin: 0;
-    align-items: center;
-    margin-top: 0.5em;
-}
-.main .dataTables_wrapper .row > *,
-.main .dt-container .row > * {
-    padding: 0;
-}
-.main .dataTables_wrapper ul.pagination > li > a,
-.main .dt-container .dt-paging .pagination > li > a {
-    padding: 0px 8px;
-    font-size: 0.6em;
-}
-.main .dataTables_wrapper label,
-.main .dt-container label {
-    font-size: smaller;
-} */
-
-/* Pagination */
-/* .dataTables_paginate,
-.dt-paging {
-    font-size: 0.6em;
-}
-.pager-col {
-    padding-top: 20px;
-    width: 100%;
-} */
-
-/* Fix pagination container alignment */
-/* .dt_paginate_container {
-    margin-left: 0 !important;
-} */

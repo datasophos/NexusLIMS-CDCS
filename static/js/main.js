@@ -17,14 +17,6 @@
         $body.addClass('is-loading');
         $('form').placeholder();  // Fix: Placeholder polyfill.
 
-        // Title Bar.
-        $(
-            '<div id="titleBar">' +
-                '<a href="#navPanel" class="toggle"><i class="fas fa-bars ml-2"></i></a>' +
-                '<span class="title">' + $('#cdcs-menu-title a').html() + '</span>' +
-            '</div>'
-        ).prependTo('#page-wrapper');
-
         // Navigation Panel.
         $(
             '<div id="navPanel">' +

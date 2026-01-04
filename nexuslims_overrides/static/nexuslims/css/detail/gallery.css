@@ -19,8 +19,8 @@
 
 .slideshow-col {
     padding: 0;
-    margin-top: 1em;
-    margin-bottom: -1em;
+    margin-top: var(--spacing-md);  /* 1rem */
+    margin-bottom: var(--spacing-md);  /* 1rem, was -1em (negative margin removed) */
 }
 
 /* Gallery images */
@@ -155,7 +155,7 @@ sup.link-icon {
 }
 
 .gallery-filename {
-    width: 50vw;
+    width: min(50vw, 350px);  /* Cap maximum at 350px to prevent jarring width reduction */
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

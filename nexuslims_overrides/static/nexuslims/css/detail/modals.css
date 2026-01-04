@@ -10,7 +10,7 @@
     display: block;
     position: fixed;
     z-index: 1001;
-    padding-top: 100px;
+    padding-top: var(--modal-top-offset);  /* 100px - custom modals */
     left: 0;
     top: 0;
     width: 100%;
@@ -28,7 +28,7 @@
 .nexuslims-modal .modal-content {
     background-color: #fefefe;
     margin: auto;
-    padding: 20px;
+    padding: var(--spacing-lg);  /* 20px */
     border: 1px solid #888;
     width: max-content;
 }
@@ -78,6 +78,12 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
     line-height: 1.6;
 }
 
+/* styling of download and export buttons */
+#filelist-modal .dl-btn-row, #filelist-modal .export-btn-row {
+    display: flex;
+    justify-content: center;
+}
+
 /* Ensure close button is clickable and properly positioned */
 .nexuslims-modal .close-modal {
     position: relative;
@@ -88,7 +94,7 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
 }
 /* Bootstrap modal positioning - ensure modals appear below the navigation bar */
 .modal-dialog {
-    margin-top: 100px;
+    margin-top: var(--modal-top-offset);  /* 100px - Bootstrap modals */
 }
 
 .missing-metadata {

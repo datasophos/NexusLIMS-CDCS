@@ -25,11 +25,19 @@
     animation: spinner 1.5s ease infinite;
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 992px) {  /* Bootstrap 5 lg breakpoint - tablet */
+    #loading img {
+        width: 300px;
+        margin-top: -150px;
+        margin-left: -150px;
+    }
+}
+
+@media screen and (max-width: 768px) {  /* Bootstrap 5 md breakpoint - mobile, was 680px */
     #loading img {
         width: 200px;
         margin-top: -100px;
-        margin-left:-100px;
+        margin-left: -100px;
     }
 }
 

@@ -25,7 +25,7 @@
 }
 
 .btn-sidebar-tooltip {
-    top: 69px !important;
+    top: calc(var(--titlebar-height) + 25px) !important;  /* titlebar height + 25px offset */
 }
 .btn-sidebar-tooltip .tooltip-arrow{
     top: 50% !important;

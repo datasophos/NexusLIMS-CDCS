@@ -2517,6 +2517,8 @@
         background-color: #925520;
         margin-top: 1em;
         width: 100%;
+        z-index: 1001;
+        position: relative;
 
 	}
 
@@ -2648,7 +2650,7 @@
 		display: none;
 	}
 
-	@media screen and (max-width: 860px) {
+	@media screen and (max-width: 991px) {  /* Bootstrap 5 lg breakpoint - 1, was 860px */
 
 		/* Basic */
 

@@ -13,6 +13,7 @@
 
 /* Global NexusLIMS styles */
 :root {
+    /* Brand colors */
     --nx-primary-color: #11659c;
     --nx-secondary-color: #6c757d;
     --nx-success-color: #28a745;
@@ -20,6 +21,31 @@
     --nx-warning-color: #ffc107;
     --nx-info-color: #17a2b8;
     --nx-light-gray: #e3e3e3;
+
+    /* Layout heights */
+    --titlebar-height: 60px;
+    --nav-height: 60px;
+
+    /* Standard spacing scale (rem-based for accessibility) */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-md: 1rem;      /* 16px */
+    --spacing-lg: 1.25rem;   /* 20px */
+    --spacing-xl: 2.5rem;    /* 40px */
+
+    /* Modal spacing */
+    --modal-top-offset: 6.25rem; /* 100px */
+
+    /* Responsive breakpoints (matching Bootstrap 5) - for reference in comments */
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+}
+
+/* override small gap around edges of site */
+body {
+    background: white;
 }
 
 /* NexusLIMS branding */
@@ -77,10 +103,17 @@
     min-height: calc(100% - 151px);
     background-color: #fff;
     /*margin: 0 1.5em;*/
-    margin: 0.5em 0.5em;
+    margin: 0 0.5em;
     padding: 1.0em 0.5em 0.75em 0.5em;
     border-bottom-right-radius: 30px;
     border-bottom-left-radius: 30px;
+}
+
+/* On narrow screens where titleBar is visible and fixed, add padding */
+@media screen and (max-width: 991px) {
+    #content {
+        margin-top: var(--titlebar-height);
+    }
 }
 
 /* nav styling */
@@ -96,14 +129,49 @@
     top: 0 !important;
     z-index: 500 !important;
     box-shadow: none !important;
+    height: var(--titlebar-height) !important;
+    box-sizing: border-box !important;
+}
+
+/* Only use flexbox on wider screens where nav is visible */
+@media screen and (min-width: 992px) {
+    #nav {
+        display: flex !important;
+        align-items: center !important;
+        padding-top: 4px !important;  /* Compensate for 4px bottom border */
+    }
+}
+
+#nav > ul {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Push float-end items to the right in flexbox */
+/* Target the second-to-last li (user/login menu) */
+#nav > ul > li:nth-last-child(2) {
+    order: 102;
+    margin-right: var(--spacing-md);
+}
+
+/* Target the last li (help menu) */
+#nav > ul > li:nth-last-child(1) {
+    margin-left: auto !important;  /* Push to the right to separate from rest of title bar */
+    order: 101;  /* Needs to be lower number than user/menu */
 }
 
 /* nav link colors and padding - match 2.21.0 */
 #nav > ul > li > a:not(.btn-custom),
 #nav > ul > li > div > a:not(.btn-custom) {
     color: #444 !important;
-   	padding: 0.7em !important;
-
+   	padding: 0 0.7em !important;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 #nav > ul > li > a:not(.btn-custom):hover,
@@ -224,63 +292,65 @@ a.cdcs-menu-item > i.fa {
 	-webkit-transition: -webkit-transform 0.5s ease;
 	-ms-transition: -ms-transform 0.5s ease;
 	transition: transform 0.5s ease;
-	position: sticky;
+	position: fixed;
 	top: 0;
-	/* display: block removed - let base CSS control visibility based on screen size */
 	width: 100%;
 	z-index: 10001;
-	height: 44px;
+	height: var(--titlebar-height);
 	background-color: #f8f8f8;
-	line-height: 44px;
 	border: 1px solid transparent;
     border-color: #e7e7e7;
     border-width: 0 1px 4px 1px;
     box-shadow: none;
+    display: flex;
+    align-items: center;
+    font-size: 12pt;
 }
-#titleBar .title img {
-	max-height: 40px;
-	vertical-align: bottom;
-	padding-top: 4px;
-	padding-bottom: 8px;
+
+/* Hide titleBar on wide screens where #nav is shown */
+@media screen and (min-width: 992px) {
+    #titleBar {
+        display: none !important;
+    }
 }
 
 #titleBar .title {
-	display: block;
-	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-weight: 600;
-	text-align: center;
 	color: #fff;
 	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	height: var(--titlebar-height);
 }
+
+#titleBar .title a {
+    display: inherit;  /* make sure the link is vertically centered and correct height */
+}
+
+#titleBar .title img {
+	max-height: calc(var(--titlebar-height) - 30px);  /* Leave room for padding */
+}
+
 #titleBar .toggle {
 	text-decoration: none;
 	border: 0;
-	height: 60px;
+	height: var(--titlebar-height);
 	left: 0;
 	position: absolute;
 	top: 0;
-	width: 80px;
+	width: var(--titlebar-height);
 	z-index: 2;
-}
-
-#titleBar .toggle:before {
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	font-family: FontAwesome;
-	font-style: normal;
-	font-weight: normal;
-	text-transform: none !important;
-}
-
-#titleBar .toggle:before {
-	content: '\f0c9';
-	display: block;
-	height: 44px;
-	text-align: center;
-	width: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	color: #999;
 }
 
-#titleBar .toggle:hover:before {
+#titleBar .toggle:hover {
 	color: #333;
 }

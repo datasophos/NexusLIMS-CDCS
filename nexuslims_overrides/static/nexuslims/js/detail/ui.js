@@ -50,7 +50,45 @@
         }
     }
 
-    window.onscroll = function() { showButtonOnScroll() };
+    var navElement = document.getElementById('nav');
+    var titleBarElement = document.getElementById('titleBar');
+    var sidebarElement = document.querySelector('.sidebar');
+    var titlebarHeightPx = 80; // var(--titlebar-height) + var(--spacing-lg) (the initial padding)
+
+    function updateSidebarPosition() {
+        if (!navElement || !sidebarElement || !titleBarElement) {
+            return;
+        }
+
+        // Use titleBar on narrow screens, nav on wide screens
+        var topBar = window.innerWidth < 992 ? titleBarElement : navElement;
+        var topBarRect = topBar.getBoundingClientRect();
+
+        // Sidebar should follow the top bar's bottom edge, but not go above 0
+        var sidebarTop = Math.max(0, topBarRect.bottom);
+
+        // Don't use transition on top - let it follow scroll smoothly
+        sidebarElement.style.top = sidebarTop + 'px';
+
+        // No padding adjustment needed - the top position already handles positioning
+        sidebarElement.style.paddingTop = '';
+    }
+
+    // Listen to scroll on both window and body (body is the actual scrollable element)
+    var scrollHandler = function() {
+        showButtonOnScroll();
+        updateSidebarPosition();
+
+        // Update sidebar height to account for dynamic top position
+        // Get the actual computed top value, not just the inline style
+        var computedStyle = window.getComputedStyle(sidebarElement);
+        var sidebarTop = parseFloat(computedStyle.top);
+        var sidebarHeight = window.innerHeight - sidebarTop;
+        sidebarElement.style.height = sidebarHeight + 'px';
+    };
+
+    window.addEventListener('scroll', scrollHandler);
+    document.body.addEventListener('scroll', scrollHandler);
 
     // ============================================================================
     // Modal Handlers
@@ -93,6 +131,119 @@
 
         return scrollbarWidth;
     }
+
+    // ============================================================================
+    // Sidebar Handlers
+    // ============================================================================
+
+    function openSidebar() {
+        var sidebar = $('.sidebar');
+        sidebar.addClass('side-expanded');
+        updateSidebarButtonIcon();
+        updateSidebarButtonTooltip();
+    }
+
+    function closeSidebar() {
+        var sidebar = $('.sidebar');
+        sidebar.removeClass('side-expanded');
+        updateSidebarButtonIcon();
+        updateSidebarButtonTooltip();
+    }
+
+    function updateSidebarButtonIcon() {
+        var icon = $('#btn-sidebar i');
+        var sidebar = $('.sidebar');
+        if (sidebar.hasClass('side-expanded')) {
+            icon.removeClass('fa-chevron-right').addClass('fa-chevron-left');
+        } else {
+            icon.removeClass('fa-chevron-left').addClass('fa-chevron-right');
+        }
+    }
+
+    function updateSidebarButtonTooltip() {
+        var sidebar = $('.sidebar');
+        var btn = document.getElementById('btn-sidebar');
+        if (btn && btn.getAttribute('data-bs-toggle') === 'tooltip') {
+            var tooltip = bootstrap.Tooltip.getInstance(btn);
+            if (tooltip) {
+                var newTitle = sidebar.hasClass('side-expanded') 
+                    ? 'Click to close sidebar' 
+                    : 'Click to explore record contents';
+                
+                // Update the data-bs-title attribute (Bootstrap reads from this)
+                btn.setAttribute('data-bs-title', newTitle);
+                
+                // Update the tooltip's internal title property
+                tooltip._config.title = newTitle;
+            }
+        }
+    }
+
+    function setSidebarTooltipTop() {
+        var tip = $('.btn-sidebar-tooltip');
+        var btn = $('#btn-sidebar');
+        tip.css('top', parseInt(btn.css('top'), 10) + btn.height()/2 - tip.height()/2);
+    }
+
+    // Initialize sidebar handlers
+    $(document).ready(function() {
+        // Move sidebar button into titleBar immediately after the toggle button
+        var sidebarBtn = $('#btn-sidebar');
+        var toggleBtn = $('#titleBar .toggle');
+        if (sidebarBtn.length && toggleBtn.length) {
+            sidebarBtn.detach().insertAfter(toggleBtn);
+        }
+
+        // Add click handler to sidebar button
+        $("#btn-sidebar").on('click', function(e) {
+            e.stopPropagation(); // Prevent document click handler from firing
+            var sidebar = $('.sidebar');
+            if (sidebar.hasClass('side-expanded')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+
+        // Custom tooltip template for sidebar button
+        var sidebarBtn = $('#btn-sidebar[data-bs-toggle="tooltip"]')[0];
+        if (sidebarBtn) {
+            new bootstrap.Tooltip(sidebarBtn, {
+                template: '<div class="tooltip btn-sidebar-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+            });
+        }
+
+        $("#btn-sidebar").on('hover', setSidebarTooltipTop);
+
+        // Add listener to close sidebar when clicking outside
+        $(document).on("click", function(e) {
+            var target = $(e.target);
+            
+            // Don't close if clicking the sidebar button
+            if (target.closest('#btn-sidebar').length) {
+                return;
+            }
+            
+            // Don't close if clicking a pagination button inside nav-table (sidebar's table)
+            var pagingButton = target.closest('.dt-paging-button');
+            if (pagingButton.length) {
+                if (pagingButton.attr('aria-controls') === 'nav-table') {
+                    return;
+                }
+            }
+            
+            // Don't close if clicking inside the sidebar (including all child elements)
+            if (target.closest('.sidebar').length) {
+                return;
+            }
+            
+            // Click is outside - close the sidebar if it's expanded
+            var sidebar = $(".sidebar");
+            if (sidebar.hasClass('side-expanded')) {
+                closeSidebar();
+            }
+        });
+    });
 
     // ============================================================================
     // Accordion Handlers
@@ -234,16 +385,6 @@
             }
         });
     };
-
-    Detail.activate_metadata_tooltips = function() {
-        // Bootstrap 5: Initialize metadata tooltips
-        var metadataTooltipElements = document.querySelectorAll('table.meta-table [data-bs-toggle="tooltip"]');
-        metadataTooltipElements.forEach(function(el) {
-            new bootstrap.Tooltip(el, { trigger: 'hover' });
-        });
-    };
-
-
 
     // ============================================================================
     // Keyboard Handlers

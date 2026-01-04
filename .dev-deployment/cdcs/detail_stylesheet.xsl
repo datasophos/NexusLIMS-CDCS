@@ -324,8 +324,8 @@ Use it like:
                       </button>
               </div>
               <div id="btn-sidebar" data-bs-toggle="tooltip" data-bs-placement="right"
-                   title="Click to explore record contents">
-                  <a><i class="fa fa-toggle-right"></i></a>
+                   data-bs-title="Click to explore record contents">
+                  <a><i class="fas fa-chevron-right"></i></a>
               </div>
             </xsl:if>
 

@@ -19,12 +19,53 @@ button {
 /* Top button group */
 .btn-top-group {
     margin: 0.25em;
+    font-size: 12pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.375rem 0.5rem;  /* Reduce horizontal padding at small sizes */
+}
+
+/* Gradually scale font-size from 14px down as window narrows */
+@media screen and (max-width: 1280px) {
+    .btn-top-group {
+        font-size: 11pt;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .btn-top-group {
+        font-size: 10pt;
+    }
 }
 
 @media screen and (max-width: 768px) {
     .btn-top-group {
-        font-size: 10px;
+        font-size: 8.5pt;
     }
+}
+
+@media screen and (max-width: 576px) {
+    .btn-top-group {
+        font-size: 8pt;
+    }
+
+    /* Shorten button text at very narrow widths */
+    #btn-previous-page { font-size: 0; }
+    #btn-previous-page i { font-size: 8pt; }
+    #btn-previous-page::after { content: "Back"; font-size: 8pt; }
+
+    #btn-filelisting { font-size: 0; }
+    #btn-filelisting i { font-size: 8pt; }
+    #btn-filelisting::after { content: "Files"; font-size: 8pt; }
+
+    #btn-xml-dl { font-size: 0; }
+    #btn-xml-dl i { font-size: 8pt; }
+    #btn-xml-dl::after { content: "XML"; font-size: 8pt;  }
+
+    #btn-edit-record { font-size: 0; }
+    #btn-edit-record i { font-size: 8pt; }
+    #btn-edit-record::after { content: "Edit"; font-size: 8pt; }
 }
 
 /* Parameter button */
