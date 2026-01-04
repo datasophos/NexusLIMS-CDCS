@@ -54,7 +54,6 @@
 .help-filelist-modal {
     font-size: 20px;
     font-weight: bold;
-    margin-top: 4.5px;
     vertical-align: top;
 }
 
@@ -63,18 +62,20 @@ i.help-filelist-modal > div.tooltip {
 }
 i.help-filelist-modal > div.tooltip > div.arrow,
 i.help-filelist-modal > div.tooltip > div.arrow::before {
-    border-bottom-color: #3a65a2;
+    border-bottom-color: rgba(0, 0, 0, 0.9);
 }
 i.help-filelist-modal > div.tooltip > div.tooltip-inner {
-    background-color: #e5ecf6;
-    color: #474747;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
     max-width: unset;
-    border: solid #3a65a2 3px;
-    font-size: large;
-    padding-left: 1.5em;
-    padding-right: 1.5em;
-    text-align: justify;
+    border: none;
+    font-size: 0.9rem;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
     width: 500px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    line-height: 1.6;
 }
 
 /* Ensure close button is clickable and properly positioned */
@@ -98,9 +99,18 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
 
 .modal-title {
     align-self: start;
-    max-width: 500px;
-    white-space: pre-wrap;
     text-align: left;
     line-height: 1.5em;
     font-weight: bold;
+}
+
+/* download file listing title and date styles */
+.dl-modal-title {
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.dl-modal-date {
+    font-size: smaller;
+    font-style: oblique;
 }

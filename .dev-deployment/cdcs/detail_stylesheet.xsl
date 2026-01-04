@@ -1419,41 +1419,37 @@ Use it like:
                   <div id="filelist-modal" class="nexuslims-modal">
                       <div class="modal-content" style="width: 65vw;">
                           <div class="modal-body">
-                              <div class="row filelist-header-row">
-                                  <div class="col-xs-10" style="flex-grow: 1;">
-                                      <b>Complete filelisting for:</b><br/>
-                                      <span class='modal-expTitle'>
-                                          <i class="far fa-file-alt results-icon"/>
-                                          <xsl:value-of select="$expTitle"/>
-                                      </span> - <span class='modal-expDate'><xsl:value-of select="$date"/></span><br/>
-                                      <span class='modal-expTitle' style="white-space: pre-line;">Root path:  </span><code id='filelist-rootpath'
-                                          style="line-height: 1.25em; display: inline;"><a>
-                                          <xsl:attribute name="href">
-                                              <xsl:value-of select="$datasetBaseUrl"/>
-                                          </xsl:attribute>
-                                          <xsl:attribute name="download"/>
-                                          <xsl:attribute name="target">_blank</xsl:attribute>
-                                          <xsl:attribute name="class">help-tip</xsl:attribute>
-                                          <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
-                                          <xsl:attribute name="data-bs-placement">top</xsl:attribute>
-                                          <xsl:attribute name="title">Click to view directory structure directly in the browser</xsl:attribute>
-                                      </a></code>
+                              <div class="d-flex justify-content-between align-items-start mb-3">
+                                  <div>
+                                  <strong>Complete filelisting for:</strong><br/>
+                                  <span class='dl-modal-title'>
+                                      <i class="far fa-file-alt results-icon"/>
+                                      <xsl:value-of select="$expTitle"/>
+                                  </span> - <span class='dl-modal-date'><xsl:value-of select="$date"/></span><br/>
+                                  <span class='dl-modal-title' style="white-space: pre-line;">Root path:  </span><code id='filelist-rootpath'
+                                      style="line-height: 1.25em; display: inline;"><a>
+                                      <xsl:attribute name="href">
+                                          <xsl:value-of select="$datasetBaseUrl"/>
+                                      </xsl:attribute>
+                                      <xsl:attribute name="download"/>
+                                      <xsl:attribute name="target">_blank</xsl:attribute>
+                                      <xsl:attribute name="class">help-tip</xsl:attribute>
+                                      <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
+                                      <xsl:attribute name="data-bs-placement">top</xsl:attribute>
+                                      <xsl:attribute name="title">Click to view directory structure directly in the browser</xsl:attribute>
+                                      <xsl:attribute name="onclick">this.blur()</xsl:attribute>
+                                  </a></code>
                                   </div>
-                                  <div class="col-xs-2">
-                                      <i class="help-filelist-modal fas fa-question-circle"
-                                         style="margin-right: 1em;">
+                                  <div class="d-flex align-items-center">
+                                      <i class="help-filelist-modal fas fa-question-circle me-3">
                                           <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
                                           <xsl:attribute name="data-bs-placement">bottom</xsl:attribute>
                                           <xsl:attribute name="data-bs-container">.help-filelist-modal</xsl:attribute>
                                           <xsl:attribute name="title">
-  <!-- Do not indent this text, as it affects the tooltip display -->
-  This window shows all the datasets identified as part of this record.
-
-  Rows of the table can be selected by clicking anywhere within the row with the mouse.
-
-  The files (and metadata) associated with the selected datasets can be downloaded by clicking on the "Download selected" or "Download all" button (warning, this may take some time for large amounts of data). You can close this dialogue (but not the browser tab!) while the download is processing without interrupting its progress. Do not navigate away from the page, or the download will cancel!
-
-  The textual data from the selected rows (not the actual files) can also be exported to the clipboard, a CSV file, an Excel file, or printed to PDF by using the respective buttons as well.
+                                              <xsl:text>This window shows all the datasets identified as part of this record.&#10;&#10;</xsl:text>
+                                              <xsl:text>Rows of the table can be selected by clicking anywhere within the row with the mouse.&#10;&#10;</xsl:text>
+                                              <xsl:text>The files (and metadata) associated with the selected datasets can be downloaded by clicking on the "Download selected" or "Download all" button (warning, this may take some time for large amounts of data). You can close this dialogue (but not the browser tab!) while the download is processing without interrupting its progress. Do not navigate away from the page, or the download will cancel!&#10;&#10;</xsl:text>
+                                              <xsl:text>The textual data from the selected rows (not the actual files) can also be exported to the clipboard, a CSV file, an Excel file, or printed to PDF by using the respective buttons as well.</xsl:text>
                                           </xsl:attribute>
                                       </i>
                                       <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('filelist-modal')"/>
@@ -1491,7 +1487,7 @@ Use it like:
                               </div>
                               <div class="row mt-0">
                                   <div class='col-xs-12 pt-0 w-100'>
-                                      <!-- Generate the table with setup conditions for each acquisition activity -->
+                                      <!-- Generate the filelist table -->
                                       <table id="filelist-table"
                                              class="table table-sm table-hover filelist-table compact mt-0"
                                              width="100%"
