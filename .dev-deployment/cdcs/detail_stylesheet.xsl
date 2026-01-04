@@ -726,7 +726,7 @@ Use it like:
                                         </xsl:if>
                                     </xsl:when>
                                     <xsl:when test="count(nx:sample) > 1">
-                                        <table class="table table-condensed table-hover sample-table compact wrap" border="1"
+                                        <table class="table table-sm table-hover sample-table compact wrap" border="1"
                                                style="width:90%; border-collapse:collapse; text-align: center;">
                                             <thead>
                                                 <tr>
@@ -867,7 +867,7 @@ Use it like:
                               </xsl:if>
                           </h3>
 
-                            <table class="table table-condensed upper-table" id="proj-table"
+                            <table class="table table-sm upper-table" id="proj-table"
                               style="border-collapse:collapse;width:80%;">
                             <xsl:if test="nx:project/nx:name/text()">
                                   <tr>
@@ -1072,7 +1072,7 @@ Use it like:
 
                                     <!-- dataset listing column -->
                                     <div class="col-lg-8 aa-table-col">
-                                        <table class="table table-condensed table-hover aa-table compact wrap" border="1"><!-- style="width:100%; border-collapse:collapse;" -->
+                                        <table class="table table-sm table-hover aa-table compact wrap" border="1"><!-- style="width:100%; border-collapse:collapse;" -->
                                             <thead>
                                                 <tr>
                                                     <th>
@@ -1187,28 +1187,26 @@ Use it like:
                                                                 <xsl:attribute name="title">Click to download this dataset's metadata in JSON format</xsl:attribute>
                                                                 <i class='fa fa-download fa-border param-button' style='margin-left:0;'/>
                                                             </xsl:element>
-                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal">
+                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal dataset-meta-modal">
                                                                 <div class="modal-content">
                                                                     <div class="container-fluid">
-                                                                        <div class="row"
-                                                                             style="justify-content: center;">
-                                                                            <div class="col-11" style="max-width: 500px; white-space: pre-wrap; text-align: left; line-height: 1.5em;"><span style="font-weight: bold;"><xsl:value-of select="name"/></span>
-                                                                                <xsl:choose>
-                                                                                    <xsl:when test="nx:description/text()">
-                                                                                        <br/>
-                                                                                        <div style="font-size:15px">Dataset description: <em><xsl:value-of select="nx:description"/></em></div>
-                                                                                    </xsl:when>
-                                                                                </xsl:choose></div>
-
-                                                                            <div class="col-1">
-                                                                                <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('{generate-id(current())}-modal')"/>
-                                                                            </div>
+                                                                        <div class="d-flex justify-content-between align-items-start">
+                                                                            <h5 class="modal-title"><xsl:value-of select="nx:name"/></h5>
+                                                                            <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('{generate-id(current())}-modal')"/>
                                                                         </div>
-                                                                        <div class="row"
-                                                                             style="justify-content: center;">
-                                                                            <div class='col-xs-12' style="padding-top: 10px;">
+                                                                        <xsl:if test="nx:description/text()">
+                                                                            <div class="row">
+                                                                                <div class='col-xs-12' style=''>
+                                                                                    <div style="font-size:15px">Dataset description:
+                                                                                        <i><xsl:value-of select="nx:description"/></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </xsl:if>
+                                                                        <div class="row" style="justify-content: center;">
+                                                                            <div class='col-xs-12 meta-table-col' style="">
                                                                                 <!-- Generate the table with setup conditions for each acquisition activity -->
-                                                                                <table class="table table-condensed table-hover meta-table compact text-left" border="1"><!-- style="" -->
+                                                                                <table class="table table-sm table-hover meta-table compact text-start" border="1"><!-- style="" -->
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th>Metadata Parameter
@@ -1273,9 +1271,8 @@ Use it like:
                                                                         </div>
                                                                         <div class='row'
                                                                              style="justify-content: center;">
-                                                                            <div class='col-xs-12 text-center' style="padding-top: 10px;">
+                                                                            <div class='col-xs-12 text-center mt-3 missing-metadata'>
                                                                                 <xsl:element name='a'>
-                                                                                    <xsl:attribute name='style'>font-size: 12pt; font-style: italic; color: #007aa7;</xsl:attribute>
                                                                                     <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
                                                                                     <xsl:attribute name="data-bs-placement">top</xsl:attribute>
                                                                                     <xsl:attribute name="data-bs-html">true</xsl:attribute>
@@ -1311,14 +1308,12 @@ Use it like:
                                 </div>
                             </div>
                             <!-- Generate unique modal box for each AA which contains the setup params, accessed via a button -->
-                            <div id="{generate-id(current())}-modal" class="nexuslims-modal">
+                            <div id="{generate-id(current())}-modal" class="nexuslims-modal aa-setup-params-modal">
                                 <div class="modal-content">
                                     <div class="container-fluid">
-                                        <div class="row" style="">
-                                            <div class="col-10" style="align-self: start; max-width: 500px; white-space: pre-wrap; text-align: left; line-height: 1.5em; font-weight: bold;">Experiment activity <xsl:value-of select="@seqno+1"/></div>
-                                            <div class="col-1">
-                                                <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('{generate-id(current())}-modal')"/>
-                                            </div>
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <h5 class="modal-title">Experiment activity <xsl:value-of select="@seqno+1"/></h5>
+                                            <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('{generate-id(current())}-modal')"/>
                                         </div>
                                         <div class="row">
                                             <div class='col-xs-12' style=''>
@@ -1330,9 +1325,9 @@ Use it like:
                                             </div>
                                         </div>
                                         <div class="row" style="justify-content: center;">
-                                            <div class='col-xs-12' style="">
+                                            <div class='col-xs-12 meta-table-col' style="">
                                                 <!-- Generate the table with setup conditions for each acquisition activity -->
-                                                <table class="table table-condensed table-hover meta-table compact" border="1"><!-- style="" -->
+                                                <table class="table table-sm table-hover meta-table compact text-start" border="1"><!-- style="" -->
                                                     <thead>
                                                         <tr>
                                                             <th>Setup Parameter
@@ -1401,9 +1396,8 @@ Use it like:
                                             </div>
                                         </div>
                                         <div class='row' style="justify-content: center;">
-                                            <div class='col-xs-12 text-center' style="color: #007aa7;">
+                                            <div class='col-xs-12 text-center mt-3 missing-metadata'>
                                                 <xsl:element name='a'>
-                                                    <xsl:attribute name='style'>font-size: 12pt; font-style: italic</xsl:attribute>
                                                     <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
                                                     <xsl:attribute name="data-bs-placement">top</xsl:attribute>
                                                     <xsl:attribute name="data-bs-html">true</xsl:attribute>
@@ -1499,7 +1493,7 @@ Use it like:
                                   <div class='col-xs-12 pt-0 w-100'>
                                       <!-- Generate the table with setup conditions for each acquisition activity -->
                                       <table id="filelist-table"
-                                             class="table table-condensed table-hover filelist-table compact mt-0"
+                                             class="table table-sm table-hover filelist-table compact mt-0"
                                              width="100%"
                                              border="1"><!-- style="" -->
                                           <thead>
@@ -2217,7 +2211,7 @@ Use it like:
             </a></code>
         </div>
         <table id="simple-filelist-table"
-            class="table table-condensed table-hover filelist-table compact mt-0"
+            class="table table-sm table-hover filelist-table compact mt-0"
             width="100%"
             border="1"><!-- style="" -->
             <thead>

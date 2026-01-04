@@ -14,17 +14,13 @@
     // ============================================================================
 
     var $body = $('body'),
-        scrollDisabled = false,
-        scrollTop;
+        scrollDisabled = false;
 
     function scrollDisable() {
         if (scrollDisabled) {
             return;
         }
-        scrollTop = $(window).scrollTop();
-        $body.addClass('scrollDisabled').css({
-            top: -1 * scrollTop
-        });
+        $body.addClass('scrollDisabled');
         scrollDisabled = true;
     }
 
@@ -33,7 +29,6 @@
             return;
         }
         $body.removeClass('scrollDisabled');
-        $(window).scrollTop(scrollTop);
         scrollDisabled = false;
     }
 

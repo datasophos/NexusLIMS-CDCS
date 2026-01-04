@@ -11,12 +11,12 @@ This guide helps migrate existing scattered template overrides into the centrali
   - [x] Download/export button not working
 - [ ] Record page
   - [ ] wonky styling
-    - [ ] paginate on left side bar
-    - [ ] paginate on file list tables
+    - [x] paginate on left side bar
+    - [x] paginate on file list tables
     - [x] badge font is too large
-    - [ ] datatable search and paginate on metadata display modal
+    - [x] datatable search and paginate on metadata display modal
     - [x] preview gallery caption styling is super wide; it should only be as wide as the preview gallery itself
-    - [ ] "X" button is not clickable on activity metadata modal
+    - [x] "X" button is not clickable on activity metadata modal
     - [ ] Buttons and header styling on download file modal
   - [ ] Tooltips stay visible when clicking a link with one
   - [ ] Edit button doesn't work, and should only show when the user is logged in and has permissions

@@ -77,51 +77,30 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
     width: 500px;
 }
 
-/* Modal metadata */
-.nexuslims-modal .modal-expTitle {
-    font-size: smaller;
-    font-weight: normal;
+/* Ensure close button is clickable and properly positioned */
+.nexuslims-modal .close-modal {
+    position: relative;
+    z-index: 100;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    display: inline-block;
 }
-
-.nexuslims-modal .modal-expDate {
-    font-size: smaller;
-    font-style: oblique;
-}
-
-/* Modal table styling */
-.nexuslims-modal table{
-  margin: 0 auto;
-  width: auto;
-  clear: both;
-  border-collapse: collapse;
-  table-layout: fixed;
-  word-wrap: break-word;
-}
-/* 
-.nexuslims-modal div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-    margin-left: 1em;
-    white-space: nowrap;
-}
-
-.nexuslims-modal div.dataTables_wrapper div.dataTables_paginate ul.pagination > li > a {
-    padding: 0px 8px;
-    font-size: 0.6em;
-}
-
-.nexuslims-modal div.dataTables_wrapper .dataTables_filter label {
-    font-size: 0.75em;
-}
-
-.nexuslims-modal div.dataTables_wrapper .dataTables_filter input {
-    font-size: 0.75em;
-}
-
-.nexuslims-modal div.dataTables_wrapper .row {
-    margin: 0;
-    align-items: center;
-} */
-
 /* Bootstrap modal positioning - ensure modals appear below the navigation bar */
 .modal-dialog {
     margin-top: 100px;
+}
+
+.missing-metadata {
+    font-size: 12pt;
+    font-style: italic;
+    color: var(--nx-primary-color);
+}
+
+.modal-title {
+    align-self: start;
+    max-width: 500px;
+    white-space: pre-wrap;
+    text-align: left;
+    line-height: 1.5em;
+    font-weight: bold;
 }
