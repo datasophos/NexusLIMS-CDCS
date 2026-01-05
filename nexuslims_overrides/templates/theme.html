@@ -31,11 +31,14 @@
     <link rel="stylesheet" href="{% static 'nexuslims/css/main.css' %}" />
     <link rel="stylesheet" href="{% static 'nexuslims/css/explore_results.css' %}" />
 
+    {# DataTables CSS #}
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-select/3.1.3/select.dataTables.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/datatables-select-bs5/3.1.3/select.bootstrap5.min.css' %}">
+
     {# NexusLIMS detail page styles (modular) - loaded AFTER main.css to override CSS reset #}
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/layout.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/gallery.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/accordions.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/modals.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/tables.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/buttons.css' %}">

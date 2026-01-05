@@ -1196,7 +1196,7 @@ Use it like:
                                                                         </div>
                                                                         <xsl:if test="nx:description/text()">
                                                                             <div class="row">
-                                                                                <div class='col-xs-12' style=''>
+                                                                                <div class='col-12' style=''>
                                                                                     <div style="font-size:15px">Dataset description:
                                                                                         <i><xsl:value-of select="nx:description"/></i>
                                                                                     </div>
@@ -1204,7 +1204,7 @@ Use it like:
                                                                             </div>
                                                                         </xsl:if>
                                                                         <div class="row" style="justify-content: center;">
-                                                                            <div class='col-xs-12 meta-table-col' style="">
+                                                                            <div class='col-12 meta-table-col' style="">
                                                                                 <!-- Generate the table with setup conditions for each acquisition activity -->
                                                                                 <table class="table table-sm table-hover meta-table compact text-start" border="1"><!-- style="" -->
                                                                                     <thead>
@@ -1271,7 +1271,7 @@ Use it like:
                                                                         </div>
                                                                         <div class='row'
                                                                              style="justify-content: center;">
-                                                                            <div class='col-xs-12 text-center mt-3 missing-metadata'>
+                                                                            <div class='col-12 text-center mt-3 missing-metadata'>
                                                                                 <xsl:element name='a'>
                                                                                     <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
                                                                                     <xsl:attribute name="data-bs-placement">top</xsl:attribute>
@@ -1316,7 +1316,7 @@ Use it like:
                                             <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('{generate-id(current())}-modal')"/>
                                         </div>
                                         <div class="row">
-                                            <div class='col-xs-12' style=''>
+                                            <div class='col-12' style=''>
                                                 <div style="font-size:15px">Activity contents:
                                                     <i>
                                                         <xsl:call-template name="parse-activity-contents"></xsl:call-template>
@@ -1325,7 +1325,7 @@ Use it like:
                                             </div>
                                         </div>
                                         <div class="row" style="justify-content: center;">
-                                            <div class='col-xs-12 meta-table-col' style="">
+                                            <div class='col-12 meta-table-col' style="">
                                                 <!-- Generate the table with setup conditions for each acquisition activity -->
                                                 <table class="table table-sm table-hover meta-table compact text-start" border="1"><!-- style="" -->
                                                     <thead>
@@ -1396,7 +1396,7 @@ Use it like:
                                             </div>
                                         </div>
                                         <div class='row' style="justify-content: center;">
-                                            <div class='col-xs-12 text-center mt-3 missing-metadata'>
+                                            <div class='col-12 text-center mt-3 missing-metadata'>
                                                 <xsl:element name='a'>
                                                     <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
                                                     <xsl:attribute name="data-bs-placement">top</xsl:attribute>
@@ -1419,7 +1419,7 @@ Use it like:
                   <div id="filelist-modal" class="nexuslims-modal">
                       <div class="modal-content" style="width: 65vw;">
                           <div class="modal-body">
-                              <div class="d-flex justify-content-between align-items-start mb-3">
+                              <div class="d-flex justify-content-between align-items-start mb-2">
                                   <div>
                                   <strong>Complete filelisting for:</strong><br/>
                                   <span class='dl-modal-title'>
@@ -1447,7 +1447,7 @@ Use it like:
                                           <xsl:attribute name="data-bs-container">.help-filelist-modal</xsl:attribute>
                                           <xsl:attribute name="title">
                                               <xsl:text>This window shows all the datasets identified as part of this record.&#10;&#10;</xsl:text>
-                                              <xsl:text>Rows of the table can be selected by clicking anywhere within the row with the mouse.&#10;&#10;</xsl:text>
+                                              <xsl:text>Rows of the table can be selected by clicking anywhere within the row with the mouse. Multiple rows can be selected by holding shift while clicking.&#10;&#10;</xsl:text>
                                               <xsl:text>The files (and metadata) associated with the selected datasets can be downloaded by clicking on the "Download selected" or "Download all" button (warning, this may take some time for large amounts of data). You can close this dialogue (but not the browser tab!) while the download is processing without interrupting its progress. Do not navigate away from the page, or the download will cancel!&#10;&#10;</xsl:text>
                                               <xsl:text>The textual data from the selected rows (not the actual files) can also be exported to the clipboard, a CSV file, an Excel file, or printed to PDF by using the respective buttons as well.</xsl:text>
                                           </xsl:attribute>
@@ -1456,8 +1456,8 @@ Use it like:
                                   </div>
                               </div>
                               <!-- Download progressbar row ((hidden by default by jQuery) -->
-                              <div id='progressbar-row' class='row'>
-                                  <div class='col-xs-12 w-100' style="">
+                              <div id='progressbar-row' class='row g-0'>
+                                  <div class='col-12'>
                                       <div class="progress mb-1" id="progress_bar">
                                           <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                               0%
@@ -1466,27 +1466,27 @@ Use it like:
                                   </div>
                               </div>
                               <!-- Download cancel button row (hidden by default by jQuery) -->
-                              <div id='btn-cancel-row' class='row'>
-                                  <div class='col-xs-12 w-100 mt-0 mb-0'>
+                              <div id='btn-cancel-row' class='row g-0'>
+                                  <div class='col-12 mt-0 mb-0'>
                                       <button id="btn-cancel-dl" class="btn btn-danger" type="button"
                                               data-bs-toggle="tooltip" data-bs-placement="right"
                                               title="Canceling the download through the browser will not work, so be sure to use this button to actually stop the file transfer"><i class='fa fa-ban menu-fa' aria-hidden="true"/><span>Cancel download</span></button>
                                   </div>
                               </div>
                               <!-- Download result text row (hidden by default by jQuery) -->
-                              <div id='dl-result-row' class='row'>
-                                  <div class='col-xs-12 w-100 mt-0 mb-0' style="">
+                              <div id='dl-result-row' class='row g-0'>
+                                  <div class='col-12 mt-0 mb-0'>
                                       <p id="download-result" class="mt-1 mb-1"></p>
                                   </div>
                               </div>
                               <!-- Download extra message row (hidden by default by jQuery) -->
-                              <div id='dl-extra-row' class='row'>
-                                  <div class='col-xs-12 w-100 mt-0 mb-0' style="">
+                              <div id='dl-extra-row' class='row g-0'>
+                                  <div class='col-12 mt-0 mb-0'>
                                       <p id="download-extra" class="mt-1 mb-1"></p>
                                   </div>
                               </div>
-                              <div class="row mt-0">
-                                  <div class='col-xs-12 pt-0 w-100'>
+                              <div class="row g-0 mt-0">
+                                  <div class='col-12 pt-0'>
                                       <!-- Generate the filelist table -->
                                       <table id="filelist-table"
                                              class="table table-sm table-hover filelist-table compact mt-0"

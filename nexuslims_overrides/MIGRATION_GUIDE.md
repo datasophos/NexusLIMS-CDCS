@@ -10,23 +10,23 @@ This guide helps migrate existing scattered template overrides into the centrali
 - [x] Explore page
   - [x] Download/export button not working
 - [ ] Record page
-  - [ ] wonky styling
+  - [x] wonky styling
     - [x] paginate on left side bar
     - [x] paginate on file list tables
     - [x] badge font is too large
     - [x] datatable search and paginate on metadata display modal
     - [x] preview gallery caption styling is super wide; it should only be as wide as the preview gallery itself
     - [x] "X" button is not clickable on activity metadata modal
-    - [ ] Buttons and header styling on download file modal
-  - [ ] Tooltips stay visible when clicking a link with one
-  - [ ] Edit button doesn't work, and should only show when the user is logged in and has permissions
+    - [x] Buttons and header styling on download file modal
+  - [x] Tooltips stay visible when clicking a link with one
   - [x] `xmlName` parameter should get passed into
     - `<span id="xmlName" style="display: none;"></span>`
-  - [ ] ZIP downloads
   - [x] top toolbar
   - [x] page jumps when closing modal
   - [x] "InstallTrigger is deprecated and will be removed in the future."
   - [x] how to include instrument data (maybe init_dev_environment expands a .tar.gz?)
+  - [ ] ZIP downloads
+  - [ ] Edit button doesn't work, and should only show when the user is logged in and has permissions
   - [ ] feat: easily configurable badge colors?
 - [ ] Simple display should be checked
 

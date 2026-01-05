@@ -17,10 +17,18 @@
     function initializeFileListTable(zip_title) {
         window.filelist_dt = new DataTable('table#filelist-table', {
             ordering: false,
+            pagingType: 'simple_numbers',
             layout: {
-                topStart: 'search',
-                topEnd: 'paging',
-                top2Start: 'buttons',
+                top2Start: {
+                    rowClass: 'search-paging-row',
+                    features: ['search']
+                },
+                top2End: {
+                    rowClass: 'search-paging-row',
+                    features: ['paging']
+                },
+                topStart: 'buttons',
+                topEnd: null,
                 bottomStart: 'info',
                 bottomEnd: null
             },
@@ -103,7 +111,7 @@
                 }
             ],
             select: {
-                style: 'multi',
+                style: 'multi+shift'
             },
             columnDefs: [
                 { data: 'checkbox', orderable: false, width: '1em', className: 'select-checkbox', targets: 0, "defaultContent": "" },
@@ -147,8 +155,8 @@
         buttonContainer.closest('.dt-layout-row').after(exportRow);
 
         // add styling classes
-        buttonContainer.closest('.dt-layout-row').addClass('dl-btn-row');
-        exportRow.addClass('export-btn-row');
+        buttonContainer.closest('.dt-layout-row').addClass(['dl-btn-row', 'mb-1']);
+        exportRow.addClass(['export-btn-row', 'mb-1']);
     }
 
     /**

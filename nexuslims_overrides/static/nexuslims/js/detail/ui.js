@@ -1,7 +1,7 @@
 /**
  * NexusLIMS Detail Page - UI Handlers
  *
- * Modals, accordions, scroll management, tooltips, keyboard handlers, and image gallery
+ * Modals, scroll management, tooltips, keyboard handlers, and image gallery
  */
 
 (function($, window) {
@@ -166,13 +166,13 @@
         if (btn && btn.getAttribute('data-bs-toggle') === 'tooltip') {
             var tooltip = bootstrap.Tooltip.getInstance(btn);
             if (tooltip) {
-                var newTitle = sidebar.hasClass('side-expanded') 
-                    ? 'Click to close sidebar' 
+                var newTitle = sidebar.hasClass('side-expanded')
+                    ? 'Click to close sidebar'
                     : 'Click to explore record contents';
-                
+
                 // Update the data-bs-title attribute (Bootstrap reads from this)
                 btn.setAttribute('data-bs-title', newTitle);
-                
+
                 // Update the tooltip's internal title property
                 tooltip._config.title = newTitle;
             }
@@ -218,12 +218,12 @@
         // Add listener to close sidebar when clicking outside
         $(document).on("click", function(e) {
             var target = $(e.target);
-            
+
             // Don't close if clicking the sidebar button
             if (target.closest('#btn-sidebar').length) {
                 return;
             }
-            
+
             // Don't close if clicking a pagination button inside nav-table (sidebar's table)
             var pagingButton = target.closest('.dt-paging-button');
             if (pagingButton.length) {
@@ -231,96 +231,18 @@
                     return;
                 }
             }
-            
+
             // Don't close if clicking inside the sidebar (including all child elements)
             if (target.closest('.sidebar').length) {
                 return;
             }
-            
+
             // Click is outside - close the sidebar if it's expanded
             var sidebar = $(".sidebar");
             if (sidebar.hasClass('side-expanded')) {
                 closeSidebar();
             }
         });
-    });
-
-    // ============================================================================
-    // Accordion Handlers
-    // ============================================================================
-
-    function closePanel(acc) {
-        var panel = acc.next();
-        acc.removeClass("active-accordion");
-        panel.css('maxHeight', 0);
-    }
-
-    function openPanel(acc) {
-        var panel = acc.next();
-        acc.addClass("active-accordion");
-        panel.css('maxHeight', panel.prop('scrollHeight') + "px");
-    }
-
-    function togglePanel(acc) {
-        if (acc.hasClass("active-accordion")) {
-            closePanel(acc);
-        } else {
-            openPanel(acc);
-        }
-    }
-
-    Detail.closeAccords = function() {
-        $('button[id*=idm]').each(function() {
-            Detail.toggleAA($(this).prop('id'), false, true);
-        });
-    };
-
-    Detail.openAccords = function() {
-        $('button[id*=idm]').each(function() {
-            Detail.toggleAA($(this).prop('id'), true, false);
-        });
-    };
-
-    Detail.toggleAA = function(btn_id, force_open, force_close) {
-        force_open = force_open || false;
-        force_close = force_close || false;
-
-        var collapse_str = "<i class='fa fa-minus-square-o'></i> Collapse Activity";
-        var expand_str = "<i class='fa fa-plus-square-o'></i> Expand Activity";
-
-        var btn = $('#' + btn_id);
-        var action_is_expand = btn.text().includes('Expand');
-
-        if (force_close) {
-            action_is_expand = false;
-        }
-
-        var acc = btn.parents().eq(2).nextUntil('.container-fluid').filter('.accordion');
-
-        acc.each(function(index) {
-            var panel = $(this).next();
-            if (action_is_expand || force_open) {
-                openPanel($(this));
-                btn.html(collapse_str);
-                btn.addClass('btn-danger');
-                btn.removeClass('btn-success');
-            } else if (!(action_is_expand) || force_close) {
-                closePanel($(this));
-                btn.html(expand_str);
-                btn.addClass('btn-success');
-                btn.removeClass('btn-danger');
-            }
-        });
-    };
-
-    // Initialize accordion handlers
-    $(document).ready(function() {
-        var acc = document.getElementsByClassName("accordion");
-        for (var i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                togglePanel($(this));
-            });
-        }
     });
 
     // ============================================================================

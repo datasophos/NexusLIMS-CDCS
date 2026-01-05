@@ -10,10 +10,10 @@ PROJECT_VERSION = os.getenv("PROJECT_VERSION", "3.18.0")
 """
 
 # Website customization
-WEBSITE_SHORT_TITLE = "MDCS"
-CUSTOM_DATA = "Materials Data"
+WEBSITE_SHORT_TITLE = "NexusLIMS"
+CUSTOM_DATA = "Experimental Records"
 CUSTOM_NAME = (
-    os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "Curator"
+    os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "NexusLIMS"
 )
 CUSTOM_TITLE = "Welcome to NexusLIMS!"
 

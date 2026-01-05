@@ -66,6 +66,72 @@
     justify-content: flex-end;
 }
 
+/* Remove Bootstrap row padding and margins in filelist modal */
+#filelist-modal .modal-body .row {
+    margin: 0;
+}
+
+#filelist-modal .modal-body .row > [class^="col-"] {
+    padding: 0;
+}
+
+/* File listing modal table - search and pagination layout (same as meta-table) */
+#filelist-modal .dt-container .search-paging-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-bottom: 0.5rem;  /* Bootstrap mb-2 */
+}
+
+/* Make layout cells flex items */
+#filelist-modal .search-paging-row .dt-layout-cell {
+    display: flex;
+}
+
+/* Search input on the left */
+#filelist-modal .search-paging-row .dt-layout-start {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+#filelist-modal .search-paging-row .dt-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    max-width: 60%;
+    flex-grow: 1;
+}
+
+#filelist-modal .search-paging-row .dt-search label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+#filelist-modal .search-paging-row .dt-input {
+    flex-grow: 1;
+    padding: var(--spacing-xs) var(--spacing-sm);  /* 0.25rem 0.5rem */
+    font-size: 0.875rem;
+    line-height: 1.5;
+    height: auto;
+    margin: 0;
+}
+
+/* add some space between the search/pagination and the table */
+#filelist-modal .dt-layout-table {
+    margin-top: 0.25em;
+}
+
+/* Pagination on the right */
+#filelist-modal .search-paging-row .dt-layout-end {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* Activity table - prevent columns from growing beyond specified widths */
 table.aa-table {
     table-layout: fixed;
@@ -321,11 +387,58 @@ table.sample-table p {
 }
 
 /* File listing table */
-table.filelist-table.dataTable tbody td.select-checkbox:before {
-    top: 64%;
+table.filelist-table.dataTable {
+    --dt-row-selected: 229, 236, 246; /* #e5ecf6 in RGB */
+    --dt-row-selected-text: 71, 71, 71; /* #474747 in RGB */
+    --dt-row-selected-link: 56, 101, 163; /* #3865a3 in RGB */
 }
+
+table.filelist-table.dataTable tbody td.select-checkbox {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Modern checkbox styling - override DataTables defaults */
+table.filelist-table.dataTable tbody td.select-checkbox:before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin-top: -8px !important;
+    margin-left: -8px !important;
+    border: 2px solid #adb5bd !important;
+    border-radius: 3px !important;
+    background-color: white !important;
+    box-shadow: none !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+table.filelist-table.dataTable tbody td.select-checkbox:hover:before {
+    border-color: #3a65a2 !important;
+}
+
+table.filelist-table.dataTable tr.selected td.select-checkbox:before {
+    background-color: #3a65a2 !important;
+    border-color: #3a65a2 !important;
+}
+
 table.filelist-table.dataTable tr.selected td.select-checkbox:after {
-    top: 44%;
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 4px !important;
+    height: 8px !important;
+    margin-top: -5px !important;
+    margin-left: -2px !important;
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    box-shadow: none !important;
+    transform: rotate(45deg) !important;
 }
 .filelist-btn {
     font-weight: 300;
