@@ -78,6 +78,9 @@
     <script type="text/javascript" src="{% static 'libs/streamsaver/2.0.6/StreamSaver.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/shepherd.js/11.2.0/shepherd.min.js' %}"></script>
 
+    {# client-zip for streaming ZIP creation (ES module) #}
+    <script type="module" src="{% static 'libs/client-zip/2.5.0/client-zip-loader.js' %}"></script>
+
     {# Configure StreamSaver service worker paths #}
     <script type="text/javascript">
         // Set StreamSaver service worker and MITM paths
@@ -91,7 +94,15 @@
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/utils.js' %}"></script>
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/ui.js' %}"></script>
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/tour.js' %}"></script>
-    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads.js' %}"></script>
+
+    {# New modular download system #}
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/file-cache.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/emi-bundler.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/progress-tracker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/stream-writer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/zip-builder.js' %}"></script>
+    <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/index.js' %}"></script>
+
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/datatables.js' %}"></script>
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/main.js' %}"></script>
 

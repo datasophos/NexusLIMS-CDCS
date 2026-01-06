@@ -103,16 +103,7 @@
     // File Name Helpers
     // ============================================================================
 
-    // Extract .emi filename from .ser filename
-    window.NexusLIMSDetail.getEmiName = function(serName) {
-        let re = /(.*)_[0-9]+\.ser/;
-        let match = re.exec(serName);
-        if (match == null) {
-            return null;
-        } else {
-            return match[1] + '.emi';
-        }
-    };
+    // Note: getEmiName() moved to downloads/emi-bundler.js module
 
     // ============================================================================
     // XML Formatting

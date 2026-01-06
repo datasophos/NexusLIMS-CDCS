@@ -47,12 +47,12 @@
                     text: "<i class='fa fa-archive menu-fa'/> <span class='filelist-btn'>Download all as .zip</span>",
                     className: 'btn-dl-all dl-btns',
                     action: function(e, dt, node, config) {
-                        var data_urls = dt.rows().data().map(x => $(x.data_dl).attr('href'));
-                        var json_urls = dt.rows().data().map(x => $(x.json_dl).attr('href'));
-                        var paths = dt.rows().data().map(x => $(x.path).text());
+                        var data_urls = dt.rows().data().map(x => $(x.data_dl).attr('href')).toArray();
+                        var json_urls = dt.rows().data().map(x => $(x.json_dl).attr('href')).toArray();
+                        var paths = dt.rows().data().map(x => $(x.path).text()).toArray();
                         $('button.dl-btns').addClass('disabled');
                         window.filelist_dt.select.style('api');
-                        Detail.downloadFn(data_urls, json_urls, paths, zip_title);
+                        Detail.Downloads.download(data_urls, json_urls, paths, zip_title);
                     },
                     attr: {
                         'data-bs-toggle': 'tooltip',
@@ -73,12 +73,12 @@
                     },
                     className: 'btn-dl-selected dl-btns',
                     action: function(e, dt, node, config) {
-                        var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href'));
-                        var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href'));
-                        var paths = dt.rows({ selected: true }).data().map(x => $(x.path).text());
+                        var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href')).toArray();
+                        var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href')).toArray();
+                        var paths = dt.rows({ selected: true }).data().map(x => $(x.path).text()).toArray();
                         $('button.dl-btns').addClass('disabled');
                         window.filelist_dt.select.style('api');
-                        Detail.downloadFn(data_urls, json_urls, paths, zip_title);
+                        Detail.Downloads.download(data_urls, json_urls, paths, zip_title);
                     }
                 },
                 {
@@ -117,7 +117,7 @@
                 { data: 'checkbox', orderable: false, width: '1em', className: 'select-checkbox', targets: 0, "defaultContent": "" },
                 { data: 'name', name: 'name', targets: 1 },
                 { data: 'path', name: 'path', targets: 2 },
-                { data: 'size', name: 'size', width: '4em', targets: 3 },
+                { data: 'size', name: 'size', width: '5em', targets: 3 },
                 { data: 'type', name: 'type', targets: 4 },
                 { data: 'json_dl', name: 'json_dl', width: '3em', targets: 5 },
                 { data: 'data_dl', name: 'data_dl', width: '3em', targets: 6 },
@@ -184,15 +184,15 @@
      */
     function setupDownloadSizeListeners(dt) {
         dt.on('select', function(e, dt, items) {
-            var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href'));
-            var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href'));
-            Detail.showDownloadSize(data_urls, json_urls, 'select');
+            var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href')).toArray();
+            var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href')).toArray();
+            Detail.Downloads.updateDownloadSize(data_urls, json_urls);
         });
 
         dt.on('deselect', function(e, dt, items) {
-            var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href'));
-            var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href'));
-            Detail.showDownloadSize(data_urls, json_urls, 'select');
+            var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href')).toArray();
+            var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href')).toArray();
+            Detail.Downloads.updateDownloadSize(data_urls, json_urls);
         });
     }
 
@@ -225,12 +225,10 @@
         // Split buttons into two rows
         splitButtonRows();
 
-        // Get all file sizes initially
-        Detail.showDownloadSize(
-            dt.rows().data().map(x => $(x.data_dl).attr('href')),
-            dt.rows().data().map(x => $(x.json_dl).attr('href')),
-            'initial'
-        );
+        // Initialize file cache with all files
+        const dataUrls = dt.rows().data().map(x => $(x.data_dl).attr('href')).toArray();
+        const jsonUrls = dt.rows().data().map(x => $(x.json_dl).attr('href')).toArray();
+        Detail.Downloads.initialize(dataUrls, jsonUrls);
 
         // Setup event listeners
         setupDownloadSizeListeners(dt);
@@ -238,8 +236,7 @@
         // Move progress rows to correct position
         moveProgressRows();
 
-        // Check for .ser files
-        checkForSerFiles(dt);
+        // Note: .ser file warning is now handled by Downloads.initialize()
     }
 
     /**
