@@ -22,6 +22,7 @@
     // State
     let downloadInProgress = false;
     let currentAbortController = null;
+    let wasUserCancelled = false;
 
     /**
      * Initialize file size cache for the page
@@ -31,6 +32,26 @@
      */
     async function initialize(dataUrls, jsonUrls) {
         try {
+            // Check if File System Access API is supported for ZIP downloads
+            if (!StreamWriter.supportsFileSystemAccess()) {
+                const errorMessage = '🚨 Warning! The NexusLIMS File Downloader will not work in your browser, ' +
+                  'because it does not yet support the File System Access API. To use this tool, please ' +
+                  'reopen this page in a recent version of Chrome, Edge, or Opera that supports this feature. ' +
+                  'Please see <a target="_blank" href="https://caniuse.com/native-filesystem-api">this page</a> for details on ' +
+                  'browser support for this feature. 🚨';
+                ProgressTracker.showExtraMessage(errorMessage, 'danger');
+                ProgressTracker.showWarning(
+                  "You can still export the file list or download files by clicking on indivdual download buttons " +
+                  "below, but for bulk downloads, please use a supported browser.");
+                console.warn('File System Access API not supported:', errorMessage);
+
+                // Remove ZIP download buttons from UI
+                $('.btn-dl-all').remove();
+                $('.btn-dl-selected').remove();
+
+                return;
+            }
+
             ProgressTracker.showInfo('Calculating download size...');
 
             // Get EMI URLs for .ser files
@@ -88,6 +109,18 @@
             return;
         }
 
+        // Validate input URLs
+        const hasUndefinedDataUrls = dataUrls.some(url => !url);
+        const hasUndefinedJsonUrls = jsonUrls.some(url => !url);
+
+        if (hasUndefinedDataUrls || hasUndefinedJsonUrls) {
+            console.warn('updateDownloadSize called with undefined URLs');
+            console.warn('Data URLs:', dataUrls);
+            console.warn('JSON URLs:', jsonUrls);
+            ProgressTracker.showWarning('Some files have missing download links.');
+            return;
+        }
+
         // Get EMI URLs for selected .ser files
         const emiUrls = EmiBundler.getEmiUrlsForCache(dataUrls);
 
@@ -114,19 +147,21 @@
      */
     async function download(dataUrls, jsonUrls, paths, zipTitle) {
         // Check browser compatibility
-        if (!Detail.supportsClientSideZip) {
-            alert('Due to browser limitations, downloading of files into a zip archive is not supported in your current browser. Please use a modern browser instead.');
+        // Check if File System Access API is supported for ZIP downloads
+        if (!StreamWriter.supportsFileSystemAccess()) {
+            const errorMessage = 'File System Access API is not supported in your browser. ' +
+                'ZIP downloads require Chrome, Edge, or other modern browsers that support this feature. ' +
+                'Please see <a target="_blank" href="https://caniuse.com/native-filesystem-api">this page</a> for details on ' +
+                'browser support for this feature.';
+            ProgressTracker.showError(errorMessage);
+            console.warn('File System Access API not supported:', errorMessage);
             $('button.dl-btns').removeClass('disabled');
             if (window.filelist_dt) window.filelist_dt.select.style('multi+shift');
             return;
         }
 
-        if (!StreamWriter.supportsFileSystemAccess() && !StreamWriter.supportsStreamSaver()) {
-            alert('Your browser does not support streaming downloads. Please use a modern browser (Chrome, Edge, Firefox, or Safari).');
-            $('button.dl-btns').removeClass('disabled');
-            if (window.filelist_dt) window.filelist_dt.select.style('multi+shift');
-            return;
-        }
+        // File System Access API provides ZIP download functionality on Chrome/Edge
+        // We already checked for FSA support above, so we can proceed with confidence
 
         if (downloadInProgress) {
             console.warn('Download already in progress');
@@ -135,6 +170,7 @@
 
         try {
             downloadInProgress = true;
+            wasUserCancelled = false; // Reset cancellation flag
 
             // Reset UI
             ProgressTracker.reset();
@@ -146,16 +182,79 @@
 
             console.info(`Downloading ${fileList.length} datasets`);
 
-            // Calculate total size
-            // Note: buildZipFileArray deduplicates at URL level, keeping:
-            // - Each data file once (even if multiple datasets reference it)
-            // - Each unique JSON file (even if they share the same data file)
-            // - Each EMI file once
-            const allZipFiles = ZipBuilder.buildZipFileArray(fileList);
-            const allUrls = allZipFiles.map(f => f.url);
-            const totalSize = FileCache.getTotalSize(allUrls);
+            // Build the complete file array with URLs for ZIP downloads
+            let fileListWithUrls;
+            let allUrls;
+            let totalSize;
 
-            console.info(`Total download size: ${Detail.humanFileSize(totalSize)}`);
+            try {
+                console.debug('Starting file list processing...');
+                console.debug('Input dataUrls:', dataUrls);
+                console.debug('Input jsonUrls:', jsonUrls);
+                console.debug('Input paths:', paths);
+
+                // Validate input arrays
+                if (!dataUrls || !jsonUrls || !paths) {
+                    throw new Error('Input arrays are undefined');
+                }
+
+                if (dataUrls.length === 0 || jsonUrls.length === 0 || paths.length === 0) {
+                    throw new Error('Input arrays are empty');
+                }
+
+                // Check for undefined URLs in the input arrays
+                const hasUndefinedDataUrls = dataUrls.some(url => !url);
+                const hasUndefinedJsonUrls = jsonUrls.some(url => !url);
+                const hasUndefinedPaths = paths.some(path => !path);
+
+                if (hasUndefinedDataUrls || hasUndefinedJsonUrls || hasUndefinedPaths) {
+                    console.error('Input arrays contain undefined values:');
+                    console.error('dataUrls:', dataUrls);
+                    console.error('jsonUrls:', jsonUrls);
+                    console.error('paths:', paths);
+                    throw new Error('Input arrays contain undefined values');
+                }
+
+                // Validate input fileList
+                if (!fileList || fileList.length === 0) {
+                    throw new Error('Input fileList is empty or undefined');
+                }
+
+                // Check for undefined URLs in the input
+                const hasUndefinedUrls = fileList.some(file => !file.dataUrl || !file.jsonUrl);
+                if (hasUndefinedUrls) {
+                    console.warn('File list contains entries with undefined URLs:', fileList);
+                }
+
+                console.debug('Calling ZipBuilder.buildZipFileArray with', fileList.length, 'files');
+                const allZipFiles = ZipBuilder.buildZipFileArray(fileList);
+                fileListWithUrls = allZipFiles; // This contains the actual file objects with URLs
+
+                console.debug('File list processing completed');
+                console.debug('Generated', fileListWithUrls.length, 'ZIP entries');
+
+                if (!fileListWithUrls || fileListWithUrls.length === 0) {
+                    throw new Error('File list processing resulted in empty array');
+                }
+
+                // Calculate total size using the file list with URLs
+                allUrls = fileListWithUrls.map(f => f.url);
+                console.debug('All URLs for size calculation:', allUrls);
+
+                totalSize = FileCache.getTotalSize(allUrls);
+                console.debug('Calculated total size:', totalSize, 'bytes');
+
+                console.info(`Total download size: ${Detail.humanFileSize(totalSize)}`);
+
+            } catch (error) {
+                console.error('Failed to process file list:', error);
+                ProgressTracker.showError('Failed to prepare files for download: ' + error.message);
+                $(window).off('beforeunload', beforeUnloadHandler);
+                downloadInProgress = false;
+                $('button.dl-btns').removeClass('disabled');
+                if (window.filelist_dt) window.filelist_dt.select.style('multi+shift');
+                return;
+            }
 
             // Create abort controller for cancellation
             currentAbortController = new AbortController();
@@ -163,7 +262,12 @@
 
             // Setup cancel button
             $('#btn-cancel-dl').off('click').on('click', () => {
-                cancel();
+                try {
+                    cancel();
+                } catch (error) {
+                    console.warn('Cancel button error:', error);
+                    ProgressTracker.showWarning('Download canceled by user');
+                }
             });
 
             // Warn user before leaving page
@@ -173,41 +277,84 @@
             };
             $(window).on('beforeunload', beforeUnloadHandler);
 
-            // Create ZIP stream
-            const zipStream = ZipBuilder.createZipStream(fileList, abortSignal);
+            try {
+                // Use ZIP download with File System Access API
+                console.debug('Using ZIP download with File System Access API');
 
-            // Create stream writer
-            const writer = await StreamWriter.create(zipTitle, totalSize);
-            
-            // Validate writer object
-            if (!writer) {
-                console.error('StreamWriter.create() returned null/undefined');
-                throw new Error('Failed to create download writer. No supported download method available.');
+                // Create ZIP stream using the original file list
+                // Note: createZipStream will handle the processing internally
+                const zipStream = ZipBuilder.createZipStream(fileList, abortSignal);
+
+                // Create stream writer - this will throw if FSA is not supported
+                const writer = await StreamWriter.create(zipTitle, totalSize);
+
+                // Validate writer object
+                if (!writer) {
+                    console.error('StreamWriter.create() returned null/undefined');
+                    throw new Error('Failed to create download writer. No supported download method available.');
+                }
+
+                if (typeof writer.write !== 'function') {
+                    console.error('Invalid writer object - missing write method:', {
+                        writerType: writer.constructor ? writer.constructor.name : 'unknown',
+                        writerKeys: Object.keys(writer),
+                        writer: writer
+                    });
+                    throw new Error('Failed to create download writer. Writer object is invalid.');
+                }
+
+                console.debug('Using writer:', writer.constructor ? writer.constructor.name : 'unknown');
+
+                // Track progress
+                let bytesDownloaded = 0;
+                const progressCallback = (chunkSize) => {
+                    bytesDownloaded += chunkSize;
+                    ProgressTracker.updateProgress(bytesDownloaded, totalSize);
+                };
+
+                // Write ZIP to disk with progress tracking
+                await writer.write(zipStream, progressCallback, abortSignal);
+
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                  console.error('Download failed:', error);
+                }
+
+                // Check if it was user cancellation
+                const isUserCancelled = wasUserCancelled || error.name === 'AbortError' ||
+                                       (error.message && error.message.includes('aborted')) ||
+                                       (currentAbortController && currentAbortController.signal.aborted);
+
+                if (isUserCancelled) {
+                    // User cancellation - message already shown in cancel() function
+                    console.warn('Download was canceled by user');
+                    wasUserCancelled = false; // Reset flag
+                } else if (error.message.includes('File System Access API is not supported')) {
+                    // Handle the case where File System Access API is not supported
+                    ProgressTracker.showError('File System Access API is not supported in your browser. Please use Chrome, Edge, or other modern browsers for ZIP downloads.');
+                } else {
+                    // Real error
+                    ProgressTracker.showError('Failed to download files: ' + error.message);
+                }
+
+                // Clean up
+                $(window).off('beforeunload', beforeUnloadHandler);
+                downloadInProgress = false;
+                $('button.dl-btns').removeClass('disabled');
+                if (window.filelist_dt) window.filelist_dt.select.style('multi+shift');
+
+                // Hide progress bar and cancel button on error, but preserve messages
+                ProgressTracker.hideProgressBar();
+                ProgressTracker.hideCancelButton();
+                return;
             }
-            
-            if (typeof writer.write !== 'function') {
-                console.error('Invalid writer object - missing write method:', {
-                    writerType: writer.constructor ? writer.constructor.name : 'unknown',
-                    writerKeys: Object.keys(writer),
-                    writer: writer
-                });
-                throw new Error('Failed to create download writer. Writer object is invalid.');
-            }
-            
-            console.info('Using writer:', writer.constructor ? writer.constructor.name : 'unknown');
-
-            // Track progress
-            let bytesDownloaded = 0;
-            const progressCallback = (chunkSize) => {
-                bytesDownloaded += chunkSize;
-                ProgressTracker.updateProgress(bytesDownloaded, totalSize);
-            };
-
-            // Write ZIP to disk with progress tracking
-            await writer.write(zipStream, progressCallback, abortSignal);
 
             // Success!
+            console.info('Download completed successfully');
+            console.info('Calling ProgressTracker.finish for ZIP download');
             ProgressTracker.finish();
+
+            console.info('Download process fully completed');
 
             // Cleanup
             $(window).off('beforeunload', beforeUnloadHandler);
@@ -219,9 +366,17 @@
             console.error('Download failed:', error);
 
             // Check if it was user cancellation
-            if (error.name === 'AbortError' || currentAbortController?.signal.aborted) {
-                ProgressTracker.showWarning('Download canceled by user (any already completed downloads were saved)');
+            const isUserCancelled = wasUserCancelled || error.name === 'AbortError' ||
+                                   (error.message && error.message.includes('aborted')) ||
+                                   (currentAbortController && currentAbortController.signal.aborted);
+
+            if (isUserCancelled) {
+                // User cancellation - message already shown in cancel() function
+                console.info('Download was canceled by user');
+                wasUserCancelled = false; // Reset flag
+                // Don't show any additional error messages
             } else {
+                // Real error
                 ProgressTracker.error();
                 ProgressTracker.showError('There was an error during the download: ' + error.message);
             }
@@ -231,6 +386,10 @@
             downloadInProgress = false;
             $('button.dl-btns').removeClass('disabled');
             if (window.filelist_dt) window.filelist_dt.select.style('multi+shift');
+
+            // Hide progress bar and cancel button on error, but preserve messages
+            ProgressTracker.hideProgressBar();
+            ProgressTracker.hideCancelButton();
         }
     }
 
@@ -239,10 +398,27 @@
      */
     function cancel() {
         if (currentAbortController) {
-            currentAbortController.abort();
+            try {
+                wasUserCancelled = true; // Set flag before aborting
+                currentAbortController.abort();
+                // Show user-friendly cancellation message
+                ProgressTracker.showWarning('Download canceled by user (any already completed downloads were saved)');
+            } catch (error) {
+                console.warn('Error during cancellation:', error);
+                ProgressTracker.showWarning('Download canceled by user');
+            }
             currentAbortController = null;
         }
         downloadInProgress = false;
+
+        // Clean up UI state
+        $(window).off('beforeunload');
+        $('button.dl-btns').removeClass('disabled');
+        if (window.filelist_dt) window.filelist_dt.select.style('multi+shift');
+
+        // Hide progress bar and cancel button, but preserve messages
+        ProgressTracker.hideProgressBar();
+        ProgressTracker.hideCancelButton();
     }
 
     /**

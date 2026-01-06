@@ -506,8 +506,9 @@ div.dt-buttons.btn-group > button {
 /* Download result and progress */
 #download-result {
     font-size: small;
-    padding: 0 0.625rem;  /* 0px 10px */
+    padding: var(--spacing-sm) 0.625rem;  /* 0.5rem 10px */
     white-space: pre-wrap;
+    line-height: 1.5em;
 }
 #download-extra{
     font-size: small;

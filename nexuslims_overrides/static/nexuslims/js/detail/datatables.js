@@ -47,9 +47,28 @@
                     text: "<i class='fa fa-archive menu-fa'/> <span class='filelist-btn'>Download all as .zip</span>",
                     className: 'btn-dl-all dl-btns',
                     action: function(e, dt, node, config) {
+                        console.debug('Download all button clicked');
+
                         var data_urls = dt.rows().data().map(x => $(x.data_dl).attr('href')).toArray();
                         var json_urls = dt.rows().data().map(x => $(x.json_dl).attr('href')).toArray();
                         var paths = dt.rows().data().map(x => $(x.path).text()).toArray();
+
+                        console.debug('Extracted data URLs:', data_urls);
+                        console.debug('Extracted JSON URLs:', json_urls);
+                        console.debug('Extracted paths:', paths);
+
+                        // Validate that we have URLs for all selected rows
+                        const hasUndefinedDataUrls = data_urls.some(url => !url);
+                        const hasUndefinedJsonUrls = json_urls.some(url => !url);
+
+                        if (hasUndefinedDataUrls || hasUndefinedJsonUrls) {
+                            console.error('Cannot download: Some files have undefined URLs');
+                            console.error('Data URLs:', data_urls);
+                            console.error('JSON URLs:', json_urls);
+                            ProgressTracker.showError('Cannot download: Some files have missing download links.');
+                            return;
+                        }
+
                         $('button.dl-btns').addClass('disabled');
                         window.filelist_dt.select.style('api');
                         Detail.Downloads.download(data_urls, json_urls, paths, zip_title);
@@ -73,9 +92,28 @@
                     },
                     className: 'btn-dl-selected dl-btns',
                     action: function(e, dt, node, config) {
+                        console.debug('Download selected button clicked');
+
                         var data_urls = dt.rows({ selected: true }).data().map(x => $(x.data_dl).attr('href')).toArray();
                         var json_urls = dt.rows({ selected: true }).data().map(x => $(x.json_dl).attr('href')).toArray();
                         var paths = dt.rows({ selected: true }).data().map(x => $(x.path).text()).toArray();
+
+                        console.debug('Extracted data URLs:', data_urls);
+                        console.debug('Extracted JSON URLs:', json_urls);
+                        console.debug('Extracted paths:', paths);
+
+                        // Validate that we have URLs for all selected rows
+                        const hasUndefinedDataUrls = data_urls.some(url => !url);
+                        const hasUndefinedJsonUrls = json_urls.some(url => !url);
+
+                        if (hasUndefinedDataUrls || hasUndefinedJsonUrls) {
+                            console.error('Cannot download: Some files have undefined URLs');
+                            console.error('Data URLs:', data_urls);
+                            console.error('JSON URLs:', json_urls);
+                            ProgressTracker.showError('Cannot download: Some files have missing download links.');
+                            return;
+                        }
+
                         $('button.dl-btns').addClass('disabled');
                         window.filelist_dt.select.style('api');
                         Detail.Downloads.download(data_urls, json_urls, paths, zip_title);
@@ -171,11 +209,17 @@
             $('#dl-result-row').detach().insertBefore(tableRow);
         }
 
-        // Hide by default
+        // Hide by default, but keep visible if there are error messages
         $('#progressbar-row').hide();
-        $('#dl-result-row').hide();
-        $('#dl-extra-row').hide();
         $('#btn-cancel-row').hide();
+
+        // Only hide result rows if they don't contain error messages
+        const hasErrorMessage = $('#download-result').text().trim() !== '' &&
+                               ($('#download-result').hasClass('alert-danger') || $('#download-extra').hasClass('alert-danger'));
+        if (!hasErrorMessage) {
+            $('#dl-result-row').hide();
+            $('#dl-extra-row').hide();
+        }
     }
 
     /**

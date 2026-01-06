@@ -41,7 +41,7 @@
         $downloadResult
             .removeClass('alert-warning alert-success alert-info alert-danger')
             .addClass('alert alert-' + type)
-            .text(text);
+            .html(text);
     }
 
     /**
@@ -54,7 +54,7 @@
         $downloadExtra
             .removeClass('alert-warning alert-success alert-info alert-danger')
             .addClass('alert alert-' + type)
-            .text(text);
+            .html(text);
     }
 
     /**
@@ -187,6 +187,13 @@
     }
 
     /**
+     * Hide progress bar
+     */
+    function hideProgressBar() {
+        $progressbarRow.hide();
+    }
+
+    /**
      * Show cancel button
      */
     function showCancelButton() {
@@ -238,6 +245,7 @@
         showInfo,
         showCancelButton,
         hideCancelButton,
+        hideProgressBar,
         finish,
         error
     };

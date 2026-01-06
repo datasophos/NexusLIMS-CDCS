@@ -49,8 +49,6 @@
 {% block theme_js %}
     <script src="{% static 'js/util.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <!--remove javascript that interrupts login button:-->
-    <!--<script src="{% static 'js/btn_custom.js' %}"></script>-->
     <script src="{% static 'core_main_app/common/js/debounce.js' %}"></script>
 
     {# NexusLIMS custom JavaScript #}
@@ -74,20 +72,10 @@
     <script type="text/javascript" src="{% static 'libs/datatables-buttons/3.2.6/buttons.print.min.js' %}"></script>
 
     {# Other libraries #}
-    <script type="text/javascript" src="{% static 'libs/web-streams-polyfill/3.3.3/ponyfill.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/streamsaver/2.0.6/StreamSaver.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/shepherd.js/11.2.0/shepherd.min.js' %}"></script>
 
     {# client-zip for streaming ZIP creation (ES module) #}
     <script type="module" src="{% static 'libs/client-zip/2.5.0/client-zip-loader.js' %}"></script>
-
-    {# Configure StreamSaver service worker paths #}
-    <script type="text/javascript">
-        // Set StreamSaver service worker and MITM paths
-        if (typeof streamSaver !== 'undefined') {
-            streamSaver.mitm = '/static/libs/streamsaver/2.0.6/mitm.html';
-        }
-    </script>
 
     {# NexusLIMS detail page JavaScript modules #}
     {# These modules check for #simpleDisplay element and only run on detail pages #}

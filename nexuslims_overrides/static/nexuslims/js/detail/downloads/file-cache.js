@@ -59,7 +59,7 @@
 
         isInitialized = true;
 
-        console.info(`File cache initialized with ${fileSizeCache.size} files`);
+        console.debug(`File cache initialized with ${fileSizeCache.size} files`);
     }
 
     /**

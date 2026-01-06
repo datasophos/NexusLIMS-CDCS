@@ -20,8 +20,51 @@
         const zipFiles = [];
         const seenUrls = new Set();
 
-        fileList.forEach(file => {
+        // Validate input
+        if (!fileList || !Array.isArray(fileList)) {
+            console.error('buildZipFileArray: Invalid input - fileList is not an array:', fileList);
+            return zipFiles;
+        }
+
+        if (fileList.length === 0) {
+            console.warn('buildZipFileArray: Empty file list received');
+            return zipFiles;
+        }
+
+        fileList.forEach((file, index) => {
+            // Validate file object structure
+            if (!file || typeof file !== 'object') {
+                console.error('buildZipFileArray: Invalid file object at index', index, ':', file);
+                return;
+            }
+
             const { dataUrl, jsonUrl, emiUrl, path } = file;
+
+            // Debug logging to help diagnose the issue
+            console.debug('Processing file', index, ':', {
+                dataUrl: dataUrl,
+                jsonUrl: jsonUrl,
+                emiUrl: emiUrl,
+                path: path
+            });
+
+            // Skip if dataUrl is undefined or null
+            if (!dataUrl) {
+                console.warn('Skipping file with undefined dataUrl at index', index, ':', file);
+                return;
+            }
+
+            // Skip if jsonUrl is undefined or null
+            if (!jsonUrl) {
+                console.warn('Skipping file with undefined jsonUrl at index', index, ':', file);
+                return;
+            }
+
+            // Skip if path is undefined or null
+            if (!path) {
+                console.warn('Skipping file with undefined path at index', index, ':', file);
+                return;
+            }
 
             // Clean up path (remove leading slash)
             let cleanPath = path.charAt(0) === '/' ? path.substr(1) : path;
@@ -42,12 +85,14 @@
             if (!seenUrls.has(dataUrl)) {
                 zipFiles.push({ url: dataUrl, path: fullDataPath });
                 seenUrls.add(dataUrl);
+                console.debug('Added data file:', fullDataPath);
             }
 
             // Add JSON metadata if not already seen
             if (!seenUrls.has(jsonUrl)) {
                 zipFiles.push({ url: jsonUrl, path: fullJsonPath });
                 seenUrls.add(jsonUrl);
+                console.debug('Added JSON file:', fullJsonPath);
             }
 
             // Add EMI file if exists and not already seen
@@ -65,6 +110,8 @@
                 }
             }
         });
+
+        console.debug('buildZipFileArray: Processed', fileList.length, 'input files, generated', zipFiles.length, 'ZIP entries');
 
         return zipFiles;
     }
@@ -110,15 +157,33 @@
 
     /**
      * Create ZIP stream from file list
-     * @param {Array} fileList - File list from EmiBundler.prepareFileList()
+     * @param {Array} fileList - Either file list from EmiBundler.prepareFileList() or already-processed ZIP file array
      * @param {AbortSignal} abortSignal - Signal for cancellation
      * @returns {ReadableStream} ZIP archive stream
      */
     function createZipStream(fileList, abortSignal) {
-        // Build flat array of files for ZIP
-        const zipFiles = buildZipFileArray(fileList);
+        let zipFiles;
 
-        console.info(`Creating ZIP with ${zipFiles.length} files`);
+        // Check if fileList is already in the processed format (has 'url' and 'path' properties)
+        // or if it's in the original format (has 'dataUrl', 'jsonUrl', etc.)
+        if (fileList.length > 0) {
+            const firstItem = fileList[0];
+
+            if (firstItem && firstItem.url && firstItem.path && !firstItem.dataUrl) {
+                // Already processed - use directly
+                console.debug('createZipStream: Received already-processed ZIP file array');
+                zipFiles = fileList;
+            } else {
+                // Original format - needs processing
+                console.debug('createZipStream: Received original file list format, processing...');
+                zipFiles = buildZipFileArray(fileList);
+            }
+        } else {
+            console.warn('createZipStream: Empty file list received');
+            zipFiles = [];
+        }
+
+        console.debug(`Creating ZIP with ${zipFiles.length} files`);
 
         // Use client-zip to create streaming ZIP
         // Note: downloadZip is exposed globally by client-zip-loader.js ES module

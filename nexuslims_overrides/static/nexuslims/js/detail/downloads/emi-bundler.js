@@ -37,6 +37,12 @@
      * @returns {Array<{dataUrl: string, jsonUrl: string, emiUrl: string|null, path: string}>}
      */
     function prepareFileList(dataUrls, jsonUrls, paths) {
+        console.debug('EmiBundler.prepareFileList called with:', {
+            dataUrlsLength: dataUrls.length,
+            jsonUrlsLength: jsonUrls.length,
+            pathsLength: paths.length
+        });
+
         if (dataUrls.length !== jsonUrls.length || dataUrls.length !== paths.length) {
             throw new Error('Array lengths must match: dataUrls, jsonUrls, and paths');
         }
@@ -47,6 +53,8 @@
             const dataUrl = dataUrls[i];
             const jsonUrl = jsonUrls[i];
             const path = paths[i];
+
+            console.debug('Processing file', i, ':', { dataUrl, jsonUrl, path });
 
             // Check if this is a .ser file that needs an .emi companion
             let emiUrl = null;
@@ -64,14 +72,24 @@
                 }
             }
 
-            fileList.push({
+            // Validate that required URLs are defined
+            if (!dataUrl || !jsonUrl) {
+                console.warn('Skipping file with missing URLs at index', i, ':', { dataUrl, jsonUrl, path });
+                continue;
+            }
+
+            const fileObj = {
                 dataUrl,
                 jsonUrl,
                 emiUrl,
                 path
-            });
+            };
+
+            fileList.push(fileObj);
+            console.debug('Added file to list:', fileObj);
         }
 
+        console.debug('EmiBundler.prepareFileList completed:', fileList.length, 'files prepared');
         return fileList;
     }
 

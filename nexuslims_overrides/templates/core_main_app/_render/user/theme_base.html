@@ -3,12 +3,11 @@
 
 {% comment %}
 NexusLIMS override of theme_base.html to load additional libraries
-needed for detail page functionality (DataTables, Shepherd.js, StreamSaver)
+needed for detail page functionality (DataTables, Shepherd.js)
 
 This template extends the v3.18.0 base theme_base.html and adds:
 - DataTables 2.3.6 with Bootstrap 5 integration for interactive tables
 - Shepherd.js 14.5.1 for guided tours
-- StreamSaver.js 2.0.6 for large file downloads
 
 Libraries are loaded early in the body so XSLT-generated HTML can use them.
 {% endcomment %}
@@ -49,17 +48,7 @@ Libraries are loaded early in the body so XSLT-generated HTML can use them.
     <script type="text/javascript" src="{% static 'libs/datatables-buttons/3.2.6/buttons.print.min.js' %}"></script>
 
     {# Other libraries #}
-    <script type="text/javascript" src="{% static 'libs/web-streams-polyfill/3.3.3/ponyfill.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'libs/streamsaver/2.0.6/StreamSaver.js' %}"></script>
     <script type="text/javascript" src="{% static 'libs/shepherd.js/14.5.1/shepherd.min.js' %}"></script>
-
-    {# Configure StreamSaver service worker paths #}
-    <script type="text/javascript">
-        // Set StreamSaver service worker and MITM paths
-        if (typeof streamSaver !== 'undefined') {
-            streamSaver.mitm = '/static/libs/streamsaver/2.0.6/mitm.html';
-        }
-    </script>
 
     {# NexusLIMS detail page JavaScript modules #}
     {# These modules check for #simpleDisplay element and only run on detail pages #}

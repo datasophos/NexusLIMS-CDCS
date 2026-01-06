@@ -9,4 +9,4 @@ import { downloadZip } from './index.js';
 // Expose to window for non-module scripts
 window.downloadZip = downloadZip;
 
-console.info('client-zip loaded and available as window.downloadZip');
+// console.info('client-zip loaded and available as window.downloadZip');
