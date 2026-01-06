@@ -1,5 +1,7 @@
 services:
   caddy:
+    build:
+      context: caddy
     image: caddy:${CADDY_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}_cdcs_caddy
     restart: always

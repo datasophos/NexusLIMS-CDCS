@@ -15,6 +15,21 @@
     }
 }
 
+# CDCS service
+http://cdcs.localhost {
+    reverse_proxy host.docker.internal:8080 {
+        # Forward headers needed for Django
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {remote}
+    }
+}
+
+# Fileserver (served by host Python server to avoid Docker volume issues)
+http://fileserver.localhost {
+    reverse_proxy host.docker.internal:8081
+}
+
 https://nexuslims-dev.localhost {
     # Auto-generate short-lived certificates from custom CA
     tls {
@@ -58,50 +73,57 @@ https://files.nexuslims-dev.localhost {
         }
     }
 
-    # Redirect paths without trailing slash to include it
-    @dataNoSlash path /data
-    redir @dataNoSlash /data/ permanent
-
-    @instrumentDataNoSlash path /instrument-data
-    redir @instrumentDataNoSlash /instrument-data/ permanent
-
-    # Serve NexusLIMS data files
-    handle_path /data/* {
-        # CORS headers for file size checking
-        header Access-Control-Allow-Origin "*"
-        header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
-        header Access-Control-Allow-Headers "*"
-
-        # Handle preflight requests
-        @options method OPTIONS
-        respond @options 204
-
-        root * /srv/nx-data
-        file_server {
-            browse
-        }
-    }
-
-    # Serve NexusLIMS instrument data files
-    handle_path /instrument-data/* {
-        # CORS headers for file size checking
-        header Access-Control-Allow-Origin "*"
-        header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
-        header Access-Control-Allow-Headers "*"
-
-        # Handle preflight requests
-        @options method OPTIONS
-        respond @options 204
-
-        root * /srv/nx-instrument-data
-        file_server {
-            browse
-        }
-    }
-
     # Logging
     log {
         output stdout
         format console
+    }
+
+    route {
+       	# Apply bandwidth limit for testing
+        bandwidth {
+            # limit 10000000    # 10 MB/s
+        }
+
+        # Redirect paths without trailing slash to include it
+        @dataNoSlash path /data
+        redir @dataNoSlash /data/ permanent
+
+        @instrumentDataNoSlash path /instrument-data
+        redir @instrumentDataNoSlash /instrument-data/ permanent
+
+        # Serve NexusLIMS data files
+        handle_path /data/* {
+            # CORS headers for file size checking
+            header Access-Control-Allow-Origin "*"
+            header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+            header Access-Control-Allow-Headers "*"
+
+            # Handle preflight requests
+            @options method OPTIONS
+            respond @options 204
+
+            root * /srv/nx-data
+            file_server {
+                browse
+            }
+        }
+
+        # Serve NexusLIMS instrument data files
+        handle_path /instrument-data/* {
+            # CORS headers for file size checking
+            header Access-Control-Allow-Origin "*"
+            header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+            header Access-Control-Allow-Headers "*"
+
+            # Handle preflight requests
+            @options method OPTIONS
+            respond @options 204
+
+            root * /srv/nx-instrument-data
+            file_server {
+                browse
+            }
+        }
     }
 }
