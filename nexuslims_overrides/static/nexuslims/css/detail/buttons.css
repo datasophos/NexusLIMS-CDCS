@@ -29,13 +29,13 @@ button {
 /* Gradually scale font-size from 14px down as window narrows */
 @media screen and (max-width: 1280px) {
     .btn-top-group {
-        font-size: 11pt;
+        font-size: 10pt;
     }
 }
 
 @media screen and (max-width: 992px) {
     .btn-top-group {
-        font-size: 10pt;
+        font-size: 9.5pt;
     }
 }
 
@@ -45,7 +45,7 @@ button {
     }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 696px) {
     .btn-top-group {
         font-size: 8pt;
     }
@@ -62,6 +62,10 @@ button {
     #btn-xml-dl { font-size: 0; }
     #btn-xml-dl i { font-size: 8pt; }
     #btn-xml-dl::after { content: "XML"; font-size: 8pt;  }
+
+    #btn-json-dl { font-size: 0; }
+    #btn-json-dl i { font-size: 8pt; }
+    #btn-json-dl::after { content: "JSON"; font-size: 8pt;  }
 
     #btn-edit-record { font-size: 0; }
     #btn-edit-record i { font-size: 8pt; }

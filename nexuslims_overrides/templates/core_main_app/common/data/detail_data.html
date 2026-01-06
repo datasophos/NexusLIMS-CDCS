@@ -15,8 +15,8 @@
     <div class="row">
         <div id="xslt-representation">
             {% if data.data.template.format == "XSD" %}
-                {# NexusLIMS: Pass xmlName to XSLT for custom rendering #}
-                {% xsl_transform_detail xmlName=data.data.title xml_content=data.data.content template_id=data.data.template.id template_hash=data.data.template.hash request=request as html_string %}
+                {# NexusLIMS: Pass xmlName and data ID to XSLT for custom rendering and permission checking #}
+                {% xsl_transform_detail xmlName=data.data.title data_id=data.data.id xml_content=data.data.content template_id=data.data.template.id template_hash=data.data.template.hash request=request as html_string %}
                 {% if 'core_file_preview_app' in INSTALLED_APPS %}
                     {% render_blob_links_in_span xml_string=html_string as html_string %}
                 {% endif %}

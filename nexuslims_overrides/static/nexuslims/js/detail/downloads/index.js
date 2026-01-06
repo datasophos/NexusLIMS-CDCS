@@ -429,13 +429,57 @@
         return downloadInProgress;
     }
 
+
+    // ============================================================================
+    // Record Export/Download (triggered by #btn-xml-dl and #btn-json-dl )
+    // ============================================================================
+
+    async function prepDownloadXML() {
+        if (window.location.href.includes('/pid/')) {
+            try {
+                let response = await fetch(window.location.href, { headers: { 'Accept': 'application/json' } });
+                let res = await response.json();
+                return res.id;
+            } catch (err) {
+                alert(`There was an error trying to download the record XML: ${err}`);
+                console.error(err);
+            }
+        } else {
+            let id = new URLSearchParams(window.location.search).get('id');
+            return Promise.resolve(id);
+        }
+    };
+
+    /**
+     * Downloads a record in the specified format.
+     * @param {string} format - The format to download, must be either "XML" or "JSON".
+     */
+    function downloadRecord(format) {
+        if (format !== "XML" && format !== "JSON") {
+            throw new Error("Invalid format. Must be either 'XML' or 'JSON'.");
+        }
+        let id = prepDownloadXML();
+        id.then(i => {
+            let url = `/exporter/rest/export?data_id=${i}&exporter=${format}`;
+
+            // Just click on a link to the exported URL, which CDCS gives the correct filename
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = ''; // Empty download attribute lets browser use server's filename
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    };
+
     // Public API (extend existing namespace)
     Object.assign(window.NexusLIMSDetail.Downloads, {
         initialize,
         updateDownloadSize,
         download,
         cancel,
-        isDownloading
+        isDownloading,
+        downloadRecord
     });
 
 })(jQuery, window);

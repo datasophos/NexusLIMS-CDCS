@@ -54,9 +54,6 @@ def render_xml_as_html_list(*args, **kwargs):
         str: Transformed HTML
 
     """
-    # Extract only the parameters needed for _render_xml_as_html signature
-    print("NEXUS XSL")
-
     # Format detail_url in-place as XSLT string parameter (wrapped in quotes)
     if 'detail_url' in kwargs:
         kwargs['detail_url'] = f"\"{kwargs['detail_url']}\""
@@ -85,6 +82,20 @@ def render_xml_as_html_detail(*args, **kwargs):
     # Format xmlName as XSLT string parameter (wrapped in quotes)
     if 'xmlName' in kwargs:
         kwargs['xmlName'] = f"\"{kwargs['xmlName']}\""
+
+    # Add data ID if provided
+    if 'data_id' in kwargs:
+        kwargs['dataId'] = f"\"{kwargs.pop('data_id')}\""
+
+    # Add permission URL if request is provided
+    if 'request' in kwargs:
+        try:
+            from django.urls import reverse
+            permission_url = reverse('core_main_app_rest_data_permissions')
+            kwargs['permissionUrl'] = f"\"{permission_url}\""
+        except Exception:
+            # If URL reversal fails, don't add permission URL
+            pass
 
     return _render_xml_as_html(XSLType.type_detail, *args, **kwargs)
 

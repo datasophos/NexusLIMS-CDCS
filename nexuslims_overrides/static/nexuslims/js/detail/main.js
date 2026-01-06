@@ -81,7 +81,8 @@
         // Event Handlers
         // ====================================================================
 
-        $("#btn-xml-dl").on('click', Detail.downloadXML);
+        $("#btn-xml-dl").on('click', () => Detail.Downloads.downloadRecord("XML"));
+        $("#btn-json-dl").on('click', () => Detail.Downloads.downloadRecord("JSON"));
         $('a#menu-tutorial').on('click', () => Detail.create_detail_tour());
 
         // Replace placeholder images
@@ -109,6 +110,9 @@
         tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+
+        // Check edit permissions and hide button if user doesn't have access
+        Detail.checkEditPermissions();
 
         // Fade out loading screen
         $('#loading').fadeOut('slow');

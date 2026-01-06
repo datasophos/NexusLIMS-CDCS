@@ -61,26 +61,6 @@
     padding: 4px 8px;
     font-size: 0.6em;
 }
-/*
-.sidebar .cdatatableDetails {
-    display: inline-block !important;
-    margin: 0;
-}
-
-.sidebar div.dataTables_paginate,
-.sidebar div.dt-paging {
-    text-align: center !important;
-    float: none !important;
-    width: 100% !important;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar div.dataTables_paginate li.paginate_button a i,
-.sidebar div.dt-paging li.dt-paging-button a i {
-    vertical-align: middle;
-} */
 
 .sidebar .table-sm td {
     padding: 5px;
@@ -221,9 +201,18 @@ img.simple-filelist-preview {
     }
 }
 
-#top-button-div button {
+#top-button-div button,
+#top-button-div a {
     flex: 1;
     width: 100%;
+}
+
+#top-button-div a:visited {
+    color: var(--nx-dark-gray);
+}
+
+#top-button-div a:hover {
+    color: white;
 }
 
 /* Acquisition activity header info - raise badges to prevent aa-content-row from overlapping tooltips */

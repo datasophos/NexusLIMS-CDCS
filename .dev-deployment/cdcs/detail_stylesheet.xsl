@@ -329,6 +329,10 @@ Use it like:
               </div>
             </xsl:if>
 
+            <!-- Hidden elements for JavaScript permission checking -->
+            <span id="dataId" style="display: none;"><xsl:value-of select="$dataId"/></span>
+            <span id="permissionUrl" style="display: none;"><xsl:value-of select="$permissionUrl"/></span>
+
             <div class="main d-flex" style="padding: 0; position: relative; z-index: 100;" id="top-button-div">
                   <button id="btn-edit-record" type="button" class="btn btn-outline-dark btn-top-group"
                           data-bs-toggle="tooltip" data-bs-placement="top"
@@ -339,7 +343,13 @@ Use it like:
                   <button id="btn-xml-dl" type="button" class="btn btn-outline-dark btn-top-group"
                       data-bs-toggle="tooltip" data-bs-placement="top"
                       title="Download metadata contents of this record as XML">
-                      <i class="fas fa-code menu-fa"></i> Download XML
+                      <i class="far fa-file-excel menu-fa"></i> Download XML
+                  </button>
+
+                  <button id="btn-json-dl" type="button" class="btn btn-outline-dark btn-top-group"
+                      data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="Download metadata contents of this record as JSON">
+                      <i class="far fa-file-code menu-fa"></i> Download JSON
                   </button>
 
                 <xsl:if test="not($simpleDisplay)">

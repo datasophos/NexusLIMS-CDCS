@@ -16,6 +16,7 @@ CUSTOM_NAME = (
     os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "NexusLIMS"
 )
 CUSTOM_TITLE = "Welcome to NexusLIMS!"
+MAX_DOCUMENT_EDITING_SIZE = 25 * 1024 * 1024  # (25 MB)
 
 # Import NexusLIMS-specific settings
 from nexuslims_overrides.settings import *

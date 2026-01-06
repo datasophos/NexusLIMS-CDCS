@@ -99,6 +99,47 @@
         $('#btn-copy-pid').tooltip('show');
     };
 
+    /**
+     * Check if user has edit permissions for the current record
+     * Uses AJAX call to permission endpoint
+     */
+    window.NexusLIMSDetail.checkEditPermissions = function() {
+        // Check if we have the necessary data
+        var dataId = $('#dataId').text();
+        var permissionUrl = $('#permissionUrl').text();
+
+        if (!dataId || !permissionUrl || dataId === '' || permissionUrl === '') {
+            // If no data ID or permission URL, hide the edit button to be safe
+            $('#btn-edit-record').hide();
+            return;
+        }
+
+        // Make AJAX call to check permissions
+        $.ajax({
+            url: permissionUrl,
+            type: 'GET',
+            data: {
+                ids: '[' + JSON.stringify(dataId) + ']'
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data && data[dataId] === true) {
+                    // User has edit permissions, show the button and set edit URL
+                    $('#btn-edit-record').show().on('click', function() {
+                            window.location.href = '/xml-editor/data?id=' + dataId;
+                        });
+                } else {
+                    // User does not have edit permissions, hide the button
+                    $('#btn-edit-record').hide();
+                }
+            },
+            error: function() {
+                // If there's an error, hide the button to be safe
+                $('#btn-edit-record').hide();
+            }
+        });
+    };
+
     // ============================================================================
     // File Name Helpers
     // ============================================================================

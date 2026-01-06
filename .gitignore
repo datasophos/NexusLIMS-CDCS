@@ -5,7 +5,7 @@ mdcs/*.xsd
 ### NexusLIMS test data (extracted from nexuslims-test-data.tar.gz)
 .dev-deployment/cdcs/nx-data/
 .dev-deployment/cdcs/nx-instrument-data/
-.dev-deployment/cdcs/example_record.xml
+.dev-deployment/cdcs/*.xml
 
 ### Development certificates (auto-generated files only)
 .dev-deployment/caddy/certs/*.srl
