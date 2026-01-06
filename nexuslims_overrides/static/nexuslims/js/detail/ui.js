@@ -197,6 +197,13 @@
         // Add click handler to sidebar button
         $("#btn-sidebar").on('click', function(e) {
             e.stopPropagation(); // Prevent document click handler from firing
+
+            // Hide the tooltip when button is clicked
+            var tooltip = bootstrap.Tooltip.getInstance(this);
+            if (tooltip) {
+                tooltip.hide();
+            }
+
             var sidebar = $('.sidebar');
             if (sidebar.hasClass('side-expanded')) {
                 closeSidebar();
@@ -245,7 +252,10 @@
         });
     });
 
-    // ============================================================================
+    // Expose sidebar functions for use in other modules
+    Detail.closeSidebar = closeSidebar;
+
+    // ========================================================================================================================================================
     // Image Gallery
     // ============================================================================
 

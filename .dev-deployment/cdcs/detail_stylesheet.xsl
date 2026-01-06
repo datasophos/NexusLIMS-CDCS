@@ -1014,8 +1014,9 @@ Use it like:
                                     </xsl:if>
                                     <div class="col-md-6 aa-header-info">
                                         <!-- Generate name id which corresponds to the link associated with the acquisition activity -->
-                                        <a class="aa_anchor" name="{generate-id(current())}"/>
-                                        <span class="aa_header"><b>Experiment activity <xsl:value-of select="@seqno+1"/></b><xsl:text> </xsl:text></span>
+                                        <span class="aa_header" id="{generate-id(current())}">
+                                            <b>Experiment activity <xsl:value-of select="@seqno+1"/></b><xsl:text> </xsl:text>
+                                        </span>
 
                                         <a href='javascript:void(0)' onclick="$(this).blur(); window.NexusLIMSDetail.openModal('{generate-id(current())}-modal');"
                                            data-bs-toggle='tooltip' data-bs-placement='right'

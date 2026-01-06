@@ -44,7 +44,7 @@
 .form-login input[type="password"]:focus,
 .form-login input[type="email"]:focus {
     outline: none;
-    border-color: #11659c;
+    border-color: var(--nx-primary-color);
     box-shadow: 0 0 0 3px rgba(17, 101, 156, 0.1);
 }
 
@@ -63,7 +63,7 @@
     width: 100%;
     padding: 0.875rem 1.5rem;
     margin-top: 1rem;
-    background-color: #11659c;
+    background-color: var(--nx-primary-color) !important;
     color: white;
     border: none;
     border-radius: 6px;
@@ -75,8 +75,9 @@
 
 .form-login button[type="submit"]:hover,
 .form-login input[type="submit"]:hover {
-    background-color: #0d4d78;
+    background-color: var(--nx-warning-color) !important;
     transform: translateY(-1px);
+    color: #333 !important;
 }
 
 .form-login button[type="submit"]:active,
@@ -86,13 +87,13 @@
 
 /* Links (forgot password, sign up, etc.) */
 .form-login a {
-    color: #11659c;
+    color: var(--nx-primary-color) !important;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .form-login a:hover {
-    color: #0d4d78;
+    color: var(--nx-primary-color-dark) !important;
     text-decoration: underline;
 }
 

@@ -15,12 +15,14 @@
 :root {
     /* Brand colors */
     --nx-primary-color: #11659c;
+    --nx-primary-color-dark: #0d528a;
     --nx-secondary-color: #6c757d;
     --nx-success-color: #28a745;
     --nx-danger-color: #dc3545;
     --nx-warning-color: #ffc107;
     --nx-info-color: #17a2b8;
     --nx-light-gray: #e3e3e3;
+    --nx-dark-gray: #212529;
 
     /* Layout heights */
     --titlebar-height: 60px;
@@ -226,7 +228,7 @@ a.cdcs-menu-item > i.fa {
 /* Custom button styling - match 2.21.0 */
 .btn-custom {
     color: white !important;
-    background-color: #11659c !important;
+    background-color: var(--nx-primary-color) !important;
     border-radius: 10px !important;
     background-size: 0em !important;
     font-size: inherit !important;
@@ -236,14 +238,14 @@ a.cdcs-menu-item > i.fa {
 
 .btn-custom:hover {
     color: #333 !important;
-    background-color: #f5c636 !important;
+    background-color: var(--nx-warning-color) !important;
     transition: all 0.3s ease-in-out !important;
 }
 
 /* footer styling */
 #footer {
     width: calc(100% + 0.5em);
-    margin: 1em -0.5em 0.5em -0.5em !important;
+    margin: 3em -0.5em 0.5em -0.5em !important;
     height: auto !important;
     min-height: 2.25em !important;
     padding: 0.25em 0 !important;

@@ -379,8 +379,61 @@
         }
 
         // Make nav-table rows clickable (use delegation to work after pagination)
-        $('#nav-table').on('click', 'tbody tr', function() {
-            window.location = $(this).find('a').attr('href');
+        // also make the sidebar hide when clicked
+        $('#nav-table').on('click', 'tbody tr', function(e) {
+            e.preventDefault(); // Prevent default anchor behavior
+            e.stopImmediatePropagation(); // Stop any other event handlers
+
+            var href = $(this).find('a').attr('href');
+
+            // Close sidebar first
+            Detail.closeSidebar();
+
+            // Scroll smoothly to the target element
+            if (href && href.startsWith('#')) {
+                var targetElement = $(href);
+
+
+                if (targetElement.length && targetElement.is(':visible')) {
+                    // Use smooth scrolling with cross-browser compatibility
+
+                    // get height of #titleBar or #nav to calculate offset
+                    let headerOffset = $("#titleBar").is(":visible") ? $("#titleBar").height() : 0;
+                    headerOffset += 16;
+
+                    // Use jQuery animate to scroll to the target element
+                    let body_scrollTop = document.body.scrollTop;
+                    let target_offset = targetElement.offset().top;
+                    let target_scroll_position = document.body.scrollTop + targetElement.offset().top - headerOffset;
+
+                    // offset by height of nav bar if id is 1
+                    if (href == "#id1" && !$("#titleBar").is(":visible")) {
+                      target_scroll_position -= $("#nav").height();
+                    }
+
+                    // Scroll to the target position with offset
+                    $('html, body').animate({
+                        scrollTop: target_scroll_position
+                    }, {
+                        duration: 500
+                    });
+
+                    // Update URL hash after scroll completes
+                    setTimeout(function() {
+                        if (window.history.replaceState) {
+                            window.history.replaceState(null, null, href);
+                        } else {
+                        }
+                    }, 600);
+
+                    return false;
+                }
+            }
+
+            // Fallback to normal navigation if target not found or not visible
+            if (href) {
+                window.location = href;
+            }
             return false;
         });
 

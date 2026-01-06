@@ -2655,7 +2655,8 @@
 		/* Basic */
 
 			html, body {
-				overflow-x: hidden;
+			    /* this causes reflow jumps when resizing the screen width */
+				/*overflow-x: hidden;*/
 			}
 
 			body, input, select, textarea {
