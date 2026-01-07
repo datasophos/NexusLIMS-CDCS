@@ -374,6 +374,72 @@ table.sample-table th {
     font-weight: normal;
 }
 
+/* Simple file list table specific */
+
+#simple-filelist-table_wrapper {
+    margin-bottom: 1rem;
+}
+
+/* File listing modal table - search and pagination layout (same as meta-table) */
+#simple-filelist-table_wrapper .dt-layout-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-bottom: 0.5rem;  /* Bootstrap mb-2 */
+}
+
+#simple-filelist-table_wrapper .dt-layout-start {
+    flex-grow: 1;
+}
+
+#simple-filelist-table_wrapper .dt-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    max-width: 40%;
+    flex-grow: 1;
+}
+
+#simple-filelist-table_wrapper .dt-search label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+#simple-filelist-table_wrapper .dt-input {
+    flex-grow: 1;
+    padding: var(--spacing-xs) var(--spacing-sm);  /* 0.25rem 0.5rem */
+    font-size: 0.875rem;
+    line-height: 1.5;
+    height: auto;
+    margin: 0;
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+#simple-filelist-table_wrapper .dt-input::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* add some space between the search/pagination and the table */
+#simple-filelist-table_wrapper .dt-layout-table {
+    margin-top: 0.25em;
+}
+
+/* Info on the right */
+#simple-filelist-table_wrapper .dt-layout-end {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
 /* Sample table specific */
 table.sample-table td {
     text-align: center;
@@ -567,4 +633,53 @@ td.aa-meta-col {
 }
 #nav-table thead {
     border: none;
+}
+
+/* ============================================================================
+   FIXED HEADER STYLES
+   ============================================================================ */
+
+/* DataTables FixedHeader styling */
+.dataTables_fixedHeader {
+    z-index: 1020; /* Lower than navbar but higher than content */
+    background-color: white !important; /* Ensure background covers content */
+    border-bottom: 1px solid #dee2e6 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Fixed header for simple file list table */
+#simple-filelist-table_wrapper .dataTables_fixedHeader {
+    width: 100% !important;
+}
+
+/* Fixed header for navigation table */
+#nav-table_wrapper .dataTables_fixedHeader {
+    width: 100% !important;
+}
+
+/* Fixed header for file list modal */
+#filelist-modal .dataTables_fixedHeader {
+    width: 100% !important;
+}
+
+/* Ensure fixed header cells match table cell styling */
+.dataTables_fixedHeader thead th {
+    background-color: #3a65a2 !important;
+    border-color: black !important;
+    color: white !important;
+    font-weight: normal;
+    padding: var(--spacing-xs) !important; /* 0.25rem */
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .dataTables_fixedHeader {
+        top: 56px !important; /* Mobile navbar height */
+    }
+}
+
+@media (max-width: 768px) {
+    .dataTables_fixedHeader {
+        top: 48px !important; /* Smaller mobile navbar height */
+    }
 }

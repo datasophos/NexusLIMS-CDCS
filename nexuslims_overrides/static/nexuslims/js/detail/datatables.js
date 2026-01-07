@@ -528,6 +528,61 @@
     }
 
     /**
+     * Initialize the simple file list table as a DataTable
+     * @returns {DataTable} The initialized simple file list table
+     */
+    function initializeSimpleFileListTable() {
+        // Check if the simple file list table exists
+        if ($('#simple-filelist-table').length === 0) {
+            return null;
+        }
+
+        var simpleTable = new DataTable('#simple-filelist-table', {
+            destroy: true,
+            paging: false,  // No pagination
+            ordering: false,  // No sorting
+            searching: true,  // Enable search
+            info: true,       // Enable info display
+            lengthChange: false,
+            columns: [
+              { searchable: false, className: 'text-center' },
+              { searchable: false, className: 'text-center' },
+              null,
+              { searchable: false },
+              { searchable: false },
+              { searchable: false, className: 'text-center' },
+              { searchable: false, className: 'text-center' },
+              { searchable: false, className: 'text-center' },
+            ],
+            layout: {
+                topStart: 'search',  // Search bar at top left
+                topEnd: 'info',      // Info display at top right
+                bottomStart: null,
+                bottomEnd: null
+            },
+            language: {
+                search: 'Search:',
+                searchPlaceholder: 'Filter on dataset names...',
+                info: 'Showing _TOTAL_ datasets'
+            }
+        });
+
+        // Enable fixed header for the simple file list table
+        if (typeof $.fn.dataTable.FixedHeader !== 'undefined') {
+            // Calculate initial navbar height
+            var initialNavbarHeight = $('#titleBar').is(':visible') ? $('#titleBar').outerHeight() || 0 : 0;
+
+            new $.fn.dataTable.FixedHeader(simpleTable, {
+                header: true,
+                footer: false,
+                headerOffset: initialNavbarHeight // Set initial offset based on navbar height
+            });
+        }
+
+        return simpleTable;
+    }
+
+    /**
      * Initialize all navigation and metadata tables (non-simple display mode)
      */
     function initializeNavigationAndMetadata() {
@@ -536,11 +591,52 @@
         initializeActivityTables();
     }
 
+    /**
+     * Update FixedHeader offset based on current navbar height
+     */
+    function updateFixedHeaderOffset() {
+        // Get current titleBar height (use zero if titleBar is not visible -- such as wide window)
+        var navbarHeight = $('#titleBar').is(':visible') ? $('#titleBar').outerHeight() || 0 : 0;
+
+        // Update all FixedHeader instances
+        if (typeof $.fn.dataTable.FixedHeader !== 'undefined') {
+            // Use the FixedHeader API to set the header offset
+            // This ensures the plugin's internal state is updated correctly
+            $('.dataTable').each(function() {
+                var table = $(this).DataTable();
+                if (table && table.fixedHeader) {
+                    table.fixedHeader.headerOffset(navbarHeight);
+                }
+            });
+        }
+    }
+
+    /**
+     * Setup dynamic header updates for responsive navbar
+     */
+    function setupDynamicHeader() {
+        // Initial setup
+        updateFixedHeaderOffset();
+
+        // Update on window resize
+        $(window).on('resize.dynamicHeader', function() {
+            updateFixedHeaderOffset();
+        });
+
+        // Update on scroll (if navbar changes height on scroll)
+        $(window).on('scroll.dynamicHeader', function() {
+            updateFixedHeaderOffset();
+        });
+    }
+
     // Export to global namespace
     window.NexusLIMSDetail = window.NexusLIMSDetail || {};
     window.NexusLIMSDetail.DataTables = {
         initializeFileList: initializeFileList,
-        initializeNavigationAndMetadata: initializeNavigationAndMetadata
+        initializeNavigationAndMetadata: initializeNavigationAndMetadata,
+        initializeSimpleFileListTable: initializeSimpleFileListTable,
+        setupDynamicHeader: setupDynamicHeader,
+        updateFixedHeaderOffset: updateFixedHeaderOffset
     };
 
 })(jQuery, window);

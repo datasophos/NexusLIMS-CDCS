@@ -202,7 +202,7 @@ img.simple-filelist-preview {
 
 
 #main-wrapper.simple-display #to-top-btn {
-    top: 9px;
+    bottom: 20px;
     right: 40px;
     left: unset;
     z-index: 10001;

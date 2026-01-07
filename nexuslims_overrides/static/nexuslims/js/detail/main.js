@@ -91,6 +91,9 @@
 
         // Simple display hover controllers
         if (simpleDisplay) {
+            // Initialize simple file list table as DataTable
+            Detail.DataTables.initializeSimpleFileListTable();
+
             $("a.simple-filelist-preview").mouseover(function() {
                 $("a.simple-filelist-preview img").css("display", "none");
                 $(this).find("img").css("display", "inline-block");
@@ -99,6 +102,9 @@
                 $("a.simple-filelist-preview img").css("display", "none");
             });
         }
+
+        // Setup dynamic header positioning for all tables
+        Detail.DataTables.setupDynamicHeader();
 
         // Make sidebar visible after loading
         if (!simpleDisplay) {
