@@ -47,6 +47,18 @@
 }
 
 /* File listing modal */
+
+/* make modal full width on narrow screen */
+#filelist-modal .modal-content {
+    width: 95vw;
+}
+
+@media (min-width: 700px) {
+    #filelist-modal .modal-content {
+        width: calc(max(70vw, 665px));
+    }
+}
+
 #filelist-modal .modal-body .filelist-header-row {
     justify-content: space-between;
 }

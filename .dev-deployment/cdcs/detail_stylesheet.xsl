@@ -1429,7 +1429,7 @@ Use it like:
                <xsl:if test="not($simpleDisplay)">
 
                   <div id="filelist-modal" class="nexuslims-modal">
-                      <div class="modal-content" style="width: 65vw;">
+                      <div class="modal-content">
                           <div class="modal-body">
                               <div class="d-flex justify-content-between align-items-start mb-2">
                                   <div>
