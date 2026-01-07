@@ -4,6 +4,8 @@
 import logging
 import traceback
 
+from django.conf import settings
+
 import core_main_app.commons.exceptions as exceptions
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
@@ -35,3 +37,11 @@ def xsl_transform(xml_string, xslt_string, **kwargs):
             print(f"LXML ERROR: {error}")
         traceback.print_exc()
         raise exceptions.CoreError("An unexpected exception happened while transforming the XML") from e
+    finally:
+        # print messages from transformation, if configured
+        if hasattr(settings, 'NX_XSLT_DEBUG'):
+            if settings.NX_XSLT_DEBUG:
+                print("NX_XSLT_DEBUG output:")
+                print("-" * 21)
+                for entry in transform.error_log:
+                    print(entry.message)

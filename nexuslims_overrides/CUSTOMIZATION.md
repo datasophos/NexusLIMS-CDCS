@@ -39,6 +39,38 @@ This file contains default values for all NexusLIMS-specific settings. To custom
 
 ### XSLT Configuration
 
+#### XSLT Debug Mode
+
+If you are making changes to the XSLT, or the display is not as you expect, enabling debug output from the XSLT transformation process can be helpful. This setting controls whether detailed messages and errors from the XSLT processing will be output to the Django application's console.
+
+**Configuration:**
+```python
+# Enable XSLT debug output (default: False)
+NX_XSLT_DEBUG = True
+```
+
+**Use Cases:**
+- **Development/Debugging**: Set to `True` when working on XSLT stylesheets to see detailed transformation messages
+- **Production**: Set to `False` (default) to avoid verbose debug output in logs
+
+**Important Notes:**
+- Serious errors that cause exceptions during transformation will always be printed regardless of this setting
+- Debug messages can be quite verbose, so it's best left as `False` in production environments
+- This setting is particularly useful for profiling and debugging XSLT transformations
+
+**Using XSLT Message Tags:**
+You can add debug statements directly in your XSLT stylesheets using `<xsl:message>` tags:
+
+```xml
+<xsl:message>DEBUG: Processing instrument <xsl:value-of select="$instrument-name"/></xsl:message>
+```
+
+**Debugging Tips:**
+- Use descriptive messages that indicate where in the transformation process you are
+- Include variable values to track data flow
+- Add messages at key decision points in your XSLT logic
+- Remember to disable `NX_XSLT_DEBUG` before production deployment
+
 #### Instrument Badge Colors
 
 You can easily configure the colors used for instrument badges in the detail and list views. These visual indicators help users quickly identify which instrument was used for each experiment.
@@ -549,6 +581,11 @@ If instrument badge colors aren't changing after updating `NX_INSTRUMENT_COLOR_M
 3. **Validate color format**: Colors must be valid hex codes (e.g., `#RRGGBB`)
 4. **Restart Django**: XSLT parameters are loaded at startup
 5. **Check XSLT logs**: Look for transformation errors in Django logs
+
+**Debugging tip:** Enable XSLT debug mode to see detailed transformation messages:
+```python
+NX_XSLT_DEBUG = True  # Set this in your settings.py
+```
 
 **Debugging tip:** Add a unique color to test if changes are being applied:
 ```python

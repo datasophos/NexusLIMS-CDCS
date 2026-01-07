@@ -1,3 +1,15 @@
+<!--
+XSLT DEBUGGING INFORMATION:
+
+To enable debug output from this stylesheet, set NX_XSLT_DEBUG = True in your Django settings.
+Debug messages will appear in the Django console when the transformation runs.
+
+You can add debug statements using <xsl:message> tags like this:
+<xsl:message>DEBUG: Processing variable '<xsl:value-of select="$variable-name"/></xsl:message>
+
+Remember to disable NX_XSLT_DEBUG before production deployment.
+-->
+
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema"
   xmlns:nx="https://data.nist.gov/od/dm/nexus/experiment/v1.0"
@@ -92,8 +104,8 @@ Use it like:
     <row ext="h5oina" tooltip="Oxford Instruments data export file" />
     <row ext="ebsp" tooltip="Oxford EBSD pattern" />
   </xsl:variable>
-  <xsl:variable 
-    name="extension-to-tooltip-lookup" 
+  <xsl:variable
+    name="extension-to-tooltip-lookup"
     select="exslt:node-set($extension-to-tooltip-lookup-fragment)" />
 
   <xsl:template match="/">
@@ -117,8 +129,8 @@ Use it like:
     <xsl:variable name="title">
         <xsl:value-of select="nx:title"/>
     </xsl:variable>
-    
-    
+
+
     <xsl:variable name="extension-fragment">
       <xsl:element name="extensions">
         <xsl:for-each select="//nx:dataset/nx:location">
@@ -130,7 +142,7 @@ Use it like:
         </xsl:for-each>
       </xsl:element>
     </xsl:variable>
-    
+
     <xsl:variable name="extensionCount">
       <xsl:for-each select="exslt:node-set($extension-fragment)/extensions/ext[not(preceding::value = value)]">
         <xsl:variable name="thisExtension" select="value/text()"/>
@@ -143,11 +155,11 @@ Use it like:
         </xsl:element>
       </xsl:for-each>
     </xsl:variable>
-    
+
     <style>
       .tooltip {
       z-index: 20000;
-      position: fixed; 
+      position: fixed;
       }
     </style>
     <div class='a-result'>
@@ -188,7 +200,7 @@ Use it like:
          </xsl:choose> </span>
         <i class="fa fa-cubes filetypes-icon" style="margin-left:0.75em; font-size: small;"
             data-toggle="tooltip" data-placement="top" title="Filetypes present in record"/><span style="font-size: small;"><xsl:text>: </xsl:text></span>
-       
+
        <!-- badges for unique file extensions -->
        <xsl:variable name="unique-extensions">
          <xsl:call-template name="get-unique-extensions">
@@ -198,7 +210,7 @@ Use it like:
        <xsl:call-template name="extensions-to-badges">
          <xsl:with-param name="input" select="exslt:node-set($unique-extensions)"/>
        </xsl:call-template>
-       
+
      </div>
      <div class="experimenter-and-date">
        <span class="list-record-experimenter">
@@ -240,7 +252,7 @@ Use it like:
           </div>
         </xsl:when>
       </xsl:choose>
-     
+
         <!-- Javascript which supports some capabilities on the generated page -->
         <script language="javascript">
             <![CDATA[
@@ -248,7 +260,7 @@ Use it like:
                 window.location = $(this).find('a').attr('href');
                 return false;
             });
-            
+
             // Shepherd tutorial code
             function create_tour() {
                 var topScrollHandler = function(element){
@@ -272,27 +284,27 @@ Use it like:
                         scrollToHandler: topScrollHandler
                     }
                 });
-            
+
                 showStepNumber = () => {
                     $("<span style='font-size: small'></span>")
                         .insertAfter('.shepherd-footer .btn-default')
                         .html(`${list_tour.steps.indexOf(list_tour.currentStep) + 1}/${list_tour.steps.length}`);
                 }
-                
+
                 end_button = {
                     text: 'End',
                     classes: 'btn btn-danger',
                     action: list_tour.next,
                     label: 'End'
                 }
-                
+
                 next_button = {
                     text: 'Next <i class="fa fa-arrow-right menu-fa"></i>',
                     classes: 'btn btn-primary',
                     action: list_tour.next,
                     label: 'Next'
                 }
-                
+
                 var back_button = (enabled) => {
                     return {
                         text: '<i class="fa fa-arrow-left menu-fa"></i> Back',
@@ -301,7 +313,7 @@ Use it like:
                         action: list_tour.back,
                         label: 'Back'}
                 }
-            
+
                 list_tour.addStep({
                     id: 'tut-welcome',
                     title: 'This is the record explorer page',
@@ -311,7 +323,7 @@ Use it like:
                         next_button
                     ],
                 });
-            
+
                 list_tour.addStep({
                     id: 'tut-search-field',
                     title: 'The search bar',
@@ -325,7 +337,7 @@ Use it like:
                         next_button
                     ],
                 });
-            
+
                 list_tour.addStep({
                     id: 'tut-example-record',
                     title: 'An example record listing',
@@ -340,9 +352,9 @@ Use it like:
                         next_button
                     ],
                 });
-            
-                
-            
+
+
+
                 list_tour.addStep({
                     id: 'tut-result-button-filter',
                     title: 'Record sorting',
@@ -366,7 +378,7 @@ Use it like:
                         }]
                     }
                 });
-            
+
                 if ( $('.pagination-container').length > 0 ) {
                     list_tour.addStep({
                         id: 'tut-pagination-container',
@@ -383,26 +395,26 @@ Use it like:
                         ]
                     });
                 }
-            
+
                 var scroll_to_start = function() {
                     $('html, body').animate(
-                        {scrollTop: cur_pos}, 
+                        {scrollTop: cur_pos},
                         {duration: 500}
                     );
                 }
-            
+
                 let cur_pos = $(document).scrollTop();
                 list_tour.on('complete', scroll_to_start)
                 list_tour.on('cancel', scroll_to_start)
                 list_tour.on('hide', scroll_to_start)
                 $('.shepherd-modal-overlay-container').on('click', () => list_tour.cancel());
                 list_tour.start()
-            }              
+            }
 
             $( document ).ready(function() {
                 $('[data-toggle="tooltip"]').tooltip(
                     {container:'body'}); // toggle all tooltips with default
-              
+
                 // add IDs for use with intro.js
                 $('.a-result').first().attr('id', 'example-record');
                 $('input#id_keywords ~ ul').attr('id', 'search-field');
@@ -498,7 +510,7 @@ Use it like:
 
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template name="get-unique-extensions">
     <xsl:param name="global" select="true()"/>
     <xsl:variable name="selection">
@@ -522,7 +534,7 @@ Use it like:
         </xsl:for-each>
       </xsl:element>
     </xsl:variable>
-    
+
     <xsl:element name="extensionCount">
       <xsl:for-each select="exslt:node-set($extension-fragment)/extensions/ext[not(preceding::value = value)]">
         <xsl:sort select="value/text()"/>
@@ -556,8 +568,8 @@ Use it like:
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
   <xsl:template name="TEMP">
     <xsl:param name="x"/>
     <xsl:choose>
@@ -583,7 +595,7 @@ Use it like:
   <extension count="12">tif</extension>
   <extension count="3">dm3</extension>
 </extensionCount>
-    
+
 -->
     <xsl:param name="input"/>
     <xsl:for-each select="$input/extensionCount/extension">
@@ -609,9 +621,9 @@ Use it like:
           <xsl:value-of select="./text()"/>
         </span>
       </span>
-      
+
     </xsl:for-each>
-    
+
   </xsl:template>
-  
+
 </xsl:stylesheet>

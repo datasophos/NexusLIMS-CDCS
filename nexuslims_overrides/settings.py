@@ -40,6 +40,15 @@ NX_INSTRUMENT_COLOR_MAPPINGS = {
 # Set to 0 to disable the simple display entirely. Default is 100.
 NX_MAX_DATASET_DISPLAY_COUNT = 100
 
+# This value controls whether messages and errors from the XSLT will be
+# output to the Django application's console. Default is False.
+# This is useful if you are working on the XSLT and trying to profile/debug
+# what is happening during the transformation
+# Note: serious errors (that cause exceptions during the transformation) will
+# always be printed. The debug messages can be quite verbose, so this is best
+# left as False in production.
+NX_XSLT_DEBUG = False
+
 # ============================================================================
 # HOMEPAGE CONFIGURATION
 # ============================================================================

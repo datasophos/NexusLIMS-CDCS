@@ -119,7 +119,7 @@
 
 /* Main content area */
 .main {
-    padding: var(--spacing-lg);  /* 20px */
+    /* padding: var(--spacing-lg);  /* 20px        */
     -webkit-transition: padding 0.5s ease-in-out 0s;
     -moz-transition: padding 0.5s ease-in-out 0s;
     -o-transition: padding 0.5s ease-in-out 0s;
@@ -128,14 +128,14 @@
 }
 
 @media (min-width: 768px) {  /* Bootstrap 5 md breakpoint - add intermediate step */
-    .main {
+    #main-wrapper:not(.simple-display) .main {
         padding-left: var(--spacing-xl);  /* 40px */
         padding-right: var(--spacing-xl);  /* 40px */
     }
 }
 
 @media (min-width: 992px) {  /* Bootstrap 5 lg breakpoint, was 888px */
-    .main {
+    #main-wrapper:not(.simple-display) .main {
         padding-left: calc(180px + var(--spacing-xl));  /* 220px (180px sidebar + 40px spacing) */
         padding-right: var(--spacing-xl);  /* 40px */
     }
@@ -162,6 +162,15 @@
     line-height: 1.25em;
 }
 
+#main-wrapper:not(.simple-display) .main-content-row {
+    /* move main content row down a bit from buttons in normal display mode */
+    margin-top: 1em !important;
+}
+#main-wrapper.simple-display .main-content-row {
+    /* move main content row down a bit from buttons in normal display mode */
+    margin-top: -0.5em !important;
+}
+
 img.simple-filelist-preview {
     display: none;
     position: absolute;
@@ -171,9 +180,10 @@ img.simple-filelist-preview {
 
 /* Sidebar control buttons */
 #to-top-btn {
-    margin: 0.5em auto;
+    position: fixed;
     display: block;
-    width: 100%;
+    width: 125px;
+    padding: 10px;
     font-size: 12px;
     z-index: 101;
     visibility: hidden;
@@ -182,6 +192,28 @@ img.simple-filelist-preview {
     -moz-transition: visibility 0.25s linear, opacity 0.25s linear;
     -o-transition: visibility 0.25s linear, opacity 0.25s linear;
     transition: visibility 0.25s linear, opacity 0.25s linear;
+}
+
+#main-wrapper:not(.simple-display) #to-top-btn {
+    margin: 0.5em auto;
+    margin-top: 1em;
+    left: 25px;
+}
+
+
+#main-wrapper.simple-display #to-top-btn {
+    top: 9px;
+    right: 40px;
+    left: unset;
+    z-index: 10001;
+}
+
+@media screen and (max-width: 650px) {
+    #main-wrapper.simple-display #to-top-btn {
+        right: 16px;
+        width: 100px;
+        font-size: .8em;
+    }
 }
 
 /* Top button group */
@@ -196,7 +228,7 @@ img.simple-filelist-preview {
 }
 
 @media (min-width: 992px) {
-    #top-button-div {
+    #main-wrapper:not(.simple-display) #top-button-div {
         margin-left: 180px;  /* 220px - match sidebar width, since flex takes care of padding */
     }
 }

@@ -36,24 +36,28 @@
         document.body.scrollTop = document.documentElement.scrollTop = 0;
     };
 
+    var navElement = document.getElementById('nav');
+    var titleBarElement = document.getElementById('titleBar');
+    var sidebarElement = document.querySelector('.sidebar');
+
     function showButtonOnScroll() {
         var header_pos = $('.list-record-experimenter').first().position()['top'];
-        if (document.body.scrollTop > header_pos || document.documentElement.scrollTop > header_pos) {
+        var simpleDisplay = $('#simpleDisplay').text() == 'true';
+
+        // In simple display mode, always show button when scrolled past header
+        // In non-simple display mode, only show button on wider screens (≥992px)
+        var shouldShowButton = simpleDisplay
+            ? (document.body.scrollTop > header_pos || document.documentElement.scrollTop > header_pos)
+            : (window.innerWidth >= 992 && (document.body.scrollTop > header_pos || document.documentElement.scrollTop > header_pos));
+
+        if (shouldShowButton) {
             document.getElementById("to-top-btn").style.visibility = "visible";
             document.getElementById("to-top-btn").style.opacity = 1;
-            if ($('#simpleDisplay').text() == 'true') {
-                document.getElementById("to-top-btn").style.top = header_pos + 'px'
-            }
         } else {
             document.getElementById("to-top-btn").style.visibility = "hidden";
             document.getElementById("to-top-btn").style.opacity = 0;
         }
     }
-
-    var navElement = document.getElementById('nav');
-    var titleBarElement = document.getElementById('titleBar');
-    var sidebarElement = document.querySelector('.sidebar');
-    var titlebarHeightPx = 80; // var(--titlebar-height) + var(--spacing-lg) (the initial padding)
 
     function updateSidebarPosition() {
         if (!navElement || !sidebarElement || !titleBarElement) {
@@ -80,11 +84,14 @@
         updateSidebarPosition();
 
         // Update sidebar height to account for dynamic top position
-        // Get the actual computed top value, not just the inline style
-        var computedStyle = window.getComputedStyle(sidebarElement);
-        var sidebarTop = parseFloat(computedStyle.top);
-        var sidebarHeight = window.innerHeight - sidebarTop;
-        sidebarElement.style.height = sidebarHeight + 'px';
+        // Only if sidebarElement is defined
+        if (sidebarElement) {
+            // Get the actual computed top value, not just the inline style
+            var computedStyle = window.getComputedStyle(sidebarElement);
+            var sidebarTop = parseFloat(computedStyle.top);
+            var sidebarHeight = window.innerHeight - sidebarTop;
+            sidebarElement.style.height = sidebarHeight + 'px';
+        }
     };
 
     window.addEventListener('scroll', scrollHandler);
