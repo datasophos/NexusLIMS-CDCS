@@ -3,7 +3,7 @@
  */
 
 #intro {
-    margin-top: -3rem !important;
+    margin-top: -1rem !important;
 }
 
 #intro h1 {
@@ -20,7 +20,7 @@
 }
 
 #tiles {
-    margin-top: 2rem;
+    margin-top: 0;
 }
 
 #homepage-tutorial {
@@ -30,6 +30,19 @@
 
 /* tiles css */
 
+/* Media queries for responsive layout */
+@media (max-width: 767.98px) {
+    /* Styles for screens below md breakpoint (sm, xs) */
+    #homepage-text-col {
+        padding-left: 40px;  /* add 20px to overcome negative marging from row */
+        padding-right: 20px;
+    }
+
+    /* hide logo on narrow displays (it's in the top nav anyway */
+    #homepage-logo-col {
+        display: none;
+    }
+}
 
 .tile .icon {
     background-color: #11659c;

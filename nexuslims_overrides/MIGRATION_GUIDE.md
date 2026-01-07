@@ -9,7 +9,7 @@ This guide helps migrate existing scattered template overrides into the centrali
 - [x] Homepage
 - [x] Explore page
   - [x] Download/export button not working
-- [ ] Record page
+- [x] Record page
   - [x] wonky styling
     - [x] paginate on left side bar
     - [x] paginate on file list tables
@@ -29,10 +29,10 @@ This guide helps migrate existing scattered template overrides into the centrali
   - [x] Edit button doesn't work, 
     - [x] should only show when the user is logged in and has permissions
   - [x] feat: easily configurable badge colors?
-- [ ] Simple display should be checked
-  - [ ] fix sidebar on wide display and never show "scroll to top" button
-  - [ ] we should add search filtering to the datatable on this display
-- [ ] Homepage responsive spacing
+- [x] Simple display should be checked
+  - [x] fix sidebar on wide display and never show "scroll to top" button
+  - [x] we should add search filtering to the datatable on this display
+- [x] Homepage responsive spacing
 
 ### Other TODOs:
 - [ ] Tutorials
