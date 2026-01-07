@@ -125,6 +125,16 @@ def _render_xml_as_html(xslt_type, *args, **kwargs):
     xsl_transform_id = kwargs.pop("xslt_id", None)
     request = kwargs.pop("request", None)
 
+    # Add instrument color mappings from Django settings
+    from django.conf import settings
+    if hasattr(settings, 'NX_INSTRUMENT_COLOR_MAPPINGS'):
+        color_mappings = settings.NX_INSTRUMENT_COLOR_MAPPINGS
+        # Convert the Python dict to a format that XSLT can parse
+        # Create the format XSLT expects: '"pid1":"color1","pid2":"color2"'
+        # Wrap the entire string in single quote to make it a valid XPath string literal
+        xslt_format = ",".join([f"\"{pid}\":\"{color}\"" for pid, color in color_mappings.items()])
+        kwargs['instrColorMappings'] = f"'{xslt_format}'"
+
     # Extract useful string values from request if provided
     # (request object itself can't be serialized for XSLT)
     if request:

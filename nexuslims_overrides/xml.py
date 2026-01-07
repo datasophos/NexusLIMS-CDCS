@@ -2,6 +2,7 @@
     Override of some functions in core_main_app.utils.xml
 """
 import logging
+import traceback
 
 import core_main_app.commons.exceptions as exceptions
 from xml_utils.xsd_tree.xsd_tree import XSDTree
@@ -30,5 +31,7 @@ def xsl_transform(xml_string, xslt_string, **kwargs):
         transformed_tree = transform(xsd_tree, **kwargs)
         return str(transformed_tree)
     except Exception as e:
-        print(f"xsl_transform exception: {e}")
-        raise exceptions.CoreError("An unexpected exception happened while transforming the XML")
+        for error in transform.error_log:
+            print(f"LXML ERROR: {error}")
+        traceback.print_exc()
+        raise exceptions.CoreError("An unexpected exception happened while transforming the XML") from e

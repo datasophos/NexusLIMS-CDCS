@@ -13,6 +13,30 @@
     <xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>
     <xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>
 
+    <!-- Instrument color mappings - passed as XSLT parameters from Django setting "NX_INSTRUMENT_COLOR_MAPPINGS" -->
+    <xsl:param name="instrColorMappings" select="''"/>
+    <xsl:template name="get-color-for-pid">
+        <xsl:param name="pid"/>
+        <xsl:param name="mappings-string"/>
+        <xsl:param name="default-color" select="'#505050'"/>
+
+        <!-- Create a pattern to search for this PID -->
+        <xsl:variable name="search-pattern" select="concat('&quot;', $pid, '&quot;:&quot;')"/>
+        <xsl:variable name="color-part" select="substring-after($mappings-string, $search-pattern)"/>
+
+        <!-- Check if the PID was found in the mappings -->
+        <xsl:choose>
+            <xsl:when test="contains($mappings-string, $search-pattern)">
+                <!-- Extract the color (everything before the next quote) -->
+                <xsl:value-of select="substring-before($color-part, '&quot;')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- Return the default color if PID not found -->
+                <xsl:value-of select="$default-color"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <!--
         These variables control the limit for interactive dataset display. More than this
         number and the stylesheet will revert to a simple file list rather than an
@@ -158,32 +182,6 @@
         <element symbol="Og">118 - Oganesson</element>
     </xsl:variable>
     <xsl:key name="lookup.element.symbol" match="element" use="@symbol"/>
-
-    <!-- This lookup table assigns a color to each instrument's badge so they can be visually distinguished
-       on the list page -->
-    <xsl:variable name="instr-color-dictionary">
-        <instr instr-PID="FEI-Titan-TEM-635816">#ff7f0e</instr>
-        <instr instr-PID="FEI-Titan-STEM-630901">#2ca02c</instr>
-        <instr instr-PID="FEI-Quanta200-ESEM-633137">#d62728</instr>
-        <instr instr-PID="JEOL-JEM3010-TEM-565989">#9467bd</instr>
-        <instr instr-PID="FEI-Helios-DB-636663">#8c564b</instr>
-        <instr instr-PID="Hitachi-S4700-SEM-606559">#e377c2</instr>
-        <instr instr-PID="Hitachi-S5500-SEM-635262">#17becf</instr>
-        <instr instr-PID="JEOL-JSM7100-SEM-N102656">#bcbd22</instr>
-        <instr instr-PID="Philips-EM400-TEM-599910">#bebada</instr>
-        <instr instr-PID="Philips-CM30-TEM-540388">#b3de69</instr>
-        <instr instr-PID="FEI-Titan-TEM-640918">#25276A</instr>
-        <instr instr-PID="Zeiss-LEO_1525_FESEM-927910">#1a581d</instr>
-        <instr instr-PID="FEI-Helios-DB-647035">#3f1f5f</instr>
-        <instr instr-PID="FEI-Helios-DB-647036">#40686f</instr>
-        <instr instr-PID="Zeiss-Gemini_300_SEM-936834">#791212</instr>
-        <instr instr-PID="FEI-Quanta_400_SEM-938570">#154157</instr>
-        <instr instr-PID="JEOL-7800F_SEM-N113138">#81538d</instr>
-        <instr instr-PID="FEI-Titan-ETEM-644764">#CC8B2F</instr>
-        <instr instr-PID="Thermo-Scios-DB-9957773">#496BC4</instr>
-    </xsl:variable>
-    <xsl:key name="lookup.instr.color" match="instr" use="@instr-PID"/>
-
 
     <!-- Lookup table for tooltip text for extension badges
 
@@ -479,9 +477,12 @@ Use it like:
                                 <span id='instr-badge' class="badge list-record-badge">
                                     <xsl:choose>
                                         <xsl:when test="nx:summary/nx:instrument/text()">
-                                            <xsl:attribute name="style">background-color:<xsl:for-each select="document('')">
-                                                <xsl:value-of select="key('lookup.instr.color', $instr-pid)"/>
-                                            </xsl:for-each> !important;</xsl:attribute>
+                                            <xsl:attribute name="style">background-color:
+                                                <xsl:call-template name="get-color-for-pid">
+                                                    <xsl:with-param name="pid" select="$instr-pid"/>
+                                                    <xsl:with-param name="mappings-string" select="$instrColorMappings"/>
+                                                </xsl:call-template>
+                                            </xsl:attribute>
                                             <xsl:element name="a">
 
                                                 <xsl:value-of select="nx:summary/nx:instrument"/>

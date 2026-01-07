@@ -26,9 +26,9 @@ This guide helps migrate existing scattered template overrides into the centrali
   - [x] "InstallTrigger is deprecated and will be removed in the future."
   - [x] how to include instrument data (maybe init_dev_environment expands a .tar.gz?)
   - [x] ZIP downloads
-  - [ ] Edit button doesn't work, 
+  - [x] Edit button doesn't work, 
     - [x] should only show when the user is logged in and has permissions
-  - [ ] feat: easily configurable badge colors?
+  - [x] feat: easily configurable badge colors?
 - [ ] Simple display should be checked
   - [ ] fix sidebar on wide display and never show "scroll to top" button
   - [ ] we should add search filtering to the datatable on this display

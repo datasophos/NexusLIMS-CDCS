@@ -6,6 +6,7 @@ This guide explains how to customize your NexusLIMS deployment to match your org
 
 - [Overview](#overview)
 - [Configuration Settings](#configuration-settings)
+  - [XSLT Configuration](#xslt-configuration)
   - [Branding & Logos](#branding--logos)
   - [Homepage Content](#homepage-content)
   - [Navigation Menu](#navigation-menu)
@@ -34,6 +35,46 @@ This file contains default values for all NexusLIMS-specific settings. To custom
 ---
 
 ## Configuration Settings
+
+### XSLT Configuration
+
+#### Instrument Badge Colors
+
+You can easily configure the colors used for instrument badges in the detail and list views. These visual indicators help users quickly identify which instrument was used for each experiment.
+
+**How it works:**
+- The XSLT stylesheets use these mappings to assign colors to instrument badges
+- If an instrument PID is not found in the mapping, a default gray color (`#505050`) is used
+- Colors are applied dynamically during XML-to-HTML transformation
+
+**Best Practices:**
+- Use distinct, accessible colors that work well for colorblind users
+- Choose colors that contrast well with white text (badges have white text)
+- Group similar instruments by color family (e.g., all TEMs in blue/purple tones)
+
+**Color Selection Tips:**
+- Use tools like [Coolors](https://coolors.co/) or [Adobe Color](https://color.adobe.com/) to create harmonious palettes
+- Ensure WCAG AA contrast ratio (minimum 4.5:1 for normal text)
+- Consider your organization's branding colors
+
+**Example: Custom Color Scheme**
+
+```python
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#2E86AB",  # Blue for TEMs
+    "FEI-Titan-STEM": "#0645AD",  # Darker blue for STEM
+    "JEOL-JEM3010-TEM": "#5DADE2", # Lighter blue for older TEM
+    "FEI-Quanta200-ESEM": "#A569BD", # Purple for ESEM
+    "FEI-Helios-DB": "#8E44AD",    # Darker purple for dual beam
+    "Hitachi-S4700-SEM": "#E74C3C", # Red for Hitachi SEMs
+    "Hitachi-S5500-SEM": "#C0392B", # Darker red for newer model
+    "JEOL-JSM7100-SEM": "#F39C12",  # Orange for JEOL SEMs
+    "Philips-EM400-TEM": "#27AE60", # Green for Philips TEMs
+    "Philips-CM30-TEM": "#229954",  # Darker green for CM30
+    "Zeiss-LEO_1525_FESEM": "#16A085", # Teal for Zeiss instruments
+    "Zeiss-Gemini_300_SEM": "#1ABC9C", # Lighter teal for Gemini
+}
+```
 
 ### Branding & Logos
 
@@ -184,12 +225,26 @@ Create separate settings files for different environments:
 # mdcs/dev_settings.py
 from mdcs.settings import *
 
+# Use different color schemes for different environments
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#FF0000",  # Red for dev environment
+    "FEI-Titan-STEM": "#FF6600",  # Orange for dev
+    # ... other instruments
+}
+
 NX_CUSTOM_MENU_LINKS = [
     {"title": "DEV Portal", "url": "https://dev.portal.com", "icon": "flask"},
 ]
 
 # mdcs/prod_settings.py
 from mdcs.settings import *
+
+# Production color scheme
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#2E86AB",  # Blue for production
+    "FEI-Titan-STEM": "#0645AD",  # Darker blue
+    # ... other instruments
+}
 
 NX_CUSTOM_MENU_LINKS = [
     {"title": "Production Portal", "url": "https://portal.com", "icon": "database"},
@@ -293,6 +348,22 @@ TEMPLATES = [
 ```python
 # University of Example - NexusLIMS Settings
 
+# XSLT Configuration
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#2E86AB",  # University blue
+    "FEI-Titan-STEM": "#0645AD",  # Darker blue
+    "JEOL-JEM3010-TEM": "#5DADE2", # Lighter blue
+    "FEI-Quanta200-ESEM": "#A569BD", # Purple
+    "FEI-Helios-DB": "#8E44AD",    # Darker purple
+    "Hitachi-S4700-SEM": "#E74C3C", # Red
+    "Hitachi-S5500-SEM": "#C0392B", # Darker red
+    "JEOL-JSM7100-SEM": "#F39C12",  # Orange
+    "Philips-EM400-TEM": "#27AE60", # Green
+    "Philips-CM30-TEM": "#229954",  # Darker green
+    "Zeiss-LEO_1525_FESEM": "#16A085", # Teal
+    "Zeiss-Gemini_300_SEM": "#1ABC9C", # Lighter teal
+}
+
 # Branding
 CUSTOM_TITLE = "Welcome to UEx Microscopy LIMS"
 NX_NAV_LOGO = "nexuslims/img/uex_nav_logo.png"
@@ -325,6 +396,22 @@ NX_ENABLE_DOWNLOADS = True
 ```python
 # Acme Corp - Materials Lab LIMS Settings
 
+# XSLT Configuration
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#1A5276",  # Corporate blue
+    "FEI-Titan-STEM": "#2874A6",  # Medium blue
+    "JEOL-JEM3010-TEM": "#5DADE2", # Light blue
+    "FEI-Quanta200-ESEM": "#7D3C98", # Corporate purple
+    "FEI-Helios-DB": "#54278F",    # Dark purple
+    "Hitachi-S4700-SEM": "#E67E22", # Corporate orange
+    "Hitachi-S5500-SEM": "#D35400", # Dark orange
+    "JEOL-JSM7100-SEM": "#F1C40F",  # Corporate yellow
+    "Philips-EM400-TEM": "#2ECC71", # Corporate green
+    "Philips-CM30-TEM": "#27AE60",  # Dark green
+    "Zeiss-LEO_1525_FESEM": "#16A085", # Corporate teal
+    "Zeiss-Gemini_300_SEM": "#1ABC9C", # Light teal
+}
+
 # Branding
 CUSTOM_TITLE = "Acme Materials Lab"
 NX_NAV_LOGO = "nexuslims/img/acme_logo_white.png"
@@ -355,6 +442,22 @@ NX_ENABLE_DOWNLOADS = True
 
 ```python
 # National Lab - Electron Microscopy Nexus
+
+# XSLT Configuration
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#003366",  # Government blue
+    "FEI-Titan-STEM": "#002855",  # Darker blue
+    "JEOL-JEM3010-TEM": "#0055A4", # Medium blue
+    "FEI-Quanta200-ESEM": "#660033", # Government purple
+    "FEI-Helios-DB": "#4D0026",    # Dark purple
+    "Hitachi-S4700-SEM": "#CC0000", # Government red
+    "Hitachi-S5500-SEM": "#990000", # Dark red
+    "JEOL-JSM7100-SEM": "#FF9900",  # Government orange
+    "Philips-EM400-TEM": "#006633", # Government green
+    "Philips-CM30-TEM": "#004D26",  # Dark green
+    "Zeiss-LEO_1525_FESEM": "#008080", # Government teal
+    "Zeiss-Gemini_300_SEM": "#009999", # Light teal
+}
 
 # Branding
 CUSTOM_TITLE = "National Lab EM Nexus"
@@ -400,6 +503,24 @@ NX_ENABLE_DOWNLOADS = True
    ```
 
 3. **Clear browser cache**: Hard refresh (Ctrl+Shift+R / Cmd+Shift+R)
+
+### Instrument Colors Not Updating
+
+If instrument badge colors aren't changing after updating `NX_INSTRUMENT_COLOR_MAPPINGS`:
+
+1. **Verify the setting name**: Ensure it's exactly `NX_INSTRUMENT_COLOR_MAPPINGS`
+2. **Check for typos**: Instrument PIDs must match exactly what's in your database
+3. **Validate color format**: Colors must be valid hex codes (e.g., `#RRGGBB`)
+4. **Restart Django**: XSLT parameters are loaded at startup
+5. **Check XSLT logs**: Look for transformation errors in Django logs
+
+**Debugging tip:** Add a unique color to test if changes are being applied:
+```python
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#FF00FF",  # Bright pink for testing
+    # ... other instruments
+}
+```
 
 ### Logo Not Displaying
 

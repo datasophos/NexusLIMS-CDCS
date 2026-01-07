@@ -6,6 +6,33 @@ Override these in your deployment's settings.py file as needed.
 """
 
 # ============================================================================
+# XSLT CONFIGURATION
+# ============================================================================
+
+# Instrument PID to badge color mappings for XSLT transformations
+# These colors are used in the detail view to visually distinguish different
+# instruments. The keys of this dictionary should match the instrument identifiers
+# in your NexusLIMS instrument database, and the values should be hex colors
+# if not defined, a default gray color will be used
+NX_INSTRUMENT_COLOR_MAPPINGS = {
+    "FEI-Titan-TEM": "#117f0e",
+    "FEI-Titan-STEM": "#9467bd",
+    "FEI-Quanta200-ESEM": "#d62728",
+    "JEOL-JEM3010-TEM": "#9467bd",
+    "FEI-Helios-DB": "#8c564b",
+    "Hitachi-S4700-SEM": "#e377c2",
+    "Hitachi-S5500-SEM": "#17becf",
+    "JEOL-JSM7100-SEM": "#bcbd22",
+    "Philips-EM400-TEM": "#bebada",
+    "Philips-CM30-TEM": "#b3de69",
+    "Zeiss-LEO_1525_FESEM": "#1a581d",
+    "Zeiss-Gemini_300_SEM": "#791212",
+    "FEI-Quanta_400_SEM": "#154157",
+    "JEOL-7800F_SEM": "#81538d",
+    "FEI-Titan-ETEM": "#CC8B2F",
+    "Thermo-Scios-DB": "#496BC4",
+}
+
 # HOMEPAGE CONFIGURATION
 # ============================================================================
 
