@@ -32,6 +32,7 @@ This guide helps migrate existing scattered template overrides into the centrali
 - [ ] Simple display should be checked
   - [ ] fix sidebar on wide display and never show "scroll to top" button
   - [ ] we should add search filtering to the datatable on this display
+- [ ] Homepage responsive spacing
 
 ### Other TODOs:
 - [ ] Tutorials

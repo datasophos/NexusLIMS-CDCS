@@ -33,6 +33,14 @@ NX_INSTRUMENT_COLOR_MAPPINGS = {
     "Thermo-Scios-DB": "#496BC4",
 }
 
+# Change this value to customize the threshold at which the "simple"
+# and less interactive display mode will be used on the detail page.
+# The number of individual "datasets" in a record will be compared to this
+# number. Lower numbers mean smaller records will trigger the simple display.
+# Set to 0 to disable the simple display entirely. Default is 100.
+NX_MAX_DATASET_DISPLAY_COUNT = 100
+
+# ============================================================================
 # HOMEPAGE CONFIGURATION
 # ============================================================================
 
@@ -78,9 +86,3 @@ NX_CUSTOM_MENU_LINKS = [
 
 # Enable/disable features
 NX_ENABLE_TUTORIALS = True
-
-# ============================================================================
-# VERSION
-# ============================================================================
-
-NX_VERSION = "dev"

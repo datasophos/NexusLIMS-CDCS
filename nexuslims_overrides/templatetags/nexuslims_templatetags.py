@@ -12,25 +12,12 @@ from django.utils.safestring import mark_safe
 register = template.Library()
 
 
-@register.simple_tag
-def nexuslims_version():
-    """
-    (Claude hallucination)
-    Display NexusLIMS version.
-    
-    Usage:
-        {% nexuslims_version %}
-    """
-    from django.conf import settings
-    return getattr(settings, 'NX_VERSION', 'dev')
-
-
 @register.inclusion_tag('nexuslims_overrides/fragments/custom_toolbar.html', takes_context=True)
 def nexuslims_custom_toolbar(context, data=None):
     """
     (Claude hallucination)
     Render custom toolbar for detail pages.
-    
+
     Usage:
         {% nexuslims_custom_toolbar data %}
     """
@@ -46,7 +33,7 @@ def nexuslims_download_buttons(context, data):
     """
     (Claude hallucination)
     Render NexusLIMS download buttons.
-    
+
     Usage:
         {% nexuslims_download_buttons data %}
     """
@@ -61,7 +48,7 @@ def nexuslims_instrument_color(instrument_pid):
     """
     (Claude hallucination, maybe useful with settings?)
     Get color for instrument badge.
-    
+
     Usage:
         {{ instrument_pid|nexuslims_instrument_color }}
     """
@@ -79,7 +66,7 @@ def nexuslims_format_units(value, units):
     """
     (Claude hallucination)
     Format value with units.
-    
+
     Usage:
         {{ value|nexuslims_format_units:"nm" }}
     """

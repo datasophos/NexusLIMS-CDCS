@@ -37,13 +37,16 @@
         </xsl:choose>
     </xsl:template>
 
+    <!-- Maximum number of datasets before switching to "simple display" -->
+    <xsl:param name="maxDatasetCount">100</xsl:param>
+
     <!--
-        These variables control the limit for interactive dataset display. More than this
+        This variable control the limit for interactive dataset display. More than this
         number and the stylesheet will revert to a simple file list rather than an
-        interactive display of each activity
+        interactive display of each activity. A value of zero or below disables the simple
+        display entirely.
     -->
-    <xsl:variable name="maxDatasetCount">100</xsl:variable>
-    <xsl:variable name="simpleDisplay" select="count(//nx:dataset) > $maxDatasetCount"/>
+    <xsl:variable name="simpleDisplay" select="$maxDatasetCount > 0 and count(//nx:dataset) > $maxDatasetCount"/>
 
     <xsl:variable name="month-num-dictionary">
         <month month-number="01">January</month>

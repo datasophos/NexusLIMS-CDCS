@@ -11,6 +11,7 @@ Changes from core_main_app version:
 """
 
 from django import template
+from django.conf import settings
 from django.contrib.staticfiles import finders
 
 from core_main_app.commons import exceptions
@@ -126,7 +127,6 @@ def _render_xml_as_html(xslt_type, *args, **kwargs):
     request = kwargs.pop("request", None)
 
     # Add instrument color mappings from Django settings
-    from django.conf import settings
     if hasattr(settings, 'NX_INSTRUMENT_COLOR_MAPPINGS'):
         color_mappings = settings.NX_INSTRUMENT_COLOR_MAPPINGS
         # Convert the Python dict to a format that XSLT can parse
@@ -134,6 +134,15 @@ def _render_xml_as_html(xslt_type, *args, **kwargs):
         # Wrap the entire string in single quote to make it a valid XPath string literal
         xslt_format = ",".join([f"\"{pid}\":\"{color}\"" for pid, color in color_mappings.items()])
         kwargs['instrColorMappings'] = f"'{xslt_format}'"
+
+    # Add max dataset display count from Django settings
+    if hasattr(settings, 'NX_MAX_DATASET_DISPLAY_COUNT'):
+        try:
+            max_count = int(settings.NX_MAX_DATASET_DISPLAY_COUNT)
+            xslt_format = f'"{max_count}"'
+            kwargs['maxDatasetCount'] = xslt_format
+        except ValueError as e:
+            print(f"WARNING: Could not parse NX_MAX_DATASET_DISPLAY_COUNT setting: {e}")
 
     # Extract useful string values from request if provided
     # (request object itself can't be serialized for XSLT)

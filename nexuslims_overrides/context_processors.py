@@ -36,12 +36,10 @@ def nexuslims_features(request):
     Add NexusLIMS feature flags and configuration to templates.
 
     Usage in templates:
-        {% if NX_ENABLE_DOWNLOADS %}
-            <!-- Download buttons -->
+        {% if NX_ENABLE_TUTORIALS %}
+            <!-- Setup template -->
         {% endif %}
     """
     return {
-        'NX_ENABLE_DOWNLOADS': getattr(settings, 'NX_ENABLE_DOWNLOADS', True),
         'NX_ENABLE_TUTORIALS': getattr(settings, 'NX_ENABLE_TUTORIALS', True),
-        'NX_VERSION': getattr(settings, 'NX_VERSION', 'dev'),
     }

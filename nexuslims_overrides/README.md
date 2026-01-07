@@ -106,9 +106,7 @@ Available in all templates:
 {{ NX_DOCUMENTATION_LINK }}
 {{ NX_HOMEPAGE_TEXT }}
 {{ NX_CUSTOM_TITLE }}
-{{ NX_ENABLE_DOWNLOADS }}
 {{ NX_ENABLE_TUTORIALS }}
-{{ NX_VERSION }}
 ```
 
 ### Template Tags

@@ -11,6 +11,7 @@ This guide explains how to customize your NexusLIMS deployment to match your org
   - [Homepage Content](#homepage-content)
   - [Navigation Menu](#navigation-menu)
   - [Feature Flags](#feature-flags)
+  - [Dataset Display Threshold](#dataset-display-threshold)
 - [Customization Best Practices](#customization-best-practices)
 - [Advanced Customization](#advanced-customization)
 - [Examples](#examples)
@@ -204,14 +205,40 @@ NX_CUSTOM_MENU_LINKS = [
 # Default: True
 NX_ENABLE_TUTORIALS = True
 
-# Enable download buttons on data records
-# Default: True
-NX_ENABLE_DOWNLOADS = True
 ```
 
 **When to Disable:**
 - **Tutorials**: If you have custom onboarding or the Shepherd.js library isn't installed
-- **Downloads**: If data export is restricted by policy
+
+#### Dataset Display Threshold
+
+Control when the simplified display mode is used for records with many datasets.
+
+```python
+# Change this value to customize the threshold at which the "simple"
+# and less interactive display mode will be used on the detail page.
+# The number of individual "datasets" in a record will be compared to this
+# number. Lower numbers mean smaller records will trigger the simple display.
+# Set to 0 to disable the simple display entirely.
+# Default: 100
+NX_MAX_DATASET_DISPLAY_COUNT = 100
+```
+
+**Usage Guidelines:**
+- **Default (100)**: Records with 101+ datasets use simple display
+- **Lower values (e.g., 50)**: More records will use simple display (better performance)
+- **Higher values (e.g., 500)**: Fewer records will use simple display (more interactive)
+- **0**: Always use full interactive display (may impact performance with large records)
+
+**Performance Considerations:**
+- Simple display mode reduces browser memory usage and rendering time
+- Interactive display provides better user experience but can be resource-intensive
+- Adjust based on your typical record sizes and user hardware
+
+**Best Practices:**
+- Start with default (100) and monitor user feedback
+- Consider your user base: research labs may prefer interactive, while production environments may prefer performance
+- Test with your largest records to find the optimal balance
 
 ---
 
@@ -388,7 +415,10 @@ NX_CUSTOM_MENU_LINKS = [
 
 # Features
 NX_ENABLE_TUTORIALS = True
-NX_ENABLE_DOWNLOADS = True
+
+# Dataset Display
+# Use simple display for records with 100+ datasets (better for research environment)
+NX_MAX_DATASET_DISPLAY_COUNT = 99
 ```
 
 ### Example 2: Corporate Lab
@@ -435,7 +465,10 @@ NX_CUSTOM_MENU_LINKS = [
 
 # Features
 NX_ENABLE_TUTORIALS = False  # Custom onboarding process
-NX_ENABLE_DOWNLOADS = True
+
+# Dataset Display
+# Use simple display for records with 250+ datasets (optimized for large research datasets)
+NX_MAX_DATASET_DISPLAY_COUNT = 249
 ```
 
 ### Example 3: Government Research Facility
@@ -483,7 +516,10 @@ NX_CUSTOM_MENU_LINKS = [
 
 # Features
 NX_ENABLE_TUTORIALS = True
-NX_ENABLE_DOWNLOADS = True
+
+# Dataset Display
+# Use simple display for records with 500+ datasets (optimized for very large government datasets)
+NX_MAX_DATASET_DISPLAY_COUNT = 499
 ```
 
 ---
