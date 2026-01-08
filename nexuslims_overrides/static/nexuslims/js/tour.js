@@ -61,6 +61,50 @@
     }
 
     /**
+     * Scroll navPanel to make element visible
+     * This is used for mobile view when highlighting elements in the navPanel
+     */
+    function scrollNavPanelToElement(element) {
+        if (!element || !$('#navPanel').length) {
+            return Promise.resolve();
+        }
+
+        var $navPanel = $('#navPanel');
+        var $element = $(element);
+
+        // Check if element is within navPanel
+        if (!$element.closest('#navPanel').length) {
+            return Promise.resolve();
+        }
+
+        // Get positions relative to navPanel
+        var navPanelTop = $navPanel.offset().top;
+        var navPanelHeight = $navPanel.height();
+        var elementTop = $element.offset().top;
+        var elementHeight = $element.height();
+
+        // Calculate if element is visible in navPanel
+        var elementTopRelativeToNavPanel = elementTop - navPanelTop;
+        var elementBottomRelativeToNavPanel = elementTopRelativeToNavPanel + elementHeight;
+
+        // If element is below visible area, scroll to make it visible
+        if (elementBottomRelativeToNavPanel > navPanelHeight) {
+            var scrollPosition = elementBottomRelativeToNavPanel - navPanelHeight + 20; // +20 for padding
+
+            return new Promise(function(resolve) {
+                $navPanel.animate({
+                    scrollTop: scrollPosition
+                }, {
+                    duration: 300,
+                    complete: resolve
+                });
+            });
+        }
+
+        return Promise.resolve();
+    }
+
+    /**
      * Create step number indicator for tour footer
      * This is called on each step 'show' event to insert the step counter
      * Uses setTimeout to ensure DOM is ready after step renders
@@ -208,6 +252,18 @@
             $('body').removeClass('navPanel-visible');
         }
 
+        var Detail = window.NexusLIMSDetail;
+
+        if (!Detail) {
+            console.warn('NexusLIMSDetail namespace not available');
+            return null;
+        }
+
+        // Close sidebar if open when tour starts
+        if (Detail && Detail.closeSidebar && $('.sidebar').hasClass('side-expanded')) {
+            Detail.closeSidebar();
+        }
+
         var tour = new Shepherd.Tour({
             useModalOverlay: true,
             keyboardNavigation: true,
@@ -229,6 +285,9 @@
         tour.on('show', createStepNumberIndicator(tour));
 
         var buttons = createButtons(tour);
+
+        // Capture scroll position at start of tour for restoration later
+        var cur_pos = $(document).scrollTop();
 
         // Check viewport at tour creation time
         var mobile = isMobileView();
@@ -258,7 +317,11 @@
                 title: 'Browse Records',
                 text: 'Click here to browse and search all experimental records in the system. You can filter by keywords, instruments, dates, and more.',
                 beforeShowPromise: function() {
-                    return openNavPanel();
+                    return openNavPanel().then(function() {
+                        // Find the browse link and scroll to it if needed
+                        var browseLink = $('#navPanel a[href*="explore/keyword"]')[0];
+                        return scrollNavPanelToElement(browseLink);
+                    });
                 },
                 attachTo: {
                     element: '#navPanel a[href*="explore/keyword"]',
@@ -271,7 +334,17 @@
                 id: 'tut-tutorial',
                 title: 'Context-aware Tutorials',
                 text: 'This link runs <em>this</em> tutorial, but will load a customized introduction on the other pages within the application. If you are uncertain about a certain page\'s content, click this link to take a guided tour.',
-                beforeShowPromise: keepNavPanelOpen,
+                beforeShowPromise: function() {
+                    return keepNavPanelOpen().then(function() {
+                        // Find the Tutorial link in navPanel
+                        var tutorialLink = $('#navPanel .link').filter(function() {
+                            return $(this).text().trim() === 'Tutorial';
+                        })[0];
+
+                        // Scroll navPanel to make the element visible
+                        return scrollNavPanelToElement(tutorialLink);
+                    });
+                },
                 attachTo: {
                     element: function() {
                         // Find the Tutorial link in navPanel
@@ -288,7 +361,15 @@
                 id: 'tut-help-links',
                 title: 'Help Resources',
                 text: 'The Help section contains links to documentation and API references.',
-                beforeShowPromise: keepNavPanelOpen,
+                beforeShowPromise: function() {
+                    return keepNavPanelOpen().then(function() {
+                        // Find the last documentation link in navPanel
+                        var helpLink = $('#navPanel .link').last();
+
+                        // Scroll navPanel to make the element visible
+                        return scrollNavPanelToElement(helpLink);
+                    });
+                },
                 attachTo: {
                     element: function() {
                         // Find the Documentation link in navPanel (it's nested under Help)
@@ -438,14 +519,20 @@
             tour.on('cancel', closeNavPanel);
         }
 
-        // Remove focus outline from tutorial link after tour ends
-        var removeTutorialFocus = function() {
+        // Cleanup on exit - scroll back to starting position and blur tutorial link
+        var cleanupOnExit = function() {
+            // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
             }).addClass('tour-completed');
+
+            if ($(document).scrollTop() !== cur_pos) {
+                $('html, body').animate({ scrollTop: cur_pos }, { duration: 500 });
+            }
         };
-        tour.on('complete', removeTutorialFocus);
-        tour.on('cancel', removeTutorialFocus);
+
+        tour.on('complete', cleanupOnExit);
+        tour.on('cancel', cleanupOnExit);
 
         // Allow clicking overlay to cancel
         tour.on('show', function() {
@@ -467,6 +554,11 @@
         if (!shepherdAvailable()) {
             console.warn('Shepherd.js not available for explore tour');
             return null;
+        }
+
+        // Close navPanel if open when tour starts (mobile)
+        if ($('body').hasClass('navPanel-visible')) {
+            $('body').removeClass('navPanel-visible');
         }
 
         var tour = new Shepherd.Tour({
@@ -639,11 +731,27 @@
         // Check if any modals are visible, close them and remember to reopen at the end
         var already_open_modal = false;
         $('.modal').each(function(index, val) {
-            if ($(val).css('visibility') === 'visible') {
+            if ($(val).css('visibility') === 'visible' &&
+                (val.id !== 'download-modal' && val.id !== 'file-preview-modal')) {
                 Detail.closeModal(val.id);
                 already_open_modal = val.id;
             }
         });
+
+        // Close navPanel if open when tour starts (mobile)
+        if ($('body').hasClass('navPanel-visible')) {
+            $('body').removeClass('navPanel-visible');
+        }
+
+        var weClosedSidebar = false;
+        // Close sidebar if open when tour starts
+        if (Detail && Detail.closeSidebar && $('.sidebar').hasClass('side-expanded')) {
+            Detail.closeSidebar();
+            weClosedSidebar = true;
+        }
+
+        // is this a simple record display?
+        var simpleDisplay = $('#simpleDisplay').text() === 'true';
 
         var tour = new Shepherd.Tour({
             useModalOverlay: true,
@@ -652,13 +760,7 @@
                 modalOverlayOpeningPadding: 25,
                 scrollTo: true,
                 scrollToHandler: topScrollHandler,
-                canClickTarget: false,
-                popperOptions: {
-                    modifiers: [
-                        { name: 'offset', options: { offset: [0, 15] } },
-                        { name: 'arrow', options: { padding: 5 } }
-                    ]
-                }
+                canClickTarget: false
             }
         });
 
@@ -668,18 +770,28 @@
         var buttons = createButtons(tour);
 
         // Add tour steps
-        tour.addStep({
-            id: 'tut-welcome',
-            title: 'This is the record detail page',
-            text: 'The <em>detail</em> page shows all the details of a record generated from an Experiment on one of the Nexus Facility instruments. Click <em>Next</em> for a tour of the features of this record. You can also use the keyboard arrow keys to navigate through the tutorial.',
-            buttons: [buttons.back(false), buttons.next]
-        });
+        if (!simpleDisplay) {
+          tour.addStep({
+              id: 'tut-welcome',
+              title: 'This is the record detail page',
+              text: 'The <em>detail</em> page shows all the details of a record generated from an Experiment. Click <em>Next</em> for a tour of the features of this record. You can also use the keyboard arrow keys to navigate through the tutorial.',
+              buttons: [buttons.back(false), buttons.next]
+          });
+        } else {
+          tour.addStep({
+              id: 'tut-welcome',
+              title: 'This is the simple record detail page',
+              text: 'The <em>simple</em> detail page shows all the details of a record generated from an Experiment. This reduced-detail view is shown for records that contain a large number of datasets to keep the page performant. Click <em>Next</em> for a tour of the features of this record. You can also use the keyboard arrow keys to navigate through the tutorial.',
+              buttons: [buttons.back(false), buttons.next]
+          });
+        }
+
 
         tour.addStep({
             id: 'tut-record-header',
             title: 'The record header',
             text: 'The top of the record contains basic information, such as the title of the experiment (taken from the calendar reservation), the instrument that was used, the number and types of files contained within, the user, date, and experimental motivation. This utility of this section relies heavily on the quality of data inputted into the reservation form.',
-            attachTo: { element: '#record-header', on: 'bottom-start' },
+            attachTo: { element: '#record-header', on: 'bottom' },
             buttons: [buttons.back(true), buttons.next],
             popperOptions: {
                 modifiers: [{ name: 'offset', options: { offset: [0, 25] } }]
@@ -690,7 +802,7 @@
             id: 'tut-session_info_column',
             title: 'Session summary information',
             text: 'The session summary section contains further details about the experiment, such as the precise date and time (from the calendar), the sample information and ID, and any sample description.',
-            attachTo: { element: '#session_info_column', on: 'bottom-start' },
+            attachTo: { element: '#session_info_column', on: 'bottom' },
             scrollTo: false,
             buttons: [buttons.back(true), buttons.next],
             popperOptions: {
@@ -702,7 +814,7 @@
             id: 'tut-img_gallery',
             title: 'Image gallery',
             text: "The gallery shows a preview image of each dataset contained within the experiment's record. These can be browsed using the mouse buttons, or via the left and right arrow keys on the keyboard.",
-            attachTo: { element: '#img_gallery', on: 'left-start' },
+            attachTo: { element: '#img_gallery', on: 'left' },
             scrollTo: false,
             buttons: [buttons.back(true), buttons.next],
             popperOptions: {
@@ -711,12 +823,12 @@
         });
 
         // Activity-specific steps (only for non-simple display)
-        if ($('#simpleDisplay').text() === 'false') {
+        if (!simpleDisplay) {
             tour.addStep({
                 id: 'tut-aa',
                 title: 'Acquisition activities',
                 text: 'The remainder of the record contains details about the various "activities" that were detected in the records (determined via file creation times). Click <em>Next</em> for further details about the contents of each activity.',
-                attachTo: { element: $('.aa_header_row')[0], on: 'left-start' },
+                attachTo: { element: $('.aa_header_row')[0], on: 'left' },
                 buttons: [buttons.back(true), buttons.next],
                 scrollToHandler: function(element) { topScrollHandler(element, -1 * $(element).height() + 75); }
             });
@@ -725,7 +837,7 @@
                 id: 'tut-setup-params',
                 title: 'Setup parameters',
                 text: 'The setup parameters button will show you the metadata extracted from the raw files that is common to all the datasets contained in this activity. Clicking here will open a dialog box showing the setup parameters for this activity',
-                attachTo: { element: $('.aa_header_row .param-button')[0], on: 'bottom-start' },
+                attachTo: { element: $('.aa_header_row .param-button')[0], on: 'bottom' },
                 buttons: [buttons.back(true), buttons.next],
                 scrollTo: false,
                 canClickTarget: false,
@@ -739,7 +851,7 @@
                 id: 'tut-aa-gallery',
                 title: 'Activity image gallery',
                 text: "Another preview of the datasets in this activity is shown here. Mouse over a dataset in the accompanying table to view its preview",
-                attachTo: { element: $('.aa_header_row .aa-img-col')[0], on: 'bottom-start' },
+                attachTo: { element: $('.aa_header_row .aa-img-col')[0], on: 'bottom' },
                 scrollTo: false,
                 buttons: [buttons.back(true), buttons.next]
             });
@@ -748,7 +860,7 @@
                 id: 'tut-aa-table',
                 title: 'Activity dataset table',
                 text: "The activity details table lists each dataset contained in this activty with some basic information such as the dataset's name, its creation time, the type of data contained, and its role.",
-                attachTo: { element: $('.aa_header_row .aa-table-col')[0], on: 'bottom-start' },
+                attachTo: { element: $('.aa_header_row .aa-table-col')[0], on: 'bottom' },
                 scrollTo: false,
                 buttons: [buttons.back(true), buttons.next]
             });
@@ -757,7 +869,7 @@
                 id: 'tut-aa-meta',
                 title: 'Metadata viewer/downloader',
                 text: "The metadata column allows you to view the metadata unique to this dataset using the left button, or you can download the entire extracted metadata using the button on the right in JSON format.",
-                attachTo: { element: $('.aa_header_row .aa-table-col .aa-meta-col')[0], on: 'left-start' },
+                attachTo: { element: $('.aa_header_row .aa-table-col .aa-meta-col')[0], on: 'left' },
                 buttons: [buttons.back(true), buttons.next],
                 scrollTo: false,
                 modalOverlayOpeningPadding: 5,
@@ -770,7 +882,7 @@
                 id: 'tut-aa-dl',
                 title: 'Individual file downloader',
                 text: "The final column provides a link to download this single file in its native format (Note: there is a bulk file downloader at the top of the record)",
-                attachTo: { element: $('.aa_header_row .aa-table-col .aa-dl-col')[0], on: 'left-start' },
+                attachTo: { element: $('.aa_header_row .aa-table-col .aa-dl-col')[0], on: 'left' },
                 buttons: [buttons.back(true), buttons.next],
                 scrollTo: false,
                 modalOverlayOpeningPadding: 5,
@@ -780,7 +892,7 @@
             });
 
             // Sidebar step
-            var sidebar_vis = $('.sidebar').length > 0 && $('.sidebar').position()['left'] === 0;
+            var sidebar_vis = $('.sidebar').length > 0 && $('.sidebar').position()['left'] === 0 && !weClosedSidebar;
             var sidebar_text = "The sidebar provides an easy way to navigate through the different activities in the record, and also provides a button to return to the top of the page.";
             if (!sidebar_vis) {
                 sidebar_text += " If the window is too narrow, the sidebar is hidden from view. Clicking this button will show it.";
@@ -792,10 +904,11 @@
                 text: sidebar_text,
                 attachTo: {
                     element: sidebar_vis ? $('.sidebar')[0] : $('#btn-sidebar')[0],
-                    on: 'right-start'
+                    on: 'right'
                 },
                 scrollTo: false,
-                buttons: [buttons.back(true), buttons.next]
+                buttons: [buttons.back(true), buttons.next],
+                modalOverlayOpeningPadding: 15
             });
 
             tour.addStep({
@@ -810,33 +923,57 @@
                     modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
                 }
             });
+        } else {
+          tour.addStep({
+              id: 'tut-file-listing',
+              title: 'Dataset Listing',
+              text: "The dataset listing is an interactive table of all the datasets in this record. You can use the search box to filter on the dataset names. Hovering your mouse over the preview button in each row will show you the image preview (click to open in a new tab/download). The metadata (in JSON) format or the dataset itself can be downloaded by clicking on the associated buttons in each row.",
+              attachTo: { element: '#dataset-listing-header', on: 'right' },
+              scrollTo: true,
+              scrollToHandler: topScrollHandler,
+              buttons: [buttons.back(true), buttons.next],
+              modalOverlayOpeningPadding: 5,
+          });
         }
 
         tour.addStep({
             id: 'tut-xml-dl',
-            title: 'Record exporter',
-            text: "The <i class='fa fa-code menu-fa'></i> <em>Download XML</em> button will download the metadata record (not the actual datafiles) in an structured format for additional analysis, if desired.",
-            attachTo: { element: '#btn-xml-dl', on: 'bottom' },
+            title: 'Record exporter (JSON)',
+            text: "The <i class='far fa-file-code menu-fa'></i> <em>Download JSON</em> button will download the metadata record (not the actual datafiles) in an structured format for additional analysis, if desired.",
+            attachTo: { element: '#btn-json-dl', on: 'bottom' },
             scrollTo: true,
             buttons: [buttons.back(true), buttons.next],
             modalOverlayOpeningPadding: 5,
-            popperOptions: {
-                modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
-            }
         });
 
+        // Check if edit record button is visible to determine if we should add the edit step
+        var editRecordVisible = $('#btn-edit-record').is(':visible');
+
         tour.addStep({
-            id: 'tut-edit-record',
-            title: 'Record editor',
-            text: "The <i class='fa fa-file-text menu-fa'></i> <em>Edit this record</em> button will allow you (if logged in and you have ownership of this record) to edit the metadata information contained within. Currently, this process is a bit cumbersome, but an improvement to the interface is on the NexusLIMS team's roadmap.",
-            attachTo: { element: '#btn-edit-record', on: 'bottom' },
-            scrollTo: false,
-            buttons: [buttons.back(true), buttons.end],
+            id: 'tut-xml-dl',
+            title: 'Record exporter (XML)',
+            text: "The <i class='far fa-file-excel menu-fa'></i> <em>Download XML</em> button will download the metadata record (not the actual datafiles) in the native structured XML format for additional analysis, if desired.",
+            attachTo: { element: '#btn-xml-dl', on: 'bottom' },
+            scrollTo: true,
+            buttons: [buttons.back(true), editRecordVisible ? buttons.next : buttons.end],
             modalOverlayOpeningPadding: 5,
-            popperOptions: {
-                modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
-            }
         });
+
+        // Only add edit record step if the button is visible
+        if (editRecordVisible) {
+            tour.addStep({
+                id: 'tut-edit-record',
+                title: 'Record editor',
+                text: "The <i class='fa fa-file-text menu-fa'></i> <em>Edit this record</em> button will allow you (if logged in and you have ownership of this record) to edit the metadata information contained within. Currently, this process is a bit cumbersome, but an improvement to the interface is on the NexusLIMS team's roadmap.",
+                attachTo: { element: '#btn-edit-record', on: 'bottom' },
+                scrollTo: false,
+                buttons: [buttons.back(true), buttons.end],
+                modalOverlayOpeningPadding: 5,
+                popperOptions: {
+                    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+        }
 
         // Cleanup on exit
         var cur_pos = $(document).scrollTop();

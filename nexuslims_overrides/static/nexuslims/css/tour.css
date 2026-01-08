@@ -168,7 +168,9 @@
 .shepherd-element[data-popper-placement^='right'] > .shepherd-arrow {
     left: -8px;
 }
-
+.shepherd-element[data-popper-placement^='right'] {
+    margin-left: 15px; /* Pull tooltip up toward element's bottom edge */
+}
 /* Modal overlay opacity */
 .shepherd-modal-overlay-container.shepherd-modal-is-visible {
     opacity: 0.5;
@@ -183,7 +185,7 @@
 
 /* Mobile tour - keep navPanel above Shepherd overlay when tour needs it open */
 body.tour-navpanel-open #navPanel {
-    z-index: 100002 !important;
+    z-index: 100001 !important;
 }
 
 /* Remove focus outline from tutorial link after tour ends */
@@ -198,7 +200,7 @@ a.tour-completed:focus-visible {
 /* Responsive styling for small screens */
 @media screen and (max-width: 576px) {
     .shepherd-element {
-        max-width: 45vw;
+        max-width: 50vw;
     }
 
     .shepherd-title {

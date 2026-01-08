@@ -93,5 +93,5 @@ NX_CUSTOM_MENU_LINKS = [
 # FEATURE FLAGS
 # ============================================================================
 
-# Enable/disable features
+# Enable/disable tutorial links
 NX_ENABLE_TUTORIALS = True

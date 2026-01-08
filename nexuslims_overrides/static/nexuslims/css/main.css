@@ -339,18 +339,19 @@ a.cdcs-menu-item > i.fa {
 }
 
 #titleBar .toggle {
-	text-decoration: none;
-	border: 0;
-	height: var(--titlebar-height);
-	left: 0;
-	position: absolute;
-	top: 0;
-	width: var(--titlebar-height);
-	z-index: 2;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #999;
+    text-decoration: none;
+    border: 0;
+    height: calc(var(--titlebar-height)/3);
+    left: 0;
+    position: absolute;
+    top: calc(var(--titlebar-height) - 40px);
+    width: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    margin-left: calc(var(--titlebar-height) / 2 - 10px);
 }
 
 #titleBar .toggle:hover {

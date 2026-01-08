@@ -81,11 +81,11 @@
     opacity: 0;
     text-decoration: none;
     border: 0;
-    height: var(--titlebar-height);
-    width: var(--titlebar-height);
-    margin-left: var(--titlebar-height); /* Account for absolutely positioned toggle button */
+    height: calc(var(--titlebar-height) / 3);  /* 20px */
+    width: 10px;
+    margin-left: calc(var(--titlebar-height) - 10px);
     position: absolute;
-    top: 0;
+    top: calc(var(--titlebar-height) - 40px);
     left: 0;
     z-index: 2;
     -webkit-transition: opacity 0.5s ease-in-out 0s;
@@ -102,7 +102,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     cursor: pointer;
 }
 

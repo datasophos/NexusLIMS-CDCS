@@ -41,7 +41,18 @@
     var sidebarElement = document.querySelector('.sidebar');
 
     function showButtonOnScroll() {
-        var header_pos = $('.list-record-experimenter').first().position()['top'];
+        // Only run this logic on the /data page
+        if (!window.location.pathname.includes('/data')) {
+            return;
+        }
+
+        // Test if the target element is present and exit early if not
+        var $experimenterElement = $('.list-record-experimenter').first();
+        if (!$experimenterElement.length) {
+            return;
+        }
+
+        var header_pos = $experimenterElement.position()['top'];
         var simpleDisplay = $('#simpleDisplay').text() == 'true';
 
         // In simple display mode, always show button when scrolled past header

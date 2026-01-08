@@ -1016,7 +1016,7 @@ Use it like:
 
                <xsl:choose>
                    <xsl:when test="$simpleDisplay">
-                        <h3>Dataset Listing
+                        <h3 id="dataset-listing-header">Dataset Listing
                             <xsl:call-template name="help-tip">
                                 <xsl:with-param name="tip-text">This table contains a row for every dataset identified as part of this Experiment, including links to download the dataset itself and its metadata. If available, a link to the preview image is included as well.</xsl:with-param>
                             </xsl:call-template>
@@ -1218,7 +1218,7 @@ Use it like:
                                                                 <xsl:attribute name="title">Click to download this dataset's metadata in JSON format</xsl:attribute>
                                                                 <i class='fa fa-download fa-border param-button' style='margin-left:0;'/>
                                                             </xsl:element>
-                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal dataset-meta-modal">
+                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal dataset-meta-modal modal">
                                                                 <div class="modal-content">
                                                                     <div class="container-fluid">
                                                                         <div class="d-flex justify-content-between align-items-start">
@@ -1339,7 +1339,7 @@ Use it like:
                                 </div>
                             </div>
                             <!-- Generate unique modal box for each AA which contains the setup params, accessed via a button -->
-                            <div id="{generate-id(current())}-modal" class="nexuslims-modal aa-setup-params-modal">
+                            <div id="{generate-id(current())}-modal" class="nexuslims-modal aa-setup-params-modal modal">
                                 <div class="modal-content">
                                     <div class="container-fluid">
                                         <div class="d-flex justify-content-between align-items-start">
@@ -1447,7 +1447,7 @@ Use it like:
                </xsl:choose>
                <xsl:if test="not($simpleDisplay)">
 
-                  <div id="filelist-modal" class="nexuslims-modal">
+                  <div id="filelist-modal" class="nexuslims-modal modal">
                       <div class="modal-content">
                           <div class="modal-body">
                               <div class="d-flex justify-content-between align-items-start mb-2">
