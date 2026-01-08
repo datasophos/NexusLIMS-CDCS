@@ -19,7 +19,7 @@
             {% generate_menu %}
             {% for item in menus.nodropdown %}
                 <li>
-                    <a href="{{ item.url }}">
+                    <a href="{{ item.url }}"{% if item|get_attribute:'id' %} id="{{ item.id }}"{% endif %}{% if item|get_attribute:'css_class' %} class="{{ item.css_class }}"{% endif %}>
                         {% if item|get_attribute:'icon' %}<i class="{{ item.iconClass }} fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
                     </a>
                 </li>

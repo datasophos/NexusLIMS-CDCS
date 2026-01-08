@@ -118,25 +118,13 @@
     }
 
     /**
-     * Initialize Shepherd.js tutorial if available
+     * Initialize tutorial system
+     * Note: Actual tutorial functionality is handled by tour.js (NexusLIMSTours)
+     * This function is kept for backward compatibility but is now a no-op
      */
     function initializeTutorial() {
-        const tutorialLink = document.getElementById('homepage-tutorial');
-        if (tutorialLink && typeof Shepherd !== 'undefined') {
-            tutorialLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                startTutorial();
-            });
-        }
-    }
-
-    /**
-     * Start the interactive tutorial
-     */
-    function startTutorial() {
-        // Tutorial implementation using Shepherd.js
-        // This would be populated with actual tutorial steps
-        console.log('Tutorial started');
+        // Tutorial initialization is now handled by tour.js
+        // which auto-attaches to tutorial links when DOM is ready
     }
 
     /**

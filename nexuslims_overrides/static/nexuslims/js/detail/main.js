@@ -83,7 +83,7 @@
 
         $("#btn-xml-dl").on('click', () => Detail.Downloads.downloadRecord("XML"));
         $("#btn-json-dl").on('click', () => Detail.Downloads.downloadRecord("JSON"));
-        $('a#menu-tutorial').on('click', () => Detail.create_detail_tour());
+        // Note: Tutorial click handler is now managed by tour.js (NexusLIMSTours)
 
         // Replace placeholder images
         const image_data = $("#placeholder-preview-src").text();

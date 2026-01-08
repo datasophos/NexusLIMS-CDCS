@@ -1,0 +1,223 @@
+/**
+ * NexusLIMS Tour Styling
+ *
+ * Custom styles for Shepherd.js tour dialogs to match the 2.21.0 design
+ */
+
+/* z-index has to be higher than the nav/title bars */
+.shepherd-modal-overlay-container {
+    z-index: 100001;
+}
+
+.shepherd-element {
+    z-index: 100003;
+}
+
+/* Header styling - lighter gray background */
+.shepherd-has-title .shepherd-content .shepherd-header {
+    background: #f7f7f7;
+    padding: 0.75em;
+}
+
+/* Title styling - bold text */
+.shepherd-title {
+    font-weight: 700;
+}
+
+/* Back button - transparent with dark text */
+.shepherd-footer .btn-default,
+.shepherd-footer .shepherd-button-secondary {
+    background: transparent;
+    color: #212529;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    border-radius: 4px;
+    width: 90px;
+}
+
+.shepherd-footer .btn-default:hover,
+.shepherd-footer .shepherd-button-secondary:hover {
+    background: #e9ecef;
+    color: #212529;
+}
+
+.shepherd-footer .btn-default:disabled,
+.shepherd-footer .shepherd-button-secondary:disabled {
+    background: transparent;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Primary button - blue with white text */
+.shepherd-footer .btn-primary {
+    background: #007ac1;
+    color: #fff;
+    border: 1px solid #565656;
+    border-radius: 4px;
+    padding: 6px 12px;
+    width: 90px;
+}
+
+.shepherd-footer .btn-primary:hover {
+    background: #005a8c;
+    color: #fff;
+}
+
+/* End/Danger button */
+.shepherd-footer .btn-danger {
+    background: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+    border-radius: 4px;
+    padding: 6px 12px;
+    width: 90px;
+}
+
+.shepherd-footer .btn-danger:hover {
+    background: #bb2d3b;
+    color: #fff;
+}
+
+/* Footer layout - Back button left, step indicator center, Next button right */
+.shepherd-footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5em 0.75em 0.75em;
+    gap: 0.5em;
+}
+
+/* Back button stays left */
+.shepherd-footer .btn-default,
+.shepherd-footer .shepherd-button-secondary {
+    flex: 0 0 auto;
+    margin: 0;
+    width: 90px;
+}
+
+/* Step number indicator in the middle, takes remaining space */
+.shepherd-footer > span.shepherd-step-number {
+    color: #474747;
+    font-size: 13px;
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+/* Next/End button stays right */
+.shepherd-footer .btn-primary,
+.shepherd-footer .btn-danger {
+    flex: 0 0 auto;
+}
+
+/* Content text styling */
+.shepherd-text {
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 16px;
+    padding: 12px;
+    line-height: 1.4;
+}
+
+/* Dialog shadow and border - teal border matching 2.21.0 style */
+.shepherd-element {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.shepherd-content {
+    background: #fff;
+    border: 4px solid #316982;
+    border-radius: 5px;
+}
+
+/* Arrow styling - create teal colored arrow to match border */
+.shepherd-arrow,
+.shepherd-arrow:before {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    z-index: -1;
+}
+
+.shepherd-arrow {
+    visibility: hidden;
+}
+
+.shepherd-arrow:before {
+    visibility: visible;
+    content: '';
+    transform: rotate(45deg);
+    background: #316982 !important;
+}
+
+/* Arrow positioning for different placements */
+.shepherd-element[data-popper-placement^='top'] > .shepherd-arrow {
+    bottom: -8px;
+}
+
+/* Make sure the tooltip sits closer to the element */
+.shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow {
+    top: -5px;
+}
+.shepherd-element[data-popper-placement^='bottom'] {
+    margin-top: 10px; /* Pull tooltip up toward element's bottom edge */
+}
+
+.shepherd-element[data-popper-placement^='left'] > .shepherd-arrow {
+    right: -8px;
+}
+
+.shepherd-element[data-popper-placement^='right'] > .shepherd-arrow {
+    left: -8px;
+}
+
+/* Modal overlay opacity */
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    opacity: 0.5;
+}
+
+/* Icon styling in buttons */
+.shepherd-footer .btn i.fa,
+.shepherd-footer .btn i.fas,
+.shepherd-footer .btn i.menu-fa {
+    margin: 0 4px;
+}
+
+/* Mobile tour - keep navPanel above Shepherd overlay when tour needs it open */
+body.tour-navpanel-open #navPanel {
+    z-index: 100002 !important;
+}
+
+/* Responsive styling for small screens */
+@media screen and (max-width: 576px) {
+    .shepherd-element {
+        max-width: 45vw;
+    }
+
+    .shepherd-title {
+        font-size: 1rem;
+    }
+
+    .shepherd-text {
+        font-size: 0.875rem;
+        padding: 10px;
+        line-height: 1.35;
+    }
+
+    .shepherd-footer {
+        padding: 0.4em 0.6em 0.6em;
+    }
+
+    .shepherd-footer .btn,
+    .shepherd-footer button {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+        width: 75px;
+    }
+
+    .shepherd-step-number {
+        font-size: 11px !important;
+    }
+
+    .shepherd-has-title .shepherd-content .shepherd-header {
+        padding: 0.5em;
+    }
+}

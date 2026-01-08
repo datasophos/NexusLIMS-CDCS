@@ -45,6 +45,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/tooltips.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/detail/loading.css' %}">
 
+    {# NexusLIMS tour styling overrides (must load after Shepherd CSS from theme_base.html) #}
+    <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/tour.css' %}">
+
 {% endblock %}
 {% block theme_js %}
     <script src="{% static 'js/util.js' %}"></script>
@@ -78,11 +81,13 @@
     {# client-zip for streaming ZIP creation (ES module) #}
     <script type="module" src="{% static 'libs/client-zip/2.5.0/client-zip-loader.js' %}"></script>
 
+    {# NexusLIMS consolidated tour system - works on all pages #}
+    <script type="text/javascript" src="{% static 'nexuslims/js/tour.js' %}"></script>
+
     {# NexusLIMS detail page JavaScript modules #}
     {# These modules check for #simpleDisplay element and only run on detail pages #}
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/utils.js' %}"></script>
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/ui.js' %}"></script>
-    <script type="text/javascript" src="{% static 'nexuslims/js/detail/tour.js' %}"></script>
 
     {# New modular download system #}
     <script type="text/javascript" src="{% static 'nexuslims/js/detail/downloads/file-cache.js' %}"></script>
@@ -98,7 +103,7 @@
 {% endblock %}
 
 {% block body %}
-    <div id="page-wrapper">
+    <div id="page-wrapper" data-tutorials-enabled="{{ NX_ENABLE_TUTORIALS|yesno:'true,false' }}">
         {# Title bar for mobile/small screens #}
         <div id="titleBar">
             <a href="#navPanel" class="toggle">

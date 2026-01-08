@@ -72,7 +72,8 @@ if getattr(settings, 'NX_ENABLE_TUTORIALS', True):
             "Tutorial",
             "#",
             icon="question-circle",
-            iconClass="fas"
+            iconClass="fas",
+            id="menu-tutorial"
         )
     )
 
