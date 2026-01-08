@@ -186,6 +186,15 @@ body.tour-navpanel-open #navPanel {
     z-index: 100002 !important;
 }
 
+/* Remove focus outline from tutorial link after tour ends */
+#menu-tutorial.tour-completed:focus,
+#menu-tutorial.tour-completed:focus-visible,
+a.tour-completed:focus,
+a.tour-completed:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 /* Responsive styling for small screens */
 @media screen and (max-width: 576px) {
     .shepherd-element {

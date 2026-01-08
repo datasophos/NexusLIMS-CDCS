@@ -35,7 +35,10 @@ This guide helps migrate existing scattered template overrides into the centrali
 - [x] Homepage responsive spacing
 
 ### Other TODOs:
-- [ ] Tutorials
+- [ ] Tutorials (tour.js)
+  - [x] home page
+  - [x] explore page
+  - [ ] detail page
 - [x] Javascript libraries for detail XSLT (maybe better in an app, or override?)
 - [x] overall spacing on explore page
 - [x] search bar overlaps search button on explore

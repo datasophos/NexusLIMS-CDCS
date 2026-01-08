@@ -6,6 +6,7 @@
  *
  * Tours available:
  * - Homepage tour: Introduction to NexusLIMS
+ * - Explore page tour: Guide through record browsing and search
  * - Detail page tour: Guide through record detail features
  */
 
@@ -437,6 +438,175 @@
             tour.on('cancel', closeNavPanel);
         }
 
+        // Remove focus outline from tutorial link after tour ends
+        var removeTutorialFocus = function() {
+            $('#menu-tutorial, nav a, #navPanel a').filter(function() {
+                return $(this).text().trim() === 'Tutorial';
+            }).addClass('tour-completed');
+        };
+        tour.on('complete', removeTutorialFocus);
+        tour.on('cancel', removeTutorialFocus);
+
+        // Allow clicking overlay to cancel
+        tour.on('show', function() {
+            setTimeout(function() {
+                $('.shepherd-modal-overlay-container').on('click', function() {
+                    tour.cancel();
+                });
+            }, 100);
+        });
+
+        return tour;
+    }
+
+    // ========================================================================
+    // Explore Page Tour
+    // ========================================================================
+
+    function createExploreTour() {
+        if (!shepherdAvailable()) {
+            console.warn('Shepherd.js not available for explore tour');
+            return null;
+        }
+
+        var tour = new Shepherd.Tour({
+            useModalOverlay: true,
+            keyboardNavigation: true,
+            defaultStepOptions: {
+                modalOverlayOpeningPadding: 15,
+                scrollTo: true,
+                scrollToHandler: topScrollHandler,
+                canClickTarget: false,
+                popperOptions: {
+                    modifiers: [
+                        { name: 'offset', options: { offset: [0, 15] } },
+                        { name: 'arrow', options: { padding: 5 } }
+                    ]
+                }
+            }
+        });
+
+        // Add step number indicator after tour is created
+        tour.on('show', createStepNumberIndicator(tour));
+
+        var buttons = createButtons(tour);
+
+        // Welcome step
+        tour.addStep({
+            id: 'tut-welcome',
+            title: 'This is the record explorer page',
+            text: 'The <em>explore</em> page allows you to browse and search through the records contained in the NexusLIMS repository. Click <em>Next</em> for a brief tour of the features of this page. You can also use the keyboard arrow keys to navigate through the tutorial.',
+            buttons: [buttons.back(false), buttons.next]
+        });
+
+        // Search bar step
+        tour.addStep({
+            id: 'tut-search-field',
+            title: 'The search bar',
+            text: 'Use the search box to do a full-text search on all the records (can search by username, date, instrument, etc.). Leave the box empty to return all results from the database.',
+            attachTo: {
+                element: '#search-field',
+                on: 'bottom'
+            },
+            buttons: [buttons.back(true), buttons.next]
+        });
+
+        // Example record step - only if records exist
+        if ($('.a-result').length > 0) {
+            tour.addStep({
+                id: 'tut-example-record',
+                title: 'An example record listing',
+                text: 'Each listing in the results area represents one record in the database and provides some basic summary information about the record\'s contents. Click anywhere on the listing to view the record details.',
+                attachTo: {
+                    element: $('.a-result').first()[0],
+                    on: 'bottom'
+                },
+                scrollTo: false,
+                buttons: [buttons.back(true), buttons.next]
+            });
+        }
+
+        // Sorting button step
+        var sortButton = $('[id^="result-button-filter"]').first();
+        if (sortButton.length > 0) {
+            tour.addStep({
+                id: 'tut-result-button-filter',
+                title: 'Record sorting',
+                text: 'By default, the records are sorted with the most recently added records first. Use this sort button to change the sorting order.',
+                attachTo: {
+                    element: sortButton[0],
+                    on: 'bottom'
+                },
+                scrollTo: false,
+                buttons: [buttons.back(true), buttons.next],
+                modalOverlayOpeningPadding: 10,
+                popperOptions: {
+                    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+        }
+
+        // Share query step
+        tour.addStep({
+            id: 'tut-share-query',
+            title: 'Sharing Queries',
+            text: 'You can get a persistent link to a particular set of search results (e.g., to share with colleagues) by clicking this button.',
+            attachTo: {
+                element: '#persistent-query',
+                on: 'bottom'
+            },
+            buttons: [buttons.back(true), buttons.next]
+        });
+
+        // Export step
+        tour.addStep({
+            id: 'tut-export-record',
+            title: 'Exporting Records',
+            text: 'If you wish to download one (or more) records as JSON or XML, you can select each record\'s checkbox and then click this Download button to save the records to your computer.',
+            attachTo: {
+                element: '.export-button',
+                on: 'bottom'
+            },
+            buttons: [buttons.back(true), buttons.end]
+        });
+
+        // Pagination step - only if pagination exists
+        if ($('.pagination-container').length > 0) {
+            tour.addStep({
+                id: 'tut-pagination-container',
+                title: 'Browsing many records',
+                text: 'If your search returns more items than fit on one page, use the paging controls at the bottom to browse through the records.',
+                attachTo: {
+                    element: '.pagination-container',
+                    on: 'top'
+                },
+                buttons: [buttons.back(true), buttons.end]
+            });
+        } else {
+            // Change the last step's next button to end
+            var steps = tour.steps;
+            if (steps.length > 0) {
+                var lastStep = steps[steps.length - 1];
+                lastStep.options.buttons = [buttons.back(true), buttons.end];
+            }
+        }
+
+        // Cleanup on exit - scroll back to starting position and blur tutorial link
+        var cur_pos = $(document).scrollTop();
+        var cleanupOnExit = function() {
+            // Remove focus outline from tutorial link
+            $('#menu-tutorial, nav a, #navPanel a').filter(function() {
+                return $(this).text().trim() === 'Tutorial';
+            }).addClass('tour-completed');
+
+            if ($(document).scrollTop() !== cur_pos) {
+                $('html, body').animate({ scrollTop: cur_pos }, { duration: 500 });
+            }
+        };
+
+        tour.on('complete', cleanupOnExit);
+        tour.on('cancel', cleanupOnExit);
+
         // Allow clicking overlay to cancel
         tour.on('show', function() {
             setTimeout(function() {
@@ -672,6 +842,11 @@
         var cur_pos = $(document).scrollTop();
 
         function clean_up_on_exit(modal_to_open) {
+            // Remove focus outline from tutorial link
+            $('#menu-tutorial, nav a, #navPanel a').filter(function() {
+                return $(this).text().trim() === 'Tutorial';
+            }).addClass('tour-completed');
+
             if ($(document).scrollTop() === cur_pos) {
                 if (modal_to_open) { Detail.openModal(modal_to_open); }
             } else {
@@ -719,6 +894,20 @@
     };
 
     /**
+     * Start the explore page tour
+     */
+    NexusLIMSTours.startExploreTour = function() {
+        if (!tutorialsEnabled()) {
+            console.log('Tutorials are disabled');
+            return;
+        }
+        var tour = createExploreTour();
+        if (tour) {
+            tour.start();
+        }
+    };
+
+    /**
      * Start the detail page tour
      */
     NexusLIMSTours.startDetailTour = function() {
@@ -745,6 +934,9 @@
         if ($('#simpleDisplay').length > 0) {
             // We're on a detail page
             NexusLIMSTours.startDetailTour();
+        } else if ($('#form_search').length > 0 || window.location.pathname.indexOf('/explore/keyword') !== -1) {
+            // We're on the explore page
+            NexusLIMSTours.startExploreTour();
         } else if ($('#homepage-tutorial').length > 0 || window.location.pathname === '/') {
             // We're on the homepage
             NexusLIMSTours.startHomepageTour();
