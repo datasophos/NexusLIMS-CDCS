@@ -150,19 +150,21 @@ ENABLE_HANDLE_PID = os.getenv("ENABLE_HANDLE_PID", "False").lower() == "true"
 """ boolean: enable handle server PID support.
 """
 
-MONGODB_INDEXING = os.getenv("MONGODB_INDEXING", "True").lower() == "true"
+MONGODB_INDEXING = False # always disabled in NexusLIMS
+# MONGODB_INDEXING = os.getenv("MONGODB_INDEXING", "True").lower() == "true"
 """ :py:class:`bool`: Use MongoDB for data indexing.
     If True:
         - a copy of the data will be stored in MongoDB,
         - queries will be executed against MongoDB.
 """
 
-MONGODB_ASYNC_SAVE = True
+MONGODB_ASYNC_SAVE = False # always disabled in NexusLIMS
 """ :py:class:`bool`: Save data in MongoDB asynchronously.
     If True, data are saved in MongoDB asynchronously.
 """
 
-GRIDFS_STORAGE = os.getenv("GRIDFS_STORAGE", "True").lower() == "true"
+GRIDFS_STORAGE = False # always disabled in NexusLIMS
+# GRIDFS_STORAGE = os.getenv("GRIDFS_STORAGE", "True").lower() == "true"
 """ :py:class:`bool`: Use GridFS for file storage.
 """
 

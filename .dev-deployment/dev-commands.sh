@@ -1,7 +1,7 @@
 #!/bin/bash
 # Quick reference commands for NexusLIMS-CDCS local development
 
-export COMPOSE_FILE="docker-compose.yml:mongo/docker-compose.yml:docker-compose.dev.yml"
+export COMPOSE_FILE="docker-compose.yml:docker-compose.dev.yml"
 
 # Build the CDCS container
 alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
