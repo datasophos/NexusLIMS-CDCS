@@ -41,7 +41,8 @@ def xsl_transform(xml_string, xslt_string, **kwargs):
         # print messages from transformation, if configured
         if hasattr(settings, 'NX_XSLT_DEBUG'):
             if settings.NX_XSLT_DEBUG:
-                print("NX_XSLT_DEBUG output:")
-                print("-" * 21)
+                if transform.error_log:
+                    print("NX_XSLT_DEBUG output:")
+                    print("-" * 21)
                 for entry in transform.error_log:
                     print(entry.message)

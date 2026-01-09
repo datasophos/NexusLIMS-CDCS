@@ -321,11 +321,12 @@ def upload_example_records(request, template_vm):
                 title=record_path.name.replace("_", " ").replace(".xml", "").capitalize()
             )
 
-            # Set the XML content and user
-            data_record.xml_content = record_content
+            # Set the content and user
+            # NOTE: Use 'content' not 'xml_content' so convert_to_dict() works
+            data_record.content = record_content
             data_record.user_id = request.user.id
 
-            # Save the data record
+            # Save the data record (this will populate dict_content via convert_to_dict())
             data_record = data_api.upsert(data_record, request=request)
 
             log_success(f"Example record uploaded (ID: {data_record.id}, title: {data_record.title})")

@@ -157,3 +157,37 @@ button.search_button {
     font-size: 1em;
     font-weight: bold;
 }
+
+/* ========================================================================
+   Clickable Instrument Badge Styling
+   ======================================================================== */
+
+.instrument-badge-clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.instrument-badge-clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    filter: brightness(1.1);
+}
+
+.instrument-badge-clickable:active {
+    transform: scale(0.98);
+}
+
+/* Keyboard focus for accessibility */
+.instrument-badge-clickable:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Search icon indicator */
+.instrument-badge-clickable::after {
+    content: ' 🔍';
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-left: 4px;
+}

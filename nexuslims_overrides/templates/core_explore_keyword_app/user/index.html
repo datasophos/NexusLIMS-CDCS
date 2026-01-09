@@ -41,4 +41,9 @@ core_explore_keyword_app/templates/core_explore_keyword_app/user/index.html
     </form>
 {% endif %}
 {% include "core_explore_keyword_app/user/extras.html" %}
+
+{% load static %}
+
+{# JavaScript handler for instrument badge filtering #}
+<script src="{% static 'nexuslims/js/explore/instrument-badge-filter.js' %}"></script>
 </div>

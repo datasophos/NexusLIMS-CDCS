@@ -618,6 +618,25 @@
             });
         }
 
+        // Instrument badge filter step - only if badges exist
+        if ($('.instrument-badge-clickable').length > 0) {
+            tour.addStep({
+                id: 'tut-instrument-badge',
+                title: 'Filter by Instrument',
+                text: 'Click on an instrument badge to quickly filter results by that specific instrument. The badge will add a filter tag to the search bar and automatically refresh the results.',
+                attachTo: {
+                    element: $('.instrument-badge-clickable').first()[0],
+                    on: 'bottom'
+                },
+                scrollTo: false,
+                buttons: [buttons.back(true), buttons.next],
+                modalOverlayOpeningPadding: 10,
+                popperOptions: {
+                    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+        }
+
         // Sorting button step
         var sortButton = $('[id^="result-button-filter"]').first();
         if (sortButton.length > 0) {

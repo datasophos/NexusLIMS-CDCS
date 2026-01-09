@@ -184,7 +184,18 @@ Use it like:
        <xsl:variable name="instr-pid">
          <xsl:value-of select="string(nx:summary/nx:instrument/@pid)"/>
        </xsl:variable>
-       <span class="badge list-record-badge">
+       <span class="badge list-record-badge instr-id instrument-badge-clickable"
+             role="button"
+             tabindex="0"
+             data-toggle="tooltip"
+             data-placement="top"
+             data-bs-html="true">
+         <xsl:attribute name="title">
+             <xsl:value-of select="normalize-space(concat('Click to show only records from &lt;em&gt;', nx:summary/nx:instrument, '&lt;/em&gt;'))"/>
+         </xsl:attribute>
+         <xsl:attribute name="data-instrument-pid">
+           <xsl:value-of select="$instr-pid"/>
+         </xsl:attribute>
          <xsl:attribute name="style">background-color:
             <xsl:call-template name="get-color-for-pid">
                 <xsl:with-param name="pid" select="$instr-pid"/>
