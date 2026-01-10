@@ -5,37 +5,47 @@
 set -e
 
 STYLESHEET_TYPE="${1:-all}"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CDCS_DIR="$(dirname "$SCRIPT_DIR")/cdcs"
+
+# Get environment variables or use defaults
+DATASET_BASE_URL="${XSLT_DATASET_BASE_URL:-https://files.nexuslims-dev.localhost/instrument-data}"
+PREVIEW_BASE_URL="${XSLT_PREVIEW_BASE_URL:-https://files.nexuslims-dev.localhost/data}"
 
 update_detail_stylesheet() {
     echo "Updating detail_stylesheet.xsl..."
-    docker compose exec -T cdcs python manage.py shell << 'EOF'
+    docker compose exec -T cdcs python manage.py shell << EOF
 from core_main_app.components.xsl_transformation import api as xsl_transformation_api
 from pathlib import Path
 
-stylesheet_path = Path("/srv/curator/cdcs_config/detail_stylesheet.xsl")
+# Read from mounted xslt directory
+stylesheet_path = Path("/srv/xslt/detail_stylesheet.xsl")
 with stylesheet_path.open(encoding="utf-8") as f:
     stylesheet_content = f.read()
 
+# Get URLs from environment (passed from host)
+dataset_base_url = "${DATASET_BASE_URL}"
+preview_base_url = "${PREVIEW_BASE_URL}"
+
 # Patch URLs for file serving
-print("Patching URLs in detail_stylesheet.xsl...")
+print(f"Patching URLs in detail_stylesheet.xsl...")
+print(f"  datasetBaseUrl: {dataset_base_url}")
+print(f"  previewBaseUrl: {preview_base_url}")
+
 stylesheet_content = stylesheet_content.replace(
     '<xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-    '<xsl:variable name="datasetBaseUrl">https://files.nexuslims-dev.localhost/instrument-data</xsl:variable>'
+    f'<xsl:variable name="datasetBaseUrl">{dataset_base_url}</xsl:variable>'
 )
 stylesheet_content = stylesheet_content.replace(
     '<xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-    '<xsl:variable name="previewBaseUrl">https://files.nexuslims-dev.localhost/data</xsl:variable>'
+    f'<xsl:variable name="previewBaseUrl">{preview_base_url}</xsl:variable>'
 )
 
 # Verify replacements
-if 'https://files.nexuslims-dev.localhost/instrument-data' in stylesheet_content:
+if dataset_base_url in stylesheet_content:
     print("  ✓ datasetBaseUrl patched")
 else:
     print("  ✗ datasetBaseUrl patch failed or not found")
 
-if 'https://files.nexuslims-dev.localhost/data' in stylesheet_content:
+if preview_base_url in stylesheet_content:
     print("  ✓ previewBaseUrl patched")
 else:
     print("  ✗ previewBaseUrl patch failed or not found")
@@ -55,7 +65,8 @@ update_list_stylesheet() {
 from core_main_app.components.xsl_transformation import api as xsl_transformation_api
 from pathlib import Path
 
-stylesheet_path = Path("/srv/curator/cdcs_config/list_stylesheet.xsl")
+# Read from mounted xslt directory
+stylesheet_path = Path("/srv/xslt/list_stylesheet.xsl")
 with stylesheet_path.open(encoding="utf-8") as f:
     stylesheet_content = f.read()
 

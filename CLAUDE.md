@@ -7,17 +7,18 @@ Important information for working with this codebase.
 **CRITICAL**: XSLT stylesheets are stored in the Django database, not just as files on disk.
 
 ### Files Location
-- Detail stylesheet: `.dev-deployment/cdcs/detail_stylesheet.xsl`
-- List stylesheet: `.dev-deployment/cdcs/list_stylesheet.xsl`
+- Detail stylesheet: `xslt/detail_stylesheet.xsl` (at repo root)
+- List stylesheet: `xslt/list_stylesheet.xsl` (at repo root)
 
 ### Update Process
 
-1. **Edit the XSL file** in `.dev-deployment/cdcs/`
+1. **Edit the XSL file** in `xslt/`
 
 2. **Update the database** (REQUIRED - changes won't appear otherwise):
 
 ```bash
-# From the .dev-deployment directory:
+# From the deployment directory:
+cd deployment
 source dev-commands.sh
 dev-update-xslt        # Updates both detail and list stylesheets
 # OR
@@ -25,20 +26,29 @@ dev-update-xslt-detail # Updates only detail_stylesheet.xsl
 dev-update-xslt-list   # Updates only list_stylesheet.xsl
 ```
 
-The update script (`.dev-deployment/scripts/update-xslt.sh`) automatically:
-- Loads the XSL file from `.dev-deployment/cdcs/`
-- Patches the `datasetBaseUrl` and `previewBaseUrl` variables for detail stylesheet
+The update script (`deployment/scripts/update-xslt.sh`) automatically:
+- Loads the XSL file from the mounted `xslt/` directory
+- Patches the `datasetBaseUrl` and `previewBaseUrl` variables using environment variables
 - Updates the stylesheet in the Django database
 - Verifies the changes were applied
+
+### Environment Configuration
+
+URLs in XSLT are patched from environment variables:
+- `XSLT_DATASET_BASE_URL` - Base URL for instrument data files
+- `XSLT_PREVIEW_BASE_URL` - Base URL for preview images/metadata
+
+These are configured in your `.env` file (defaults for development):
+- `XSLT_DATASET_BASE_URL=https://files.nexuslims-dev.localhost/instrument-data`
+- `XSLT_PREVIEW_BASE_URL=https://files.nexuslims-dev.localhost/data`
 
 ### Notes
 - Just editing the file is NOT enough - you must update the database
 - The XSLT transforms XML records to HTML for display in the browser
 - The init script loads these on initial setup but doesn't auto-reload on changes
-- The init script automatically patches `datasetBaseUrl` and `previewBaseUrl` `<xsl:variable>` elements to:
-  - `datasetBaseUrl`: `https://files.nexuslims-dev.localhost/instrument-data`
-  - `previewBaseUrl`: `https://files.nexuslims-dev.localhost/data`
-- If you manually update stylesheets outside the init script, apply these patches before uploading to the database
+- Template files use placeholders: `https://CHANGE.THIS.VALUE`
+- Update script automatically patches URLs based on your `.env` configuration
+- For production, update the environment variables to match your production domains
 
 ## Planning Documents
 

@@ -1,23 +1,32 @@
 #!/usr/bin/env python
 """
-Complete development environment initialization for NexusLIMS-CDCS.
+Complete environment initialization for NexusLIMS-CDCS.
 
 This script handles:
 1. Verifying database migrations are complete
-2. Creating default superuser (if needed): username=admin, password=admin
-3. Creating default regular user (if needed): username=user, password=user
-3. Compiling Django message translations ("label" and "record", controlled by locale/en/LC_MESSAGES/django.po)
-4. Configuring anonymous group permissions for explore keyword app
-5. Uploading NexusLIMS schema and XSLT templates
+2. Creating default superuser (if needed)
+   - Development: username=admin, password=admin
+   - Production: prompts for credentials (or skips if exists)
+3. Creating default regular user (development only): username=user, password=user
+4. Compiling Django message translations ("label" and "record", controlled by locale/en/LC_MESSAGES/django.po)
+5. Configuring anonymous group permissions for explore keyword app
+6. Uploading NexusLIMS schema and XSLT templates
+7. Loading exporters
 
 Usage:
-    docker exec nexuslims_dev_cdcs python /scripts/init_dev_environment.py
+    Development:
+        docker exec nexuslims_dev_cdcs python /srv/scripts/init_environment.py
+        Or via alias: dev-init
 
-Or via alias:
-    dev-init
+    Production:
+        docker exec nexuslims_prod_cdcs python /srv/scripts/init_environment.py
+        Or via alias (after sourcing admin-commands.sh):
+            docker exec nexuslims_prod_cdcs python /srv/scripts/init_environment.py
 
-This is a convenience script that combines all setup steps. For more control,
-use the individual commands: dev-superuser, dev-init-schema
+Environment Detection:
+    Automatically detects environment from DJANGO_SETTINGS_MODULE:
+    - config.settings.dev_settings -> Development mode
+    - config.settings.prod_settings -> Production mode
 """
 
 import hashlib
@@ -26,7 +35,8 @@ import sys
 from pathlib import Path
 
 # Set up Django environment
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mdcs.dev_settings")
+# Use DJANGO_SETTINGS_MODULE from environment, or fall back to config.settings.dev_settings
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"))
 sys.path.insert(0, "/srv/curator")
 
 import django
@@ -56,6 +66,18 @@ def log_error(msg):
 def log_info(msg):
     """Print info message."""
     print(f"→ {msg}")
+
+
+def is_production():
+    """Check if running in production environment."""
+    settings_module = os.getenv("DJANGO_SETTINGS_MODULE", "")
+    return "prod_settings" in settings_module
+
+
+def is_development():
+    """Check if running in development environment."""
+    settings_module = os.getenv("DJANGO_SETTINGS_MODULE", "")
+    return "dev_settings" in settings_module
 
 
 def check_migrations():
@@ -90,10 +112,11 @@ def check_migrations():
 
 
 def get_or_create_superuser():
-    """Get or create default superuser for development."""
+    """Get or create superuser."""
     log_info("Checking for superuser...")
 
     from django.contrib.auth import get_user_model
+    from django.core.management import call_command
 
     User = get_user_model()
 
@@ -104,7 +127,25 @@ def get_or_create_superuser():
         log_success(f"Superuser already exists: {superuser.username}")
         return superuser
 
-    # Create default superuser
+    # Production: Use Django's createsuperuser command (interactive)
+    if is_production():
+        log_info("No superuser found. Creating superuser (you will be prompted for credentials)...")
+        try:
+            call_command('createsuperuser')
+            # Fetch the newly created superuser
+            superuser = User.objects.filter(is_superuser=True).first()
+            if superuser:
+                log_success(f"Superuser created: {superuser.username}")
+                return superuser
+            else:
+                log_warning("Superuser creation skipped or failed")
+                return None
+        except Exception as e:
+            log_error(f"Failed to create superuser: {e}")
+            log_warning("Continuing initialization without superuser")
+            return None
+
+    # Development: Create default superuser automatically
     log_info("Creating default superuser (username: admin, password: admin)...")
     try:
         superuser = User.objects.create_superuser(
@@ -120,7 +161,11 @@ def get_or_create_superuser():
 
 
 def get_or_create_regular_user():
-    """Get or create default regular user for testing."""
+    """Get or create default regular user for testing (development only)."""
+    # Skip in production
+    if is_production():
+        return None
+
     log_info("Checking for regular test user...")
 
     from django.contrib.auth import get_user_model
@@ -202,8 +247,13 @@ def grant_anonymous_explore_permission():
         # Don't raise - let the script continue
 
 
-def upload_schema(request):
-    """Upload NexusLIMS schema template."""
+def upload_schema(request, schema_path=None):
+    """Upload NexusLIMS schema template.
+
+    Args:
+        request: Django request object
+        schema_path: Optional path to schema file. If not provided, uses default location.
+    """
     log_info("Uploading NexusLIMS schema...")
 
     from django.db import IntegrityError
@@ -216,9 +266,19 @@ def upload_schema(request):
         TemplateVersionManager,
     )
 
-    schema_path = Path("/srv/curator/cdcs_config/nexus-experiment.xsd")
+    # Default schema path (development test data)
+    if schema_path is None:
+        schema_path = Path("/srv/test-data/nexus-experiment.xsd")
+    else:
+        schema_path = Path(schema_path)
+
     if not schema_path.exists():
-        log_error(f"Schema file not found at {schema_path}")
+        log_warning(f"Schema file not found at {schema_path}")
+        if is_production():
+            log_info("In production, upload your schema via the web interface:")
+            log_info("  1. Login as superuser")
+            log_info("  2. Navigate to: Curator > Template > Upload Schema")
+            log_info("  3. Upload your nexus-experiment.xsd file")
         return None
 
     with schema_path.open(encoding="utf-8") as f:
@@ -289,7 +349,11 @@ def upload_schema(request):
 
 
 def upload_example_records(request, template_vm):
-    """Upload example records associated with the schema."""
+    """Upload example records associated with the schema (development only)."""
+    # Skip in production
+    if is_production():
+        return None
+
     log_info("Uploading example records...")
 
     from core_main_app.components.data import api as data_api
@@ -297,8 +361,8 @@ def upload_example_records(request, template_vm):
     from core_main_app.components.data.models import Data
 
     record_paths = [
-        Path("/srv/curator/cdcs_config/example_record.xml"),
-        Path("/srv/curator/cdcs_config/example_record_large.xml")
+        Path("/srv/test-data/example_record.xml"),
+        Path("/srv/test-data/example_record_large.xml")
     ]
     uploaded = []
     for record_path in record_paths:
@@ -380,7 +444,7 @@ def upload_xslt_stylesheets(request, template_vm):
     # Get the current template
     template = template_api.get_by_id(template_vm.current, request=request)
 
-    stylesheet_dir = Path("/srv/curator/cdcs_config")
+    stylesheet_dir = Path("/srv/xslt")
     stylesheets = {
         "detail": stylesheet_dir / "detail_stylesheet.xsl",
         "list": stylesheet_dir / "list_stylesheet.xsl",
@@ -409,25 +473,37 @@ def upload_xslt_stylesheets(request, template_vm):
             stylesheet_content = f.read()
 
         # Patch URLs for file serving
+        # Get URLs from environment variables
+        dataset_base_url = os.getenv(
+            "XSLT_DATASET_BASE_URL",
+            "https://files.nexuslims-dev.localhost/instrument-data"
+        )
+        preview_base_url = os.getenv(
+            "XSLT_PREVIEW_BASE_URL",
+            "https://files.nexuslims-dev.localhost/data"
+        )
+
         log_info(f"Patching URLs in {stylesheet_name}...")
+        log_info(f"  datasetBaseUrl: {dataset_base_url}")
+        log_info(f"  previewBaseUrl: {preview_base_url}")
 
         # Perform replacements
         stylesheet_content = stylesheet_content.replace(
             '<xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-            '<xsl:variable name="datasetBaseUrl">https://files.nexuslims-dev.localhost/instrument-data</xsl:variable>'
+            f'<xsl:variable name="datasetBaseUrl">{dataset_base_url}</xsl:variable>'
         )
         stylesheet_content = stylesheet_content.replace(
             '<xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-            '<xsl:variable name="previewBaseUrl">https://files.nexuslims-dev.localhost/data</xsl:variable>'
+            f'<xsl:variable name="previewBaseUrl">{preview_base_url}</xsl:variable>'
         )
 
         # Verify replacements
-        if 'https://files.nexuslims-dev.localhost/instrument-data' in stylesheet_content:
+        if dataset_base_url in stylesheet_content:
             log_success("  ✓ datasetBaseUrl patched")
         else:
             log_warning("  ✗ datasetBaseUrl patch failed or not found")
 
-        if 'https://files.nexuslims-dev.localhost/data' in stylesheet_content:
+        if preview_base_url in stylesheet_content:
             log_success("  ✓ previewBaseUrl patched")
         else:
             log_warning("  ✗ previewBaseUrl patch failed or not found")
@@ -528,8 +604,20 @@ def load_exporters():
 
 def main():
     """Main entry point."""
+    import argparse
+
+    # Parse command line arguments for schema path (production use)
+    parser = argparse.ArgumentParser(description="Initialize NexusLIMS-CDCS environment")
+    parser.add_argument(
+        "--schema",
+        help="Path to schema file (e.g., /tmp/nexus-experiment.xsd)",
+        default=None
+    )
+    args = parser.parse_args()
+
+    env_name = "Production" if is_production() else "Development"
     print("=" * 70)
-    print("NexusLIMS Development Environment Initialization")
+    print(f"NexusLIMS-CDCS {env_name} Environment Initialization")
     print("=" * 70)
 
     try:
@@ -543,37 +631,75 @@ def main():
 
         # Step 2: Get or create superuser
         superuser = get_or_create_superuser()
-        request = get_request_for_user(superuser)
 
-        # Step 2.5: Get or create regular user for testing
+        # If no superuser was created (production, user skipped), try to get any existing user
+        if superuser is None:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            # Try to get first superuser or first user
+            superuser = User.objects.filter(is_superuser=True).first() or User.objects.first()
+
+        # Create request object for API calls (may be None if no users exist)
+        request = get_request_for_user(superuser) if superuser else None
+
+        # Step 2.5: Get or create regular user for testing (development only)
         regular_user = get_or_create_regular_user()
 
         # Step 3: Configure anonymous group permissions
         grant_anonymous_explore_permission()
 
         # Step 4: Upload schema and stylesheets (no transaction - handle errors gracefully)
-        template_vm = upload_schema(request)
-        if template_vm:
-            upload_xslt_stylesheets(request, template_vm)
-            upload_example_records(request, template_vm)
+        # Only proceed if we have a request object
+        if request:
+            template_vm = upload_schema(request, schema_path=args.schema)
+            if template_vm:
+                upload_xslt_stylesheets(request, template_vm)
+                # Example records only in development
+                upload_example_records(request, template_vm)
+        else:
+            log_warning("No user available - skipping schema upload")
+            log_info("Please run this script again after creating a superuser")
+            template_vm = None
 
         # Step 5: Load exporters
         load_exporters()
 
         print("=" * 70)
         log_success("Initialization complete!")
-        print(f"  Superuser: {superuser.username}")
-        print(f"  Regular user: {regular_user.username}")
-        if template_vm:
-            print(f"  Template: {template_vm.title}")
-        print()
-        print("You can now:")
-        print("  - Access the site: https://nexuslims-dev.localhost")
-        print("  - Login with: admin / admin")
-        print("  - Login with: user / user (regular user for testing)")
-        print("  - View example record: https://nexuslims-dev.localhost/data?id=1")
-        print("  - Explore data: https://nexuslims-dev.localhost/explore/keyword/")
-        print("  - Start uploading data using the Nexus Experiment Schema")
+
+        # Environment-specific success messages
+        if is_production():
+            if superuser:
+                print(f"  Superuser: {superuser.username}")
+            if template_vm:
+                print(f"  Schema: {template_vm.title}")
+            print()
+            print("Next steps:")
+            print(f"  1. Access the site: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}")
+            if superuser:
+                print(f"  2. Login with your superuser credentials")
+            if not template_vm:
+                print(f"  3. Upload NexusLIMS schema:")
+                print(f"     docker cp /path/to/nexus-experiment.xsd nexuslims_prod_cdcs:/tmp/")
+                print(f"     docker exec -it nexuslims_prod_cdcs python /srv/scripts/init_environment.py --schema /tmp/nexus-experiment.xsd")
+            print(f"  4. Begin uploading data records via web interface")
+        else:
+            if superuser:
+                print(f"  Superuser: {superuser.username}")
+            if regular_user:
+                print(f"  Regular user: {regular_user.username}")
+            if template_vm:
+                print(f"  Template: {template_vm.title}")
+            print()
+            print("You can now:")
+            print("  - Access the site: https://nexuslims-dev.localhost")
+            print("  - Login with: admin / admin")
+            if regular_user:
+                print("  - Login with: user / user (regular user for testing)")
+            print("  - View example record: https://nexuslims-dev.localhost/data?id=1")
+            print("  - Explore data: https://nexuslims-dev.localhost/explore/keyword/")
+            print("  - Start uploading data using the Nexus Experiment Schema")
+
         print("=" * 70)
 
     except Exception as e:

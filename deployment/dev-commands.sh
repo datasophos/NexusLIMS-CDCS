@@ -1,7 +1,7 @@
 #!/bin/bash
 # Quick reference commands for NexusLIMS-CDCS local development
 
-export COMPOSE_FILE="docker-compose.yml:docker-compose.dev.yml"
+export COMPOSE_FILE="docker-compose.base.yml:docker-compose.dev.yml"
 
 # Build the CDCS container
 alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
@@ -13,7 +13,7 @@ alias dev-up-logs='bash scripts/setup-test-data.sh && docker compose up -d && do
 
 # Stop development environment
 alias dev-down='docker compose down'
-alias dev-clean='docker compose down -v && rm -rf cdcs/nx-data cdcs/nx-instrument-data cdcs/example_record.xml'
+alias dev-clean='docker compose down -v && rm -rf test-data/nx-data test-data/nx-instrument-data test-data/example_record.xml'
 
 # View logs
 alias dev-logs='docker compose logs -f'
@@ -43,8 +43,8 @@ alias dev-collectstatic='docker exec nexuslims_dev_cdcs python manage.py collect
 alias dev-djshell='docker exec -it nexuslims_dev_cdcs python manage.py shell'
 
 # NexusLIMS initialization
-alias dev-init='docker exec nexuslims_dev_cdcs python /scripts/init_dev_environment.py'
-alias dev-init-schema='docker exec nexuslims_dev_cdcs python /scripts/init_nexus_schema.py'
+alias dev-init='docker exec nexuslims_dev_cdcs python /srv/scripts/init_environment.py'
+alias dev-init-schema='docker exec nexuslims_dev_cdcs python /srv/scripts/init_nexus_schema.py'
 
 # XSLT stylesheet updates
 alias dev-update-xslt='bash scripts/update-xslt.sh'

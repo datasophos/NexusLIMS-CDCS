@@ -1,0 +1,57 @@
+# Docker Compose override for production deployment
+# This file configures production-ready settings with automatic restarts, health checks,
+# and production file serving paths
+#
+# Usage: docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+
+services:
+  caddy:
+    restart: unless-stopped
+    volumes:
+      # Production data paths (configurable via environment variables)
+      - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
+      - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
+    # No dev CA certs mounted in production
+
+  postgres:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+
+  cdcs:
+    restart: unless-stopped
+
+    # Production: No source code mount, only essential volumes
+    # (base config already includes config/xslt/nexuslims_overrides/scripts mounts)
+
+    # Production initialization and server startup
+    entrypoint: []
+    command:
+      - /bin/bash
+      - -c
+      - |
+        set -e
+        echo "********* Production Mode - Waiting for Postgres *********"
+        until python -c "import socket; socket.create_connection(('${POSTGRES_HOST}', ${POSTGRES_PORT}), timeout=1)" 2>/dev/null; do
+          sleep 1
+        done
+        echo "********* Running Migrations *********"
+        cd /srv/curator
+        python manage.py migrate --noinput
+        echo "********* Collecting Static Files *********"
+        python manage.py collectstatic --noinput
+        echo "********* Starting Celery... *********"
+        celery -A mdcs worker -E -l info &
+        celery -A mdcs beat -l info &
+        echo "********* Starting Gunicorn Production Server *********"
+        echo "********* NexusLIMS-CDCS available at ${SERVER_URI} *********"
+        mdcs gunicorn
+
+    # Health check for production monitoring
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

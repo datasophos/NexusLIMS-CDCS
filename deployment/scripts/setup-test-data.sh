@@ -5,8 +5,8 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CDCS_DIR="${SCRIPT_DIR}/../cdcs"
-ARCHIVE="${CDCS_DIR}/nexuslims-test-data.tar.gz"
+TEST_DATA_DIR="${SCRIPT_DIR}/../test-data"
+ARCHIVE="${TEST_DATA_DIR}/nexuslims-test-data.tar.gz"
 
 # Check if archive exists
 if [ ! -f "$ARCHIVE" ]; then
@@ -16,14 +16,14 @@ if [ ! -f "$ARCHIVE" ]; then
 fi
 
 # Check if data is already extracted
-if [ -d "${CDCS_DIR}/nx-data" ] && [ -d "${CDCS_DIR}/nx-instrument-data" ] && [ -f "${CDCS_DIR}/example_record.xml" ]; then
+if [ -d "${TEST_DATA_DIR}/nx-data" ] && [ -d "${TEST_DATA_DIR}/nx-instrument-data" ] && [ -f "${TEST_DATA_DIR}/example_record.xml" ]; then
     echo "✓ Test data already extracted"
     exit 0
 fi
 
 # Extract the archive
 echo "→ Extracting test data from nexuslims-test-data.tar.gz..."
-tar -xzf "$ARCHIVE" -C "$CDCS_DIR"
+tar -xzf "$ARCHIVE" -C "$TEST_DATA_DIR"
 
 if [ $? -eq 0 ]; then
     echo "✓ Test data extracted successfully"

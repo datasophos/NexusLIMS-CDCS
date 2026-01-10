@@ -1,0 +1,105 @@
+services:
+  caddy:
+    build:
+      context: caddy
+    image: caddy:${CADDY_VERSION:-2}
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs_caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - cdcs
+    volumes:
+      - cdcs_socket:/tmp/curator/
+      - cdcs_static:/srv/curator_static
+      - ./caddy/${CADDYFILE}:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - DOMAIN=${DOMAIN}
+      - FILES_DOMAIN=${FILES_DOMAIN}
+      - NX_DATA_PATH=${NX_DATA_PATH}
+      - NX_INSTRUMENT_DATA_PATH=${NX_INSTRUMENT_DATA_PATH}
+      - CADDY_ACME_EMAIL=${CADDY_ACME_EMAIL-admin@example.com}
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs_postgres
+    ports:
+      - "${POSTGRES_HOST_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs_redis
+    command: redis-server --requirepass ${REDIS_PASS}
+    ports:
+      - "${REDIS_HOST_PORT}:6379"
+    volumes:
+      - redis_data:/data
+
+  cdcs:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    image: nexuslims-cdcs:${IMAGE_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs
+    depends_on:
+      - redis
+      - postgres
+    extra_hosts:
+      # Allows access from Celery processes to caddy reverse proxy network
+      - "${DOMAIN}:host-gateway"
+    volumes:
+      # Application data
+      - cdcs_media:/srv/curator/media
+      - cdcs_socket:/tmp/curator/
+      - cdcs_static:/srv/curator/static.prod
+
+      # Configuration and code from repo root
+      - ../xslt:/srv/xslt:ro
+      - ../config:/srv/config:ro
+      - ../nexuslims_overrides:/srv/nexuslims_overrides:ro
+
+      # Scripts for initialization
+      - ./scripts:/srv/scripts:ro
+      - ./test-data/nexus-experiment.xsd:/srv/test-data/nexus-experiment.xsd:ro
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_DEBUG=${DJANGO_DEBUG}
+      - SERVER_URI=${SERVER_URI}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
+      - SERVER_NAME=${SERVER_NAME:-NexusLIMS}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASS=${REDIS_PASS}
+      - XSLT_DATASET_BASE_URL=${XSLT_DATASET_BASE_URL}
+      - XSLT_PREVIEW_BASE_URL=${XSLT_PREVIEW_BASE_URL}
+    env_file:
+      - ./saml2/.env
+      - ./handle/.env
+      - ./extra/.env
+    command:
+      - mdcs
+      - ${WEB_SERVER:-gunicorn}
+
+volumes:
+  postgres_data:
+  redis_data:
+  cdcs_media:
+  cdcs_socket:
+  cdcs_static:
+  caddy_data:
+  caddy_config:

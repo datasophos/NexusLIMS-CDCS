@@ -1,0 +1,150 @@
+{
+    # Global options
+    admin off
+    # Email for Let's Encrypt notifications
+    email {$CADDY_ACME_EMAIL}
+}
+
+# ============================================================================
+# PRODUCTION CERTIFICATE OPTIONS
+# ============================================================================
+#
+# Option 1: Automatic ACME (Let's Encrypt) - DEFAULT & RECOMMENDED
+# ---------------------------------------------------------------
+# Caddy automatically obtains certificates from Let's Encrypt for real domains.
+# No additional configuration needed - just ensure:
+#   1. Your domain's DNS points to this server's public IP
+#   2. Ports 80 and 443 are open and accessible from the internet
+#   3. CADDY_ACME_EMAIL is set in your .env file
+#
+# Caddy will automatically:
+#   - Obtain certificates on first request
+#   - Renew certificates before expiration
+#   - Handle ACME HTTP-01 challenge
+#   - Store certificates in /data/caddy/certificates/
+#
+# Option 2: Manual Certificates
+# ------------------------------
+# If you have your own certificates, use the tls directive:
+#
+#   tls /path/to/cert.pem /path/to/key.pem
+#
+# Mount your certificate directory in docker-compose.prod.yml:
+#
+#   volumes:
+#     - /path/to/certs:/etc/caddy/certs:ro
+#
+# Then use in your site block:
+#
+#   https://{$DOMAIN} {
+#       tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
+#       ...
+#   }
+#
+# Option 3: DNS Challenge (for wildcards or internal networks)
+# ------------------------------------------------------------
+# If you need wildcard certificates or your server isn't publicly accessible:
+#
+#   tls {
+#       dns <provider> {env.<PROVIDER_API_TOKEN>}
+#   }
+#
+# Requires:
+#   1. Custom Caddy build with DNS provider plugin
+#   2. Provider API token in environment
+#   3. Update caddy/Dockerfile to include plugin
+#
+# Example for Cloudflare:
+#
+#   tls {
+#       dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+#   }
+#
+# See: https://caddyserver.com/docs/automatic-https
+# ============================================================================
+
+# Main application
+https://{$DOMAIN} {
+    # Automatic HTTPS - Caddy handles certificate issuance and renewal
+    # No tls directive needed for default ACME behavior
+
+    # Reverse proxy to the NexusLIMS-CDCS application
+    reverse_proxy cdcs:8000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+    }
+
+    # Serve static files
+    handle_path /static/* {
+        root * /srv/curator_static
+        file_server
+    }
+
+    # Enable file uploads up to 100MB
+    request_body {
+        max_size 100MB
+    }
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}
+
+# File server
+https://{$FILES_DOMAIN} {
+    # Automatic HTTPS
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+
+    route {
+        # Redirect paths without trailing slash
+        @dataNoSlash path /data
+        redir @dataNoSlash /data/ permanent
+
+        @instrumentDataNoSlash path /instrument-data
+        redir @instrumentDataNoSlash /instrument-data/ permanent
+
+        # Serve preview data (images, metadata)
+        handle_path /data/* {
+            # CORS headers for file size checking
+            header Access-Control-Allow-Origin "*"
+            header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+            header Access-Control-Allow-Headers "*"
+
+            # Handle preflight requests
+            @options method OPTIONS
+            respond @options 204
+
+            root * {$NX_DATA_PATH}
+            file_server {
+                browse
+            }
+        }
+
+        # Serve instrument data files
+        handle_path /instrument-data/* {
+            # CORS headers for file size checking
+            header Access-Control-Allow-Origin "*"
+            header Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+            header Access-Control-Allow-Headers "*"
+
+            # Handle preflight requests
+            @options method OPTIONS
+            respond @options 204
+
+            root * {$NX_INSTRUMENT_DATA_PATH}
+            file_server {
+                browse
+            }
+        }
+    }
+}
