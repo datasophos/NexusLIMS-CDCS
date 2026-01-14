@@ -168,6 +168,7 @@ Should show Let's Encrypt as issuer.
 
 *FYI:* for local testing of a production config, you can use the [`mkcert`](https://github.com/FiloSottile/mkcert)
 tool (for trusted self-signed certs) and edits to `/etc/hosts` to generate a pseudo-deployment config.
+See [LOCAL-HTTPS-TESTING.md](LOCAL-HTTPS-TESTING.md) for a complete guide to setting up a local HTTPS testing environment.
 
 1. **Prepare certificates**:
    - Full chain certificate: `fullchain.pem`
@@ -558,7 +559,7 @@ dc-prod up -d
 
 ### 5. Configure Automated Backups
 
-Set up a daily backup script:
+This is just an example, but using the tools in this folder, you can set up a daily backup script:
 
 ```bash
 # Create backup script
@@ -574,7 +575,6 @@ admin-backup
 
 # Also create a database dump
 admin-db-dump
-mv backup_*.sql /opt/nexuslims/backups/
 
 # Remove backups older than 30 days
 find /opt/nexuslims/backups -type d -name "backup_*" -mtime +30 -exec rm -rf {} \; 2>/dev/null || true
@@ -754,7 +754,7 @@ dc-prod up -d postgres redis
 sleep 10
 
 # Restore database from SQL dump
-cat backup_20260109_120000.sql | admin-db-restore
+admin-db-restore backup_20260109_120000.sql
 
 # Start all services
 dc-prod up -d
@@ -822,30 +822,6 @@ dc-prod logs -f postgres
 **Caddy logs**:
 ```bash
 dc-prod logs -f caddy
-```
-
-### Maintenance Tasks
-
-**Clear expired sessions** (weekly):
-```bash
-source admin-commands.sh
-admin-clean-sessions
-```
-
-**Clear Redis cache** (as needed):
-```bash
-admin-clean-cache
-```
-
-**Update Docker images** (monthly):
-```bash
-dc-prod pull
-dc-prod up -d
-```
-
-**Database vacuum** (monthly):
-```bash
-docker exec nexuslims_prod_cdcs_postgres vacuumdb -U nexuslims --all --analyze
 ```
 
 ### External Monitoring
@@ -961,13 +937,7 @@ Consider integrating:
    docker exec nexuslims_prod_cdcs_postgres psql -U nexuslims -d nexuslims -c "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_user_tables ORDER BY n_tup_ins DESC LIMIT 10;"
    ```
 
-3. Clear cache:
-   ```bash
-   source admin-commands.sh
-   admin-clean-cache
-   ```
-
-4. Optimize database:
+3. Optimize database:
    ```bash
    docker exec nexuslims_prod_cdcs_postgres vacuumdb -U nexuslims --all --full --analyze
    ```

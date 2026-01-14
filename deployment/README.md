@@ -132,16 +132,13 @@ deployment/
 ├── schemas/
 │   └── nexus-experiment.xsd   # NexusLIMS schema (synced from NexusLIMS repo)
 │
-├── test-data/                    # Development test data (gitignored when extracted)
-│   ├── example_record.xml        # Example "regular" record
-│   ├── example_record_large.xml  # Example "large" record that triggers simple display
-│   ├── nx-data/                  # Extracted preview/metadata (gitignored)
-│   └── nx-instrument-data/       # Extracted instrument data (gitignored)
+├── test-data/                      # Development test data (gitignored when extracted)
+│   └── nexuslims-test-data.tar.gz  # Example test data that will be extracted as needed
 │
 ├── extra/                     # Optional extra configuration
 │   └── .env                   # Extra environment variables
 ├── handle/                    # Handle system configuration
-│   └── .env                   # Handle-related environment variables
+│   └── .env                   # Handle-related environment variable 
 ├── saml2/                     # SAML2 authentication configuration
 │   └── .env                   # SAML2-related environment variables
 │
@@ -181,20 +178,6 @@ All environment-specific settings are controlled via `.env` files:
 - Strong passwords must be set
 - Production file paths
 - **Copy to `.env` and customize** (never commit `.env`!)
-
-### Key Environment Variables
-
-| Variable | Purpose | Dev Default | Prod Example |
-|----------|---------|-------------|--------------|
-| `COMPOSE_PROJECT_NAME` | Container name prefix | `nexuslims_dev` | `nexuslims_prod` |
-| `DOMAIN` | Main application domain | `nexuslims-dev.localhost` | `nexuslims.example.com` |
-| `FILES_DOMAIN` | File server domain | `files.nexuslims-dev.localhost` | `files.nexuslims.example.com` |
-| `DJANGO_SETTINGS_MODULE` | Django settings | `config.settings.dev_settings` | `config.settings.prod_settings` |
-| `CADDYFILE` | Which Caddyfile to use | `Caddyfile.dev` | `Caddyfile.prod` |
-| `NX_DATA_HOST_PATH` | File server data path | `./test-data/nx-data` | `/mnt/nexuslims/data` |
-| `XSLT_DATASET_BASE_URL` | XSLT URL for datasets | `https://files.nexuslims-dev.localhost/instrument-data` | `https://files.nexuslims.example.com/instrument-data` |
-
-See `.env.example` for complete documentation of all variables.
 
 ## Services
 
@@ -252,13 +235,13 @@ Load with: `source dev-commands.sh`
 
 Load with: `source admin-commands.sh`
 
-Works for both dev and production (reads `COMPOSE_PROJECT_NAME` from `.env`).
+Meant to be used to administer production deployments.
 
 **Backup & Restore:**
 - `admin-backup` - Backup all data (templates, records, blobs, users, XSLT)
 - `admin-restore` - Restore from backup
 - `admin-db-dump` - PostgreSQL dump
-- `admin-db-restore` - Restore PostgreSQL
+- `admin-db-restore` - Restore PostgreSQL (admin-backup/admin-restore is preferred)
 
 **User Management:**
 - `admin-list-users` - List all users
@@ -305,9 +288,6 @@ Browser → Caddy (HTTPS :443) → Django runserver (:8000) → Application
                      PostgreSQL   Redis    File Server
                       (:5432)    (:6379)   (via Caddy)
 
-Host Access:
-  PostgreSQL: localhost:5532
-  Redis:      localhost:6479
 ```
 
 ### Production
@@ -378,6 +358,7 @@ For production deployment:
 source admin-commands.sh
 admin-backup
 # Creates: /srv/nexuslims/backups/backup_YYYYMMDD_HHMMSS/
+#   which is mapped into ${NX_CDCS_BACKUPS_HOST_PATH}
 ```
 
 ### Database Dump
@@ -389,10 +370,10 @@ admin-db-dump
 ### Restore
 ```bash
 # From CDCS backup
-admin-restore
+admin-restore ${NX_CDCS_BACKUPS_HOST_PATH}/backup_YYYYMMDD_HHMMSS
 
 # From SQL dump
-cat backup_20260109_120000.sql | admin-db-restore
+admin-db-restore ${NX_CDCS_BACKUPS_HOST_PATH}/backup_20260109_120000.sql
 ```
 
 See backup script documentation for details on backup structure and contents.
@@ -409,10 +390,8 @@ After deployment:
 
 ## Additional Resources
 
-- **XSLT Documentation**: [`../CLAUDE.md`](../CLAUDE.md)
 - **Production Guide**: [`PRODUCTION.md`](PRODUCTION.md)
-- **NexusLIMS Customizations**: [`../nexuslims_overrides/README.md`](../nexuslims_overrides/README.md)
-- **MDCS Documentation**: https://github.com/usnistgov/MDCS
+- **NexusLIMS Customizations**: [`../nexuslims_overrides/CUSTOMIZATION.md`](../nexuslims_overrides/CUSTOMIZATION.md)
 
 ## Support
 
@@ -421,3 +400,13 @@ For issues or questions:
 - Review logs: `dev-logs` or `docker compose logs`
 - Check container status: `docker compose ps`
 - View system stats: `admin-stats`
+
+## Professional Assistance
+
+💼 **Need help with NexusLIMS?** Datasophos offers:
+
+- 🚀 **Deployment & Integration** - Expert configuration for your lab environment
+- 🔧 **Custom Development** - Custom extractors, harvesters, and workflow extensions
+- 🎓 **Training & Support** - Team onboarding and ongoing technical support
+
+**Contact**: [josh@datasophos.co](mailto:josh@datasophos.co) | [datasophos.co](https://datasophos.co)
