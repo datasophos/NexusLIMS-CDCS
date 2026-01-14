@@ -22,7 +22,6 @@ services:
       # Caddy's root CA certificate for SSL verification (mounted in base, just referencing here)
       - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
       # Test data for development initialization
-      - ./test-data/nexus-experiment.xsd:/srv/test-data/nexus-experiment.xsd:ro
       - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
       - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
 

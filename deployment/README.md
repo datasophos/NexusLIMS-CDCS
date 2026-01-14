@@ -21,7 +21,6 @@ This architecture maximizes code reuse while allowing environment-specific custo
 2. **Set up environment:**
    ```bash
    cp .env.dev .env
-   # Or use the existing .env if already configured
    ```
 
 3. **Load development helper commands:**
@@ -33,7 +32,7 @@ This architecture maximizes code reuse while allowing environment-specific custo
 4. **Start the development environment:**
    ```bash
    dev-up
-   # Automatically extracts test data and starts all services
+   # Automatically extracts test data, builds CDCS image, pulls supporting images, and starts all services
    ```
 
 5. **Trust the development CA certificate** (one-time setup):
@@ -63,11 +62,29 @@ This architecture maximizes code reuse while allowing environment-specific custo
    3. Right-click → "All Tasks" → "Import"
    4. Select `caddy/certs/ca.crt`
 
+   **Alternative - Browser-specific import:**
+
+   If you prefer not to add the certificate system-wide, you can import it directly into your browser:
+   - **Chrome/Edge**: Settings → Privacy and security → Security → Manage certificates → Authorities → Import
+   - **Firefox**: Settings → Privacy & Security → Certificates → View Certificates → Authorities → Import
+   - **Safari**: Safari → Settings → Privacy → Manage Website Data (uses system keychain on macOS)
+
 6. **Access the application:**
    - Main app: https://nexuslims-dev.localhost
-   - File server: https://files.nexuslims-dev.localhost
+   - File server: https://files.nexuslims-dev.localhost/data/ and https://files.nexuslims-dev.localhost/instrument-data/
    - Default super user credentials: admin/admin
    - Default regular user credentials: user/user
+   
+7. **Development features:**
+
+   The development environment includes several features to streamline development:
+
+   - **Hot-reload enabled** - Application code is mounted into the container, so changes to Python files automatically reload the application
+   - **Local HTTPS with self-signed certificates** - Uses Caddy with a local CA for secure HTTPS connections (requires one-time certificate trust setup)
+   - **File server for test data** - Serves instrument data and preview/metadata files via `files.nexuslims-dev.localhost` to simulate production file access
+   - **Pre-populated test data** - Automatically extracts and configures sample instrument data and metadata for testing
+   - **Development helper commands** - Convenient aliases loaded via `source dev-commands.sh` for common tasks (see inline documentation in the script)
+   - **Direct database access** - PostgreSQL and Redis exposed on host ports for debugging and inspection
 
 ## Quick Start - Production
 
@@ -78,7 +95,8 @@ See [`PRODUCTION.md`](PRODUCTION.md) for comprehensive production deployment gui
 cd deployment
 cp .env.prod.example .env
 # Edit .env with your production values (domains, passwords, etc.)
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+source admin-commands.sh
+dc-prod up -d
 ```
 
 ## Directory Structure
@@ -90,34 +108,47 @@ deployment/
 ├── docker-compose.prod.yml    # Production overrides
 ├── Dockerfile                 # Application image
 ├── docker-entrypoint.sh       # Container startup script
+├── .gitignore                 # Git ignore rules
 │
-├── .env                       # Active environment config (gitignored)
+├── .env                       # Active environment config (gitignored, copy from .env.dev or .env.prod.example)
 ├── .env.dev                   # Development defaults (tracked)
-├── .env.example               # All variables documented (tracked)
 ├── .env.prod.example          # Production template (tracked)
 │
 ├── caddy/
 │   ├── Dockerfile             # Custom Caddy with plugins
-│   ├── Caddyfile.dev          # Development (local CA)
-│   ├── Caddyfile.prod         # Production (ACME/Let's Encrypt)
-│   └── certs/                 # Dev CA certificates (gitignored)
+│   ├── Caddyfile.dev          # Development file server and reverse proxy (local CA with self-signed certs)
+│   ├── Caddyfile.prod         # Production file server and reverse proxy (using ACME/Let's Encrypt)
+│   └── certs/                 # Dev CA certificates
 │
 ├── scripts/
-│   ├── init_environment.py    # Environment initialization
-│   ├── update-xslt.sh         # Update XSLT in database
-│   ├── setup-test-data.sh     # Extract test data (dev)
+│   ├── init_environment.py    # Complete environment setup (superuser + schema + XSLT)
+│   ├── update-xslt.sh         # Update XSLT stylesheets in database
+│   ├── update-schema.sh       # Update nexus-experiment.xsd from canonical source
+│   ├── setup-test-data.sh     # Extract test data (dev only)
 │   ├── backup_cdcs.py         # Backup system data
-│   └── show_stats.py          # System statistics
+│   ├── restore_cdcs.py        # Restore system data from backup
+│   └── show_stats.py          # Display system statistics
 │
-├── test-data/                 # Development test data
-│   ├── nexuslims-test-data.tar.gz
-│   ├── nexus-experiment.xsd
-│   ├── example_record.xml
-│   └── nx-data/               # Extracted (gitignored)
+├── schemas/
+│   └── nexus-experiment.xsd   # NexusLIMS schema (synced from NexusLIMS repo)
+│
+├── test-data/                    # Development test data (gitignored when extracted)
+│   ├── example_record.xml        # Example "regular" record
+│   ├── example_record_large.xml  # Example "large" record that triggers simple display
+│   ├── nx-data/                  # Extracted preview/metadata (gitignored)
+│   └── nx-instrument-data/       # Extracted instrument data (gitignored)
+│
+├── extra/                     # Optional extra configuration
+│   └── .env                   # Extra environment variables
+├── handle/                    # Handle system configuration
+│   └── .env                   # Handle-related environment variables
+├── saml2/                     # SAML2 authentication configuration
+│   └── .env                   # SAML2-related environment variables
 │
 ├── dev-commands.sh            # Development helper aliases
-├── admin-commands.sh          # Administrative commands
-└── README.md                  # This file
+├── admin-commands.sh          # Administrative commands aliases
+├── README.md                  # This file
+└── PRODUCTION.md              # Comprehensive production deployment guide
 ```
 
 **Repository root also contains:**
@@ -128,8 +159,8 @@ xslt/                          # XSLT stylesheets
 
 config/                        # Application configuration
 └── settings/
-    ├── dev_settings.py
-    └── prod_settings.py
+    ├── dev_settings.py        # Settings for local development
+    └── prod_settings.py       # Settings for production deployment
 ```
 
 ## Environment Configuration
@@ -137,16 +168,17 @@ config/                        # Application configuration
 All environment-specific settings are controlled via `.env` files:
 
 ### Development (`.env.dev`)
-- Safe defaults for local development
+- Use by copying to `.env`: `$ cp .env.dev .env`
+- Safe defaults for local development; no changes needed to get a working deployment
 - Uses `.localhost` domains (no DNS needed)
-- Test data paths
+- Test data, metadata, and records included and configured for access by caddy fileserver
 - Development secret keys
 - Tracked in git
 
 ### Production (`.env.prod.example`)
 - Template for production setup
 - Real domain names
-- Strong passwords (must be set)
+- Strong passwords must be set
 - Production file paths
 - **Copy to `.env` and customize** (never commit `.env`!)
 
@@ -214,8 +246,6 @@ Load with: `source dev-commands.sh`
 - `dev-makemigrations` - Create migrations
 
 **NexusLIMS:**
-- `dev-init` - Complete setup (users + schema)
-- `dev-init-schema` - Schema only
 - `dev-update-xslt` - Update XSLT stylesheets in database
 
 ## Administrative Commands
@@ -371,10 +401,9 @@ See backup script documentation for details on backup structure and contents.
 
 After deployment:
 1. ✅ Access application at configured domain
-2. ✅ Create superuser (dev: already exists as admin/admin)
-3. ✅ Initialize schema with `dev-init` or `dev-init-schema`
-4. ✅ Upload data records via web interface
-5. ✅ Verify XSLT rendering
+2. ✅ Schema automatically initialized on first startup (creates admin/admin user)
+3. ✅ Upload data records via web interface
+4. ✅ Verify XSLT rendering
 6. ✅ Test file downloads
 7. ✅ Configure backups (production)
 

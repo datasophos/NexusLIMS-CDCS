@@ -26,6 +26,9 @@ services:
     volumes:
       # Mount backup directory to host for easy access
       - ${NX_CDCS_BACKUPS_HOST_PATH}:/srv/nexuslims/backups
+    environment:
+      # Backup path environment variable (only needed in production)
+      - NX_CDCS_BACKUPS_HOST_PATH=${NX_CDCS_BACKUPS_HOST_PATH}
 
     # Production: No source code mount, only essential volumes
     # (base config already includes config/xslt/nexuslims_overrides/scripts mounts)

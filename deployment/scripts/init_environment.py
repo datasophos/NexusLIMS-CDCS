@@ -15,8 +15,8 @@ This script handles:
 
 Usage:
     Development:
-        docker exec nexuslims_dev_cdcs python /srv/scripts/init_environment.py
-        Or via alias: dev-init
+        Runs automatically on container startup (see docker-compose.dev.yml)
+        Manual run: docker exec nexuslims_dev_cdcs python /srv/scripts/init_environment.py
 
     Production:
         docker exec nexuslims_prod_cdcs python /srv/scripts/init_environment.py
@@ -261,9 +261,9 @@ def upload_schema(request, schema_path=None):
         TemplateVersionManager,
     )
 
-    # Default schema path (development test data)
+    # Default schema path (mounted from deployment/schemas/)
     if schema_path is None:
-        schema_path = Path("/srv/test-data/nexus-experiment.xsd")
+        schema_path = Path("/srv/nexuslims/schemas/nexus-experiment.xsd")
     else:
         schema_path = Path(schema_path)
 
@@ -273,7 +273,7 @@ def upload_schema(request, schema_path=None):
             log_info("In production, upload your schema via the web interface:")
             log_info("  1. Login as superuser")
             log_info("  2. Navigate to: Curator > Template > Upload Schema")
-            log_info("  3. Upload your nexus-experiment.xsd file")
+            log_info("  3. Upload the nexus-experiment.xsd schema file")
         return None
 
     with schema_path.open(encoding="utf-8") as f:

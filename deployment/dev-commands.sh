@@ -42,10 +42,6 @@ alias dev-collectstatic='docker exec nexuslims_dev_cdcs python manage.py collect
 # Django shell
 alias dev-djshell='docker exec -it nexuslims_dev_cdcs python manage.py shell'
 
-# NexusLIMS initialization
-alias dev-init='docker exec nexuslims_dev_cdcs python /srv/scripts/init_environment.py'
-alias dev-init-schema='docker exec nexuslims_dev_cdcs python /srv/scripts/init_nexus_schema.py'
-
 # XSLT stylesheet updates
 alias dev-update-xslt='bash scripts/update-xslt.sh'
 alias dev-update-xslt-detail='bash scripts/update-xslt.sh detail'
@@ -86,10 +82,6 @@ echo ""
 echo "  📦 Static Files:"
 echo "    dev-collectstatic   - Collect static files"
 echo ""
-echo "  🔧 NexusLIMS Setup:"
-echo "    dev-init            - Complete environment setup (superuser + regular user + schema)"
-echo "    dev-init-schema     - Initialize schema only (requires superuser exists)"
-echo ""
 echo "  🎨 XSLT Stylesheets:"
 echo "    dev-update-xslt        - Update both detail and list stylesheets in database"
 echo "    dev-update-xslt-detail - Update detail_stylesheet.xsl only"
@@ -97,4 +89,4 @@ echo "    dev-update-xslt-list   - Update list_stylesheet.xsl only"
 echo ""
 echo "To use these aliases, run: source dev-commands.sh"
 echo ""
-echo "Access NexusLIMS-CDCS at: https://nexuslims-dev.localhost:8443"
+echo "Access NexusLIMS-CDCS at: https://nexuslims-dev.localhost"

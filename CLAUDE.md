@@ -50,6 +50,60 @@ These are configured in your `.env` file (defaults for development):
 - Update script automatically patches URLs based on your `.env` configuration
 - For production, update the environment variables to match your production domains
 
+## NexusLIMS Schema (nexus-experiment.xsd)
+
+The NexusLIMS XML schema file defines the structure for experiment records in CDCS.
+
+### Schema Location and Management
+
+**File Location**: `deployment/schemas/nexus-experiment.xsd`
+
+**Canonical Source**: https://github.com/datasophos/NexusLIMS/blob/main/nexusLIMS/schemas/nexus-experiment.xsd
+
+The schema file is tracked in this repository for self-contained deployments, but the canonical version lives in the main NexusLIMS repository. When the upstream schema is updated, you need to sync it here.
+
+### Updating the Schema
+
+**Automatic Update**:
+```bash
+cd deployment
+bash scripts/update-schema.sh
+```
+
+This script:
+- Downloads the latest schema from the NexusLIMS repository
+- Saves it to `deployment/schemas/nexus-experiment.xsd`
+- Verifies the download was successful
+
+**Manual Update**:
+```bash
+curl -L -o deployment/schemas/nexus-experiment.xsd \
+  https://raw.githubusercontent.com/datasophos/NexusLIMS/main/nexusLIMS/schemas/nexus-experiment.xsd
+```
+
+### Applying Schema Updates
+
+After updating the schema file, you must update it in the database:
+
+**Development Environment**:
+```bash
+cd deployment
+dev-down && dev-up  # Restart to apply changes
+```
+
+**Production Environment**:
+```bash
+docker exec <container-name> python /srv/scripts/init_environment.py
+```
+
+### How It Works
+
+- The schema file is mounted into containers at `/srv/nexuslims/schemas/nexus-experiment.xsd`
+- During initialization, `init_environment.py` reads this file and uploads it to the CDCS database
+- The database stores the schema for validating and rendering XML records
+- Just updating the file on disk doesn't change the database - you must re-run initialization
+- `init_environment.py` is idempotent and safely skips items that already exist
+
 ## Planning Documents
 
 All planning and analysis documents should be stored in this repository, not in the user's home directory:
