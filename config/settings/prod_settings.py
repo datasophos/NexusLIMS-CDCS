@@ -30,14 +30,31 @@ REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 REDIS_PASSWORD = os.getenv("REDIS_PASS", "")
 
 # Static files
-STATIC_ROOT = "/srv/curator/static.prod"
+STATIC_ROOT = "/srv/nexuslims/static.prod"
 STATIC_URL = "/static/"
 
 # Media files
-MEDIA_ROOT = "/srv/curator/media"
+MEDIA_ROOT = "/srv/nexuslims/media"
 MEDIA_URL = "/media/"
 
 # Session & Cache configuration
+# NexusLIMS Production Enhancement: Redis-backed sessions and caching
+#
+# Deviation from base MDCS:
+# - Base MDCS uses Django's default LocMemCache (in-memory, single process)
+# - We use Redis for production because:
+#   1. Sessions persist across container restarts (important for deployments)
+#   2. Cache is shared across multiple app instances (enables horizontal scaling)
+#   3. Better performance than database-backed sessions
+#   4. Atomic operations for session data
+#
+# Trade-off: Adds Redis as a required dependency (already needed for Celery)
+# Requires: django-redis package (see requirements.txt)
+#
+# To disable Redis caching: Comment out the CACHES block below and uncomment
+# the alternative configuration. You should also switch to database-backed sessions.
+
+# Option 1: Redis-backed cache (default, recommended)
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
@@ -50,6 +67,18 @@ CACHES = {
         }
     }
 }
+
+# Option 2: Database-backed sessions with in-memory cache (fallback)
+# Use this if you don't want to use django-redis or Redis is unavailable
+# Note: Sessions will persist, but cache is per-process (not shared)
+#
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+#         "LOCATION": "unique-snowflake",
+#     }
+# }
 
 # Security settings
 SECURE_SSL_REDIRECT = False  # Caddy handles SSL termination
@@ -77,4 +106,9 @@ from nexuslims_overrides.settings import *  # noqa
 
 # Production-specific NexusLIMS settings
 NX_XSLT_DEBUG = False
-NX_ENABLE_TUTORIALS = False  # Disable tutorials in production
+NX_ENABLE_TUTORIALS = True
+
+# To limit access to the API docs to logged in users, uncomment the following lines:
+# SPECTACULAR_SETTINGS.update({
+#     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+# })

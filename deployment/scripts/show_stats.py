@@ -8,15 +8,28 @@ import sys
 
 # Django setup
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"))
-sys.path.insert(0, "/srv/curator")
+sys.path.insert(0, "/srv/nexuslims")
 import django
 django.setup()
 
 from django.contrib.auth import get_user_model
+from django.test import RequestFactory
 from core_main_app.components.template import api as template_api
 from core_main_app.components.data import api as data_api
-from core_main_app.components.blob import api as blob_api
 from core_main_app.components.xsl_transformation import api as xsl_transformation_api
+
+# Create a request object with superuser permissions for API calls
+User = get_user_model()
+superuser = User.objects.filter(is_superuser=True).first()
+
+if superuser:
+    factory = RequestFactory()
+    request = factory.get("/")
+    request.user = superuser
+else:
+    request = None
+    print("⚠️  Warning: No superuser found. Some statistics may be unavailable.")
+    print()
 
 print("=" * 60)
 print("NexusLIMS-CDCS System Statistics")
@@ -37,36 +50,32 @@ print()
 
 # Templates
 try:
-    templates = template_api.get_all()
-    print("📋 Templates:")
-    print(f"  Total: {len(templates)}")
-    for template in templates:
-        print(f"    - {template.display_name or template.filename}")
-    print()
+    if request:
+        templates = template_api.get_all(request=request)
+        print("📋 Templates:")
+        print(f"  Total: {len(templates)}")
+        for template in templates:
+            print(f"    - {template.display_name or template.filename}")
+        print()
+    else:
+        print("  ⚠️  Cannot retrieve templates: No superuser available")
+        print()
 except Exception as e:
     print(f"  ⚠️  Could not retrieve templates: {e}")
     print()
 
 # Data records
 try:
-    records = data_api.get_all()
-    print("📄 Data Records:")
-    print(f"  Total: {len(records)}")
-    print()
+    if superuser:
+        records = data_api.get_all(superuser)
+        print("📄 Data Records:")
+        print(f"  Total: {len(records)}")
+        print()
+    else:
+        print("  ⚠️  Cannot retrieve records: No superuser available")
+        print()
 except Exception as e:
     print(f"  ⚠️  Could not retrieve records: {e}")
-    print()
-
-# Blobs
-try:
-    blobs = blob_api.get_all()
-    total_size = sum(blob.blob.size for blob in blobs if hasattr(blob, 'blob'))
-    print("📎 Blobs:")
-    print(f"  Total:      {len(blobs)}")
-    print(f"  Total size: {total_size / (1024*1024):.2f} MB")
-    print()
-except Exception as e:
-    print(f"  ⚠️  Could not retrieve blobs: {e}")
     print()
 
 # XSLT Stylesheets

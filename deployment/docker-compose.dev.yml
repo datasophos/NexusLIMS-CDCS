@@ -15,10 +15,10 @@ services:
   cdcs:
     # Mount local NexusLIMS-CDCS source code for live reload
     volumes:
-      - ..:/srv/curator:delegated
-      - cdcs_media:/srv/curator/media
-      - cdcs_socket:/tmp/curator/
-      - cdcs_static:/srv/curator/static.prod
+      - ..:/srv/nexuslims:delegated
+      - cdcs_media:/srv/nexuslims/media
+      - cdcs_socket:/tmp/nexuslims/
+      - cdcs_static:/srv/nexuslims/static.prod
       # Caddy's root CA certificate for SSL verification (mounted in base, just referencing here)
       - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
       # Test data for development initialization
@@ -44,7 +44,7 @@ services:
           sleep 1
         done
         echo "********* Running Migrations *********"
-        cd /srv/curator
+        cd /srv/nexuslims
         python manage.py migrate --noinput
         echo "********* Collecting Static Files *********"
         python manage.py collectstatic --noinput

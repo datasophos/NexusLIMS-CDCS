@@ -128,7 +128,8 @@ ID_PROVIDER_PREFIX_BLOB = os.getenv(
     "ID_PROVIDER_PREFIX_BLOB", ID_PROVIDER_PREFIXES[0]
 )
 
-PID_XPATH = os.getenv("PID_XPATH", "root.pid")
+# PID_XPATH = os.getenv("PID_XPATH", "root.pid")   # PID_XPATH is deprecated
+PID_PATH = os.getenv("PID_XPATH", "Experiment.@pid")
 """ string: location of the PID in the document, specified as dot notation
 """
 

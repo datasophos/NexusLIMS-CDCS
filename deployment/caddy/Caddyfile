@@ -49,7 +49,7 @@ https://nexuslims-dev.localhost {
 
     # Serve static files
     handle_path /static/* {
-        root * /srv/curator_static
+        root * /srv/nexuslims_static
         file_server
     }
 

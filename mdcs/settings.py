@@ -276,14 +276,24 @@ REST_FRAMEWORK = {
 }
 
 # drf-spectacular
+# SPECTACULAR_SETTINGS = {
+#     "TITLE": WEBSITE_SHORT_TITLE,  # noqa: F405 (core setting)
+#     "DESCRIPTION": os.getenv(
+#         "PROJECT_DESCRIPTION", "Your project description"
+#     ),
+#     "VERSION": PROJECT_VERSION,  # noqa: F405 (core setting)
+#     "SERVE_INCLUDE_SCHEMA": False,
+#     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+# }
+# NexusLIMS overrides
 SPECTACULAR_SETTINGS = {
     "TITLE": WEBSITE_SHORT_TITLE,  # noqa: F405 (core setting)
     "DESCRIPTION": os.getenv(
-        "PROJECT_DESCRIPTION", "Your project description"
+        "PROJECT_DESCRIPTION", "API endpoints for programmatically accessing data from NexusLIMS"
     ),
     "VERSION": PROJECT_VERSION,  # noqa: F405 (core setting)
     "SERVE_INCLUDE_SCHEMA": False,
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],  # allow any access
 }
 
 # Django simple-menu

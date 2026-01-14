@@ -216,7 +216,7 @@ Phases 11 and 12 are included for future reference when deploying to staging/pro
 ```
 Browser (HTTPS) → Caddy:443 → Django runserver:8000 → NexusLIMS-CDCS App
                       ↓
-                 Static Files (/srv/curator_static)
+                 Static Files (/srv/nexuslims_static)
                       ↓
                  MongoDB, PostgreSQL, Redis containers
 ```
@@ -2389,7 +2389,7 @@ Pattern based on: `/Users/josh/git_repos/datasophos/cdcs/cdcs-docker/dev`
     nexuslims.localhost {
         reverse_proxy cdcs:8000
         file_server /static/* {
-            root /srv/curator_static
+            root /srv/nexuslims_static
         }
         encode gzip
     }

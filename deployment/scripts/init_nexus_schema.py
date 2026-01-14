@@ -21,7 +21,7 @@ from pathlib import Path
 
 # Set up Django environment
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mdcs.dev_settings")
-sys.path.insert(0, "/srv/curator")
+sys.path.insert(0, "/srv/nexuslims")
 
 import django
 
@@ -54,7 +54,7 @@ def get_admin_request():
     from django.test import RequestFactory
 
     User = get_user_model()
-    
+
     # Get or create admin user
     try:
         admin_user = User.objects.filter(is_superuser=True).first()
@@ -77,11 +77,11 @@ def get_admin_request():
 def load_schema(template_api, template_version_manager_api, force):
     """Load the Nexus Experiment XSD schema as a global template."""
     print("\nLoading Nexus Experiment schema...")
-    
+
     # Get admin request for API calls
     request = get_admin_request()
 
-    schema_path = Path("/srv/curator/mdcs/nexus-experiment.xsd")
+    schema_path = Path("/srv/nexuslims/mdcs/nexus-experiment.xsd")
     if not schema_path.exists():
         log_error(f"Schema file not found at {schema_path}")
         return None
@@ -129,20 +129,16 @@ def load_schema(template_api, template_version_manager_api, force):
         template_vm.title = template_title
         template_vm.user = None  # None makes it a global template
         template_vm.is_disabled = False
-        template_vm = template_version_manager_api.insert(template_vm, request=request)
 
-        # Link template to version manager before saving
-        template.version_manager = template_vm
+        # Insert template_vm with template (CDCS 3.18.0 handles everything internally)
+        # The insert() method will:
+        # 1. Link template to template_vm
+        # 2. Call template_api.upsert(template)
+        # 3. Set template_vm.current
+        # 4. Save everything
+        template_vm = template_version_manager_api.insert(template_vm, template, request=request)
 
-        # Save the template using upsert
-        template = template_api.upsert(template, request=request)
-
-        # Set current version in TVM
-        template_vm.versions = [str(template.id)]
-        template_vm.current = str(template.id)
-        template_vm.save()
-
-        log_success(f"Template '{template_title}' created (ID: {template.id})")
+        log_success(f"Template '{template_title}' created (ID: {template_vm.current})")
         return template_vm
 
     except Exception as e:
@@ -162,7 +158,7 @@ def register_xslt_stylesheets(
 ):
     """Register XSLT stylesheets for the template."""
     print("\nRegistering XSLT stylesheets...")
-    
+
     # Get admin request for API calls
     request = get_admin_request()
 
@@ -173,7 +169,7 @@ def register_xslt_stylesheets(
         log_error(f"Failed to get template: {e}")
         raise
 
-    stylesheet_dir = Path("/srv/curator/mdcs")
+    stylesheet_dir = Path("/srv/nexuslims/xslt")
     stylesheets = {
         "detail": stylesheet_dir / "detail_stylesheet.xsl",
         "list": stylesheet_dir / "list_stylesheet.xsl",
@@ -211,7 +207,7 @@ def register_xslt_stylesheets(
             from core_main_app.components.xsl_transformation.models import (
                 XslTransformation,
             )
-            
+
             xslt = XslTransformation()
             xslt.name = stylesheet_name
             xslt.filename = stylesheet_name

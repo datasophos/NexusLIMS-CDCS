@@ -21,7 +21,7 @@ Usage:
     Production:
         docker exec nexuslims_prod_cdcs python /srv/scripts/init_environment.py
         Or via alias (after sourcing admin-commands.sh):
-            docker exec nexuslims_prod_cdcs python /srv/scripts/init_environment.py
+            admin-init
 
 Environment Detection:
     Automatically detects environment from DJANGO_SETTINGS_MODULE:
@@ -37,7 +37,7 @@ from pathlib import Path
 # Set up Django environment
 # Use DJANGO_SETTINGS_MODULE from environment, or fall back to config.settings.dev_settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"))
-sys.path.insert(0, "/srv/curator")
+sys.path.insert(0, "/srv/nexuslims")
 
 import django
 
@@ -205,46 +205,41 @@ def get_request_for_user(user):
 
 
 def grant_anonymous_explore_permission():
-    """Grant the anonymous group permission to access explore keyword app."""
-    log_info("Configuring anonymous group permissions...")
+    """
+    Grant the anonymous group permission to access explore keyword app.
+
+    NOTE: This is now handled by the Django migration:
+    nexuslims_overrides/migrations/0002_grant_anonymous_explore_permission.py
+
+    This function is kept for backwards compatibility with existing deployments
+    that may not have run the migration yet.
+    """
+    log_info("Checking anonymous group permissions...")
 
     from django.contrib.auth.models import Group, Permission
 
     try:
-        # Get or create the anonymous group
-        anonymous_group, created = Group.objects.get_or_create(name="anonymous")
+        # Check if permission is already granted
+        anonymous_group = Group.objects.filter(name='anonymous').first()
+        if not anonymous_group:
+            log_info("Anonymous group not found - will be created by migration")
+            return
 
-        if created:
-            log_info("Created 'anonymous' group")
+        permission = Permission.objects.filter(codename='access_explore_keyword').first()
+        if not permission:
+            log_info("Explore permission not found yet - will be handled by migration")
+            return
 
-        # Get the permission for core_explore_keyword_app
-        # The permission is: core_explore_keyword_app | access_explore_keyword | Can access explore keyword
-        # Look for permissions with the codename 'access_explore_keyword'
-        try:
-            permission = Permission.objects.get(codename='access_explore_keyword')
-
-            # Add permission to anonymous group
+        if anonymous_group.permissions.filter(codename='access_explore_keyword').exists():
+            log_success("Anonymous group already has explore permission (from migration)")
+        else:
+            # Grant it if not already there (fallback for pre-migration deployments)
             anonymous_group.permissions.add(permission)
-            log_success(f"Granted 'core_explore_keyword_app' permission to 'anonymous' group")
-
-        except Permission.DoesNotExist:
-            log_warning(
-                "Could not find 'core_explore_keyword_app' permission. "
-                "It may not be installed or the codename might be different."
-            )
-            # List available permissions for debugging
-            log_info("Available permissions with 'explore' in codename:")
-            for perm in Permission.objects.filter(codename__icontains='explore'):
-                log_info(f"  - {perm.content_type.app_label} | {perm.codename} | {perm.name}")
-        except Permission.MultipleObjectsReturned:
-            log_warning(
-                "Multiple 'core_explore_keyword_app' permissions found. "
-                "Skipping permission assignment."
-            )
+            log_success("Granted explore permission to anonymous group")
 
     except Exception as e:
-        log_error(f"Failed to configure anonymous group permissions: {e}")
-        # Don't raise - let the script continue
+        log_warning(f"Could not check permissions: {e}")
+        log_info("This is handled by migrations, so no action needed")
 
 
 def upload_schema(request, schema_path=None):
@@ -330,10 +325,10 @@ def upload_schema(request, schema_path=None):
 
     except IntegrityError as e:
         # Template already exists (race condition or duplicate)
-        log_warning(f"Template already exists (IntegrityError), fetching existing template...")
+        log_info("Template already exists, fetching existing template...")
         try:
             existing_tvm = template_version_manager_api.get_active_global_version_manager_by_title(
-                template_title
+                template_title, request=request
             )
             log_success(f"Template '{template_title}' found")
             return existing_tvm
@@ -341,11 +336,26 @@ def upload_schema(request, schema_path=None):
             log_error(f"Failed to fetch existing template: {fetch_error}")
             return None
     except Exception as e:
-        log_error(f"Failed to create template: {e}")
-        import traceback
-        traceback.print_exc()
-        # Don't raise - let the script continue
-        return None
+        # Check if it's a NotUniqueError (CDCS wraps IntegrityError)
+        error_str = str(e)
+        if "duplicate key" in error_str or "already exists" in error_str.lower():
+            log_info("Template already exists, fetching existing template...")
+            try:
+                existing_tvm = template_version_manager_api.get_active_global_version_manager_by_title(
+                    template_title, request=request
+                )
+                log_success(f"Template '{template_title}' found")
+                return existing_tvm
+            except Exception as fetch_error:
+                log_error(f"Failed to fetch existing template: {fetch_error}")
+                return None
+        else:
+            # Unexpected error - show details
+            log_error(f"Failed to create template: {e}")
+            import traceback
+            traceback.print_exc()
+            # Don't raise - let the script continue
+            return None
 
 
 def upload_example_records(request, template_vm):
@@ -444,7 +454,7 @@ def upload_xslt_stylesheets(request, template_vm):
     # Get the current template
     template = template_api.get_by_id(template_vm.current, request=request)
 
-    stylesheet_dir = Path("/srv/xslt")
+    stylesheet_dir = Path("/srv/nexuslims/xslt")
     stylesheets = {
         "detail": stylesheet_dir / "detail_stylesheet.xsl",
         "list": stylesheet_dir / "list_stylesheet.xsl",
@@ -518,7 +528,8 @@ def upload_xslt_stylesheets(request, template_vm):
             log_success(f"Stylesheet '{stylesheet_name}' created (ID: {xslt.id})")
         except Exception as e:
             log_error(f"Failed to create stylesheet '{stylesheet_name}': {e}")
-            raise
+            # Don't raise - try to continue with what we have
+            continue
 
     # Link stylesheets to template
     if xslt_map:
@@ -540,7 +551,8 @@ def upload_xslt_stylesheets(request, template_vm):
                 log_success(f"XSLT rendering configured (ID: {rendering.id})")
         except Exception as e:
             log_error(f"Failed to configure XSLT rendering: {e}")
-            raise
+            log_warning("Continuing without XSLT rendering configuration")
+            # Don't raise - let the script continue
 
 
 def compile_translations():
@@ -549,7 +561,7 @@ def compile_translations():
 
     try:
         from django.core.management import call_command
-        call_command('compilemessages')
+        call_command('compilemessages', verbosity=0)
         log_success("Translations compiled successfully")
     except Exception as e:
         log_error(f"Failed to compile translations: {e}")
@@ -678,11 +690,8 @@ def main():
             print(f"  1. Access the site: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}")
             if superuser:
                 print(f"  2. Login with your superuser credentials")
-            if not template_vm:
-                print(f"  3. Upload NexusLIMS schema:")
-                print(f"     docker cp /path/to/nexus-experiment.xsd nexuslims_prod_cdcs:/tmp/")
-                print(f"     docker exec -it nexuslims_prod_cdcs python /srv/scripts/init_environment.py --schema /tmp/nexus-experiment.xsd")
-            print(f"  4. Begin uploading data records via web interface")
+            print(f"  3. Begin uploading data records via the NexusLIMS backend")
+            print(f"  4. Explore data: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/explore/keyword/")
         else:
             if superuser:
                 print(f"  Superuser: {superuser.username}")

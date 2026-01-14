@@ -17,7 +17,7 @@ from core_main_app.components.xsl_transformation import api as xsl_transformatio
 from pathlib import Path
 
 # Read from mounted xslt directory
-stylesheet_path = Path("/srv/xslt/detail_stylesheet.xsl")
+stylesheet_path = Path("/srv/nexuslims/xslt/detail_stylesheet.xsl")
 with stylesheet_path.open(encoding="utf-8") as f:
     stylesheet_content = f.read()
 
@@ -66,7 +66,7 @@ from core_main_app.components.xsl_transformation import api as xsl_transformatio
 from pathlib import Path
 
 # Read from mounted xslt directory
-stylesheet_path = Path("/srv/xslt/list_stylesheet.xsl")
+stylesheet_path = Path("/srv/nexuslims/xslt/list_stylesheet.xsl")
 with stylesheet_path.open(encoding="utf-8") as f:
     stylesheet_content = f.read()
 

@@ -37,6 +37,11 @@ proper security, SSL certificates, and data management.
 
 ## System Requirements
 
+These instructions assume you are running on a Linux system. They should generally
+also work on a Mac, but there are some peculiarities with how Docker mounts work on MacOS.
+Please see the [docker documentation](https://docs.docker.com/desktop/settings/mac/#file-sharing)
+for details.
+
 ### Minimum Hardware
 - **CPU**: 4 cores
 - **RAM**: 8 GB
@@ -161,6 +166,9 @@ Should show Let's Encrypt as issuer.
 
 **Configuration**:
 
+*FYI:* for local testing of a production config, you can use the [`mkcert`](https://github.com/FiloSottile/mkcert)
+tool (for trusted self-signed certs) and edits to `/etc/hosts` to generate a pseudo-deployment config.
+
 1. **Prepare certificates**:
    - Full chain certificate: `fullchain.pem`
    - Private key: `privkey.pem`
@@ -220,71 +228,9 @@ cp .env.prod.example .env
 
 ### 3. Configure Environment Variables
 
-Edit `.env` with production values:
+Edit `.env` with production values, following the instructions in the file.
 
-```bash
-# Required: Set your domains
-COMPOSE_PROJECT_NAME=nexuslims_prod  # do not change
-DOMAIN=nexuslims.example.com
-FILES_DOMAIN=files.nexuslims.example.com
-SERVER_URI=https://nexuslims.example.com
-ALLOWED_HOSTS=nexuslims.example.com
-CSRF_TRUSTED_ORIGINS=https://nexuslims.example.com
-
-# Required: Django configuration
-DJANGO_SETTINGS_MODULE=config.settings.prod_settings
-DJANGO_SECRET_KEY=GENERATE_A_SECURE_50_PLUS_CHARACTER_RANDOM_STRING_HERE
-DJANGO_DEBUG=False
-
-# Required: Strong database password
-POSTGRES_DB=nexuslims
-POSTGRES_USER=nexuslims
-POSTGRES_PASS=GENERATE_SECURE_PASSWORD_HERE
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-POSTGRES_HOST_PORT=5532
-
-# Required: Strong Redis password
-REDIS_PASS=GENERATE_SECURE_PASSWORD_HERE
-REDIS_HOST=redis
-REDIS_PORT=6379
-REDIS_HOST_PORT=6479
-
-# Required: Production Caddyfile
-CADDYFILE=Caddyfile.prod
-CADDY_ACME_EMAIL=admin@example.com
-
-# Required: Set paths to your data directories
-NX_DATA_PATH=/srv/nx-data                       # path mounted inside docker container
-NX_INSTRUMENT_DATA_PATH=/srv/nx-instrument-data # path mounted inside docker container
-NX_DATA_HOST_PATH=/mnt/nexuslims/data           # actual path on host system
-NX_INSTRUMENT_DATA_HOST_PATH=/mnt/nexuslims/instrument-data  # actual path on host system (likely a network mount)
-
-# Required: XSLT URLs (match your FILES_DOMAIN)
-XSLT_DATASET_BASE_URL=https://files.nexuslims.example.com/instrument-data
-XSLT_PREVIEW_BASE_URL=https://files.nexuslims.example.com/data
-```
-
-### 4. Generate Secure Values
-
-**Django Secret Key** (50+ characters):
-```bash
-python3 -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
-```
-
-**Database Password**:
-```bash
-python3 -c "from secrets import token_urlsafe; print(token_urlsafe(32))"
-```
-
-**Redis Password**:
-```bash
-python3 -c "from secrets import token_urlsafe; print(token_urlsafe(32))"
-```
-
-These values should be placed in the appropriate spots in the `.env` file.
-
-### 5. Secure the `.env` File
+### 4. Secure the `.env` File
 
 ```bash
 chmod 600 .env
@@ -296,9 +242,13 @@ chmod 600 .env
 
 ### Overview
 
-The fileserver portion of NexusLIMS-CDCS serves two types of files:
+NexusLIMS-CDCS comes bundled with a Caddy fileserver that serves two types of files:
+
 1. **NexusLIMS data**: Thumbnail images, metadata files, and other data (read-only)
 2. **Instrument data**: Raw microscopy data files from instruments (read-only)
+
+In production, these locations will likely be remote network-mounted locations, but
+that is not strictly necessary. This section reviews some different possible configs.
 
 ### Storage Options
 
@@ -343,7 +293,7 @@ echo "nfs-server:/export/nexuslims/instrument-data /mnt/nexuslims/instrument-dat
 
 #### Option 3: CIFS/SMB Mount
 
-Best for Windows file shares or NAS devices using SMB protocol.
+Best for Windows file shares or NAS devices using SMB protocol (common in enterprise environments).
 
 ```bash
 # Install CIFS utilities
@@ -391,43 +341,51 @@ sudo mount -a
 
 ## Deployment
 
-### 1. Pull Docker Images
+> **Tip**: This guide uses the `dc-prod` alias (shortcut for `docker compose -f docker-compose.base.yml -f docker-compose.prod.yml`).
+> This alias is available when you source the admin commands:
+> ```bash
+> cd /opt/nexuslims/NexusLIMS-CDCS/deployment
+> source admin-commands.sh
+> ```
+> Then use `dc-prod up -d`, `dc-prod logs -f`, etc.
+
+### 1. Build and Pull Images
 
 ```bash
 cd /opt/nexuslims/NexusLIMS-CDCS/deployment
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml pull
+
+# Source admin commands to get dc-prod alias
+source admin-commands.sh
+
+# Build custom images (caddy, cdcs) and pull standard images (postgres, redis)
+dc-prod build  # this will probably take a few minutes the first time you build the images, but will be nearly instant after
+dc-prod pull
 ```
 
-### 2. Build Custom Images
+### 2. Start Services
 
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml build
+dc-prod up -d
 ```
 
-### 3. Start Services
-
-```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
-```
-
-### 4. Monitor Startup
+### 3. Monitor Startup
 
 ```bash
 # Watch logs
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs -f
+dc-prod logs -f
 
 # Check service status
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml ps
+dc-prod ps
 ```
 
 All services should show `Up` and `healthy`.
 
-### 5. Verify Certificate Acquisition
+### 4. Verify Certificate Acquisition
 
 If using ACME, watch Caddy logs for certificate issuance:
 
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs -f caddy
+dc-prod logs -f caddy
 ```
 
 You should see:
@@ -435,7 +393,7 @@ You should see:
 certificate obtained successfully
 ```
 
-### 6. Access Application
+### 5. Access Application
 
 Navigate to your domain:
 ```
@@ -464,7 +422,7 @@ The script will:
 2. ✅ Compile Django translations
 3. ✅ Create superuser (prompts for username, email, password)
 4. ✅ Configure anonymous group permissions for explore app
-5. ✅ Upload NexusLIMS schema from `/tmp/nexus-experiment.xsd`
+5. ✅ Upload NexusLIMS schema from `/srv/test-data/nexus-experiment.xsd`
 6. ✅ Load and configure XSLT stylesheets (automatically patched with production URLs)
 7. ✅ Load data exporters
 
@@ -479,10 +437,11 @@ NexusLIMS-CDCS Production Environment Initialization
 ✓ Translations compiled successfully
 → Checking for superuser...
 → No superuser found. Creating superuser (you will be prompted for credentials)...
-Username: admin
+Username (leave blank to use 'root'): admin
 Email address: admin@example.com
-Password:
-Password (again):
+Password: *****
+Password (again): *****
+Superuser created successfully.
 ✓ Superuser created: admin
 → Configuring anonymous group permissions...
 ✓ Granted 'core_explore_keyword_app' permission to 'anonymous' group
@@ -490,14 +449,21 @@ Password (again):
 ✓ Template 'Nexus Experiment Schema' created (ID: 1)
 → Uploading XSLT stylesheets...
 → Patching URLs in detail_stylesheet.xsl...
-  datasetBaseUrl: https://files.nexuslims.example.com/instrument-data
-  previewBaseUrl: https://files.nexuslims.example.com/data
+→   datasetBaseUrl: https://files.nexuslims.example.com/instrument-data
+→   previewBaseUrl: https://files.nexuslims.example.com/data
 ✓   ✓ datasetBaseUrl patched
 ✓   ✓ previewBaseUrl patched
 ✓ Stylesheet 'detail_stylesheet.xsl' created (ID: 1)
+→ Patching URLs in list_stylesheet.xsl...
+→   datasetBaseUrl: https://files.nexuslims.example.com/instrument-data
+→   previewBaseUrl: https://files.nexuslims.example.com/data
+✓   ✓ datasetBaseUrl patched
+✓   ✓ previewBaseUrl patched
 ✓ Stylesheet 'list_stylesheet.xsl' created (ID: 2)
 ✓ XSLT rendering configured (ID: 1)
 → Loading exporters...
+Exporters were loaded in database.
+→ Removed BLOB exporter (ID: None)
 ✓ Loaded 2 exporters: JSON, XML
 ======================================================================
 ✓ Initialization complete!
@@ -507,7 +473,8 @@ Password (again):
 Next steps:
   1. Access the site: https://nexuslims.example.com
   2. Login with your superuser credentials
-  3. Records will be uploaded automatically by the NexusLIMS backend
+  3. Begin uploading data records via the NexusLIMS backend
+  4. Explore data: https://nexuslims.example.com/explore/keyword/
 ======================================================================
 ```
 
@@ -531,20 +498,16 @@ NexusLIMS-CDCS System Statistics
 ============================================================
 
 👥 Users:
-  Total:      1
-  Active:     1
+  Total:      2
+  Active:     2
   Superusers: 1
 
 📋 Templates:
   Total: 1
-    - Nexus Experiment Schema
+    - Nexus Experiment Schema (Version 1)
 
 📄 Data Records:
-  Total: 0
-
-📎 Blobs:
-  Total:      0
-  Total size: 0.00 MB
+  Total: 2
 
 🎨 XSLT Stylesheets:
   Total: 2
@@ -564,24 +527,58 @@ https://files.nexuslims.example.com/instrument-data/
 
 Both should show directory listings of your data.
 
-### 4. Configure Backup
+### 4. Create Backup Directory
 
-Set up automated backups:
+Create the backup directory on the host that will be mounted into the container:
 
 ```bash
-# Create backup directory
-sudo mkdir -p /srv/nexuslims/backups
-sudo chown $USER:$USER /srv/nexuslims/backups
+# Create backup directory on host
+sudo mkdir -p /opt/nexuslims/backups
+sudo chown $USER:$USER /opt/nexuslims/backups
+```
 
+**Important - Permissions**: The backup directory MUST be owned by the user running Docker (not root), otherwise the backup script will fail with permission errors when trying to create backup subdirectories. This is especially critical for:
+- **Docker Desktop for Mac/Windows**: These systems map your host user to the container, so the directory must be owned by your user account
+- **Linux**: The directory should be owned by the user who will run the docker compose commands
+
+If you see "Permission denied" errors when running backups, verify ownership with:
+```bash
+ls -la /opt/nexuslims/
+# Should show: drwxr-xr-x ... yourusername yourgroup ... backups
+```
+
+**Important**: After creating this directory, you need to restart the services for the mount to take effect:
+
+```bash
+cd /opt/nexuslims/NexusLIMS-CDCS/deployment
+source admin-commands.sh
+dc-prod down
+dc-prod up -d
+```
+
+### 5. Configure Automated Backups
+
+Set up a daily backup script:
+
+```bash
 # Create backup script
 cat > /opt/nexuslims-backup.sh << 'EOF'
 #!/bin/bash
-cd /opt/NexusLIMS-CDCS/deployment
+set -e
+
+cd /opt/nexuslims/NexusLIMS-CDCS/deployment
 source admin-commands.sh
+
+# Run backup (stored directly on host at /opt/nexuslims/backups/)
 admin-backup
 
-# remove backups older than 30 days
-find /srv/nexuslims/backups -type d -name "backup_*" -mtime +30 -exec rm -rf {} \;
+# Also create a database dump
+admin-db-dump
+mv backup_*.sql /opt/nexuslims/backups/
+
+# Remove backups older than 30 days
+find /opt/nexuslims/backups -type d -name "backup_*" -mtime +30 -exec rm -rf {} \; 2>/dev/null || true
+find /opt/nexuslims/backups -type f -name "backup_*.sql" -mtime +30 -delete 2>/dev/null || true
 EOF
 
 chmod +x /opt/nexuslims-backup.sh
@@ -652,8 +649,10 @@ sudo ufw allow from 10.0.0.0/8 to any port 5532
 
 **Keep images updated**:
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml pull
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+cd /opt/nexuslims/NexusLIMS-CDCS/deployment
+source admin-commands.sh
+dc-prod pull
+dc-prod up -d
 ```
 
 ### 6. System Security
@@ -707,12 +706,23 @@ Backups include:
 - XSLT stylesheets
 - Persistent queries
 
-**Location**: `/srv/nexuslims/backups/backup_YYYYMMDD_HHMMSS/`
+**Location**: Backups are stored at `/opt/nexuslims/backups/backup_YYYYMMDD_HHMMSS/` on the host.
+
+**Volume Mount**: The backup directory is mounted as a Docker volume:
+- **Host path**: `/opt/nexuslims/backups` (configurable via `NX_CDCS_BACKUPS_HOST_PATH`)
+- **Container path**: `/srv/nexuslims/backups`
+
+This means:
+- ✅ Backups written by the container are immediately accessible on the host
+- ✅ No need to copy files out of the container after backup
+- ✅ No need to copy files into the container for restore
+- ✅ Backups persist even if containers are removed
+- ✅ Easy to access backups for off-site copying or examination
 
 ### Manual Backup
 
 ```bash
-cd /opt/NexusLIMS-CDCS/deployment
+cd /opt/nexuslims/NexusLIMS-CDCS/deployment
 source admin-commands.sh
 admin-backup
 ```
@@ -726,28 +736,38 @@ admin-db-dump
 
 ### Restore from Backup
 
+**Important**: Because the backup directory is mounted as a volume (`/opt/nexuslims/backups` → `/srv/nexuslims/backups`), the container can directly access backup files on the host. There is no need to copy files into the container before restoring.
+
+**Database Restore** (for full disaster recovery):
+
 ```bash
+cd /opt/nexuslims/NexusLIMS-CDCS/deployment
+source admin-commands.sh
+
 # Stop services
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml down
+dc-prod down
 
 # Start database only
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d postgres redis
+dc-prod up -d postgres redis
 
-# Restore database
+# Wait for postgres to be ready
+sleep 10
+
+# Restore database from SQL dump
 cat backup_20260109_120000.sql | admin-db-restore
 
 # Start all services
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
-
-# Restore CDCS data
-docker exec -it nexuslims_prod_cdcs python /srv/scripts/restore_cdcs.py
+dc-prod up -d
 ```
+
+**Note**: The backup script generates a `restore.sh` script inside the backup directory with instructions for restoring CDCS application data. However, for most disaster recovery scenarios, restoring the PostgreSQL database dump is sufficient as it contains all application state.
 
 ### Disaster Recovery Plan
 
 1. **Off-site backups**: Copy backups to remote location
    ```bash
-   rsync -avz /srv/nexuslims/backups/ backup-server:/backups/nexuslims/
+   # Sync backups to remote backup server
+   rsync -avz /opt/nexuslims/backups/ backup-server:/backups/nexuslims/
    ```
 
 2. **Data file backups**: Backup instrument data separately (large)
@@ -763,11 +783,17 @@ docker exec -it nexuslims_prod_cdcs python /srv/scripts/restore_cdcs.py
 
 ## Monitoring and Maintenance
 
+> **Note**: The commands in this section use the `dc-prod` alias and admin commands. Make sure to source the admin commands first:
+> ```bash
+> cd /opt/nexuslims/NexusLIMS-CDCS/deployment
+> source admin-commands.sh
+> ```
+
 ### System Monitoring
 
 **Container health**:
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml ps
+dc-prod ps
 ```
 
 **Resource usage**:
@@ -785,17 +811,17 @@ admin-stats
 
 **Application logs**:
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs -f cdcs
+dc-prod logs -f cdcs
 ```
 
 **Database logs**:
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs -f postgres
+dc-prod logs -f postgres
 ```
 
 **Caddy logs**:
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs -f caddy
+dc-prod logs -f caddy
 ```
 
 ### Maintenance Tasks
@@ -813,8 +839,8 @@ admin-clean-cache
 
 **Update Docker images** (monthly):
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml pull
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+dc-prod pull
+dc-prod up -d
 ```
 
 **Database vacuum** (monthly):
@@ -832,6 +858,11 @@ Consider integrating:
 
 ## Troubleshooting
 
+> **Note**: Commands in this section use the `dc-prod` alias. Source admin commands first if not already done:
+> ```bash
+> cd /opt/nexuslims/NexusLIMS-CDCS/deployment && source admin-commands.sh
+> ```
+
 ### Certificate Issues
 
 **Problem**: "Certificate not trusted" or "NET::ERR_CERT_AUTHORITY_INVALID"
@@ -844,7 +875,7 @@ Consider integrating:
 
 2. Check Caddy logs for certificate acquisition errors:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs caddy | grep -i cert
+   dc-prod logs caddy | grep -i cert
    ```
 
 3. Verify ports 80 and 443 are accessible:
@@ -865,7 +896,7 @@ Consider integrating:
 1. Verify `POSTGRES_PASS` matches in `.env`
 2. Restart services:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml restart
+   dc-prod restart
    ```
 
 ### File Serving Issues
@@ -898,12 +929,12 @@ Consider integrating:
 **Solution**:
 1. Check logs:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml logs cdcs
+   dc-prod logs cdcs
    ```
 
 2. Verify environment variables:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml config
+   dc-prod config
    ```
 
 3. Check health status:
@@ -923,7 +954,11 @@ Consider integrating:
 
 2. Review database performance:
    ```bash
-   docker exec nexuslims_prod_cdcs_postgres pg_stat_statements
+   # Check active queries and locks
+   docker exec nexuslims_prod_cdcs_postgres psql -U nexuslims -d nexuslims -c "SELECT pid, query, state, wait_event FROM pg_stat_activity WHERE state != 'idle';"
+
+   # Check table statistics
+   docker exec nexuslims_prod_cdcs_postgres psql -U nexuslims -d nexuslims -c "SELECT relname, n_tup_ins, n_tup_upd, n_tup_del FROM pg_stat_user_tables ORDER BY n_tup_ins DESC LIMIT 10;"
    ```
 
 3. Clear cache:
@@ -939,6 +974,8 @@ Consider integrating:
 
 ## Upgrading
 
+> **Note**: Upgrade commands use the `dc-prod` alias and admin commands. These are sourced automatically in the steps below.
+
 ### Application Updates
 
 1. **Backup current deployment**:
@@ -949,29 +986,30 @@ Consider integrating:
 
 2. **Pull latest code**:
    ```bash
-   cd /opt/NexusLIMS-CDCS
+   cd /opt/nexuslims/NexusLIMS-CDCS
    git fetch
    git checkout v3.19.0  # or desired version
    ```
 
 3. **Review changelog**: Check for breaking changes
 
-4. **Update environment**: Check for new variables in `.env.example`
+4. **Update environment**: Check for new variables in `.env.prod.example`
 
 5. **Rebuild images**:
    ```bash
    cd deployment
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml build
+   source admin-commands.sh
+   dc-prod build
    ```
 
 6. **Stop services**:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml down
+   dc-prod down
    ```
 
 7. **Start services**:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+   dc-prod up -d
    ```
 
 8. **Run migrations**:
@@ -987,7 +1025,7 @@ If upgrade fails:
 
 1. **Stop services**:
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml down
+   dc-prod down
    ```
 
 2. **Checkout previous version**:
@@ -995,22 +1033,30 @@ If upgrade fails:
    git checkout v3.18.0
    ```
 
-3. **Restore backup**:
+3. **Rebuild images with previous version**:
    ```bash
-   cat /srv/nexuslims/backups/backup_20260109_120000/backup.sql | admin-db-restore
+   cd deployment
+   source admin-commands.sh
+   dc-prod build
    ```
 
-4. **Start services**:
+4. **Restore backup** (if database schema changed):
    ```bash
-   docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+   source admin-commands.sh
+   cat /opt/nexuslims/backups/backup_20260109_120000.sql | admin-db-restore
+   ```
+
+5. **Start services**:
+   ```bash
+   dc-prod up -d
    ```
 
 ## Support
 
 For issues or questions:
-- Review logs: `docker compose logs`
-- Check container status: `docker compose ps`
-- View system stats: `admin-stats`
+- Review logs: `dc-prod logs`
+- Check container status: `dc-prod ps`
+- View system stats: `source admin-commands.sh && admin-stats`
 - Consult main README: `../README.md`
 - Review development docs: `README.md`
 

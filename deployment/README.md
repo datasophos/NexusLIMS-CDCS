@@ -347,7 +347,7 @@ For production deployment:
 ```bash
 source admin-commands.sh
 admin-backup
-# Creates: /srv/curator/backups/backup_YYYYMMDD_HHMMSS/
+# Creates: /srv/nexuslims/backups/backup_YYYYMMDD_HHMMSS/
 ```
 
 ### Database Dump

@@ -18,8 +18,6 @@ class NexusLIMSOverridesConfig(AppConfig):
         """
         # Import menu configuration to register menu items
         from . import menus  # noqa: F401
-        
-        # Import any signal handlers or patches here
-        # Example:
-        # from . import signals
-        # from . import patches
+
+        # Import signal handlers
+        from . import signals  # noqa: F401

@@ -25,7 +25,8 @@
 #
 # Option 2: Manual Certificates
 # ------------------------------
-# If you have your own certificates, use the tls directive:
+# If you have your own certificates, use the tls directive by uncommenting the lines
+# in the server configurations below:
 #
 #   tls /path/to/cert.pem /path/to/key.pem
 #
@@ -34,30 +35,11 @@
 #   volumes:
 #     - /path/to/certs:/etc/caddy/certs:ro
 #
-# Then use in your site block:
+# Then use in the site blocks, e.g.:
 #
 #   https://{$DOMAIN} {
 #       tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
 #       ...
-#   }
-#
-# Option 3: DNS Challenge (for wildcards or internal networks)
-# ------------------------------------------------------------
-# If you need wildcard certificates or your server isn't publicly accessible:
-#
-#   tls {
-#       dns <provider> {env.<PROVIDER_API_TOKEN>}
-#   }
-#
-# Requires:
-#   1. Custom Caddy build with DNS provider plugin
-#   2. Provider API token in environment
-#   3. Update caddy/Dockerfile to include plugin
-#
-# Example for Cloudflare:
-#
-#   tls {
-#       dns cloudflare {env.CLOUDFLARE_API_TOKEN}
 #   }
 #
 # See: https://caddyserver.com/docs/automatic-https
@@ -68,6 +50,8 @@ https://{$DOMAIN} {
     # Automatic HTTPS - Caddy handles certificate issuance and renewal
     # No tls directive needed for default ACME behavior
 
+    # Uncomment this line to use custom certificates (point to mount inside docker container)
+    # tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
     # Reverse proxy to the NexusLIMS-CDCS application
     reverse_proxy cdcs:8000 {
         header_up Host {host}
@@ -79,7 +63,7 @@ https://{$DOMAIN} {
 
     # Serve static files
     handle_path /static/* {
-        root * /srv/curator_static
+        root * /srv/nexuslims_static
         file_server
     }
 
@@ -99,6 +83,8 @@ https://{$DOMAIN} {
 https://{$FILES_DOMAIN} {
     # Automatic HTTPS
 
+    # Uncomment this line to use custom certificates (point to mount inside docker container)
+    # tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
     # Logging
     log {
         output stdout

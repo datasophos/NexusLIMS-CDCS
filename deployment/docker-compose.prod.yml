@@ -11,7 +11,9 @@ services:
       # Production data paths (configurable via environment variables)
       - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
       - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
-    # No dev CA certs mounted in production
+      # Uncomment the following line to use custom certificates (location configured
+      # in .env file with the CADDY_CERTS_HOST_PATH variable):
+      # - ${CADDY_CERTS_HOST_PATH}:/etc/caddy/certs:ro
 
   postgres:
     restart: unless-stopped
@@ -21,6 +23,9 @@ services:
 
   cdcs:
     restart: unless-stopped
+    volumes:
+      # Mount backup directory to host for easy access
+      - ${NX_CDCS_BACKUPS_HOST_PATH}:/srv/nexuslims/backups
 
     # Production: No source code mount, only essential volumes
     # (base config already includes config/xslt/nexuslims_overrides/scripts mounts)
@@ -37,7 +42,7 @@ services:
           sleep 1
         done
         echo "********* Running Migrations *********"
-        cd /srv/curator
+        cd /srv/nexuslims
         python manage.py migrate --noinput
         echo "********* Collecting Static Files *********"
         python manage.py collectstatic --noinput
@@ -46,7 +51,15 @@ services:
         celery -A mdcs beat -l info &
         echo "********* Starting Gunicorn Production Server *********"
         echo "********* NexusLIMS-CDCS available at ${SERVER_URI} *********"
-        mdcs gunicorn
+        echo "  Workers: ${GUNICORN_WORKERS:-4}, Threads: ${GUNICORN_THREADS:-2}, Timeout: ${GUNICORN_TIMEOUT:-120}s"
+        exec gunicorn mdcs.wsgi:application \
+          --bind 0.0.0.0:8000 \
+          --workers ${GUNICORN_WORKERS:-4} \
+          --threads ${GUNICORN_THREADS:-2} \
+          --timeout ${GUNICORN_TIMEOUT:-120} \
+          --access-logfile - \
+          --error-logfile - \
+          --log-level info
 
     # Health check for production monitoring
     healthcheck:
