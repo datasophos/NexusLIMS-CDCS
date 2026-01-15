@@ -1,0 +1,31 @@
+/**
+ * NexusLIMS Toolbar Styles
+ */
+
+.nexuslims-custom-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.nexuslims-custom-toolbar .btn-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#nexuslims-edit-btn,
+#nexuslims-copy-pid {
+    transition: all 0.2s ease-in-out;
+}
+
+#nexuslims-edit-btn:hover {
+    background-color: var(--nx-primary-color, #005a9c);
+    color: white;
+}
+
+#nexuslims-copy-pid:hover {
+    background-color: var(--nx-secondary-color, #6c757d);
+    color: white;
+}

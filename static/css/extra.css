@@ -1,21 +1,21 @@
 /* Bootstrap overide */
 .btn.btn-primary {
-    background-color: #007ac1 !important;
+    background-color: var(--nx-primary-color) !important;
     border-color: #565656;
 }
 
 .btn.btn-primary:hover {
-    background-color: #005f96 !important;
+    background-color: var(--nx-warning-color) !important;
 }
 
 .btn.btn-secondary {
-    background-color: #f9f9f9 !important;
-    border-color: #d4d4d4 !important;
+    background-color: var(--nx-secondary-color) !important;
+    border-color: var(--nx-secondary-color-dark) !important;
     color: #313131 !important;
 }
 
 .btn.btn-secondary:hover {
-    background-color: #e2e2e2 !important;
+    background-color: var(--nx-secondary-color-dark) !important;
 }
 
 #content {
@@ -47,7 +47,8 @@
 }
 
 .badge {
-    background-color: #505050
+    background-color: #505050;
+    background-color: var(--nx-secondary-color-dark)
 }
 
 a {
@@ -79,4 +80,3 @@ a {
     font-family: 'Source Sans Pro', sans-serif !important;
 }
 /* End fontawesome overide */
-

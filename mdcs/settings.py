@@ -102,6 +102,10 @@ INSTALLED_APPS = (
     "captcha",
     "django_celery_beat",
     "fontawesomefree",
+
+    # NexusLIMS customizations (must come before core apps)
+    'nexuslims_overrides',
+
     # Core apps
     "core_main_app",
     "core_exporters_app",
@@ -112,8 +116,11 @@ INSTALLED_APPS = (
     "core_parser_app.tools.modules",  # FIXME: make modules an app
     "core_parser_app.tools.parser",  # FIXME: make parser an app
     "core_composer_app",
-    "core_explore_federated_search_app",
-    "core_federated_search_app",
+    # Federated search apps disabled - NexusLIMS doesn't use multi-instance search
+    # These apps enable searching across multiple remote CDCS instances
+    # Disabled to reduce complexity and unused features
+    # "core_explore_federated_search_app",
+    # "core_federated_search_app",
     "core_explore_common_app",
     "core_explore_example_app",
     "core_explore_keyword_app",
@@ -160,6 +167,9 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "core_main_app.utils.custom_context_processors.domain_context_processor",  # Needed by any curator app
                 "django.template.context_processors.i18n",
+                'nexuslims_overrides.context_processors.nexuslims_settings',
+                'nexuslims_overrides.context_processors.nexuslims_features',
+                'nexuslims_overrides.context_processors.nexuslims_colors',
             ],
         },
     },
@@ -267,14 +277,24 @@ REST_FRAMEWORK = {
 }
 
 # drf-spectacular
+# SPECTACULAR_SETTINGS = {
+#     "TITLE": WEBSITE_SHORT_TITLE,  # noqa: F405 (core setting)
+#     "DESCRIPTION": os.getenv(
+#         "PROJECT_DESCRIPTION", "Your project description"
+#     ),
+#     "VERSION": PROJECT_VERSION,  # noqa: F405 (core setting)
+#     "SERVE_INCLUDE_SCHEMA": False,
+#     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+# }
+# NexusLIMS overrides
 SPECTACULAR_SETTINGS = {
     "TITLE": WEBSITE_SHORT_TITLE,  # noqa: F405 (core setting)
     "DESCRIPTION": os.getenv(
-        "PROJECT_DESCRIPTION", "Your project description"
+        "PROJECT_DESCRIPTION", "API endpoints for programmatically accessing data from NexusLIMS"
     ),
     "VERSION": PROJECT_VERSION,  # noqa: F405 (core setting)
     "SERVE_INCLUDE_SCHEMA": False,
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],  # allow any access
 }
 
 # Django simple-menu

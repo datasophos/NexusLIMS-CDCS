@@ -1,0 +1,685 @@
+/**
+ * NexusLIMS Detail Page - Tables
+ * DataTables, metadata tables, file listing tables, sample tables
+ */
+
+/* ============================================================================
+   ACTIVE STYLES
+   ============================================================================ */
+
+/* Metadata table - search and pagination layout */
+.meta-table-col {
+    position: relative;
+}
+
+.meta-table-col .dt-container {
+    margin-top: 1em;
+}
+
+/* Ensure top layout row uses flexbox with space-between for proper alignment */
+.meta-table-col .dt-container .dt-layout-row:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-bottom: 0.5em;
+}
+
+/* Search input on the left */
+.meta-table-col .dt-layout-start {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.meta-table-col .dt-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.meta-table-col .dt-search label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+.meta-table-col .dt-input {
+    max-width: 300px;
+    padding: var(--spacing-xs) var(--spacing-sm);  /* 0.25rem 0.5rem */
+    font-size: 0.875rem;
+    line-height: 1.5;
+    height: auto;
+    margin: 0;
+}
+
+/* add some space between the search/pagination and the table */
+.meta-table-col .dt-layout-table {
+    margin-top: 0.25em;
+}
+
+/* Pagination on the right */
+.meta-table-col .dt-layout-end {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Remove Bootstrap row padding and margins in filelist modal */
+#filelist-modal .modal-body .row {
+    margin: 0;
+}
+
+#filelist-modal .modal-body .row > [class^="col-"] {
+    padding: 0;
+}
+
+/* File listing modal table - search and pagination layout (same as meta-table) */
+#filelist-modal .dt-container .search-paging-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-bottom: 0.5rem;  /* Bootstrap mb-2 */
+}
+
+/* Make layout cells flex items */
+#filelist-modal .search-paging-row .dt-layout-cell {
+    display: flex;
+}
+
+/* Search input on the left */
+#filelist-modal .search-paging-row .dt-layout-start {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+#filelist-modal .search-paging-row .dt-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    max-width: 60%;
+    flex-grow: 1;
+}
+
+#filelist-modal .search-paging-row .dt-search label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+#filelist-modal .search-paging-row .dt-input {
+    flex-grow: 1;
+    padding: var(--spacing-xs) var(--spacing-sm);  /* 0.25rem 0.5rem */
+    font-size: 0.875rem;
+    line-height: 1.5;
+    height: auto;
+    margin: 0;
+}
+
+/* add some space between the search/pagination and the table */
+#filelist-modal .dt-layout-table {
+    margin-top: 0.25em;
+}
+
+/* Pagination on the right */
+#filelist-modal .search-paging-row .dt-layout-end {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Activity table - prevent columns from growing beyond specified widths */
+table.aa-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table.aa-table th {
+    font-weight: normal;
+}
+
+/* Maintain consistent height for aa-table column to prevent jumping on pagination */
+.aa-table-col {
+    position: relative;
+    min-height: calc(6 * 2.2em /*+ 4em*/); /* 5 rows + header + padding - scales with font size */
+}
+
+/* Keep table at top, reserve space at bottom for pagination */
+.aa-table-col .dt-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(6 * 2.2em /*+ 4em*/); /* Match parent */
+}
+
+/* Table wrapper maintains height for 5 rows */
+.aa-table-col > .dt-container > .dt-layout-table {
+    min-height: calc(6 * 2.2em /*+ 3em*/); /* 5 rows + header */
+}
+
+/* Pagination always stays at the same position */
+.aa-table-col > .dt-container > .dt-layout-row {
+    margin-top: auto; /* Push to bottom of container */
+}
+
+/* Align aa-table pagination to the right (but not inside modals) */
+.aa-table-col .dt-layout-end:not(.nexuslims-modal .dt-layout-end) {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+/* add a bit of space between pagination buttons and table */
+/* and right-align the row */
+.aa-table-col .dt-layout-row .dt-paging:not(.nexuslims-modal .dt-paging) {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.25em;
+}
+
+
+
+/* DataTables pagination - solid bar styling with colors */
+.dt-paging nav {
+    display: flex;
+    gap: 0;
+}
+
+/* Base button styling - all buttons */
+.dt-container .dt-paging .dt-paging-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xs) 0.625rem;  /* 4px 10px */
+    margin: 0;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0;
+    color: #3a65a2 !important;
+    background: transparent !important;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    min-height: auto;
+    height: auto;
+    line-height: 1;
+    font-size: 0.875rem;
+}
+
+/* Remove left border from all buttons except first to prevent doubling */
+.dt-container .dt-paging .dt-paging-button + .dt-paging-button {
+    border-left: none !important;
+}
+
+/* Round corners on first and last buttons only */
+.dt-container .dt-paging .dt-paging-button.previous {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.dt-container .dt-paging .dt-paging-button.next {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+/* Hover state for enabled buttons */
+.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) {
+    background-color: #e9ecef !important;
+    color: #3a65a2 !important;
+    cursor: pointer;
+}
+
+.dt-container .dt-paging .dt-paging-button:hover:not(.disabled) i {
+    color: #3a65a2 !important;
+}
+
+/* Disabled state - grayed out */
+.dt-container .dt-paging .dt-paging-button.disabled,
+.dt-container .dt-paging .dt-paging-button.disabled:hover,
+.dt-container .dt-paging .dt-paging-button.disabled:active {
+    border-color: #ccc !important;
+    color: #ccc !important;
+    background: transparent !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+}
+
+.dt-container .dt-paging .dt-paging-button.disabled i {
+    color: #ccc !important;
+}
+
+/* Current/active page */
+.dt-container .dt-paging .dt-paging-button.current,
+.dt-container .dt-paging .dt-paging-button.current:hover {
+    background-color: #3a65a2 !important;
+    color: white !important;
+    border-color: #3a65a2 !important;
+}
+
+/* Arrow icons - colored when active */
+.dt-container .dt-paging .dt-paging-button:not(.disabled) i {
+    color: #3a65a2 !important;
+}
+
+.dt-container .dt-paging .dt-paging-button.current i {
+    color: white !important;
+}
+
+/* Center icons within buttons */
+.dt-container .dt-paging .dt-paging-button i {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+table.aa-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Keep button columns on single line - prevent icon wrapping */
+table.aa-table td.text-center {
+    white-space: nowrap;
+}
+
+/* Meta column with two buttons - enforce minimum width to fit both buttons */
+table.aa-table td.aa-meta-col {
+    white-space: nowrap;
+    min-width: 100px;  /* Adjust based on actual button width */
+    overflow: visible;  /* Don't ellipse buttons */
+}
+
+/* Download column - single button */
+table.aa-table td.aa-dl-col {
+    white-space: nowrap;
+    min-width: 50px;
+    overflow: visible;
+}
+
+/* Reduce button/icon size at narrow widths to prevent overlap */
+@media (max-width: 992px) {
+    table.aa-table td.aa-meta-col i.fa-border,
+    table.aa-table td.aa-dl-col i.fa-border {
+        font-size: 0.85em;
+        padding: 0.15em 0.2em;
+    }
+}
+
+@media (max-width: 768px) {
+    table.aa-table td.aa-meta-col i.fa-border,
+    table.aa-table td.aa-dl-col i.fa-border {
+        font-size: 0.75em;
+        padding: 0.1em 0.15em;
+    }
+
+    table.aa-table td.aa-meta-col {
+        min-width: 80px;
+    }
+}
+
+/* ============================================================================
+   COMMENTED OUT STYLES
+   ============================================================================ */
+
+/* General table sizing */
+table.meta-table,
+table.filelist-table {
+    min-width: 25vw;
+}
+
+/* Upper table styling */
+table.upper-table > tbody > tr > * {
+    border: 0;
+    padding: .1rem;
+    line-height: 1.5;
+    font-size: 0.75em;
+}
+table.upper-table th {
+    font-weight: bold;
+}
+
+/* Preview and table layout */
+table.preview-and-table {
+    margin: 2em auto;
+}
+
+table.preview-and-table td {
+    vertical-align: middle;
+    font-size: 0.9em;
+}
+
+/* Standard tables */
+table.meta-table,
+table.aa-table,
+table.filelist-table,
+table.sample-table {
+    border-collapse: collapse;
+}
+
+table.meta-table td, table.meta-table th,
+table.aa-table td, table.aa-table th,
+table.filelist-table td, table.filelist-table th,
+table.sample-table td, table.sample-table th {
+    padding: var(--spacing-xs);  /* 0.25rem, was 0.3em */
+}
+
+table.meta-table th,
+table.aa-table th,
+table.filelist-table th,
+table.sample-table th {
+    background-color: #3a65a2 !important;
+    border-color: black !important;
+    color: white !important;
+    font-weight: normal;
+}
+
+/* Simple file list table specific */
+
+#simple-filelist-table_wrapper {
+    margin-bottom: 1rem;
+}
+
+/* File listing modal table - search and pagination layout (same as meta-table) */
+#simple-filelist-table_wrapper .dt-layout-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-bottom: 0.5rem;  /* Bootstrap mb-2 */
+}
+
+#simple-filelist-table_wrapper .dt-layout-start {
+    flex-grow: 1;
+}
+
+#simple-filelist-table_wrapper .dt-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    max-width: 40%;
+    flex-grow: 1;
+}
+
+#simple-filelist-table_wrapper .dt-search label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.875rem;
+}
+
+#simple-filelist-table_wrapper .dt-input {
+    flex-grow: 1;
+    padding: var(--spacing-xs) var(--spacing-sm);  /* 0.25rem 0.5rem */
+    font-size: 0.875rem;
+    line-height: 1.5;
+    height: auto;
+    margin: 0;
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+#simple-filelist-table_wrapper .dt-input::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* add some space between the search/pagination and the table */
+#simple-filelist-table_wrapper .dt-layout-table {
+    margin-top: 0.25em;
+}
+
+/* Info on the right */
+#simple-filelist-table_wrapper .dt-layout-end {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Sample table specific */
+table.sample-table td {
+    text-align: center;
+    line-height: 1.2em;
+    vertical-align: middle;
+}
+
+table.sample-table p {
+   margin-bottom: 0.25em;
+   margin-top: 0.25em;
+}
+
+/* File listing table */
+table.filelist-table.dataTable {
+    --dt-row-selected: 229, 236, 246; /* #e5ecf6 in RGB */
+    --dt-row-selected-text: 71, 71, 71; /* #474747 in RGB */
+    --dt-row-selected-link: 56, 101, 163; /* #3865a3 in RGB */
+}
+
+table.filelist-table.dataTable tbody td.select-checkbox {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Modern checkbox styling - override DataTables defaults */
+table.filelist-table.dataTable tbody td.select-checkbox:before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin-top: -8px !important;
+    margin-left: -8px !important;
+    border: 2px solid #adb5bd !important;
+    border-radius: 3px !important;
+    background-color: white !important;
+    box-shadow: none !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+table.filelist-table.dataTable tbody td.select-checkbox:hover:before {
+    border-color: #3a65a2 !important;
+}
+
+table.filelist-table.dataTable tr.selected td.select-checkbox:before {
+    background-color: #3a65a2 !important;
+    border-color: #3a65a2 !important;
+}
+
+table.filelist-table.dataTable tr.selected td.select-checkbox:after {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 4px !important;
+    height: 8px !important;
+    margin-top: -5px !important;
+    margin-left: -2px !important;
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    box-shadow: none !important;
+    transform: rotate(45deg) !important;
+}
+.filelist-btn {
+    font-weight: 300;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* DataTables selection styling */
+table.filelist-table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+    background-color: #e5ecf6;
+}
+table.filelist-table.dataTable tbody tr.selected, table.dataTable tbody th.selected,
+table.filelist-table.dataTable tbody td.selected {
+    color: #474747;
+}
+table.filelist-table.dataTable tbody tr.selected i {
+    border: solid 0.1em #ddd;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    transition-property: none;
+}
+table.filelist-table.dataTable tbody tr i {
+    border: solid 0.1em #ddd;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    transition-property: none;
+}
+table.filelist-table.dataTable tbody tr.selected a, table.dataTable tbody th.selected a,
+table.filelist-table.dataTable tbody td.selected a {
+    color: #3865a3;
+}
+
+/* File listing modal table info */
+div#filelist-table_info,
+div.dt-info {
+    font-size: smaller;
+    font-style: italic;
+    padding-top: 0;
+}
+#filelist_info_row {
+    margin-top: 0;
+}
+#filelist-table_wrapper > .row,
+.dt-container > .row {
+    margin: 0;
+    align-items: center;
+    margin-top: 0.1em;
+}
+
+/* File listing table buttons */
+div.dt-buttons.btn-group > button {
+    font-size: small;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#filelist-json_dl-col,
+#filelist-data_dl-col {
+    padding-right: 5px;
+}
+
+/* Download result and progress */
+#download-result {
+    font-size: small;
+    padding: var(--spacing-sm) 0.625rem;  /* 0.5rem 10px */
+    white-space: pre-wrap;
+    line-height: 1.5em;
+}
+#download-extra{
+    font-size: small;
+    padding: var(--spacing-sm) 0.625rem;  /* 0.5rem 10px */
+    white-space: break-spaces;
+    line-height: 1.5em;
+}
+#progress_bar {
+    margin-top: 10px;
+}
+#btn-cancel-row {
+    text-align: center;
+    margin-top: 10px;
+}
+#btn-cancel-row button {
+   font-size: small;
+   padding-top: 4px;
+   padding-bottom: 4px;
+}
+.progress-bar {
+    transition: width .1s ease;
+    -o-transition: width .1s ease;
+    -o-transition: width .1s ease;
+}
+
+/* Parameter name column */
+th.parameter-name {
+    font-weight: bold;
+}
+
+td.aa-meta-col {
+    white-space: nowrap;
+}
+
+.table-col {
+    width: 100%;
+}
+
+/* Navigation table pagination - info positioned between buttons via JavaScript */
+#nav-table_wrapper .dt-paging > nav {
+    display: flex;
+    align-items: center;
+}
+
+#nav-table_wrapper .dt-info,
+#nav-table_wrapper .nav-page-info {
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0 0.5rem;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#nav-table tbody {
+    border-top: 1px solid var(--nx-light-gray)
+}
+#nav-table thead {
+    border: none;
+}
+
+/* ============================================================================
+   FIXED HEADER STYLES
+   ============================================================================ */
+
+/* DataTables FixedHeader styling */
+.dataTables_fixedHeader {
+    z-index: 1020; /* Lower than navbar but higher than content */
+    background-color: white !important; /* Ensure background covers content */
+    border-bottom: 1px solid #dee2e6 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Fixed header for simple file list table */
+#simple-filelist-table_wrapper .dataTables_fixedHeader {
+    width: 100% !important;
+}
+
+/* Fixed header for navigation table */
+#nav-table_wrapper .dataTables_fixedHeader {
+    width: 100% !important;
+}
+
+/* Fixed header for file list modal */
+#filelist-modal .dataTables_fixedHeader {
+    width: 100% !important;
+}
+
+/* Ensure fixed header cells match table cell styling */
+.dataTables_fixedHeader thead th {
+    background-color: #3a65a2 !important;
+    border-color: black !important;
+    color: white !important;
+    font-weight: normal;
+    padding: var(--spacing-xs) !important; /* 0.25rem */
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .dataTables_fixedHeader {
+        top: 56px !important; /* Mobile navbar height */
+    }
+}
+
+@media (max-width: 768px) {
+    .dataTables_fixedHeader {
+        top: 48px !important; /* Smaller mobile navbar height */
+    }
+}

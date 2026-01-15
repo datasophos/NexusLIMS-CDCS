@@ -52,3 +52,18 @@ li.divider {
     opacity: 0.4;
     filter: alpha(opacity=40); /* msie */
 }
+
+/* Responsive logo display */
+.cdcs-logo-text {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .cdcs-logo-image {
+        display: none;
+    }
+
+    .cdcs-logo-text {
+        display: inline;
+    }
+}

@@ -1,0 +1,365 @@
+/**
+ * NexusLIMS Main Stylesheet
+ *
+ * Central location for all NexusLIMS customizations.
+ * Import this in base templates to apply all customizations.
+ */
+
+/* Import individual component styles */
+@import url('homepage.css');
+@import url('search.css');
+@import url('toolbar.css');
+@import url('login.css');
+
+/* Global NexusLIMS styles */
+:root {
+    /* Brand colors */
+    --nx-primary-color: #11659c;
+    --nx-primary-color-dark: #0d528a;
+    --nx-info-badge-color-dark: #505050;
+    --nx-secondary-color: #f9f9f9;
+    --nx-secondary-color-dark: #e2e2e2;
+    --nx-success-color: #28a745;
+    --nx-danger-color: #dc3545;
+    --nx-warning-color: #ffc107;
+    --nx-info-color: #17a2b8;
+    --nx-light-gray: #e3e3e3;
+    --nx-dark-gray: #212529;
+
+    /* Layout heights */
+    --titlebar-height: 60px;
+    --nav-height: 60px;
+
+    /* Standard spacing scale (rem-based for accessibility) */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-md: 1rem;      /* 16px */
+    --spacing-lg: 1.25rem;   /* 20px */
+    --spacing-xl: 2.5rem;    /* 40px */
+
+    /* Modal spacing */
+    --modal-top-offset: 6.25rem; /* 100px */
+
+    /* Responsive breakpoints (matching Bootstrap 5) - for reference in comments */
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+}
+
+.btn-primary {
+    background-color: var(--nx-primary-color);
+}
+
+/* override small gap around edges of site */
+body {
+    background: white;
+}
+
+/* NexusLIMS branding */
+.nexuslims-nav-logo {
+    max-height: 60px;
+}
+
+.nexuslims-custom-header {
+    background-color: var(--nx-primary-color);
+    color: white;
+    padding: 1rem;
+}
+
+/* Instrument badges */
+.instrument-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+}
+
+.instrument-badge.badge-primary {
+    background-color: var(--nx-primary-color);
+    color: white;
+}
+
+.instrument-badge.badge-success {
+    background-color: var(--nx-success-color);
+    color: white;
+}
+
+/* Units display */
+.units {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-left: 0.25rem;
+}
+
+/* Custom toolbar */
+.nexuslims-custom-toolbar {
+    margin-bottom: 1rem;
+}
+
+/* Download buttons */
+.nexuslims-download-buttons {
+    margin-top: 1rem;
+}
+
+/* Override #content from static/css/extra.css
+   to increase the width of the main content region
+*/
+#content {
+    width: calc(100% - 1.5em);
+    /*width: calc(100% - 1.5em);*/
+    min-height: calc(100% - 151px);
+    background-color: #fff;
+    /*margin: 0 1.5em;*/
+    margin: 0 0.5em;
+    padding: 1.0em 0.5em 0.75em 0.5em;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+/* On narrow screens where titleBar is visible and fixed, add padding */
+@media screen and (max-width: 991px) {
+    #content {
+        margin-top: var(--titlebar-height);
+    }
+}
+
+/* nav styling */
+#nav {
+    width: 100%;
+    margin-left: -0.5;
+    background-color: #f8f8f8 !important;
+    border: 1px solid transparent !important;
+    border-color: #e7e7e7 !important;
+    border-width: 0 1px 4px 1px !important;
+    font-size: 0.80em !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 500 !important;
+    box-shadow: none !important;
+    height: var(--titlebar-height) !important;
+    box-sizing: border-box !important;
+}
+
+/* Only use flexbox on wider screens where nav is visible */
+@media screen and (min-width: 992px) {
+    #nav {
+        display: flex !important;
+        align-items: center !important;
+        padding-top: 4px !important;  /* Compensate for 4px bottom border */
+    }
+}
+
+#nav > ul {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Push float-end items to the right in flexbox */
+/* Target the second-to-last li (user/login menu) */
+#nav > ul > li:nth-last-child(2) {
+    order: 102;
+    margin-right: var(--spacing-md);
+}
+
+/* Target the last li (help menu) */
+#nav > ul > li:nth-last-child(1) {
+    margin-left: auto !important;  /* Push to the right to separate from rest of title bar */
+    order: 101;  /* Needs to be lower number than user/menu */
+}
+
+/* nav link colors and padding - match 2.21.0 */
+#nav > ul > li > a:not(.btn-custom),
+#nav > ul > li > div > a:not(.btn-custom) {
+    color: #444 !important;
+   	padding: 0 0.7em !important;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+#nav > ul > li > a:not(.btn-custom):hover,
+#nav > ul > li > div > a:not(.btn-custom):hover {
+    color: #888 !important;
+    background-color: transparent !important;
+}
+
+
+/* CDCS main menu item (logo) */
+#nav > ul > #cdcs-main {
+    float: left !important;
+    text-align: left !important;
+    padding-left: 0em !important;
+}
+
+#nav > ul > #cdcs-main > div > a {
+    padding: 0.5em 0.5em !important;
+}
+
+/* CDCS menu title logo styling */
+#cdcs-menu-title > a > img {
+    height: auto !important;
+    width: auto !important;
+    max-height: 1.5em !important;
+    max-width: 300px !important;
+    line-height: 1.5em !important;
+    vertical-align: middle !important;
+}
+
+#cdcs-menu-title a {
+    color: #fff !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin-left: 1.2em !important;
+}
+
+/* Menu item icons */
+i.menu-fa {
+    margin: 0 0.35em !important;
+}
+
+/* CDCS menu item styling */
+a.cdcs-menu-item {
+    padding-right: 0.5em !important;
+}
+
+a.cdcs-menu-item > i.fa {
+    margin-right: 0.5em !important;
+}
+
+/* Custom button styling - match 2.21.0 */
+.btn-custom {
+    color: white !important;
+    background-color: var(--nx-primary-color) !important;
+    border-radius: 10px !important;
+    background-size: 0em !important;
+    font-size: inherit !important;
+    line-height: 1.2em !important;
+    margin: 0.6em auto !important;
+}
+
+.btn-custom:hover {
+    color: #333 !important;
+    background-color: var(--nx-warning-color) !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* footer styling */
+#footer {
+    width: calc(100% + 0.5em);
+    margin: 3em -0.5em 0.5em -0.5em !important;
+    height: auto !important;
+    min-height: 2.25em !important;
+    padding: 0.25em 0 !important;
+    background-color: #f8f8f8 !important;
+    border: 1px solid transparent !important;
+    border-color: #e7e7e7 !important;
+    border-width: 4px 1px 0px 1px !important;
+    color: #999 !important;
+}
+
+#footer div {
+    margin: 0.25em 1.2em !important;
+}
+
+#footer a {
+    color: #999 !important;
+}
+
+#footer a:hover {
+    text-decoration: underline !important;
+}
+
+/* footer logo - increase size and keep centered */
+.footer-logo {
+    vertical-align: middle;
+    margin: 0;
+    height: 3em;
+}
+
+/* CDCS logo in footer - increase size */
+.cdcs-logo {
+    vertical-align: middle;
+    width: 1.5em !important;
+    margin-left: 0.25em !important;
+    bottom: auto !important;
+}
+
+
+/* smaller screen title bar styling */
+#titleBar {
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-moz-transition: -moz-transform 0.5s ease;
+	-webkit-transition: -webkit-transform 0.5s ease;
+	-ms-transition: -ms-transform 0.5s ease;
+	transition: transform 0.5s ease;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10001;
+	height: var(--titlebar-height);
+	background-color: #f8f8f8;
+	border: 1px solid transparent;
+    border-color: #e7e7e7;
+    border-width: 0 1px 4px 1px;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    font-size: 12pt;
+}
+
+/* Hide titleBar on wide screens where #nav is shown */
+@media screen and (min-width: 992px) {
+    #titleBar {
+        display: none !important;
+    }
+}
+
+#titleBar .title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+	color: #fff;
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	height: var(--titlebar-height);
+}
+
+#titleBar .title a {
+    display: inherit;  /* make sure the link is vertically centered and correct height */
+}
+
+#titleBar .title img {
+	max-height: calc(var(--titlebar-height) - 30px);  /* Leave room for padding */
+}
+
+#titleBar .toggle {
+    text-decoration: none;
+    border: 0;
+    height: calc(var(--titlebar-height)/3);
+    left: 0;
+    position: absolute;
+    top: calc(var(--titlebar-height) - 40px);
+    width: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    margin-left: calc(var(--titlebar-height) / 2 - 10px);
+}
+
+#titleBar .toggle:hover {
+	color: #333;
+}

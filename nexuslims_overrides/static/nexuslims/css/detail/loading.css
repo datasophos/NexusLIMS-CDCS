@@ -1,0 +1,46 @@
+/**
+ * NexusLIMS Detail Page - Loading Screen
+ * Loading spinner animation
+ */
+
+#loading {
+    visibility: visible;
+    opacity: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    width: 100vw;
+    height: 100vh;
+    background: #f7f7f7 url(/static/img/bg01.png);
+}
+
+#loading img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    margin-top: -200px;
+    margin-left: -200px;
+    animation: spinner 1.5s ease infinite;
+}
+
+@media screen and (max-width: 992px) {  /* Bootstrap 5 lg breakpoint - tablet */
+    #loading img {
+        width: 300px;
+        margin-top: -150px;
+        margin-left: -150px;
+    }
+}
+
+@media screen and (max-width: 768px) {  /* Bootstrap 5 md breakpoint - mobile, was 680px */
+    #loading img {
+        width: 200px;
+        margin-top: -100px;
+        margin-left: -100px;
+    }
+}
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}

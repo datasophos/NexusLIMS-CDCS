@@ -1,0 +1,166 @@
+{% load menu %}
+{% load static %}
+{% load get_attribute %}
+<nav id="nav">
+    <ul>
+        <!-- Start MDCS title left -->
+        <li id="cdcs-main" style="padding:0;">
+            <div id="cdcs-menu-title">
+                <a href="/" title="NexusLIMS">
+                    <img src="{% static NX_NAV_LOGO %}" class="cdcs-logo-image"/>
+                    <span class="cdcs-logo-text">Home</span>
+                </a>
+            </div>
+        </li>
+        <!-- End MDCS title left -->
+
+        <!-- Start float left menu-->
+        {% block navigation_menu %}
+            {% generate_menu %}
+            {% for item in menus.nodropdown %}
+                <li>
+                    <a href="{{ item.url }}"{% if item|get_attribute:'id' %} id="{{ item.id }}"{% endif %}{% if item|get_attribute:'css_class' %} class="{{ item.css_class }}"{% endif %}>
+                        {% if item|get_attribute:'icon' %}<i class="{{ item.iconClass }} fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
+                    </a>
+                </li>
+            {% endfor %}
+            {% comment %}
+            Explorer and Composer dropdowns are disabled in NexusLIMS.
+            Uncomment and add menu items in nexuslims_overrides/menus.py to enable.
+            {% endcomment %}
+            {% if menus.explorer %}
+            <li class="nested">
+                <div class="dropdown">
+                    <a class="dropdown-toggle"
+                       type="button"
+                       id="dropdownExploration"
+                       data-bs-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        Data Exploration
+                    </a>
+                    <ul class="dropdown-menu"
+                        aria-labelledby="dropdownExploration">
+                        {% generate_menu %}
+                        {% for item in menus.explorer %}
+                            <li class="dropdown-item">
+                                <a href="{{ item.url }}">
+                                    {% if item|get_attribute:'icon' %}<i class="fas fa-{{ item.icon }}"></i>{% endif %} {{ item.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+            {% if menus.composer %}
+            <li class="nested">
+                <div class="dropdown">
+                    <a class="dropdown-toggle"
+                       type="button"
+                       id="dropdownComposer"
+                       data-bs-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        Composer
+                    </a>
+                    <ul class="dropdown-menu"
+                        aria-labelledby="dropdownComposer">
+                        {% generate_menu %}
+                        {% for item in menus.composer %}
+                            {% if not item|get_attribute:'require_authentication' or user.is_authenticated %}
+                                <li class="dropdown-item">
+                                    <a href="{{ item.url }}" class="cdcs-menu-item">
+                                        {% if item|get_attribute:'icon' %}<i class="fas fa-{{ item.icon }}"></i>{% endif %} {{ item.title }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+        {% endblock %}
+        <!-- End float left menu-->
+
+        <!-- Start float right menu-->
+        <li class="nested float-end">
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <a class="dropdown-toggle"
+                       type="button"
+                       id="dropdownDashboard"
+                       data-bs-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        <i class="fas fa-user-circle menu-fa"></i> {{ user }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="dropdownDashboard">
+                        {% block dashboard_menu %}
+                            {% generate_menu %}
+                            {% for item in menus.dashboard %}
+                                <li class="dropdown-item">
+                                    <a href="{{ item.url }}" class="cdcs-menu-item">
+                                        {% if item|get_attribute:'icon' %}<i class="fa fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endblock %}
+                        <li class="divider"></li>
+                        {% block user_menu %}
+                            {% generate_menu %}
+                            {% for item in menus.user %}
+                                <li class="dropdown-item">
+                                    <a href="{{ item.url }}" class="cdcs-menu-item">
+                                        {% if item|get_attribute:'icon' %}<i class="fa fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endblock %}
+                        {% if user.is_staff %}
+                            <li class="dropdown-item">
+                                <a href="{% url 'core-admin:core_main_app_admin_home' %}" class="cdcs-menu-item">
+                                    <i class="fa fa-cog menu-fa"></i> Administration
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="dropdown-item">
+                            <a href="{% url 'core_main_app_logout' %}" class="cdcs-menu-item">
+                                <i class="fa fa-sign-out-alt menu-fa"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <a class="btn-custom" href="{% url LOGIN_URL %}">
+                    <i class="fas fa-sign-in-alt menu-fa"></i> Log In / Sign Up
+                </a>
+            {% endif %}
+        </li>
+        <li class="nested float-end">
+            <div class="dropdown">
+                <a class="dropdown-toggle"
+                   type="button"
+                   id="dropdownHelp"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">
+                    <i class="far fa-font-awesome menu-fa"></i> Help
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="dropdownHelp">
+                    {% generate_menu %}
+                    {% for item in menus.help %}
+                        <li class="dropdown-item">
+                            <a href="{{ item.url }}" class="cdcs-menu-item">
+                                {% if item|get_attribute:'icon' %}<i class="fa fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+        <!-- End float right menu-->
+    </ul>
+</nav>

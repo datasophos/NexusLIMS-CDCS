@@ -84,7 +84,7 @@ repository.
 ```yaml
 version: "3"
 services:
-  curator_postgres:
+  postgres:
     image: postgres:${POSTGRES_VERSION}
     container_name: dev_postgres
     restart: always
@@ -96,7 +96,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
       - POSTGRES_DB=${POSTGRES_DB}
-  curator_mongo:
+  mongo:
     image: mongo:${MONGO_VERSION}
     container_name: dev_mongo
     restart: always
@@ -112,7 +112,7 @@ services:
       - mongo_data:/data/db/
       - ./mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     command: "--auth --noscripting"
-  curator_redis:
+  redis:
     image: redis:${REDIS_VERSION}
     container_name: dev_redis
     restart: always

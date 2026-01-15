@@ -28,6 +28,8 @@ urlpatterns = [
     re_path(
         r"^o/", include("oauth2_provider.urls", namespace="oauth2_provider")
     ),
+    # NexusLIMS overrides MUST come before core_main_app to override its URLs
+    re_path(r"^", include("nexuslims_overrides.urls")),
     re_path(r"^", include("core_main_app.urls")),
     re_path(r"^home/", include("mdcs_home.urls")),
     re_path(r"^", include("core_website_app.urls")),
@@ -37,11 +39,13 @@ urlpatterns = [
     re_path(r"^exporter/", include("core_exporters_app.urls")),
     re_path(r"^explore/common/", include("core_explore_common_app.urls")),
     re_path(r"^explore/example/", include("core_explore_example_app.urls")),
-    re_path(
-        r"^explore/federated/search/",
-        include("core_explore_federated_search_app.urls"),
-    ),
-    re_path(r"^federated/search/", include("core_federated_search_app.urls")),
+    # Federated search URLs disabled - apps removed from INSTALLED_APPS
+    # These URLs provided endpoints for searching across multiple CDCS instances
+    # re_path(
+    #     r"^explore/federated/search/",
+    #     include("core_explore_federated_search_app.urls"),
+    # ),
+    # re_path(r"^federated/search/", include("core_federated_search_app.urls")),
     re_path(r"^explore/keyword/", include("core_explore_keyword_app.urls")),
     re_path(r"^dashboard/", include("core_dashboard_app.urls")),
     re_path(r"^file-preview/", include("core_file_preview_app.urls")),

@@ -1,0 +1,37 @@
+{% load static %}
+{% load nexuslims_templatetags %}
+
+{# NexusLIMS Homepage Template #}
+{# Migrated from templates/core_main_app/user/homepage.html #}
+
+<div class="row align-items-center" id="intro">
+        <div id="homepage-text-col" class="col-md-7 offset-md-1">
+            <h1>{{ CUSTOM_TITLE }}</h1>
+            <p>
+                {{ NX_HOMEPAGE_TEXT|safe }}
+            </p>
+            <p>
+                To learn more about how to use NexusLIMS,
+                {% if NX_ENABLE_TUTORIALS %}please take the
+                <a id="homepage-tutorial" href="#">interactive tutorial</a>{% if NX_DOCUMENTATION_LINK %}, or{% endif %}
+                {% endif %}
+                {% if NX_DOCUMENTATION_LINK %}visit the
+                <a href="{{ NX_DOCUMENTATION_LINK }}" target="_blank">documentation page</a>{% endif %}.
+                To get started, please click the link below to start
+                browsing experimental records:
+            </p>
+        </div>
+        <div id="homepage-logo-col" class="col-md-3">
+            <img id="nexuslims-logo"
+                 src="{% static NX_HOMEPAGE_LOGO %}"
+                 alt="NexusLIMS Logo"
+                 class="nexuslims-logo">
+        </div>
+</div>
+<div class="row">
+    <div class="col-md-10 offset-md-1" id="tiles">
+    </div>
+</div>
+
+{# Load tiles.js for hover effects - must be after jQuery is loaded #}
+<script src="{% static 'nexuslims/js/tiles.js' %}"></script>

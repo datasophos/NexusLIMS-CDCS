@@ -1,0 +1,216 @@
+/**
+ * NexusLIMS Detail Page - ZIP Builder Module
+ *
+ * Creates ZIP archives using client-zip with streaming and Zip64 support
+ */
+
+(function(window) {
+    'use strict';
+
+    // Create namespace
+    window.NexusLIMSDetail = window.NexusLIMSDetail || {};
+    window.NexusLIMSDetail.Downloads = window.NexusLIMSDetail.Downloads || {};
+
+    /**
+     * Build ZIP file structure from file list
+     * @param {Array} fileList - Array from EmiBundler.prepareFileList()
+     * @returns {Array<{url: string, path: string}>} Flattened file array for ZIP
+     */
+    function buildZipFileArray(fileList) {
+        const zipFiles = [];
+        const seenUrls = new Set();
+
+        // Validate input
+        if (!fileList || !Array.isArray(fileList)) {
+            console.error('buildZipFileArray: Invalid input - fileList is not an array:', fileList);
+            return zipFiles;
+        }
+
+        if (fileList.length === 0) {
+            console.warn('buildZipFileArray: Empty file list received');
+            return zipFiles;
+        }
+
+        fileList.forEach((file, index) => {
+            // Validate file object structure
+            if (!file || typeof file !== 'object') {
+                console.error('buildZipFileArray: Invalid file object at index', index, ':', file);
+                return;
+            }
+
+            const { dataUrl, jsonUrl, emiUrl, path } = file;
+
+            // Debug logging to help diagnose the issue
+            console.debug('Processing file', index, ':', {
+                dataUrl: dataUrl,
+                jsonUrl: jsonUrl,
+                emiUrl: emiUrl,
+                path: path
+            });
+
+            // Skip if dataUrl is undefined or null
+            if (!dataUrl) {
+                console.warn('Skipping file with undefined dataUrl at index', index, ':', file);
+                return;
+            }
+
+            // Skip if jsonUrl is undefined or null
+            if (!jsonUrl) {
+                console.warn('Skipping file with undefined jsonUrl at index', index, ':', file);
+                return;
+            }
+
+            // Skip if path is undefined or null
+            if (!path) {
+                console.warn('Skipping file with undefined path at index', index, ':', file);
+                return;
+            }
+
+            // Clean up path (remove leading slash)
+            let cleanPath = path.charAt(0) === '/' ? path.substr(1) : path;
+
+            // Get filenames
+            const dataFilename = dataUrl.replace(/.*\//g, '');
+            const jsonFilename = jsonUrl.replace(/.*\//g, '');
+
+            // Build full paths
+            let fullDataPath = cleanPath.length > 0 ? cleanPath + '/' + dataFilename : dataFilename;
+            let fullJsonPath = cleanPath.length > 0 ? cleanPath + '/' + jsonFilename : jsonFilename;
+
+            // Decode URI components
+            fullDataPath = decodeURIComponent(fullDataPath).replace('//', '/');
+            fullJsonPath = decodeURIComponent(fullJsonPath).replace('//', '/');
+
+            // Add data file if not already seen (deduplication for multi-signal datasets)
+            if (!seenUrls.has(dataUrl)) {
+                zipFiles.push({ url: dataUrl, path: fullDataPath });
+                seenUrls.add(dataUrl);
+                console.debug('Added data file:', fullDataPath);
+            }
+
+            // Add JSON metadata if not already seen
+            if (!seenUrls.has(jsonUrl)) {
+                zipFiles.push({ url: jsonUrl, path: fullJsonPath });
+                seenUrls.add(jsonUrl);
+                console.debug('Added JSON file:', fullJsonPath);
+            }
+
+            // Add EMI file if exists and not already seen
+            if (emiUrl && !seenUrls.has(emiUrl)) {
+                const emiFilename = emiUrl.replace(/.*\//g, '');
+                let fullEmiPath = cleanPath.length > 0 ? cleanPath + '/' + emiFilename : emiFilename;
+                fullEmiPath = decodeURIComponent(fullEmiPath).replace('//', '/');
+
+                // Verify EMI file exists in cache
+                const FileCache = window.NexusLIMSDetail.Downloads.FileCache;
+                if (FileCache && !isNaN(FileCache.getSize(emiUrl))) {
+                    zipFiles.push({ url: emiUrl, path: fullEmiPath });
+                    seenUrls.add(emiUrl);
+                    console.debug('Adding EMI file:', fullEmiPath);
+                }
+            }
+        });
+
+        console.debug('buildZipFileArray: Processed', fileList.length, 'input files, generated', zipFiles.length, 'ZIP entries');
+
+        return zipFiles;
+    }
+
+    /**
+     * Create async generator for file iteration
+     * @param {Array<{url: string, path: string}>} files - Files to include in ZIP
+     * @param {AbortSignal} abortSignal - Signal for cancellation
+     */
+    async function* fileIterator(files, abortSignal) {
+        let filesFetched = 0;
+
+        for (const { url, path } of files) {
+            filesFetched++;
+            console.debug(`Fetching for ZIP (${filesFetched}/${files.length}): ${path}`);
+
+            try {
+                const response = await fetch(url, { signal: abortSignal });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                // Pass response.body directly to client-zip - no wrapping
+                yield {
+                    name: path,
+                    lastModified: new Date(),
+                    input: response.body
+                };
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.info('File fetch aborted:', path);
+                    throw error;
+                } else {
+                    console.error('Failed to fetch file:', path, error);
+                    throw new Error(`Failed to fetch ${path}: ${error.message}`);
+                }
+            }
+        }
+
+        console.info(`All ${filesFetched} files yielded to ZIP stream`);
+    }
+
+    /**
+     * Create ZIP stream from file list
+     * @param {Array} fileList - Either file list from EmiBundler.prepareFileList() or already-processed ZIP file array
+     * @param {AbortSignal} abortSignal - Signal for cancellation
+     * @returns {ReadableStream} ZIP archive stream
+     */
+    function createZipStream(fileList, abortSignal) {
+        let zipFiles;
+
+        // Check if fileList is already in the processed format (has 'url' and 'path' properties)
+        // or if it's in the original format (has 'dataUrl', 'jsonUrl', etc.)
+        if (fileList.length > 0) {
+            const firstItem = fileList[0];
+
+            if (firstItem && firstItem.url && firstItem.path && !firstItem.dataUrl) {
+                // Already processed - use directly
+                console.debug('createZipStream: Received already-processed ZIP file array');
+                zipFiles = fileList;
+            } else {
+                // Original format - needs processing
+                console.debug('createZipStream: Received original file list format, processing...');
+                zipFiles = buildZipFileArray(fileList);
+            }
+        } else {
+            console.warn('createZipStream: Empty file list received');
+            zipFiles = [];
+        }
+
+        console.debug(`Creating ZIP with ${zipFiles.length} files`);
+
+        // Use client-zip to create streaming ZIP
+        // Note: downloadZip is exposed globally by client-zip-loader.js ES module
+        if (typeof downloadZip === 'undefined') {
+            throw new Error('client-zip library not loaded. Please ensure client-zip-loader.js is included as a module before this script.');
+        }
+
+        try {
+            // downloadZip returns a Response object, we need to extract the stream
+            const zipResponse = downloadZip(fileIterator(zipFiles, abortSignal));
+
+            // Get the ReadableStream from the Response body
+            if (!zipResponse || !zipResponse.body) {
+                throw new Error('downloadZip did not return a valid Response with a body stream');
+            }
+
+            return zipResponse.body;
+        } catch (error) {
+            console.error('Error creating ZIP stream:', error);
+            throw error;
+        }
+    }
+
+    // Public API
+    window.NexusLIMSDetail.Downloads.ZipBuilder = {
+        createZipStream,
+        buildZipFileArray  // Exported for testing
+    };
+
+})(window);

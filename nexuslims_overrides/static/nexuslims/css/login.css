@@ -1,0 +1,199 @@
+/**
+ * NexusLIMS Login Page Styles
+ *
+ * Modern, clean override for the default CDCS login page
+ */
+
+/* Login form container */
+.form-login {
+    width: 100%;
+    max-width: 450px;
+    padding: 2.5rem;
+    margin: 3rem auto;
+    background: #f8f8f8 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07),
+                0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e7e7e7;
+    text-align: center;
+}
+
+/* Form title/heading */
+.form-login h1,
+.form-login h2 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Form inputs */
+.form-login input[type="text"],
+.form-login input[type="password"],
+.form-login input[type="email"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-login input[type="text"]:focus,
+.form-login input[type="password"]:focus,
+.form-login input[type="email"]:focus {
+    outline: none;
+    border-color: var(--nx-primary-color);
+    box-shadow: 0 0 0 3px rgba(17, 101, 156, 0.1);
+}
+
+/* Form labels */
+.form-login label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Submit button */
+.form-login button[type="submit"],
+.form-login input[type="submit"] {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    margin-top: 1rem;
+    background-color: var(--nx-primary-color) !important;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.form-login button[type="submit"]:hover,
+.form-login input[type="submit"]:hover {
+    background-color: var(--nx-warning-color) !important;
+    transform: translateY(-1px);
+    color: #333 !important;
+}
+
+.form-login button[type="submit"]:active,
+.form-login input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Links (forgot password, sign up, etc.) */
+.form-login a {
+    color: var(--nx-primary-color) !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.form-login a:hover {
+    color: var(--nx-primary-color-dark) !important;
+    text-decoration: underline;
+}
+
+/* Helper text */
+.form-login .helptext,
+.form-login .help-block {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Error messages */
+.form-login .errorlist,
+.form-login .alert-danger {
+    background-color: #fee;
+    border: 1px solid #fcc;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    color: #c33;
+    font-size: 0.9rem;
+}
+
+.form-login .errorlist li {
+    list-style: none;
+}
+
+/* Success messages */
+.form-login .alert-success {
+    background-color: #efe;
+    border: 1px solid #cfc;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    color: #383;
+    font-size: 0.9rem;
+}
+
+/* Form footer (links section) */
+.form-login .form-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.form-login .form-footer a {
+    margin: 0 0.5rem;
+}
+
+/* Center form buttons and links */
+.form-login .form-group {
+    text-align: center;
+}
+
+.form-login .float-end {
+    float: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.form-login .float-end a {
+    order: 2;
+    font-size: 0.9rem;
+}
+
+.form-login .float-end button {
+    order: 1;
+}
+
+/* Reduce spacing on "No account" text */
+.form-login .text-center[style*="margin-top"] {
+    margin-top: 2.5rem !important;
+}
+
+.form-login form > .text-center:last-child {
+    margin-top: 2.5rem !important;
+}
+
+/* Checkbox styling */
+.form-login input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.form-login .checkbox-label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+/* Responsive design */
+@media (max-width: 576px) {
+    .form-login {
+        margin: 1rem auto;
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+}

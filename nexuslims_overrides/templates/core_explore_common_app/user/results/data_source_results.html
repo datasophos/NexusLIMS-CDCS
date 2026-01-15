@@ -1,0 +1,30 @@
+{# Load NexusLIMS custom XSLT transform that supports passing detail_url parameter #}
+{# Cannot use {% load xsl_transform_tag %} due to Django name collision with core_main_app #}
+
+{% load nexuslims_xsl_transform %}
+{% load blob_tags %}
+{% load get_attribute %}
+{% load result_to_html %}
+
+{% for result in results %}
+    {% result_list_html result=result as html_string %}
+    {% if result.template_info.format == 'XSD' %}
+        {% if not html_string %}
+            {% xsl_transform_list xml_content=result.content template_id=result.template_info.id template_hash=result.template_info.hash detail_url=result.detail_url as html_string %}
+        {% endif %}
+        {% if blobs_preview %}
+            {% render_blob_links_in_span xml_string=html_string as html_string %}
+        {% endif %}
+        {% include 'core_explore_common_app/user/results/data_source_info.html' with html_string=html_string|safe %}
+    {% else %}
+        {% if html_string %}
+            {% include 'core_explore_common_app/user/results/data_source_info.html' with html_string=html_string|safe %}
+        {% else %}
+            {% include 'core_explore_common_app/user/results/data_source_info.html' with html_string=result.content|escape %}
+        {% endif %}
+    {% endif %}
+{% empty %}
+<span style="font-style:italic; color:#a94442;"> No results found... </span>
+{% endfor %}
+
+{% include 'core_explore_common_app/user/results/data_source_pagination.html'%}

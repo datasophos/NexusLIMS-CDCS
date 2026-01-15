@@ -10,19 +10,27 @@ PROJECT_VERSION = os.getenv("PROJECT_VERSION", "3.18.0")
 """
 
 # Website customization
-WEBSITE_SHORT_TITLE = "MDCS"
-CUSTOM_DATA = "Materials Data"
+WEBSITE_SHORT_TITLE = "NexusLIMS"
+CUSTOM_DATA = "Experimental Records"
 CUSTOM_NAME = (
-    os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "Curator"
+    os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "NexusLIMS"
 )
-CUSTOM_TITLE = "Materials Data Curation System"
+CUSTOM_TITLE = "Welcome to NexusLIMS!"
+MAX_DOCUMENT_EDITING_SIZE = 25 * 1024 * 1024  # (25 MB)
+
+# Import NexusLIMS-specific settings
+from nexuslims_overrides.settings import *
+
 CUSTOM_SUBTITLE = "Part of the Materials Genome Initiative"
 CURATE_MENU_NAME = "Data Curation"
 WEBSITE_ADMIN_COLOR = "yellow"
 # black, black-light, blue, blue-light, green, green-light, purple, purple-light, red, red-light, yellow, yellow-light
 
+# Federated search disabled for NexusLIMS - only searching local instance
+# This setting controls which apps provide data sources for exploration
+# Commented out to disable federated (multi-instance) search capability
 DATA_SOURCES_EXPLORE_APPS = [
-    "core_explore_federated_search_app",
+    # "core_explore_federated_search_app",
 ]
 
 # Lists in data not stored if number of elements is over the limit (e.g. 100)
@@ -120,7 +128,8 @@ ID_PROVIDER_PREFIX_BLOB = os.getenv(
     "ID_PROVIDER_PREFIX_BLOB", ID_PROVIDER_PREFIXES[0]
 )
 
-PID_XPATH = os.getenv("PID_XPATH", "root.pid")
+# PID_XPATH = os.getenv("PID_XPATH", "root.pid")   # PID_XPATH is deprecated
+PID_PATH = os.getenv("PID_XPATH", "Experiment.@pid")
 """ string: location of the PID in the document, specified as dot notation
 """
 
@@ -142,19 +151,21 @@ ENABLE_HANDLE_PID = os.getenv("ENABLE_HANDLE_PID", "False").lower() == "true"
 """ boolean: enable handle server PID support.
 """
 
-MONGODB_INDEXING = os.getenv("MONGODB_INDEXING", "True").lower() == "true"
+MONGODB_INDEXING = False # always disabled in NexusLIMS
+# MONGODB_INDEXING = os.getenv("MONGODB_INDEXING", "True").lower() == "true"
 """ :py:class:`bool`: Use MongoDB for data indexing.
     If True:
         - a copy of the data will be stored in MongoDB,
         - queries will be executed against MongoDB.
 """
 
-MONGODB_ASYNC_SAVE = True
+MONGODB_ASYNC_SAVE = False # always disabled in NexusLIMS
 """ :py:class:`bool`: Save data in MongoDB asynchronously.
     If True, data are saved in MongoDB asynchronously.
 """
 
-GRIDFS_STORAGE = os.getenv("GRIDFS_STORAGE", "True").lower() == "true"
+GRIDFS_STORAGE = False # always disabled in NexusLIMS
+# GRIDFS_STORAGE = os.getenv("GRIDFS_STORAGE", "True").lower() == "true"
 """ :py:class:`bool`: Use GridFS for file storage.
 """
 
@@ -192,9 +203,10 @@ ENABLE_XML_ENTITIES_TOOLTIPS = True
 """ :py:class:`bool`: Enable XML entities tooltips during curation.
 """
 
-CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = False
+CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = True
 """ :py:class:`bool`: Can anonymous user access public document.
 """
+VERIFY_DATA_ACCESS = False
 
 BOOTSTRAP_VERSION = os.getenv("BOOTSTRAP_VERSION", "5.1.3")
 """ :py:class:`str`: Version of the boostrap library.

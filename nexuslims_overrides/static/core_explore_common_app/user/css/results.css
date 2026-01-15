@@ -1,0 +1,223 @@
+/*
+    This file controls styling of the "Found N results:" and sorting,
+    export, and date control buttons.
+*/
+
+ul.pagination li>span {
+    cursor: pointer;
+}
+
+.result-line-title-container {
+    overflow: hidden;
+    padding: 1px;
+}
+
+.results-page div {
+    position: relative;
+}
+
+div.results-container {
+    margin:0;
+}
+
+span.expand {
+    cursor:pointer;
+}
+
+.template-info-name {
+    color:#555;
+}
+
+.result-title {
+    font-weight:bold;
+}
+
+.result-title:hover {
+    color: #37c0fb;
+}
+
+.tab-selector td {
+    padding: 5px;
+}
+
+.tab-selector input[type="checkbox"] {
+    position: relative;
+    top: -2px;
+}
+
+.filter {
+    position: relative;
+    display: inline-flex;
+    width: auto !important;
+}
+
+.filter ul {
+    padding: 0;
+}
+
+.filter ul>li {
+    cursor: pointer;
+}
+
+.result-toolbar-button:hover {
+  background-color: #cacaca;
+}
+
+.filter-left-padding {
+    padding-left: 22px;
+}
+
+.result-toolbar {
+    display: flex;
+    margin-bottom: 7px;
+    padding-top: 7px;
+    height: 42px;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #cacaca;
+    border-left: 1px solid #cacaca;
+    border-right: 1px solid #cacaca;
+    border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    -webkit-box-shadow: 0 8px 7px -7px #949494;
+    box-shadow: 0 8px 7px -7px #949494;
+}
+
+.result-toolbar button>a {
+    color: #474747;
+}
+
+.result-toolbar-button {
+    background: #e0e0e0;
+    border: 1px solid #8e8e8e;
+    border-radius: 15px;
+    webkit-border-radius: 15px;
+    font-size: 13px;
+    margin: 0 0 0 5px;
+    padding: 0 10px 0 10px;
+    line-height: 26px;
+    height: 26px;
+}
+
+.tools-menu {
+    min-width: 180px;
+}
+
+
+.tools-menu li {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 10px;
+}
+
+.tools-menu i {
+    padding-right: 5px;
+}
+
+.tools-menu a {
+    display: contents !important;
+}
+
+.permissions-link, .permissions-link-open {
+    float: right;
+    display: none;
+}
+
+.permissions-icon {
+    font-size: 20px;
+    color: var(--nx-primary-color);
+    cursor: pointer;
+}
+.permissions-icon:hover {
+    color: var(--nx-warning-color);
+}
+
+.data-info-right-container {
+    /* float: right; */
+    flex-grow: 1;
+    width: auto !important;
+    text-align: end;
+    margin: 0 10px 0 10px;
+    font-size: 0.8em;
+    font-style: italic;
+    color: #525252;
+}
+
+.data-info-left-container {
+    /* float: left; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-result {
+    width: 100%;
+    overflow: auto;
+
+    /* jat additions */
+    flex-grow: 1;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#data_sources_selector {
+    word-break: break-all;
+}
+
+.exporter-checkbox {
+    height: 24px;
+    width: 24px;
+}
+
+.explore-bar {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.25em;
+    margin-bottom: .25em;
+    width: 100%;
+}
+
+.toggle-container label {
+    display: inherit !important;
+    vertical-align: unset !important;
+}
+
+#loading-placeholder {
+    flex-grow: 1;
+    text-align: left;
+    color:#a94442;
+    display: inline-block;
+    font-style: italic;
+}
+
+.explore-bar .nav-item {
+    flex-grow: 1;
+    text-align: left;
+    border: none;
+}
+
+.explore-bar .nav-link {
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+    padding: 0;
+}
+
+.explore-bar .nav-link:hover {
+    background-color: transparent;
+    color: inherit;
+}
+
+.explore-bar .nav-link.active {
+    background-color: transparent;
+    color: inherit;
+    border: none;
+}
+
+.explore-bar .result-toolbar-button {
+    margin: 0 5px 0 5px;
+}
+
+.explore-bar button {
+    margin: 0 5px 0 5px;
+}

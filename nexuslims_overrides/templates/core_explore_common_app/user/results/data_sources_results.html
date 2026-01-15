@@ -1,0 +1,105 @@
+{% comment %}
+NexusLIMS Override: Data Sources Results Template
+
+ORIGINAL FILE:
+core_explore_common_app/templates/core_explore_common_app/user/results/data_sources_results.html
+
+OVERVIEW:
+  This template replaces the "From NexusLIMS" tabbed layout above the results with a custom
+  flex-based toolbar that shows record counts and moves toolbar controls into a single row.
+
+KEY CHANGES FROM ORIGINAL:
+  1. UNIFIED TOOLBAR LAYOUT
+     - Moved all toolbar controls (sorting, persistent query, export, date toggle) from inside
+       individual tab panels to a single navigation bar at the top
+     - Uses flexbox layout (explort-bar class) for better space utilization and alignment
+     - Results in a cleaner, more professional interface with shared controls across all tabs
+
+  2. SIMPLIFIED TAB LABELS
+     - Changed from "From {{ data_source.name }}" with styled badges to simple "Found X Result(s):" format
+     - Tab labels are now plain text (div instead of anchor tag) instead of styled buttons
+     - Provides a cleaner, less cluttered appearance
+
+  3. REMOVED BOOTSTRAP DEPENDENCIES
+     - NexusLIMS has no need to switch source tabs, so all that functionality is removed
+
+  4. IMPROVED UX ELEMENTS
+     - Loading placeholder "Please wait while records are loading..." now displays in the main toolbar
+     - Flexbox layout ensures proper alignment of all toolbar elements (buttons, toggles, labels)
+     - Result counter updates dynamically with proper pluralization (Result: vs Results:)
+
+RELATED FILES:
+  - nexuslims_overrides/static/core_explore_common_app/user/css/results.css
+    Contains CSS rules for explore-bar styling, tab appearance, and toolbar button spacing
+
+  - nexuslims_overrides/static/core_explore_common_app/user/js/results.js
+    Handles JavaScript functionality including:
+    - Tab switching and loading data from multiple sources
+    - Dynamic result counter updates
+    - Pluralization logic for "Result" vs "Results" label
+    - Loading placeholder animations (fade in/out)
+    - Permission checks for edit/open buttons
+
+  - core_explore_common_app/core_explore_common_app/templates/core_explore_common_app/user/ordering_menu/*.html
+    Sorting menu templates included in the unified toolbar
+
+  - core_explore_common_app/core_explore_common_app/templates/core_explore_common_app/user/persistent_query/button.html
+    Persistent query button template included in the unified toolbar
+
+IMPLEMENTATION NOTES:
+  - The nav-link div contains the result counter span with id="results_infos_X" that gets updated
+    dynamically via JavaScript
+  - The results-label span gets its text updated (Result: vs Results:) based on the nb_results count
+  - Tab switching is handled by JavaScript click listeners on the nav-link elements
+  - The explore-bar class applies flex display and alignment to arrange items horizontally
+{% endcomment %}
+<div>
+    {% if query.data_sources|length > 0 %}
+        <ul class="nav nav-tabs explore-bar" role="tablist">
+            {% for data_source in query.data_sources %}
+            <li role="presentation" class="nav-item">
+                <div class="nav-link{% if forloop.counter0 == 0 %} active{% endif %}"
+                   id="tab_results_{{forloop.counter0}}"
+                   role="tab"
+                >
+                    Found
+                    <span id="results_infos_{{forloop.counter0}}">-</span>
+                    <span class="results-label">Results:</span>
+                </div>
+            </li>
+            {% endfor %}
+            <span id="loading-placeholder">Please wait while records are loading...</span>
+            {% if sorting_display_type == 'single' %}
+                {% include "core_explore_common_app/user/ordering_menu/single_criteria_sorting_menu.html" with data_source_index=0  %}
+            {% elif sorting_display_type == 'multi' %}
+                {% include "core_explore_common_app/user/ordering_menu/multi_criteria_sorting_menu.html" %}
+            {% endif %}
+            {% include "core_explore_common_app/user/persistent_query/button.html" %}
+            {% if linked_records_app %}
+                {% include 'core_linked_records_app/user/sharing/explore/button.html' %}
+            {% endif %}
+            {% if exporter_app %}
+                <button type="button" class="result-toolbar-button export-button">
+                    {% include "core_exporters_app/user/exporters/list/link_exporters_selector.html" %}
+                </button>
+            {% endif %}
+            <div id="date-toggle" class="toggle-container">
+                <label class="switch">
+                    <input type="checkbox" class="switch-input" />
+                    <span class="switch-label" data-on="Date" data-off="Date"></span>
+                    <span class="handle"></span>
+                </label>
+            </div>
+        </ul>
+        <div class="tab-content">
+        {% for data_source in query.data_sources %}
+            <div role="tabpanel" class="results-container tab-pane {% if forloop.counter0 == 0 %} active {% endif %} results-page"
+                 id="results_{{forloop.counter0}}"
+                 url="{% url 'core_explore_common_data_source_results' query.id forloop.counter0 %}">
+                <div class="results-page" nb_results_id="results_infos_{{forloop.counter0}}"></div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    <div id="query_id" style="display: none;">{{ query.id }}</div>
+</div>

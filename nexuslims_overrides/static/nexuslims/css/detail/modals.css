@@ -1,0 +1,134 @@
+/**
+ * NexusLIMS Detail Page - Modals
+ * Modal dialog boxes for metadata tables and file listing
+ *
+ * NOTE: These styles are for custom NexusLIMS modals, not Bootstrap modals.
+ * We use .nexuslims-modal class to avoid overriding Bootstrap modal styles.
+ */
+
+.nexuslims-modal {
+    display: block;
+    position: fixed;
+    z-index: 1001;
+    padding-top: var(--modal-top-offset);  /* 100px - custom modals */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(209,203,203,0.7);
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.nexuslims-modal .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: var(--spacing-lg);  /* 20px */
+    border: 1px solid #888;
+    width: max-content;
+}
+
+.close-modal {
+    color: #000;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #525252;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* File listing modal */
+
+/* make modal full width on narrow screen */
+#filelist-modal .modal-content {
+    width: 95vw;
+}
+
+@media (min-width: 700px) {
+    #filelist-modal .modal-content {
+        width: calc(max(70vw, 665px));
+    }
+}
+
+#filelist-modal .modal-body .filelist-header-row {
+    justify-content: space-between;
+}
+
+.help-filelist-modal {
+    font-size: 20px;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+i.help-filelist-modal > div.tooltip {
+    opacity: 1;
+}
+i.help-filelist-modal > div.tooltip > div.arrow,
+i.help-filelist-modal > div.tooltip > div.arrow::before {
+    border-bottom-color: rgba(0, 0, 0, 0.9);
+}
+i.help-filelist-modal > div.tooltip > div.tooltip-inner {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
+    max-width: unset;
+    border: none;
+    font-size: 0.9rem;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    width: 500px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    line-height: 1.6;
+}
+
+/* styling of download and export buttons */
+#filelist-modal .dl-btn-row, #filelist-modal .export-btn-row {
+    display: flex;
+    justify-content: center;
+}
+
+/* Ensure close button is clickable and properly positioned */
+.nexuslims-modal .close-modal {
+    position: relative;
+    z-index: 100;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    display: inline-block;
+}
+/* Bootstrap modal positioning - ensure modals appear below the navigation bar */
+.modal-dialog {
+    margin-top: var(--modal-top-offset);  /* 100px - Bootstrap modals */
+}
+
+.missing-metadata {
+    font-size: 12pt;
+    font-style: italic;
+    color: var(--nx-primary-color);
+}
+
+.modal-title {
+    align-self: start;
+    text-align: left;
+    line-height: 1.5em;
+    font-weight: bold;
+}
+
+/* download file listing title and date styles */
+.dl-modal-title {
+    font-size: smaller;
+    font-weight: normal;
+}
+
+.dl-modal-date {
+    font-size: smaller;
+    font-style: oblique;
+}

@@ -1,0 +1,104 @@
+{% comment %}
+NexusLIMS Override: Data Source Info Template
+
+ORIGINAL FILE:
+core_explore_common_app/templates/core_explore_common_app/user/results/data_source_info.html
+
+OVERVIEW:
+This template displays individual search results in the explore interface. The override
+significantly simplifies the display to prioritize showing the actual data content over
+metadata and navigation elements.
+In "vanilla" MDCS, it shows the XML title with a small expand icon to see the XSLT list
+transform, along with the template name. In our version, the XSL transform is shown
+directly and the XML name and template are hidden entirely.
+
+KEY CHANGES FROM ORIGINAL:
+1. CONTENT-FIRST LAYOUT
+   - Moved the result content (html_string) to the top, immediately after the export checkbox
+   - Original placed content at the bottom after all metadata
+   - This makes the actual data immediately visible without scrolling
+
+2. COMMENTED OUT METADATA ELEMENTS
+   - Expand/collapse button (span.expand)
+   - Result title with detail page link (span.result-title)
+   - Blob file badge (if result.blob_url)
+   - Template name display (span.template-info-name)
+   - These elements created visual clutter and weren't needed for NexusLIMS use case
+
+3. RETAINED ELEMENTS
+   - Export checkbox (for bulk operations)
+   - Template format hidden input (needed for JavaScript)
+   - Edit/Open buttons (if user has permissions)
+   - Last modification date (useful metadata)
+
+RATIONALE:
+NexusLIMS users primarily need to view and export experimental data. The simplified
+interface removes navigation elements (expand, title links) that were designed for
+generic MDCS use cases but aren't necessary when searching within a single curated
+data source.
+
+RELATED FILES:
+- nexuslims_overrides/static/core_explore_common_app/user/css/results.css
+  Contains styling for .content-result, .data-info-left-container, etc.
+
+- nexuslims_overrides/templates/core_explore_common_app/user/results/data_sources_results.html
+  Parent template that includes this template for each result
+
+- nexuslims_overrides/templates/core_explore_common_app/user/results/data_source_results.html
+  Sibling template that calls the XSLT transformation to generate html_string
+{% endcomment %}
+
+{% load json_date %}
+{% load parse_date %}
+{% load tz %}
+
+<div class="result-line-main-container" name="result">
+    <div class="result-line-title-container">
+        <div class="data-info-left-container">
+            <input data-template-id="{{result.template_info.id}}"
+                   data-template-hash="{{result.template_info.hash}}"
+                   type="checkbox" value="{{ result.access_data_url }}"
+                   class="exporter-checkbox{% if not exporter_app %} hidden{% endif %}"/>
+            <div class="content-result highlight-content" readonly='true'>
+                {% if result.template_info.format == 'XSD' %}
+                {{ html_string }}
+                {% else %}
+                    <pre><code>{{html_string}}</code></pre>
+                {% endif %}
+            </div>
+
+            <!--NexusLIMS: remove the title, block, and template name -->
+            {% comment %}
+            <span class="expand" onclick="showhideResult(event);"></span>
+            <span class="result-title">
+                {% if result.detail_url %}
+                <a href="{{ result.detail_url }}">{{ result.title }}</a>
+                {% else %}
+                {{ result.title }}
+                {% endif %}
+            </span>
+            {% if result.blob_url %}
+            <a href="{{ result.blob_url }}" class="badge rounded-pill bg-secondary">
+            file
+            </a>
+            {% endif %}
+            <span class="template-info-name">{{result.template_info.name}}</span>
+            {% endcomment %}
+            <!--NexusLIMS: remove the title, block, and template name -->
+
+            <input class="data-template-format" type="hidden" value="{{result.template_info.format}}">
+            {% if result.permission_url and display_edit_button %}
+                <input class="input-permission-url" type="hidden" value="{{result.permission_url}}">
+                <a class="permissions-link-open mx-1" href="#" {% if BOOTSTRAP_VERSION|first == "4" %}data-toggle{% elif BOOTSTRAP_VERSION|first == "5" %}data-bs-toggle{% endif %}="tooltip" title="Open in text editor">
+                    <i class="fas fa-code" aria-hidden="true"></i>
+                </a>
+                <a class="permissions-link mx-1" href="#" {% if BOOTSTRAP_VERSION|first == "4" %}data-toggle{% elif BOOTSTRAP_VERSION|first == "5" %}data-bs-toggle{% endif %}="tooltip" title="Edit">
+                    <i class="fas fa-pencil-alt permissions-icon edit" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+            <div title="Last modification date" class="data-info-right-container">
+                {{result.last_modification_date|parse_date|localtime|json_date:"N d Y g:iA"}}
+            </div>
+        </div>
+    </div>
+</div>

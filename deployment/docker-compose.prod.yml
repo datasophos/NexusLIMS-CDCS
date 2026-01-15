@@ -1,0 +1,73 @@
+# Docker Compose override for production deployment
+# This file configures production-ready settings with automatic restarts, health checks,
+# and production file serving paths
+#
+# Usage: docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+
+services:
+  caddy:
+    restart: unless-stopped
+    volumes:
+      # Production data paths (configurable via environment variables)
+      - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
+      - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
+      # Uncomment the following line to use custom certificates (location configured
+      # in .env file with the CADDY_CERTS_HOST_PATH variable):
+      # - ${CADDY_CERTS_HOST_PATH}:/etc/caddy/certs:ro
+
+  postgres:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+
+  cdcs:
+    restart: unless-stopped
+    volumes:
+      # Mount backup directory to host for easy access
+      - ${NX_CDCS_BACKUPS_HOST_PATH}:/srv/nexuslims/backups
+    environment:
+      # Backup path environment variable (only needed in production)
+      - NX_CDCS_BACKUPS_HOST_PATH=${NX_CDCS_BACKUPS_HOST_PATH}
+
+    # Production: No source code mount, only essential volumes
+    # (base config already includes config/xslt/nexuslims_overrides/scripts mounts)
+
+    # Production initialization and server startup
+    entrypoint: []
+    command:
+      - /bin/bash
+      - -c
+      - |
+        set -e
+        echo "********* Production Mode - Waiting for Postgres *********"
+        until python -c "import socket; socket.create_connection(('${POSTGRES_HOST}', ${POSTGRES_PORT}), timeout=1)" 2>/dev/null; do
+          sleep 1
+        done
+        echo "********* Running Migrations *********"
+        cd /srv/nexuslims
+        python manage.py migrate --noinput
+        echo "********* Collecting Static Files *********"
+        python manage.py collectstatic --noinput
+        echo "********* Starting Celery... *********"
+        celery -A mdcs worker -E -l info &
+        celery -A mdcs beat -l info &
+        echo "********* Starting Gunicorn Production Server *********"
+        echo "********* NexusLIMS-CDCS available at ${SERVER_URI} *********"
+        echo "  Workers: ${GUNICORN_WORKERS:-4}, Threads: ${GUNICORN_THREADS:-2}, Timeout: ${GUNICORN_TIMEOUT:-120}s"
+        exec gunicorn mdcs.wsgi:application \
+          --bind 0.0.0.0:8000 \
+          --workers ${GUNICORN_WORKERS:-4} \
+          --threads ${GUNICORN_THREADS:-2} \
+          --timeout ${GUNICORN_TIMEOUT:-120} \
+          --access-logfile - \
+          --error-logfile - \
+          --log-level info
+
+    # Health check for production monitoring
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

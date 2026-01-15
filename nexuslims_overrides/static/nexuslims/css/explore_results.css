@@ -1,0 +1,204 @@
+/**
+ * NexusLIMS Explore Results Styling
+ *
+ * Custom styles for displaying search results in the explore interface.
+ * These styles customize the appearance of individual result items, badges,
+ * and metadata display to match NexusLIMS design requirements.
+ *
+ * Migrated from: static/css/extra.css (NexusLIMS 2.21.0)
+ */
+
+ /* ========================================================================
+    Search bar and button
+    ======================================================================== */
+
+
+/* slightly reduce width of search box on explore page */
+#search_bar {
+    padding-right: 1em;
+}
+
+/* explore search button */
+button.search_button {
+    background-color: var(--nx-primary-color);
+}
+button.search_button:hover {
+   	background-color: var(--nx-warning-color);
+   	color: #fff !important;
+}
+
+
+/* ========================================================================
+   Result Title and Header Styling
+   ======================================================================== */
+
+/**
+ * Main title styling for list records
+ * Makes the record title prominent and easy to scan
+ */
+.list-record-title {
+    font-weight: bold;
+    font-size: larger;
+    margin-right: 0.25em;
+    vertical-align: middle;
+}
+
+/**
+ * Badge styling for metadata tags in results
+ * Used for displaying categories, status, etc.
+ */
+.list-record-badge {
+    color: white;
+    background-color: var(--nx-info-badge-color-dark);
+    margin: 3px 0.25em 3px 0px;
+}
+
+/* don't change hover color on results page */
+.results-page .result-line-title-container .a-result > div > a:hover {
+    color: var(--nx-primary-color)
+}
+
+
+
+/* ========================================================================
+   Two-Part Badge Styling
+   ======================================================================== */
+
+/**
+ * Left side of split badges (label portion)
+ * Example: [Instrument] [FEI Titan]
+ *          └─ left ─┘  └─ right ──┘
+ */
+.badge-left {
+    background-color: #316982 !important;
+    border-radius: 10px 0px 0px 10px;
+    padding: 3px 7px 3px 7px;
+    color: white;
+    margin-right: 0px;
+}
+
+/**
+ * Right side of split badges (value portion)
+ */
+.badge-right {
+    background-color: #aaa !important;
+    border-radius: 0px 10px 10px 0px;
+    padding: 3px 7px 3px 7px;
+    color: white;
+    margin-left: 0px;
+}
+
+/**
+ * Warning/attention badge variant
+ * Used for highlighting important metadata
+ */
+.yellow-badge {
+    background-color: #f0ad4e !important;
+}
+
+
+/* ========================================================================
+   Result Metadata Display
+   ======================================================================== */
+
+/**
+ * Text styling for motivation/description and PID rows
+ * Ensures good readability for metadata text
+ */
+.motivation-text,
+.pid-row {
+    font-size: medium;
+    line-height: 125%;
+}
+
+/**
+ * Experimenter name emphasis
+ * Makes the researcher name stand out in result listings
+ */
+.list-record-experimenter {
+    font-weight: bold;
+}
+
+
+/* ========================================================================
+   Result Item Interaction
+   ======================================================================== */
+
+/**
+ * Individual result item styling
+ * Provides visual feedback on hover to indicate clickability
+ */
+.a-result {
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.a-result:hover {
+    background-color: #eee;
+}
+
+.a-result a {
+    color: var(--nx-primary-color, #11659c);
+    border-bottom-color: transparent;
+    text-decoration: unset;
+}
+
+.a-result .badge {
+    font-size: 0.6em;
+}
+
+i.results-icon {
+    margin-right: 0.5em;
+}
+
+
+/* ========================================================================
+   Search Controls
+   ======================================================================== */
+
+/**
+ * Search button styling
+ * Full-width button for initiating searches
+ */
+button.search_button {
+    width: 100%;
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+/* ========================================================================
+   Clickable Instrument Badge Styling
+   ======================================================================== */
+
+.instrument-badge-clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.instrument-badge-clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    filter: brightness(1.1);
+}
+
+.instrument-badge-clickable:active {
+    transform: scale(0.98);
+}
+
+/* Keyboard focus for accessibility */
+.instrument-badge-clickable:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Search icon indicator */
+.instrument-badge-clickable::after {
+    content: ' 🔍';
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-left: 4px;
+}

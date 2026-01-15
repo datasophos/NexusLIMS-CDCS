@@ -1,0 +1,57 @@
+# Docker Compose override for local development
+# This file mounts local source code for live development with Django runserver
+#
+# Usage: docker compose -f docker-compose.base.yml -f docker-compose.dev.yml up
+
+services:
+  caddy:
+    volumes:
+      # Dev CA certificates for local HTTPS
+      - ./caddy/certs:/etc/caddy/certs:ro
+      # File server test data
+      - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
+      - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
+
+  cdcs:
+    # Mount local NexusLIMS-CDCS source code for live reload
+    volumes:
+      - ..:/srv/nexuslims:delegated
+      - cdcs_media:/srv/nexuslims/media
+      - cdcs_socket:/tmp/nexuslims/
+      - cdcs_static:/srv/nexuslims/static.prod
+      # Caddy's root CA certificate for SSL verification (mounted in base, just referencing here)
+      - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
+      # Test data for development initialization
+      - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
+      - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
+
+    environment:
+      # Use Caddy's root CA certificate for development
+      # (allows celery and other requests to verify SSL against Caddy's self-signed cert)
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
+      - CURL_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
+
+    # Override entrypoint and command to use Django runserver for auto-reload
+    entrypoint: []
+    command:
+      - /bin/bash
+      - -c
+      - |
+        set -e
+        echo "********* Development Mode - Waiting for Postgres *********"
+        until python -c "import socket; socket.create_connection(('${POSTGRES_HOST}', ${POSTGRES_PORT}), timeout=1)" 2>/dev/null; do
+          sleep 1
+        done
+        echo "********* Running Migrations *********"
+        cd /srv/nexuslims
+        python manage.py migrate --noinput
+        echo "********* Collecting Static Files *********"
+        python manage.py collectstatic --noinput
+        echo "********* Initializing Development Environment *********"
+        python /srv/scripts/init_environment.py || true
+        echo "********* Starting Celery... *********"
+        celery -A mdcs worker -E -l info &
+        celery -A mdcs beat -l info &
+        echo "********* Starting Django Development Server with Auto-Reload *********"
+        echo "********* NexusLIMS-CDCS available at ${SERVER_URI} *********"
+        python manage.py runserver 0.0.0.0:8000

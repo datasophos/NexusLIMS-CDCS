@@ -1,0 +1,254 @@
+/**
+ * NexusLIMS Detail Page - Layout
+ * Sidebar, main content area, scroll management, responsive breakpoints
+ */
+
+/* Scroll management */
+.scrollDisabled {
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    display: block;
+    position: fixed;
+    top: var(--titlebar-height);  /* Consistent top position at all breakpoints */
+    padding: var(--spacing-lg);  /* 20px */
+    left: -400px;
+    width: 180px;
+    font-size: 14px;
+    -webkit-transition: left 0.5s ease-in-out 0s, padding-top 0s ease-in-out 0s;
+    -moz-transition: left 0.5s ease-in-out 0s, padding-top 0s ease-in-out 0s;
+    -o-transition: left 0.5s ease-in-out 0s, padding-top 0s ease-in-out 0s;
+    transition: left 0.5s ease-in-out 0s, padding-top 0s ease-in-out 0s;
+    height: calc(100vh - var(--titlebar-height)); /* Consistent height calculation */
+    visibility: hidden; /* Make hidden, to be revealed when jQuery is done paginating results */
+    z-index: 1000; /* should overlay everything */
+    box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);  /* Subtle shadow with border */
+    border-right: 1px solid #eee;
+    background-color: white;
+}
+
+@media (min-width: 992px) {  /* Bootstrap 5 lg breakpoint - match desktop nav */
+    .sidebar {
+         left: 0;  /* Slide into view */
+         padding: var(--spacing-lg);  /* 20px */
+         overflow-x: visible;
+         overflow-y: auto;
+         /* Keep the calculated height from base rule */
+    }
+}
+
+.sidebar.side-expanded {
+    left: 0;
+    /*height: 100vh;*/
+    padding: var(--spacing-lg);  /* 20px */
+    background-color: white;
+    border-right: 1px solid #eee;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Sidebar content styling */
+.sidebar a, .sidebar h1 {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sidebar .pagination > li > a, .pagination > li > span {
+    padding: 4px 8px;
+    font-size: 0.6em;
+}
+
+.sidebar .table-sm td {
+    padding: 5px;
+    line-height: 1.5em;
+}
+
+.sidebar div {
+    font-size: 12px;
+}
+
+#nav-table tbody tr {
+    cursor: pointer;
+}
+
+/* Sidebar toggle button */
+#btn-sidebar {
+    visibility: hidden;
+    opacity: 0;
+    text-decoration: none;
+    border: 0;
+    height: calc(var(--titlebar-height) / 3);  /* 20px */
+    width: 10px;
+    margin-left: calc(var(--titlebar-height) - 10px);
+    position: absolute;
+    top: calc(var(--titlebar-height) - 40px);
+    left: 0;
+    z-index: 2;
+    -webkit-transition: opacity 0.5s ease-in-out 0s;
+    -moz-transition: opacity 0.5s ease-in-out 0s;
+    -o-transition: opacity 0.5s ease-in-out 0s;
+    transition: opacity 0.5s ease-in-out 0s;
+}
+
+#btn-sidebar a {
+    color: #999;
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#btn-sidebar:hover a {
+    color: #333;
+}
+
+@media screen and (max-width: 991px) {  /* Bootstrap 5 lg breakpoint - 1, was 887px */
+    #btn-sidebar {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+/* Main content area */
+.main {
+    /* padding: var(--spacing-lg);  /* 20px        */
+    -webkit-transition: padding 0.5s ease-in-out 0s;
+    -moz-transition: padding 0.5s ease-in-out 0s;
+    -o-transition: padding 0.5s ease-in-out 0s;
+    transition: padding 0.5s ease-in-out 0s;
+    padding-top: var(--spacing-xs);  /* 4px, was 5px */
+}
+
+@media (min-width: 768px) {  /* Bootstrap 5 md breakpoint - add intermediate step */
+    #main-wrapper:not(.simple-display) .main {
+        padding-left: var(--spacing-xl);  /* 40px */
+        padding-right: var(--spacing-xl);  /* 40px */
+    }
+}
+
+@media (min-width: 992px) {  /* Bootstrap 5 lg breakpoint, was 888px */
+    #main-wrapper:not(.simple-display) .main {
+        padding-left: calc(180px + var(--spacing-xl));  /* 220px (180px sidebar + 40px spacing) */
+        padding-right: var(--spacing-xl);  /* 40px */
+    }
+}
+
+.main .page-header {
+    margin-top: 0;
+    border-bottom: none;
+}
+
+.main h1 {
+    font-size: 1.5em;
+}
+
+.main h3 {
+    font-size: 1.1em;
+    margin-bottom: 0.1em;
+}
+
+/* Simple display mode */
+.simple-warning {
+    font-size: smaller;
+    text-align: center;
+    line-height: 1.25em;
+}
+
+#main-wrapper:not(.simple-display) .main-content-row {
+    /* move main content row down a bit from buttons in normal display mode */
+    margin-top: 1em !important;
+}
+#main-wrapper.simple-display .main-content-row {
+    /* move main content row down a bit from buttons in normal display mode */
+    margin-top: -0.5em !important;
+}
+
+img.simple-filelist-preview {
+    display: none;
+    position: absolute;
+    left: -500px;
+    top: -250px;
+}
+
+/* Sidebar control buttons */
+#to-top-btn {
+    position: fixed;
+    display: block;
+    width: 125px;
+    padding: 10px;
+    font-size: 12px;
+    z-index: 101;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.25s linear, opacity 0.25s linear;
+    -moz-transition: visibility 0.25s linear, opacity 0.25s linear;
+    -o-transition: visibility 0.25s linear, opacity 0.25s linear;
+    transition: visibility 0.25s linear, opacity 0.25s linear;
+}
+
+#main-wrapper:not(.simple-display) #to-top-btn {
+    margin: 0.5em auto;
+    margin-top: 1em;
+    left: 25px;
+}
+
+
+#main-wrapper.simple-display #to-top-btn {
+    bottom: 20px;
+    right: 40px;
+    left: unset;
+    z-index: 10001;
+}
+
+@media screen and (max-width: 650px) {
+    #main-wrapper.simple-display #to-top-btn {
+        right: 16px;
+        width: 100px;
+        font-size: .8em;
+    }
+}
+
+/* Top button group */
+#top-button-div {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.5em;
+    -webkit-transition: margin-left 0.5s ease-in-out 0s;
+    -moz-transition: margin-left 0.5s ease-in-out 0s;
+    -o-transition: margin-left 0.5s ease-in-out 0s;
+    transition: margin-left 0.5s ease-in-out 0s;
+}
+
+@media (min-width: 992px) {
+    #main-wrapper:not(.simple-display) #top-button-div {
+        margin-left: 180px;  /* 220px - match sidebar width, since flex takes care of padding */
+    }
+}
+
+#top-button-div button,
+#top-button-div a {
+    flex: 1;
+    width: 100%;
+}
+
+#top-button-div a:visited {
+    color: var(--nx-dark-gray);
+}
+
+#top-button-div a:hover {
+    color: white;
+}
+
+/* Acquisition activity header info - raise badges to prevent aa-content-row from overlapping tooltips */
+.aa-header-info {
+    position: relative;
+    z-index: 1;
+}

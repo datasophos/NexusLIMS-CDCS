@@ -1,5 +1,16 @@
+### custom static deployment assets and deployment settings
+config/static_files
+config/settings/custom_settings.py
+
+### NexusLIMS test data (extracted from nexuslims-test-data.tar.gz)
+test-data/
+
+### Development certificates (auto-generated files only)
+.dev-deployment/caddy/certs/*.srl
+
 ### VS Code
 .vscode
+.playwright-mcp
 
 ### Eclipse template
 *.pydevproject
@@ -103,7 +114,6 @@ env/
 build/
 develop-eggs/
 dist/
-downloads/
 eggs/
 .eggs/
 lib/
@@ -244,4 +254,3 @@ venv/
 
 # Celery files
 celerybeat-schedule.*
-
