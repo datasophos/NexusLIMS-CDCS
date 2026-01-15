@@ -2415,12 +2415,13 @@
     margin-left: 0;
 }
 
-/* Nav Dropdown */
+/* Nav and dashboard Dropdowns */
 
-	#nav .dropdown-menu {
+	#nav .dropdown-menu,
+	.my-dashboard-content .dropdown-menu {
 		background-color: #fff;
 		border-radius: 5px;
-		color: #000;
+		color: #333;
 		min-width: max-content;
 		box-shadow: 0 6px 12px rgba(0,0,0,.175)
 	}
@@ -2429,18 +2430,36 @@
 			padding: 0.1rem 1rem;
 			line-height: 2rem;
 		}
+		.my-dashboard-content .dropdown-menu > a {
+		    display: flex;
+            align-items: center;
+            gap: 0.5rem; /* Space between icon and text */
+      		line-height: 2rem;
+		}
+		.my-dashboard-content .dropdown-menu > a > i {
+    		width: 1.25rem; /* Fixed width for icon column */
+            text-align: center; /* Center-align icons within their space */
+            flex-shrink: 0; /* Prevent icon from shrinking */
+            margin-right: 0 !important; /* Remove any existing margin */
+		}
 
-		#nav .dropdown-menu .dropdown-item:hover {
-			/* Added by NIST */
-			background-color: #e0e0e0;
+		#nav .dropdown-menu .dropdown-item:hover,
+		.my-dashboard-content .dropdown-menu .dropdown-item:hover {
+			background-color: #f3f3f3;
 		}
 
 			#nav .dropdown-menu > li > a {
-				color: #000/*#c0c0c0*/;
+				color: #333 !important;
 				text-decoration: none;
 				font-size: 1rem;
 				border: 0;
 				padding: 0.25rem;
+			}
+			.my-dashboard-content .dropdown-menu > a {
+    			color: #333 !important;
+    			text-decoration: none;
+    			font-size: 1rem;
+    			border: 0;
 			}
 
 

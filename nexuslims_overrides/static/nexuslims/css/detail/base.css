@@ -14,14 +14,14 @@ hr {
     border: unset;
 }
 
-/* Link colors */
-a:link {
+/* Link colors (exclude links inside buttons) */
+a:link:not(.btn) {
     color: #3865a3;
 }
-a:visited {
+a:visited:not(.btn) {
     color: #3865a3;
 }
-a:hover {
+a:hover:not(.btn) {
     color: #5e7ca3;
 }
 
@@ -72,7 +72,7 @@ a.dataset_anchor {
     color: #fff;
 }
 
-.badge {
+.badge:not(.item-count-badge){
     font-size: 0.6em !important;
 }
 

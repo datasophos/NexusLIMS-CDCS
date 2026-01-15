@@ -1,0 +1,35 @@
+/**
+ * NexusLIMS Dashboard Styling
+ *
+ * Custom styles for the dashboard interface
+ */
+
+/* Item count badge styling - override hardcoded inline style */
+.item-count-badge {
+    background-color: var(--nx-secondary-color-dark) !important;
+    position: unset !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    font-size: 1rem !important;
+}
+
+/* Optional: Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    .item-count-badge {
+        font-size: 0.875rem;
+    }
+}
+
+/* Optional: Add scrollbar styling for better UX */
+.my-dashboard-content .dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.my-dashboard-content .dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.my-dashboard-content .dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}

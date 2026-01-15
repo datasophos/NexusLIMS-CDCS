@@ -47,7 +47,8 @@
 }
 
 .badge {
-    background-color: #505050
+    background-color: #505050;
+    background-color: var(--nx-secondary-color-dark)
 }
 
 a {
@@ -79,4 +80,3 @@ a {
     font-family: 'Source Sans Pro', sans-serif !important;
 }
 /* End fontawesome overide */
-
