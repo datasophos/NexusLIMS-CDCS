@@ -49,6 +49,25 @@
     {# NexusLIMS tour styling overrides (must load after Shepherd CSS from theme_base.html) #}
     <link rel="stylesheet" type="text/css" href="{% static 'nexuslims/css/tour.css' %}">
 
+    {# Allow for overriding color variables from Django settings #}
+    {% if NX_THEME_COLORS %}
+    <style>
+    :root {
+        {% if NX_THEME_COLORS.primary %}--nx-primary-color: {{ NX_THEME_COLORS.primary }};{% endif %}
+        {% if NX_THEME_COLORS.primary_dark %}--nx-primary-color-dark: {{ NX_THEME_COLORS.primary_dark }};{% endif %}
+        {% if NX_THEME_COLORS.info_badge_dark %}--nx-info-badge-color-dark: {{ NX_THEME_COLORS.info_badge_dark }};{% endif %}
+        {% if NX_THEME_COLORS.secondary %}--nx-secondary-color: {{ NX_THEME_COLORS.secondary }};{% endif %}
+        {% if NX_THEME_COLORS.secondary_dark %}--nx-secondary-color-dark: {{ NX_THEME_COLORS.secondary_dark }};{% endif %}
+        {% if NX_THEME_COLORS.success %}--nx-success-color: {{ NX_THEME_COLORS.success }};{% endif %}
+        {% if NX_THEME_COLORS.danger %}--nx-danger-color: {{ NX_THEME_COLORS.danger }};{% endif %}
+        {% if NX_THEME_COLORS.warning %}--nx-warning-color: {{ NX_THEME_COLORS.warning }};{% endif %}
+        {% if NX_THEME_COLORS.info %}--nx-info-color: {{ NX_THEME_COLORS.info }};{% endif %}
+        {% if NX_THEME_COLORS.light_gray %}--nx-light-gray: {{ NX_THEME_COLORS.light_gray }};{% endif %}
+        {% if NX_THEME_COLORS.dark_gray %}--nx-dark-gray: {{ NX_THEME_COLORS.dark_gray }};{% endif %}
+    }
+    </style>
+    {% endif %}
+
 {% endblock %}
 {% block theme_js %}
     <script src="{% static 'js/util.js' %}"></script>

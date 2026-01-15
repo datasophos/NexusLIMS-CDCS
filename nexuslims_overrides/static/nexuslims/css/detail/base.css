@@ -16,13 +16,17 @@ hr {
 
 /* Link colors (exclude links inside buttons) */
 a:link:not(.btn) {
-    color: #3865a3;
+    color: var(--nx-primary-color);
 }
 a:visited:not(.btn) {
-    color: #3865a3;
+    color: var(--nx-primary-color);
 }
 a:hover:not(.btn) {
-    color: #5e7ca3;
+    color: var(--nx-warning-color);
+}
+
+.badge.list-record-badge > a{
+    color: white;
 }
 
 /* Typography */

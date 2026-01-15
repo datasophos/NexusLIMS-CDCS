@@ -8,6 +8,7 @@ This guide explains how to customize your NexusLIMS deployment to match your org
 - [Configuration Settings](#configuration-settings)
   - [XSLT Configuration](#xslt-configuration)
   - [Branding & Logos](#branding--logos)
+  - [Theme Colors](#theme-colors)
   - [Homepage Content](#homepage-content)
   - [Navigation Menu](#navigation-menu)
   - [Feature Flags](#feature-flags)
@@ -155,6 +156,61 @@ NX_HOMEPAGE_LOGO = "path/to/your/homepage_logo.png"
 - **Format**: PNG or SVG
 - **Size**: Max width 400px
 - **Style**: Can include text/wordmark
+
+---
+
+### Theme Colors
+
+Customize the color scheme of your NexusLIMS deployment using CSS custom properties. These colors are used throughout the interface for buttons, links, badges, and other UI elements.
+
+```python
+NX_THEME_COLORS = {
+    "primary": "#11659c",           # Main brand color (buttons, links, icons)
+    "primary_dark": "#0d528a",      # Darker variant for hover states
+    "info_badge_dark": "#505050",   # Info badge background color
+    "secondary": "#f9f9f9",         # Secondary (light) button background
+    "secondary_dark": "#e2e2e2",    # Secondary button hover state
+    "success": "#28a745",           # Success states
+    "danger": "#dc3545",            # Error/danger states
+    "warning": "#ffc107",           # Warning states and hover highlights
+    "info": "#17a2b8",              # Info messages
+    "light_gray": "#e3e3e3",        # Light gray accents
+    "dark_gray": "#212529",         # Dark text color
+}
+```
+
+**How it works:**
+- Colors are injected as CSS custom properties (e.g., `--nx-primary-color`)
+- Only specify colors you want to change; unspecified colors use CSS defaults
+- Changes take effect after restarting the Django container
+
+**Usage:**
+- Set `NX_THEME_COLORS` in your `config/settings/custom_settings.py`
+- Only include the colors you want to override
+
+**Example: Custom Blue Theme**
+```python
+NX_THEME_COLORS = {
+    "primary": "#1a5276",
+    "primary_dark": "#154360",
+    "warning": "#f4d03f",
+}
+```
+
+**Example: Corporate Green Theme**
+```python
+NX_THEME_COLORS = {
+    "primary": "#1e8449",
+    "primary_dark": "#196f3d",
+    "info_badge_dark": "#2c3e50",
+}
+```
+
+**Color Selection Tips:**
+- Choose a primary color that represents your organization's brand
+- Ensure sufficient contrast between text and background colors
+- The `warning` color is used for hover highlights on links and buttons
+- Test your color scheme in both light conditions and on different monitors
 
 ---
 
@@ -417,6 +473,13 @@ TEMPLATES = [
 ```python
 # University of Example - NexusLIMS Settings
 
+# Theme Colors (university blue)
+NX_THEME_COLORS = {
+    "primary": "#2E86AB",
+    "primary_dark": "#1A5276",
+    "warning": "#F5B041",
+}
+
 # XSLT Configuration
 NX_INSTRUMENT_COLOR_MAPPINGS = {
     "FEI-Titan-TEM": "#2E86AB",  # University blue
@@ -468,6 +531,13 @@ NX_MAX_DATASET_DISPLAY_COUNT = 99
 ```python
 # Acme Corp - Materials Lab LIMS Settings
 
+# Theme Colors (corporate orange)
+NX_THEME_COLORS = {
+    "primary": "#E67E22",
+    "primary_dark": "#D35400",
+    "info_badge_dark": "#34495E",
+}
+
 # XSLT Configuration
 NX_INSTRUMENT_COLOR_MAPPINGS = {
     "FEI-Titan-TEM": "#1A5276",  # Corporate blue
@@ -517,6 +587,13 @@ NX_MAX_DATASET_DISPLAY_COUNT = 249
 
 ```python
 # National Lab - Electron Microscopy Nexus
+
+# Theme Colors (government blue)
+NX_THEME_COLORS = {
+    "primary": "#003366",
+    "primary_dark": "#002244",
+    "warning": "#CC9900",
+}
 
 # XSLT Configuration
 NX_INSTRUMENT_COLOR_MAPPINGS = {
@@ -619,6 +696,20 @@ NX_INSTRUMENT_COLOR_MAPPINGS = {
 - Each dict must have `"title"` and `"url"` keys
 - Check for typos in setting name
 - Restart Django after settings changes
+
+### Theme Colors Not Applying
+
+If your custom theme colors aren't appearing:
+
+1. **Verify dictionary keys**: Keys must be lowercase without `nx_` prefix (e.g., `"primary"`, not `"NX_PRIMARY_COLOR"`)
+2. **Check color format**: Colors must be valid CSS values (e.g., `#RRGGBB`, `rgb()`, or named colors)
+3. **Restart Django**: Theme colors are loaded at startup
+4. **Clear browser cache**: Hard refresh (Ctrl+Shift+R / Cmd+Shift+R)
+5. **Check for typos**: Common mistakes include `"primary-dark"` instead of `"primary_dark"`
+
+**Valid keys:**
+- `primary`, `primary_dark`, `info_badge_dark`, `secondary`, `secondary_dark`
+- `success`, `danger`, `warning`, `info`, `light_gray`, `dark_gray`
 
 ---
 

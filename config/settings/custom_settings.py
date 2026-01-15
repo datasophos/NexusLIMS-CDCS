@@ -36,6 +36,26 @@ from config.settings.prod_settings import *
 # NX_HOMEPAGE_LOGO = "my_homepage_logo.png"   # Homepage logo
 
 # ============================================================================
+# THEME COLORS (CSS Custom Properties)
+# ============================================================================
+# These override the defaults in nexuslims/css/main.css
+# Only set the ones you want to change - others use CSS defaults
+
+# NX_THEME_COLORS = {
+#     "primary": "#11659c",           # Main brand color
+#     "primary_dark": "#0d528a",      # Darker variant
+#     "info_badge_dark": "#505050",   # Info badge background color
+#     "secondary": "#f9f9f9",         # Secondary (light) buttons
+#     "secondary_dark": "#e2e2e2",    # Secondary darker for hover
+#     "success": "#28a745",           # Success states
+#     "danger": "#dc3545",            # Errors/warnings
+#     "warning": "#ffc107",           # Warnings and button hover color
+#     "info": "#17a2b8",              # Info messages
+#     "light_gray": "#e3e3e3",
+#     "dark_gray": "#212529",
+# }
+
+# ============================================================================
 # HOMEPAGE CONTENT
 # ============================================================================
 # CUSTOM_TITLE = "Welcome to Your LIMS!"

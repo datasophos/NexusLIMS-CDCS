@@ -43,3 +43,11 @@ def nexuslims_features(request):
     return {
         'NX_ENABLE_TUTORIALS': getattr(settings, 'NX_ENABLE_TUTORIALS', True),
     }
+
+def nexuslims_colors(request):
+    """
+    Make NexusLIMS theme colors available for CSS custom property overrides.
+    """
+    return {
+        'NX_THEME_COLORS': getattr(settings, 'NX_THEME_COLORS', {}),
+    }

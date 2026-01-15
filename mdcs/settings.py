@@ -169,6 +169,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 'nexuslims_overrides.context_processors.nexuslims_settings',
                 'nexuslims_overrides.context_processors.nexuslims_features',
+                'nexuslims_overrides.context_processors.nexuslims_colors',
             ],
         },
     },

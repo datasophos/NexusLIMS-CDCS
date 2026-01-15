@@ -16,8 +16,9 @@
     /* Brand colors */
     --nx-primary-color: #11659c;
     --nx-primary-color-dark: #0d528a;
-    --nx-secondary-color: #6c757d;
-    --nx-secondary-color-dark: #505050;
+    --nx-info-badge-color-dark: #505050;
+    --nx-secondary-color: #f9f9f9;
+    --nx-secondary-color-dark: #e2e2e2;
     --nx-success-color: #28a745;
     --nx-danger-color: #dc3545;
     --nx-warning-color: #ffc107;
@@ -44,6 +45,10 @@
     --breakpoint-md: 768px;
     --breakpoint-lg: 992px;
     --breakpoint-xl: 1200px;
+}
+
+.btn-primary {
+    background-color: var(--nx-primary-color);
 }
 
 /* override small gap around edges of site */

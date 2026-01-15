@@ -86,8 +86,8 @@ i.param-button {
 i.param-button:hover:not([disabled]) {
    margin-left: 0.5em;
    font-size: medium;
-   color: #5e7ca3;
-   border: solid 0.1em #999;
+   color: var(--nx-primary-color);
+   border: solid 0.1em var(--nx-primary-color-dark);
    background: #eee;
 }
 
@@ -95,8 +95,8 @@ i.param-button:hover:not([disabled]) {
 i.preview-button {
   margin-left: 0.5em;
   font-size: medium;
-  color: #686d97;
-  border: solid 0.1em #eee;
+  color: var(--nx-primary-color);
+  border: solid 0.1em var(--nx-primary-color-dark);
   -webkit-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
   -moz-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
   -o-transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
@@ -105,7 +105,7 @@ i.preview-button {
 i.preview-button:hover {
   margin-left: 0.5em;
   font-size: medium;
-  color: #5e7ca3;
-  border: solid 0.1em #999;
+  color: var(--nx-primary-color);
+  border: solid 0.1em var(--nx-primary-color-dark);
   background: #eee;
 }

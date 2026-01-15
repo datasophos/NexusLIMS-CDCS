@@ -124,8 +124,11 @@ span.expand {
 
 .permissions-icon {
     font-size: 20px;
-    color: #007aa7;
+    color: var(--nx-primary-color);
     cursor: pointer;
+}
+.permissions-icon:hover {
+    color: var(--nx-warning-color);
 }
 
 .data-info-right-container {

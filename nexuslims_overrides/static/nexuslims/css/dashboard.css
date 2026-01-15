@@ -6,7 +6,7 @@
 
 /* Item count badge styling - override hardcoded inline style */
 .item-count-badge {
-    background-color: var(--nx-secondary-color-dark) !important;
+    background-color: var(--nx-info-badge-color-dark) !important;
     position: unset !important;
     margin-top: 0 !important;
     margin-left: 0 !important;

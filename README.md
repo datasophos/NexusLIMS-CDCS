@@ -2,7 +2,14 @@
 
 <p align="center">
   <img src="static/img/logo_horizontal_text.png" alt="NexusLIMS Logo" width="400">
+
+
+[![Documentation](https://img.shields.io/badge/📖%20docs-stable-blue?style=flat-square)](https://datasophos.github.io/NexusLIMS/stable/frontend_guide.html)
+[![Django 4.2](https://img.shields.io/badge/django-4.2-green?style=flat-square&logo=django
+)](https://docs.djangoproject.com/en/6.0/releases/4.2/)
+[![Maintained by Datasophos](https://img.shields.io/badge/🏢%20maintained%20by-datasophos%20LLC-blue?style=flat-square)](https://datasophos.co)
 </p>
+
 
 NexusLIMS-CDCS is a customized deployment of the NIST Materials Data Curation System (MDCS) designed for managing and sharing microscopy and materials characterization data. It provides a web-based platform for capturing, organizing, searching, and visualizing experimental data using structured XML schemas.
 
@@ -18,7 +25,9 @@ This system enables:
 - **Secure data management** with user authentication and access control
 - **Instrument data integration** for linking to raw experimental files
 
-The system is built on the NIST Materials Data Curation System (MDCS) framework and uses PostgreSQL for data storage, Redis for caching, and Caddy for serving files and the application through a reverse proxy.
+Visit the [📷 screenshot gallery](https://datasophos.github.io/NexusLIMS/stable/frontend_guide/gallery.html) for
+a preview of the application's features and appearance.
+The system is built on the NIST Configurable Data Curation System (CDCS) framework and uses PostgreSQL for data storage, Redis for caching, and Caddy for serving files and the application through a reverse proxy.
 
 ## Integration with NexusLIMS
 
@@ -37,9 +46,9 @@ If you're looking to use an existing NexusLIMS-CDCS deployment:
 
 To deploy and manage a NexusLIMS-CDCS instance:
 
-- **📖 [Deployment Guide](deployment/README.md)** - Quick start for development and production
-- **🚀 [Production Deployment](deployment/PRODUCTION.md)** - Detailed production setup instructions
-- **🔧 [Admin Commands](deployment/admin-commands.sh)** - Management scripts for backups, updates, and maintenance
+- **📖 [Documentation](https://datasophos.github.io/NexusLIMS/stable/frontend_guide.html)** - Documentation development and production
+- **🚀 [Production Deployment](https://datasophos.github.io/NexusLIMS/stable/frontend_guide/production.html)** - Detailed production setup instructions
+- **🔧 [Admin Commands](https://datasophos.github.io/NexusLIMS/stable/frontend_guide/administration.html)** - Management scripts for backups, updates, and maintenance
 
 ## Key Features
 

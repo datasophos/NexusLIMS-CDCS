@@ -13,15 +13,19 @@
     ======================================================================== */
 
 
- /* slightly reduce width of search box on explore page */
- #search_bar {
-     padding-right: 1em;
- }
+/* slightly reduce width of search box on explore page */
+#search_bar {
+    padding-right: 1em;
+}
 
- /* explore search button */
- button.search_button {
-     background-color: var(--nx-primary-color);
- }
+/* explore search button */
+button.search_button {
+    background-color: var(--nx-primary-color);
+}
+button.search_button:hover {
+   	background-color: var(--nx-warning-color);
+   	color: #fff !important;
+}
 
 
 /* ========================================================================
@@ -45,8 +49,15 @@
  */
 .list-record-badge {
     color: white;
+    background-color: var(--nx-info-badge-color-dark);
     margin: 3px 0.25em 3px 0px;
 }
+
+/* don't change hover color on results page */
+.results-page .result-line-title-container .a-result > div > a:hover {
+    color: var(--nx-primary-color)
+}
+
 
 
 /* ========================================================================
@@ -129,7 +140,7 @@
 }
 
 .a-result a {
-    color: #11659c;
+    color: var(--nx-primary-color, #11659c);
     border-bottom-color: transparent;
     text-decoration: unset;
 }
