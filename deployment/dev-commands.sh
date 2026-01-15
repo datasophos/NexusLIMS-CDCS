@@ -3,6 +3,12 @@
 
 export COMPOSE_FILE="docker-compose.base.yml:docker-compose.dev.yml"
 
+# Get COMPOSE_PROJECT_NAME from .env or use default
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | grep COMPOSE_PROJECT_NAME | xargs)
+fi
+COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_dev}
+
 # Build the CDCS container
 alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
 alias dev-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs'

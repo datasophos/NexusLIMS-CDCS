@@ -49,7 +49,7 @@ COPY mdcs_home ./mdcs_home
 COPY locale ./locale
 COPY templates ./templates
 COPY static ./static
-COPY config ./config
+# config directory is mounted at runtime in docker-compose.base.yml
 COPY nexuslims_overrides ./nexuslims_overrides
 COPY xslt ./xslt
 

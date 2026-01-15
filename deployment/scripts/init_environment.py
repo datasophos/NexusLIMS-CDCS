@@ -69,15 +69,23 @@ def log_info(msg):
 
 
 def is_production():
-    """Check if running in production environment."""
-    settings_module = os.getenv("DJANGO_SETTINGS_MODULE", "")
-    return "prod_settings" in settings_module
+    """Check if running in production environment.
+
+    Works with custom_settings by checking Django's DEBUG setting.
+    Production = DEBUG is False.
+    """
+    from django.conf import settings
+    return not settings.DEBUG
 
 
 def is_development():
-    """Check if running in development environment."""
-    settings_module = os.getenv("DJANGO_SETTINGS_MODULE", "")
-    return "dev_settings" in settings_module
+    """Check if running in development environment.
+
+    Works with custom_settings by checking Django's DEBUG setting.
+    Development = DEBUG is True.
+    """
+    from django.conf import settings
+    return settings.DEBUG
 
 
 def check_migrations():
@@ -692,6 +700,7 @@ def main():
                 print(f"  2. Login with your superuser credentials")
             print(f"  3. Begin uploading data records via the NexusLIMS backend")
             print(f"  4. Explore data: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/explore/keyword/")
+            print(f"  5. As an admin, you can manually add records at {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/curate/")
         else:
             if superuser:
                 print(f"  Superuser: {superuser.username}")
@@ -707,7 +716,7 @@ def main():
                 print("  - Login with: user / user (regular user for testing)")
             print("  - View example record: https://nexuslims-dev.localhost/data?id=1")
             print("  - Explore data: https://nexuslims-dev.localhost/explore/keyword/")
-            print("  - Start uploading data using the Nexus Experiment Schema")
+            print("  - Start uploading data using the Nexus Experiment Schema or at https://nexuslims-dev.localhost/curate")
 
         print("=" * 70)
 

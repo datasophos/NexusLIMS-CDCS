@@ -63,6 +63,9 @@ services:
       - cdcs_socket:/tmp/nexuslims/
       - cdcs_static:/srv/nexuslims/static.prod
 
+      # Configuration (mounted for runtime updates without rebuild)
+      - ../config:/srv/nexuslims/config:ro
+
       # Scripts and schemas for initialization (mounted for easier updates)
       - ./scripts:/srv/scripts:ro
       - ./schemas/nexus-experiment.xsd:/srv/nexuslims/schemas/nexus-experiment.xsd:ro

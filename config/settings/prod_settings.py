@@ -29,6 +29,14 @@ REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 REDIS_PASSWORD = os.getenv("REDIS_PASS", "")
 
+# Add config/static_files for deployment-specific custom assets
+# This allows users to place custom logos and images in config/static_files
+# without modifying the base applicaiton code
+STATICFILES_DIRS = [
+    "static",  # Base static directory from mdcs
+    "/srv/nexuslims/config/static_files",  # Custom deployment assets
+]
+
 # Static files
 STATIC_ROOT = "/srv/nexuslims/static.prod"
 STATIC_URL = "/static/"

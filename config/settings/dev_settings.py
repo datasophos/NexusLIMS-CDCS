@@ -36,6 +36,14 @@ ALLOWED_HOSTS = ['*']
 # Development-specific CORS settings (if needed)
 # CORS_ALLOW_ALL_ORIGINS = True
 
+# Add config/static_files for deployment-specific custom assets
+# This allows users to place custom logos and images in config/static_files
+# without modifying the base applicaiton code
+STATICFILES_DIRS = [
+    "static",  # Base static directory from mdcs
+    "/srv/nexuslims/config/static_files",  # Custom deployment assets
+]
+
 # NX_DOCUMENTATION_LINK = "https://examplechanged.com"
 # NX_HOMEPAGE_TEXT = "dev_settings HOMEPAGE_TEXT content."
 # NX_FOOTER_LINK = "https://example.com"

@@ -1,6 +1,6 @@
-### bind mount of dev deployment files
-mdcs/*.xsl
-mdcs/*.xsd
+### custom static deployment assets and deployment settings
+config/static_files
+config/settings/custom_settings.py
 
 ### NexusLIMS test data (extracted from nexuslims-test-data.tar.gz)
 test-data/

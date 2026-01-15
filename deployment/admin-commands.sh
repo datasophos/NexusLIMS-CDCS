@@ -10,7 +10,7 @@ if [ -f .env ]; then
     export $(grep -v '^#' .env | grep COMPOSE_PROJECT_NAME | xargs)
     export $(grep -v '^#' .env | grep NX_CDCS_BACKUPS_HOST_PATH | xargs)
 fi
-COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_dev}
+COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_prod}
 NX_CDCS_BACKUPS_HOST_PATH=${NX_CDCS_BACKUPS_HOST_PATH:-./backups}
 
 # hide docker feature advertisements

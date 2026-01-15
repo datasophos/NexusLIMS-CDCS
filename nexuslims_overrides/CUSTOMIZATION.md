@@ -29,9 +29,9 @@ This file contains default values for all NexusLIMS-specific settings. To custom
 ### Customization Workflow
 
 1. **Never modify `nexuslims_overrides/settings.py` directly**
-2. **Override settings** in your deployment's `mdcs/settings.py` or environment-specific settings file
-3. **Place custom assets** (logos, images) in `nexuslims_overrides/static/nexuslims/img/`
-4. **Run `collectstatic`** after making changes to static files
+2. **Override settings** in your deployment's `config/settings/custom_settings.py` or environment-specific settings file
+3. **Place custom assets** (logos, images) in `config/static_files/`
+4. **Restart your containers** to load the new configuration (no rebuild required)
 
 ---
 
@@ -312,21 +312,31 @@ NX_CUSTOM_MENU_LINKS = [
 
 ### 2. Organize Custom Assets
 
+Place your custom assets in `config/static_files/` instead of modifying the `nexuslims_overrides` directory:
+
 ```
-nexuslims_overrides/static/nexuslims/img/
-├── nav_logo.png           # Your navigation bar logo
-├── footer_logo.png        # Your footer logo
-├── logo_horizontal_text.png  # Your homepage logo
-└── custom_icon.png        # Any other custom images
+config/
+├── static_files/
+│   ├── nav_logo.png           # Your navigation bar logo
+│   ├── footer_logo.png        # Your footer logo
+│   ├── logo_horizontal_text.png  # Your homepage logo
+│   └── custom_icon.png        # Any other custom images
+└── settings/
+    └── custom_settings.py
 ```
+
+**Benefits:**
+- Keep customizations separate from app code
+- No need to modify `nexuslims_overrides/` directory
+- Runtime configuration updates without rebuilding containers
 
 ### 3. Version Control Custom Assets
 
-Add your custom logos to git but use `.gitignore` for deployment-specific files:
+Add your custom assets to git but use `.gitignore` for deployment-specific files:
 
 ```gitignore
 # .gitignore
-nexuslims_overrides/static/nexuslims/img/local_*
+config/static_files/*
 ```
 
 ### 4. Document Your Customizations
@@ -597,9 +607,10 @@ NX_INSTRUMENT_COLOR_MAPPINGS = {
 
 ### Logo Not Displaying
 
-- Check file path is correct (relative to `static/`)
-- Verify file exists in `nexuslims_overrides/static/nexuslims/img/`
+- Check file path is correct (relative to `config/static_files/`)
+- Verify file exists in `config/static_files/`
 - Ensure file permissions allow reading
+- Run `collectstatic` to collect the files: `python manage.py collectstatic` (this is run automatically when the container is restarted)
 - Check Django logs for 404 errors
 
 ### Menu Links Not Showing

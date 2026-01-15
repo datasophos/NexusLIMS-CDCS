@@ -1,6 +1,6 @@
 # NexusLIMS Overrides App
 
-This Django app contains all NexusLIMS-specific customizations to the base MDCS system.
+This Django app contains (most) all NexusLIMS-specific customizations to the base MDCS system.
 
 ## Purpose
 
@@ -167,38 +167,37 @@ Then use template inheritance to minimize duplication:
 {% endblock %}
 ```
 
-## Customization
+## Deployment Customization
+
+See [CUSTOMIZATION.md](./CUSTOMIZATION.md) for much more detail, but in brief, you can
+do the following to customize your depoyment without modifying the core code at all:
 
 ### Using a Custom Logo
 
 The homepage logo is configurable via settings. To change it:
 
-1. **Add your logo file** to `nexuslims_overrides/static/nexuslims/img/`:
+1. **Add your logo file** to `config/static_files/`:
    ```bash
-   cp /path/to/your/logo.png nexuslims_overrides/static/nexuslims/img/my_logo.png
+   cp /path/to/your/logo.png config/static_files/my_logo.png
    ```
 
-2. **Update the setting** in `mdcs/core_settings.py`:
+2. **Update the setting** in `config/settings/custom_settings.py`:
    ```python
-   # Path relative to static/ directory
-   NX_HOMEPAGE_LOGO = "nexuslims/img/my_logo.png"
+   # Path relative to static_files/ directory
+   NX_HOMEPAGE_LOGO = "my_logo.png"
    ```
 
-3. **Collect static files** (if in production):
+3. **Restart your containers** to load the new configuration:
    ```bash
-   python manage.py collectstatic
+   docker compose restart cdcs
    ```
-
-**Using an environment variable:**
-```python
-# In mdcs/core_settings.py
-NX_HOMEPAGE_LOGO = os.getenv("NX_HOMEPAGE_LOGO", "nexuslims/img/logo_horizontal_text.png")
-```
 
 **Recommended logo dimensions:**
 - Width: 200-400px
 - Height: 60-100px
 - Format: PNG with transparency
+
+## Development Customization
 
 ### Adding New Styles
 
