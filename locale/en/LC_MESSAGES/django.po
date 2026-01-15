@@ -4,4 +4,4 @@ msgid "form_label"
 msgstr "form"
 
 msgid "record_label"
-msgstr "experiment record"
+msgstr "experiment"
