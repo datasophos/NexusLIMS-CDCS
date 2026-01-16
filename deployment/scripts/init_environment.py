@@ -392,6 +392,16 @@ def upload_example_records(request, template_vm):
             return None
 
         try:
+            # Generate the title for this record
+            title = record_path.name.replace("_", " ").replace(".xml", "").capitalize()
+
+            # Check if this record already exists
+            existing_record = Data.objects.filter(title=title).first()
+            if existing_record:
+                log_success(f"Example record '{title}' already exists (ID: {existing_record.id})")
+                uploaded.append(existing_record)
+                continue
+
             # Read the example record
             with record_path.open(encoding="utf-8") as f:
                 record_content = f.read()
@@ -403,7 +413,7 @@ def upload_example_records(request, template_vm):
             # Create the data record
             data_record = Data(
                 template=template,
-                title=record_path.name.replace("_", " ").replace(".xml", "").capitalize()
+                title=title
             )
 
             # Set the content and user

@@ -27,8 +27,8 @@ alias dev-logs-app='docker logs -f nexuslims_dev_cdcs'
 alias dev-logs-caddy='docker logs -f nexuslims_dev_cdcs_caddy'
 
 # Restart services
-alias dev-restart='docker compose restart cdcs'
-alias dev-restart-all='docker compose restart'
+alias dev-restart='docker compose down cdcs && docker compose up -d cdcs'
+alias dev-restart-all='docker compose down && docker compose up -d'
 
 # Shell access
 alias dev-shell='docker exec -it nexuslims_dev_cdcs bash'
