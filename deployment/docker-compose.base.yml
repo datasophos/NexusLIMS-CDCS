@@ -3,7 +3,7 @@ services:
     build:
       context: caddy
     pull_policy: build
-    image: caddy:${CADDY_VERSION:-2}
+    image: caddy:${CADDY_VERSION:-2}-alpine
     container_name: ${COMPOSE_PROJECT_NAME}_cdcs_caddy
     ports:
       - "80:80"
@@ -63,8 +63,8 @@ services:
       - cdcs_socket:/tmp/nexuslims/
       - cdcs_static:/srv/nexuslims/static.prod
 
-      # Configuration (mounted for runtime updates without rebuild)
-      - ../config:/srv/nexuslims/config:ro
+      # Configuration (optional mount to override baked-in config for hot reload)
+      # - ../config:/srv/nexuslims/config:ro
 
       # Scripts and schemas for initialization (mounted for easier updates)
       - ./scripts:/srv/scripts:ro
@@ -92,9 +92,8 @@ services:
       - ./saml2/.env
       - ./handle/.env
       - ./extra/.env
-    command:
-      - mdcs
-      - ${WEB_SERVER:-gunicorn}
+    # entrypoint defaults to dev deployment
+    entrypoint: ["/docker-entrypoint.dev.sh"]
 
 volumes:
   postgres_data:
