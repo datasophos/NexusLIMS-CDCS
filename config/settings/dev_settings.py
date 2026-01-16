@@ -54,3 +54,12 @@ NX_CUSTOM_MENU_LINKS = [
 ]
 NX_ENABLE_TUTORIALS = True
 # NX_NAV_LOGO = "nexuslims/img/nav_logo.png"
+
+# ============================================================================
+# API AUTHENTICATION
+# ============================================================================
+
+# Fixed API token for development/testing (DO NOT USE IN PRODUCTION)
+# This token will be auto-created for the 'admin' user
+# this token cannot be larger than 40 characters
+NX_DEV_API_TOKEN = "nexuslims-dev-token-not-for-production"

@@ -8,10 +8,13 @@ This script handles:
    - Development: username=admin, password=admin
    - Production: prompts for credentials (or skips if exists)
 3. Creating default regular user (development only): username=user, password=user
-4. Compiling Django message translations ("label" and "record", controlled by locale/en/LC_MESSAGES/django.po)
-5. Configuring anonymous group permissions for explore keyword app
-6. Uploading NexusLIMS schema and XSLT templates
-7. Loading exporters
+4. Setting up API authentication tokens
+   - Development: Creates fixed token from NX_DEV_API_TOKEN setting
+   - Production: Creates token from NX_ADMIN_API_TOKEN environment variable
+5. Compiling Django message translations ("label" and "record", controlled by locale/en/LC_MESSAGES/django.po)
+6. Configuring anonymous group permissions for explore keyword app
+7. Uploading NexusLIMS schema and XSLT templates
+8. Loading exporters
 
 Usage:
     Development:
@@ -576,6 +579,62 @@ def compile_translations():
         # Don't raise - let the script continue
 
 
+def setup_api_tokens(superuser):
+    """
+    Create or update API tokens for the superuser based on environment settings.
+
+    In development: Uses NX_DEV_API_TOKEN setting (fixed token for testing)
+    In production: Uses NX_ADMIN_API_TOKEN setting (from environment variable)
+
+    Args:
+        superuser: User object for which to create/update token
+    """
+    if superuser is None:
+        log_warning("No superuser provided - skipping API token setup")
+        return
+
+    from django.conf import settings
+    from rest_framework.authtoken.models import Token
+
+    log_info("Checking API token configuration...")
+
+    # Determine which token setting to use based on environment
+    if is_development():
+        token_value = getattr(settings, 'NX_DEV_API_TOKEN', None)
+        token_name = "development"
+    else:
+        token_value = getattr(settings, 'NX_ADMIN_API_TOKEN', None)
+        token_name = "production admin"
+
+    if not token_value:
+        log_info(f"No {token_name} API token configured - skipping token setup")
+        if is_development():
+            log_info("To configure: Set NX_DEV_API_TOKEN in config/settings/dev_settings.py")
+        else:
+            log_info("To configure: Set NX_ADMIN_API_TOKEN environment variable in .env")
+        return
+
+    # Check if token already exists for this user
+    try:
+        existing_token = Token.objects.get(user=superuser)
+
+        # If token key matches, we're done
+        if existing_token.key == token_value:
+            log_success(f"{token_name.capitalize()} API token already exists for user '{superuser.username}'")
+            return
+
+        # Token exists but key is different - delete and recreate
+        existing_token.delete()
+        log_info(f"Removed existing token with different key for user '{superuser.username}'")
+    except Token.DoesNotExist:
+        # No existing token, will create new one
+        pass
+
+    # Create new token with desired key
+    Token.objects.create(user=superuser, key=token_value)
+    log_success(f"Created {token_name} API token for user '{superuser.username}'")
+
+
 def load_exporters():
     """Load the exporters into the database."""
     log_info("Loading exporters...")
@@ -664,6 +723,9 @@ def main():
 
         # Step 2.5: Get or create regular user for testing (development only)
         regular_user = get_or_create_regular_user()
+
+        # Step 2.6: Setup API tokens based on environment settings
+        setup_api_tokens(superuser)
 
         # Step 3: Configure anonymous group permissions
         grant_anonymous_explore_permission()
