@@ -10,14 +10,16 @@ WORKDIR /srv/nexuslims
 RUN apk add python3-dev build-base linux-headers gettext bash \
     && rm -rf /var/cache/apk/*
 
-# Install additional python packages (needed before requirements)
-RUN uv pip install --system setuptools wheel && \
-    uv pip install --system psycopg2-binary uwsgi gunicorn[gthread]
+# Copy dependency files for layer caching
+COPY pyproject.toml uv.lock README.md ./
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt requirements.core.txt ./
-RUN uv pip install --system -r requirements.txt && \
-    uv pip install --system -r requirements.core.txt
+# Install all dependencies using UV sync
+# UV_PROJECT_ENVIRONMENT: Install to system Python instead of creating venv
+# --frozen: Use exact versions from uv.lock (reproducible builds)
+# --no-dev: Skip dev dependencies (not needed in Docker)
+# --no-install-project: Skip installing the project itself (just dependencies)
+# --extra: Install optional dependency groups
+RUN UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen --no-dev --no-install-project --extra core --extra server
 
 # Copy application source code and configuration
 COPY manage.py ./

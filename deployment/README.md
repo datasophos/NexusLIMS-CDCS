@@ -277,6 +277,121 @@ The update script automatically patches URLs based on environment variables:
 
 See [`../CLAUDE.md`](../CLAUDE.md) for more details.
 
+## Dependency Management
+
+This project uses **[UV](https://github.com/astral-sh/uv)** for fast, reliable Python dependency management.
+
+### Key Files
+
+- **`pyproject.toml`** - Project configuration and dependencies (replaces requirements.txt)
+- **`uv.lock`** - Lockfile ensuring reproducible builds across all environments
+- **`.python-version`** - Specifies required Python version (3.13)
+
+### Dependency Groups
+
+Dependencies are organized into optional groups in `pyproject.toml`:
+
+- **Main dependencies**: `celery`, `Django`, `django-redis` (core application)
+- **`[core]` group**: 21 CDCS/MDCS packages pinned to `2.18.*`
+- **`[server]` group**: Production servers (`psycopg2-binary`, `uwsgi`, `gunicorn`)
+
+### Docker Build Process
+
+The Dockerfile uses native UV commands for fast, reproducible builds:
+
+```dockerfile
+# Copy dependency files (separate layer for caching)
+COPY pyproject.toml uv.lock ./
+
+# Install from lockfile (no dependency resolution needed)
+RUN uv sync --frozen --no-dev --extra core --extra server
+```
+
+**Benefits:**
+- **Fast**: UV is 10-100x faster than pip
+- **Reproducible**: Lockfile ensures identical dependencies everywhere
+- **Cached**: Docker layer caching speeds up rebuilds
+
+### Adding New Dependencies
+
+1. **Add to pyproject.toml**:
+   ```bash
+   # For a main dependency
+   uv add package-name
+
+   # For a specific group
+   uv add --optional server new-server-package
+   ```
+
+2. **Update lockfile**:
+   ```bash
+   uv lock
+   ```
+
+3. **Rebuild Docker image**:
+   ```bash
+   dev-build-clean
+   ```
+
+### Updating Dependencies
+
+**Update all packages (respecting version constraints):**
+```bash
+uv lock --upgrade
+```
+
+**Update specific package:**
+```bash
+uv lock --upgrade-package django
+```
+
+**IMPORTANT**: Always commit `uv.lock` changes with your dependency updates.
+
+### Upgrading CDCS Core Packages
+
+CDCS core packages are pinned to `2.18.*` for stability. To upgrade to a new CDCS version:
+
+1. **Edit `pyproject.toml`**:
+   ```toml
+   [project.optional-dependencies]
+   core = [
+       "core_main_app[auth]==2.19.*",  # Change version
+       "core_composer_app==2.19.*",     # Change version
+       # ... update all core packages
+   ]
+   ```
+
+2. **Update lockfile**:
+   ```bash
+   uv lock --upgrade
+   ```
+
+3. **Test thoroughly** before deploying to production
+
+### Local Development (Optional)
+
+UV supports local development outside Docker:
+
+```bash
+# Create virtual environment and install dependencies
+# Note: --no-install-project skips building the project itself (it's a Django app, not a package)
+uv sync --no-install-project --extra core --extra server
+
+# Activate environment
+source .venv/bin/activate
+
+# Run Django commands
+python manage.py runserver
+```
+
+**Alternative:** Use the convenience alias (from deployment directory):
+```bash
+source dev-commands.sh
+dev-uv-sync  # Creates .venv and installs all dependencies
+```
+
+However, **Docker is the recommended development workflow** as it matches production more closely.
+
 ## Architecture
 
 ### Development
