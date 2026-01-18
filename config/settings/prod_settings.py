@@ -120,3 +120,12 @@ NX_ENABLE_TUTORIALS = True
 # SPECTACULAR_SETTINGS.update({
 #     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
 # })
+
+# ============================================================================
+# API AUTHENTICATION
+# ============================================================================
+
+# Admin API token for production (set via environment variable)
+# Set NX_ADMIN_API_TOKEN in your environment to create/update the admin user's token
+# If not set, no token will be auto-created (you'll need to create one manually)
+NX_ADMIN_API_TOKEN = os.getenv("NX_ADMIN_API_TOKEN", None)

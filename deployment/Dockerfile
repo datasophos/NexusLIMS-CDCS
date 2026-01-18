@@ -1,41 +1,18 @@
 # NexusLIMS-CDCS Development Dockerfile
 # Based on MDCS 3.18.0
 
-FROM python:3.11-slim
-
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
-
-# Install system dependencies
-RUN apt-get update && apt-get --no-install-recommends install -y \
-    gcc \
-    g++ \
-    python3-dev \
-    gettext \
-    libpq-dev \
-    postgresql-client \
-    libxml2-dev \
-    libxslt1-dev \
-    libxslt-dev \
-    zlib1g \
-    zlib1g-dev \
-    libssl-dev \
-    xmlsec1 \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+FROM astral/uv:python3.13-alpine3.23
+# use 3.13 since lxml 5.4.0 does not have a binary for 3.14
 
 # Create application directory
 WORKDIR /srv/nexuslims
 
-# Install uv for faster package installation
-RUN pip install --upgrade pip && pip install uv
+RUN apk add python3-dev build-base linux-headers gettext bash \
+    && rm -rf /var/cache/apk/*
 
 # Install additional python packages (needed before requirements)
 RUN uv pip install --system setuptools wheel && \
-    uv pip install --system psycopg2 uwsgi gunicorn[gthread]
+    uv pip install --system psycopg2-binary uwsgi gunicorn[gthread]
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt requirements.core.txt ./
@@ -49,7 +26,9 @@ COPY mdcs_home ./mdcs_home
 COPY locale ./locale
 COPY templates ./templates
 COPY static ./static
-# config directory is mounted at runtime in docker-compose.base.yml
+# config is included in image for remote builds (Git URL context)
+# For local dev, it can be overridden via bind mount in docker-compose.dev.yml
+COPY config ./config
 COPY nexuslims_overrides ./nexuslims_overrides
 COPY xslt ./xslt
 
@@ -57,9 +36,9 @@ COPY xslt ./xslt
 RUN mkdir -p /srv/nexuslims/media /srv/nexuslims/static.prod
 
 # Set up entrypoints and scripts
-COPY deployment/docker-entrypoint.sh /docker-entrypoint.sh
+COPY deployment/docker-entrypoint.prod.sh /docker-entrypoint.prod.sh
+COPY deployment/docker-entrypoint.dev.sh /docker-entrypoint.dev.sh
 COPY deployment/scripts /srv/scripts
-RUN chmod +x /docker-entrypoint.sh /srv/scripts/*.sh
+RUN chmod +x /docker-entrypoint.*.sh /srv/scripts/*.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["mdcs", "runserver"]
+ENTRYPOINT ["/docker-entrypoint.dev.sh"]
