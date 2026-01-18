@@ -66,6 +66,17 @@ To deploy and manage a NexusLIMS-CDCS instance:
 - **Cache**: Redis
 - **Web Server**: Caddy (with automatic HTTPS)
 - **Container Platform**: Docker and Docker Compose
+- **Package Management**: UV (with pyproject.toml and lockfile)
+
+## Development
+
+This project uses [UV](https://github.com/astral-sh/uv) for fast, reliable dependency management:
+
+- **Dependencies**: Defined in `pyproject.toml` with organized groups (core, server)
+- **Reproducibility**: `uv.lock` lockfile ensures identical builds across environments
+- **Docker-first**: Development happens in containers (no local Python setup required)
+
+For detailed build and deployment instructions, see [deployment/README.md](deployment/README.md).
 
 ## License
 

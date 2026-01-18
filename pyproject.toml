@@ -1,5 +1,70 @@
+[project]
+name = "nexuslims-cdcs"
+version = "3.18.0"
+description = "NexusLIMS-CDCS: Customized NIST MDCS deployment for microscopy data management"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    {name = "Datasophos LLC"},
+]
+keywords = ["NexusLIMS", "MDCS", "CDCS", "microscopy", "data management", "materials science"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.13",
+]
+
+dependencies = [
+    "celery",
+    "Django",
+    # Redis-backed caching for production
+    # Base MDCS uses Django's default LocMemCache, but we use Redis for:
+    # - Better performance with persistent cache across container restarts
+    # - Shared cache across multiple app instances (if scaled horizontally)
+    # - Session storage that survives application restarts
+    # Required by: config/settings/prod_settings.py
+    "django-redis",
+]
+
+[project.optional-dependencies]
+# CDCS/MDCS core packages - all pinned to 2.18.* for compatibility
+core = [
+    "core_main_app[auth]==2.18.*",
+    "core_composer_app==2.18.*",
+    "core_curate_app==2.18.*",
+    "core_dashboard_common_app==2.18.*",
+    "core_dashboard_app==2.18.*",
+    "core_explore_example_app==2.18.*",
+    "core_explore_keyword_app==2.18.*",
+    "core_explore_federated_search_app==2.18.*",
+    "core_exporters_app==2.18.*",
+    "core_federated_search_app==2.18.*",
+    "core_website_app==2.18.*",
+    "core_module_blob_host_app==2.18.*",
+    "core_module_remote_blob_host_app==2.18.*",
+    "core_module_advanced_blob_host_app==2.18.*",
+    "core_module_excel_uploader_app==2.18.*",
+    "core_module_periodic_table_app==2.18.*",
+    "core_module_chemical_composition_app==2.18.*",
+    "core_module_chemical_composition_simple_app==2.18.*",
+    "core_module_text_area_app==2.18.*",
+    "core_file_preview_app==2.18.*",
+    "core_linked_records_app==2.18.*",
+]
+
+# Production server packages
+server = [
+    "psycopg2-binary",  # PostgreSQL adapter
+    "uwsgi",            # Application server
+    "gunicorn[gthread]", # Alternative application server with threading support
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [tool.black]
 line-length = 79
-target-version = ['py36']
+target-version = ['py313']
 include = '\.pyi?$'
-

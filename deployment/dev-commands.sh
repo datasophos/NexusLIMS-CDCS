@@ -53,6 +53,13 @@ alias dev-update-xslt='bash scripts/update-xslt.sh'
 alias dev-update-xslt-detail='bash scripts/update-xslt.sh detail'
 alias dev-update-xslt-list='bash scripts/update-xslt.sh list'
 
+# UV dependency management
+# Note: --no-install-project skips building the project itself (Django app, not a package)
+alias dev-uv-lock='cd .. && uv lock && cd deployment'
+alias dev-uv-upgrade='cd .. && uv lock --upgrade && cd deployment'
+alias dev-uv-sync='cd .. && uv sync --no-install-project --extra core --extra server && cd deployment'
+alias dev-uv-add='echo "Usage: cd .. && uv add package-name && cd deployment && dev-build-clean"'
+
 echo "NexusLIMS-CDCS Development aliases loaded! Available commands:"
 echo ""
 echo "  🏗️  Build:"
@@ -92,6 +99,13 @@ echo "  🎨 XSLT Stylesheets:"
 echo "    dev-update-xslt        - Update both detail and list stylesheets in database"
 echo "    dev-update-xslt-detail - Update detail_stylesheet.xsl only"
 echo "    dev-update-xslt-list   - Update list_stylesheet.xsl only"
+echo ""
+echo "  📦 UV Dependencies:"
+echo "    dev-uv-lock            - Regenerate uv.lock from pyproject.toml"
+echo "    dev-uv-upgrade         - Upgrade all dependencies (respecting version constraints)"
+echo "    dev-uv-sync            - Sync local environment with lockfile (for local dev outside Docker)"
+echo "    dev-uv-add             - Show usage for adding new dependencies"
+echo "                             (After adding deps, run dev-build-clean to rebuild Docker)"
 echo ""
 echo "To use these aliases, run: source dev-commands.sh"
 echo ""
