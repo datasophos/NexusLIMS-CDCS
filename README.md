@@ -1,7 +1,7 @@
 # NexusLIMS-CDCS
 
-<p align="center">
-  <img src="static/img/logo_horizontal_text.png" alt="NexusLIMS Logo" width="400">
+<p align="left">
+  <img src="static/img/logo_horizontal_text.png" alt="NexusLIMS Logo" width="600">
 
 
 [![Documentation](https://img.shields.io/badge/📖%20docs-stable-blue?style=flat-square)](https://datasophos.github.io/NexusLIMS/stable/frontend_guide.html)

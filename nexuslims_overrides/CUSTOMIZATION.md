@@ -117,8 +117,8 @@ NX_INSTRUMENT_COLOR_MAPPINGS = {
 The logo displayed in the top-left corner of the navigation bar.
 
 ```python
-# Default: "nexuslims/img/nav_logo.png"
-NX_NAV_LOGO = "path/to/your/nav_logo.png"
+# Default: "nexuslims/img/logo_horizontal_light.png"
+NX_NAV_LOGO = "path/to/your/logo_horizontal_light.png"
 ```
 
 **Recommendations:**
@@ -148,7 +148,7 @@ NX_FOOTER_LINK = "https://your-organization.com"
 The logo displayed on the homepage alongside the welcome text.
 
 ```python
-# Default: "nexuslims/img/logo_horizontal_text.png"
+# Default: "nexuslims/img/logo_stacked_modern.png"
 NX_HOMEPAGE_LOGO = "path/to/your/homepage_logo.png"
 ```
 
@@ -373,7 +373,7 @@ Place your custom assets in `config/static_files/` instead of modifying the `nex
 ```
 config/
 ├── static_files/
-│   ├── nav_logo.png           # Your navigation bar logo
+│   ├── logo_horizontal_light.png           # Your navigation bar logo
 │   ├── footer_logo.png        # Your footer logo
 │   ├── logo_horizontal_text.png  # Your homepage logo
 │   └── custom_icon.png        # Any other custom images

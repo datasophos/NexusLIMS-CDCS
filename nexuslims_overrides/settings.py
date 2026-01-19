@@ -62,7 +62,7 @@ NX_HOMEPAGE_TEXT = (
     "in the Nexus Facility."
 )
 
-NX_HOMEPAGE_LOGO = "nexuslims/img/logo_horizontal_text.png"  # Path relative to static/
+NX_HOMEPAGE_LOGO = "nexuslims/img/logo_stacked_modern.png"  # Path relative to static/
 
 # ============================================================================
 # BRANDING & LINKS
@@ -71,7 +71,7 @@ NX_HOMEPAGE_LOGO = "nexuslims/img/logo_horizontal_text.png"  # Path relative to 
 NX_DOCUMENTATION_LINK = "https://datasophos.github.io/NexusLIMS/"
 
 # Navigation bar branding
-NX_NAV_LOGO = "nexuslims/img/nav_logo.png"  # Path relative to static/
+NX_NAV_LOGO = "nexuslims/img/logo_horizontal_light.png"  # Path relative to static/
 
 # Footer branding
 NX_FOOTER_LOGO = "nexuslims/img/datasophos_logo.png"  # Path relative to static/

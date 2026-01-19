@@ -53,7 +53,7 @@ NX_CUSTOM_MENU_LINKS = [
     # {"title": "LINK 3", "url": "https://example.com", "icon": "users"},
 ]
 NX_ENABLE_TUTORIALS = True
-# NX_NAV_LOGO = "nexuslims/img/nav_logo.png"
+# NX_NAV_LOGO = "nexuslims/img/logo_horizontal_light.png"
 
 # ============================================================================
 # API AUTHENTICATION
