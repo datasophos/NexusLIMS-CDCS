@@ -29,6 +29,10 @@ Visit the [📷 screenshot gallery](https://datasophos.github.io/NexusLIMS/stabl
 a preview of the application's features and appearance.
 The system is built on the NIST Configurable Data Curation System (CDCS) framework and uses PostgreSQL for data storage, Redis for caching, and Caddy for serving files and the application through a reverse proxy.
 
+## Versioning
+
+Versions of this repository track the upstream MDCS project and use the same version numbers as the upstream source, with a `-nx0`, `-nx1`, `-nx2`, etc. suffix to differentiate tags and versions from the upstream project. For example, if tracking MDCS version `3.18.0`, this repository's corresponding release would be tagged as `3.18.0-nx0`, and any subsequent NexusLIMS-specific patches to that version would be `3.18.0-nx1`, `3.18.0-nx2`, and so on. Please see the [Releases](https://github.com/datasophos/NexusLIMS-CDCS/releases) for information about NexusLIMS CDCS releases.
+
 ## Integration with NexusLIMS
 
 This web application pairs with the [NexusLIMS backend](https://github.com/datasophos/NexusLIMS), which handles automated metadata extraction and record generation from microscopy session logs. The NexusLIMS backend creates XML records that are submitted to this CDCS instance for storage, search, and visualization.
