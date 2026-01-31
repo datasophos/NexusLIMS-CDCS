@@ -11,9 +11,10 @@ services:
       # Production data paths (configurable via environment variables)
       - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
       - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
-      # Uncomment the following line to use custom certificates (location configured
-      # in .env file with the CADDY_CERTS_HOST_PATH variable):
-      # - ${CADDY_CERTS_HOST_PATH}:/etc/caddy/certs:ro
+      # Custom certificate mounts (only included when CADDY_CERTS_HOST_PATH is set)
+      # When set, the entrypoint script automatically enables TLS in the Caddyfile
+      - ${CADDY_CERTS_HOST_PATH:+${CADDY_CERTS_HOST_PATH}/fullchain.pem:/etc/caddy/certs/fullchain.pem:ro}
+      - ${CADDY_CERTS_HOST_PATH:+${CADDY_CERTS_HOST_PATH}/privkey.pem:/etc/caddy/certs/privkey.pem:ro}
 
   postgres:
     restart: unless-stopped

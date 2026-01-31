@@ -23,24 +23,22 @@
 #   - Handle ACME HTTP-01 challenge
 #   - Store certificates in /data/caddy/certificates/
 #
-# Option 2: Manual Certificates
-# ------------------------------
-# If you have your own certificates, use the tls directive by uncommenting the lines
-# in the server configurations below:
+# Option 2: Custom Certificates (e.g., for local testing with mkcert)
+# --------------------------------------------------------------------
+# Set CADDY_CERTS_HOST_PATH in your .env file to enable custom certificates:
 #
-#   tls /path/to/cert.pem /path/to/key.pem
+#   CADDY_CERTS_HOST_PATH=/opt/nexuslims/certs
 #
-# Mount your certificate directory in docker-compose.prod.yml:
+# Required files in that directory:
+#   - fullchain.pem (certificate + chain)
+#   - privkey.pem (private key)
 #
-#   volumes:
-#     - /path/to/certs:/etc/caddy/certs:ro
+# The Docker entrypoint script will automatically:
+#   1. Mount the certificates into the container
+#   2. Enable the tls directive lines below (currently commented out)
+#   3. Configure Caddy to use your certificates
 #
-# Then use in the site blocks, e.g.:
-#
-#   https://{$DOMAIN} {
-#       tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
-#       ...
-#   }
+# No manual editing of this file or docker-compose.prod.yml needed!
 #
 # See: https://caddyserver.com/docs/automatic-https
 # ============================================================================
@@ -50,8 +48,10 @@ https://{$DOMAIN} {
     # Automatic HTTPS - Caddy handles certificate issuance and renewal
     # No tls directive needed for default ACME behavior
 
-    # Uncomment this line to use custom certificates (point to mount inside docker container)
+    # This line will be uncommented by ./docker-entrypoint.sh to enable custom certificates
+    # when CADDY_CERTS_HOST_PATH is set -- it should point to mount inside docker container
     # tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
+
     # Reverse proxy to the NexusLIMS-CDCS application
     reverse_proxy cdcs:8000 {
         header_up Host {host}
@@ -83,8 +83,10 @@ https://{$DOMAIN} {
 https://{$FILES_DOMAIN} {
     # Automatic HTTPS
 
-    # Uncomment this line to use custom certificates (point to mount inside docker container)
+    # This line will be uncommented by ./docker-entrypoint.sh to enable custom certificates
+    # when CADDY_CERTS_HOST_PATH is set -- it should point to mount inside docker container
     # tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
+
     # Logging
     log {
         output stdout
