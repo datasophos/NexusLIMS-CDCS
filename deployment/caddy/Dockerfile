@@ -12,6 +12,7 @@ RUN xcaddy build --with github.com/mediafoundation/caddy-bandwidth \
 FROM alpine:latest
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-# Run Caddy
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+# Run Caddy via entrypoint (handles conditional TLS configuration)
+ENTRYPOINT ["/docker-entrypoint.sh"]
