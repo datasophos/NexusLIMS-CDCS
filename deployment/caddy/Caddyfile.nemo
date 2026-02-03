@@ -1,0 +1,26 @@
+# NEMO lab-management system
+# This file is appended to the main Caddyfile at container startup by
+# docker-entrypoint.sh when NEMO_DOMAIN is set.  It is not used directly
+# by Caddy — do not point --config at it.
+
+https://{$NEMO_DOMAIN} {
+    # Automatic HTTPS
+
+    # This line will be uncommented by ./docker-entrypoint.sh to enable custom certificates
+    # when CADDY_CERTS_HOST_PATH is set -- it should point to mount inside docker container
+    # tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
+
+    reverse_proxy nemo:8000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+    }
+
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+}

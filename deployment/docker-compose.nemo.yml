@@ -1,0 +1,78 @@
+# ===========================================================================
+# OPTIONAL: NEMO lab-management overlay
+# ===========================================================================
+# This file is an opt-in Docker Compose override.  It is NOT included in the
+# default stack and has no effect unless you explicitly pass it.  Only use
+# this if you already know you need a co-located NEMO instance. The specific
+# image used in this example is the NexusLIMS NEMO test image, which includes
+# some test data, and is primarily intended to be used for local test deployments,
+# but could be used for a real deployment with some modifications.
+#
+# Prerequisites
+# -------------
+# 1. Add NEMO_DOMAIN to your .env file:
+#      NEMO_DOMAIN=nemo.nexuslims-local.test
+#
+# Usage
+# -----
+# Append this file to the base + prod invocation:
+#
+#   docker compose \
+#     -f docker-compose.base.yml \
+#     -f docker-compose.prod.yml \
+#     -f docker-compose.nemo.yml \
+#     up -d
+#
+# The resulting local image is tagged so that a subsequent
+# `docker compose up` skips the build when nothing has changed.
+#
+# To use a pre-built image from GHCR instead (requires read:packages
+# access), remove the `build:` key and set IMAGE_TAG as needed:
+#   IMAGE_TAG     - image tag                 (default: latest)
+
+services:
+  # Mount Caddyfile.nemo and pass NEMO_DOMAIN so the entrypoint appends
+  # the NEMO site block at startup.  Also ensure Caddy waits for NEMO to
+  # be healthy before starting.
+  caddy:
+    depends_on:
+      nemo:
+        condition: service_healthy
+    volumes:
+      - ./caddy/Caddyfile.nemo:/etc/caddy/Caddyfile.nemo:ro
+    environment:
+      - NEMO_DOMAIN=${NEMO_DOMAIN}
+
+  nemo:
+    image: ghcr.io/datasophos/nexuslims-test-nemo:${IMAGE_TAG:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_nemo
+    restart: unless-stopped
+
+    environment:
+      - DJANGO_SETTINGS_MODULE=splash_pad_settings
+      - PYTHONPATH=/nemo/
+      - PYTHONUNBUFFERED=1
+      # Must include the Caddy-facing domain so Django accepts the
+      # Host header forwarded through the reverse proxy.
+      - ALLOWED_HOSTS=${NEMO_DOMAIN},nemo,localhost
+
+    # Seed data and start the Django development server (same startup
+    # sequence the NexusLIMS integration-test image expects).
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cd /nemo
+        echo 'Configuring periodic table plugin...'
+        python /configure_settings.py
+        echo 'Seeding test data...'
+        python /init_data.py
+        echo 'Starting NEMO server...'
+        exec django-admin runserver 0.0.0.0:8000
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://nemo:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
