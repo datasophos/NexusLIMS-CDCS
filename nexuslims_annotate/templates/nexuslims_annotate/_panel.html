@@ -5,47 +5,58 @@
 
   {% regroup datasets by activity_seqno as activity_groups %}
   {% for group in activity_groups %}
-    <h6 class="text-uppercase text-muted fw-semibold mt-3 mb-2" style="font-size:0.75rem;letter-spacing:0.05em;">
-      Activity {{ group.grouper }}
-    </h6>
+
+    {# Activity divider #}
+    <div class="d-flex align-items-center gap-2 mt-3 mb-1">
+      <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
+            style="font-size:0.7rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
+      <hr class="flex-grow-1 my-0">
+    </div>
 
     {% for ds in group.list %}
-    <div class="card mb-2 border-0 bg-light">
+    {# Green border = saved annotation, gray = empty #}
+    <div class="card mb-1"
+         style="border:none;border-left:3px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %}">
       <div class="card-body p-2">
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 align-items-start">
           {% if ds.preview_url %}
           <div class="flex-shrink-0">
             <img src="{{ ds.preview_url }}"
                  alt="preview"
-                 style="width:64px;height:64px;object-fit:cover;border-radius:4px;"
+                 style="width:56px;height:56px;object-fit:cover;border-radius:3px;"
                  onerror="this.style.display='none'">
           </div>
           {% endif %}
-          <div class="flex-grow-1">
-            <div class="fw-semibold text-truncate mb-1" style="font-size:0.85rem;" title="{{ ds.name }}">
+          <div class="flex-grow-1 min-w-0">
+            <div class="text-truncate mb-1" title="{{ ds.name }}"
+                 style="font-family:monospace;font-size:0.8rem;font-weight:600;color:#333;">
               {{ ds.name }}
             </div>
             <textarea name="dataset_{{ ds.index }}_description"
-                      class="form-control form-control-sm"
+                      class="form-control form-control-sm annotate-textarea"
                       rows="2"
-                      placeholder="Add a description…">{{ ds.description }}</textarea>
+                      placeholder="Add a description…"
+                      data-original="{{ ds.description }}"
+                      style="font-size:0.8rem;resize:none;">{{ ds.description }}</textarea>
           </div>
         </div>
       </div>
     </div>
     {% endfor %}
+
   {% empty %}
     <p class="text-muted text-center py-4">No datasets found in this record.</p>
   {% endfor %}
 
-  <div class="d-flex gap-2 mt-3 pb-2 sticky-bottom bg-white pt-2 border-top">
-    <button type="submit" class="btn btn-primary btn-sm" id="annotate-save-btn">
-      <i class="fa fa-save"></i> Save Annotations
-    </button>
-    <button type="button" class="btn btn-outline-secondary btn-sm"
-            data-bs-dismiss="offcanvas">Cancel</button>
-  </div>
 </form>
+
+<div id="annotate-footer" class="d-flex gap-2 flex-shrink-0 bg-white border-top py-2 px-3">
+  <button type="submit" form="annotate-form" class="btn btn-primary btn-sm" id="annotate-save-btn">
+    <i class="fa fa-save"></i> Save Annotations
+  </button>
+  <button type="button" class="btn btn-outline-secondary btn-sm"
+          data-bs-dismiss="offcanvas">Cancel</button>
+</div>
 
 <div id="annotate-toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index:11000;">
   <div id="annotate-toast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -57,3 +68,4 @@
     </div>
   </div>
 </div>
+

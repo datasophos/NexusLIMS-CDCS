@@ -62,6 +62,30 @@
   function bindSaveForm() {
     var form = document.getElementById('annotate-form');
     if (!form) { return; }
+
+    // Update card accent color live as user types:
+    // green = saved annotation, yellow = unsaved change, gray = empty
+    form.querySelectorAll('.annotate-textarea').forEach(function (ta) {
+      ta.addEventListener('input', function () {
+        var card = ta.closest('.card');
+        var current = ta.value.trim();
+        var original = (ta.dataset.original || '').trim();
+        if (current === original) {
+          // Unchanged — restore saved state
+          if (current) {
+            card.style.background = '#f0fff4';
+            card.style.borderLeft = '3px solid #198754';
+          } else {
+            card.style.background = '#f8f9fa';
+            card.style.borderLeft = '3px solid #dee2e6';
+          }
+        } else {
+          // Dirty — unsaved change
+          card.style.background = '#fff8e1';
+          card.style.borderLeft = '3px solid #e67e00';
+        }
+      });
+    });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var saveBtn = document.getElementById('annotate-save-btn');
@@ -77,6 +101,7 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.success) {
+          forceClose = true;
           bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
           var toastEl = document.getElementById('annotate-toast');
           if (toastEl) { new bootstrap.Toast(toastEl, {delay: 3000}).show(); }
@@ -93,6 +118,26 @@
       });
     });
   }
+
+  function hasDirtyFields() {
+    var form = document.getElementById('annotate-form');
+    if (!form) { return false; }
+    return Array.from(form.querySelectorAll('.annotate-textarea')).some(function (ta) {
+      return ta.value.trim() !== (ta.dataset.original || '').trim();
+    });
+  }
+
+  var forceClose = false;
+  offcanvasEl.addEventListener('hide.bs.offcanvas', function (e) {
+    if (forceClose) { forceClose = false; return; }
+    if (hasDirtyFields()) {
+      e.preventDefault();
+      if (confirm('You have unsaved annotations. Discard changes and close?')) {
+        forceClose = true;
+        bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
+      }
+    }
+  });
 
   offcanvasEl.addEventListener('hidden.bs.offcanvas', function () {
     setTimeout(function () { document.getElementById('annotate-record-btn').blur(); }, 0);
