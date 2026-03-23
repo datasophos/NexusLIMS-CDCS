@@ -14,7 +14,7 @@
 </div>
 {% endcomment %}
 
-{% if NX_ENABLE_ANNOTATOR and request.user.is_authenticated %}
+{% if NX_ENABLE_ANNOTATOR and data.can_write %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'nexuslims_annotate/annotate.css' %}">
 {# Button is hidden here; JS moves it into #top-button-div after the DOM loads #}
@@ -33,6 +33,12 @@
      style="width: min(600px, 50vw);">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title"><i class="fa fa-pencil"></i> Annotate Record</h5>
+    <a href="/annotate/{{ data.data.id }}/"
+       id="annotate-expand-btn"
+       class="btn btn-outline-secondary btn-sm ms-auto me-2"
+       title="Open full-width annotator">
+      <i class="fa fa-expand"></i>
+    </a>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body" id="annotate-offcanvas-body">
@@ -56,6 +62,7 @@
       topBtnDiv.prepend(btn);
       document.getElementById('annotate-btn-wrapper').remove();
       new bootstrap.Tooltip(btn, {placement: 'top'});
+      new bootstrap.Tooltip(document.getElementById('annotate-expand-btn'), {placement: 'left'});
     }
   });
 
@@ -96,7 +103,8 @@
       fetch('/annotate/' + recordId + '/save/', {
         method: 'POST',
         body: formData,
-        headers: {'X-CSRFToken': formData.get('csrfmiddlewaretoken')},
+        headers: {'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                  'X-Requested-With': 'XMLHttpRequest'},
       })
       .then(function (r) { return r.json(); })
       .then(function (data) {

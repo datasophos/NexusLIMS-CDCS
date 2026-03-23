@@ -1,65 +1,136 @@
-{% extends "core_main_app/user/main.html" %}
-{% load i18n %}
+{% extends "theme.html" %}
+{% load static i18n %}
 
-{% block title %}Annotate Record{% endblock %}
+{% block title %}Annotate Record | {{ block.super }}{% endblock %}
 
-{% block content %}
-<div class="container mt-4">
-  <div class="row mb-3">
-    <div class="col">
-      <h4><i class="fa fa-pencil"></i> Annotate Record</h4>
-      <p class="text-muted mb-0">{{ data.title }}</p>
+{% block app_css %}
+<link rel="stylesheet" href="{% static 'nexuslims_annotate/annotate.css' %}">
+<style>
+  #annotate-page-form .card {
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+</style>
+{% endblock %}
+
+{% block app_data %}
+<div class="container-fluid px-4 pt-3 pb-5">
+
+  {# Header row #}
+  <div class="d-flex align-items-start justify-content-between mb-3 gap-3">
+    <div>
+      <h4 class="mb-0"><i class="fa fa-pencil"></i> Annotate Record</h4>
+      <p class="text-muted mb-0" style="font-size:0.9rem;">{{ record_title }}</p>
     </div>
-    <div class="col-auto">
-      <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}" class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-arrow-left"></i> Back to Record
-      </a>
-    </div>
+    <a href="/data?id={{ record_id }}" class="btn btn-outline-dark btn-top-group flex-shrink-0">
+      <i class="fas fa-arrow-left menu-fa"></i> Back to Record
+    </a>
   </div>
 
-  <form id="annotate-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
+  {% if request.GET.error %}
+  <div class="alert alert-danger">An error occurred while saving. Please try again.</div>
+  {% endif %}
+
+  <form id="annotate-page-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
     {% csrf_token %}
 
     {% regroup datasets by activity_seqno as activity_groups %}
     {% for group in activity_groups %}
-      <h5 class="text-uppercase text-muted fw-semibold mt-4 mb-2" style="font-size:0.8rem;letter-spacing:0.05em;">
-        Activity {{ group.grouper }}
-      </h5>
 
-      {% for ds in group.list %}
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="d-flex gap-3">
-            {% if ds.preview_url %}
-            <div class="flex-shrink-0">
-              <img src="{{ ds.preview_url }}"
-                   alt="preview"
-                   style="width:80px;height:80px;object-fit:cover;border-radius:4px;"
-                   onerror="this.style.display='none'">
-            </div>
-            {% endif %}
-            <div class="flex-grow-1">
-              <div class="fw-semibold mb-2">{{ ds.name }}</div>
-              <textarea name="dataset_{{ ds.index }}_description"
-                        class="form-control"
-                        rows="2"
-                        placeholder="Add a description…">{{ ds.description }}</textarea>
+      {# Activity divider #}
+      <div class="d-flex align-items-center gap-2 mt-4 mb-2">
+        <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
+              style="font-size:0.75rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
+        <hr class="flex-grow-1 my-0">
+      </div>
+
+      <div class="row g-2">
+        {% for ds in group.list %}
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 annotate-card"
+               style="border:none;border-left:4px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %};">
+            <div class="card-body p-2">
+              <div class="d-flex gap-2 align-items-start">
+                {% if ds.preview_url %}
+                <div class="flex-shrink-0 align-self-stretch">
+                  <img src="{{ ds.preview_url }}"
+                       alt="preview"
+                       style="width:64px;height:100%;object-fit:cover;border-radius:3px;"
+                       onerror="this.style.display='none'">
+                </div>
+                {% endif %}
+                <div class="flex-grow-1 min-w-0">
+                  <div class="text-truncate mb-1" title="{{ ds.name }}"
+                       style="font-family:monospace;font-size:0.8rem;font-weight:600;color:#333;">
+                    {{ ds.name }}
+                  </div>
+                  <textarea name="dataset_{{ ds.index }}_description"
+                            class="form-control form-control-sm annotate-textarea"
+                            rows="2"
+                            placeholder="Add a description…"
+                            data-original="{{ ds.description }}"
+                            style="font-size:0.8rem;resize:vertical;">{{ ds.description }}</textarea>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+
     {% empty %}
-      <p class="text-muted">No datasets found in this record.</p>
+      <p class="text-muted text-center py-4">No datasets found in this record.</p>
     {% endfor %}
 
     <div class="d-flex gap-2 mt-4">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" id="annotate-save-btn">
         <i class="fa fa-save"></i> Save Annotations
       </button>
-      <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}"
-         class="btn btn-outline-secondary">Cancel</a>
+      <a href="/data?id={{ record_id }}" class="btn btn-outline-secondary">Cancel</a>
     </div>
   </form>
 </div>
+
+<script>
+(function () {
+  var form = document.getElementById('annotate-page-form');
+  if (!form) { return; }
+
+  // Color-code cards live as user types
+  form.querySelectorAll('.annotate-textarea').forEach(function (ta) {
+    ta.addEventListener('input', function () {
+      var card = ta.closest('.annotate-card');
+      var current = ta.value.trim();
+      var original = (ta.dataset.original || '').trim();
+      if (current === original) {
+        if (current) {
+          card.style.background = '#f0fff4';
+          card.style.borderLeft = '4px solid #198754';
+        } else {
+          card.style.background = '#f8f9fa';
+          card.style.borderLeft = '4px solid #dee2e6';
+        }
+      } else {
+        card.style.background = '#fff8e1';
+        card.style.borderLeft = '4px solid #e67e00';
+      }
+    });
+  });
+
+  // Warn on navigation away with unsaved changes
+  function hasDirtyFields() {
+    return Array.from(form.querySelectorAll('.annotate-textarea')).some(function (ta) {
+      return ta.value.trim() !== (ta.dataset.original || '').trim();
+    });
+  }
+  var saving = false;
+  form.addEventListener('submit', function () { saving = true; });
+  window.addEventListener('beforeunload', function (e) {
+    if (!saving && hasDirtyFields()) {
+      e.preventDefault();
+    }
+  });
+})();
+</script>
 {% endblock %}

@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from core_main_app.components.data import api as data_api
 
@@ -12,6 +12,13 @@ logger = logging.getLogger(__name__)
 
 NS = 'https://data.nist.gov/od/dm/nexus/experiment/v1.0'
 NS_MAP = {'nx': NS}
+
+
+def _get_title(xml_content):
+    """Extract the experiment title from XML content."""
+    root = ET.fromstring(xml_content)
+    title_el = root.find('nx:title', NS_MAP)
+    return title_el.text if title_el is not None else ''
 
 
 def _parse_datasets(xml_content):
@@ -90,6 +97,7 @@ def annotate_record(request, record_id):
     datasets = _parse_datasets(data.content)
     return render(request, 'nexuslims_annotate/annotate.html', {
         'data': data,
+        'record_title': _get_title(data.content),
         'datasets': datasets,
         'record_id': record_id,
     })
@@ -113,12 +121,17 @@ def annotate_save(request, record_id):
     if request.method != 'POST':
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     try:
         data = data_api.get_by_id(record_id, request.user)
         updated_xml = _apply_descriptions(data.content, request.POST)
         data.content = updated_xml
         data_api.upsert(data, request)
-        return JsonResponse({'success': True})
+        if is_ajax:
+            return JsonResponse({'success': True})
+        return redirect(f'/data?id={record_id}')
     except Exception as e:
         logger.exception('Error saving annotations for record %s', record_id)
-        return JsonResponse({'error': str(e)}, status=500)
+        if is_ajax:
+            return JsonResponse({'error': str(e)}, status=500)
+        return redirect(f'/annotate/{record_id}/?error=1')
