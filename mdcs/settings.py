@@ -2,10 +2,10 @@
 Django settings for mdcs project.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/4.2/topics/settings/
+https://docs.djangoproject.com/en/5.2/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/4.2/ref/settings/
+https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os  # noqa
@@ -39,7 +39,7 @@ ALLOWED_HOSTS = (
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.postgresql",
         "HOST": (
             os.environ["POSTGRES_HOST"]
             if "POSTGRES_HOST" in os.environ
