@@ -70,6 +70,7 @@ button {
     #btn-edit-record { font-size: 0; }
     #btn-edit-record i { font-size: 8pt; }
     #btn-edit-record::after { content: "Edit"; font-size: 8pt; }
+
 }
 
 /* Parameter button */

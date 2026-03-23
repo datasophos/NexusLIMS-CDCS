@@ -1,0 +1,16 @@
+/* At narrow widths, collapse the Annotate Record button to icon-only.
+   Matches the font-size scaling used by other btn-top-group buttons. */
+@media screen and (max-width: 1280px) {
+    #annotate-record-btn { font-size: 10pt; }
+}
+@media screen and (max-width: 992px) {
+    #annotate-record-btn { font-size: 9.5pt; }
+}
+@media screen and (max-width: 768px) {
+    #annotate-record-btn { font-size: 8.5pt; }
+}
+@media screen and (max-width: 696px) {
+    #annotate-record-btn { font-size: 0; }
+    #annotate-record-btn i { font-size: 8pt; }
+    #annotate-offcanvas { width: 100vw !important; }
+}

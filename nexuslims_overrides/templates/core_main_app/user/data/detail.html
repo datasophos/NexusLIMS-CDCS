@@ -15,16 +15,18 @@
 {% endcomment %}
 
 {% if NX_ENABLE_ANNOTATOR and request.user.is_authenticated %}
-<div class="row mb-2">
-  <div class="col text-end">
-    <button class="btn btn-outline-secondary btn-sm"
-            id="annotate-record-btn"
-            data-record-id="{{ data.data.id }}"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#annotate-offcanvas">
-      <i class="fa fa-pencil"></i> Annotate Record
-    </button>
-  </div>
+{% load static %}
+<link rel="stylesheet" href="{% static 'nexuslims_annotate/annotate.css' %}">
+{# Button is hidden here; JS moves it into #top-button-div after the DOM loads #}
+<div id="annotate-btn-wrapper" style="display:none">
+  <button class="btn btn-outline-dark btn-top-group"
+          id="annotate-record-btn"
+          data-record-id="{{ data.data.id }}"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#annotate-offcanvas"
+          title="Annotate this record with dataset descriptions">
+    <i class="fa fa-pencil"></i> Annotate Record
+  </button>
 </div>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="annotate-offcanvas"
@@ -44,6 +46,18 @@
 (function () {
   var offcanvasEl = document.getElementById('annotate-offcanvas');
   var recordId = document.getElementById('annotate-record-btn').dataset.recordId;
+
+  // Move the annotate button to the end of the action bar.
+  // Use window load (not DOMContentLoaded) so CDCS has already populated #top-button-div.
+  window.addEventListener('load', function () {
+    var btn = document.getElementById('annotate-record-btn');
+    var topBtnDiv = document.getElementById('top-button-div');
+    if (btn && topBtnDiv) {
+      topBtnDiv.prepend(btn);
+      document.getElementById('annotate-btn-wrapper').remove();
+      new bootstrap.Tooltip(btn, {placement: 'top'});
+    }
+  });
 
   function bindSaveForm() {
     var form = document.getElementById('annotate-form');
@@ -79,6 +93,10 @@
       });
     });
   }
+
+  offcanvasEl.addEventListener('hidden.bs.offcanvas', function () {
+    setTimeout(function () { document.getElementById('annotate-record-btn').blur(); }, 0);
+  });
 
   offcanvasEl.addEventListener('show.bs.offcanvas', function () {
     fetch('/annotate/' + recordId + '/panel/', {
