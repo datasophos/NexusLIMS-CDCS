@@ -30,6 +30,7 @@ urlpatterns = [
     ),
     # NexusLIMS overrides MUST come before core_main_app to override its URLs
     re_path(r"^", include("nexuslims_overrides.urls")),
+    re_path(r"^annotate/", include("nexuslims_annotate.urls")),
     re_path(r"^", include("core_main_app.urls")),
     re_path(r"^home/", include("mdcs_home.urls")),
     re_path(r"^", include("core_website_app.urls")),

@@ -95,3 +95,6 @@ NX_CUSTOM_MENU_LINKS = [
 
 # Enable/disable tutorial links
 NX_ENABLE_TUTORIALS = True
+
+# Enable/disable the record annotator (adds "Annotate Record" button on detail pages)
+NX_ENABLE_ANNOTATOR = True

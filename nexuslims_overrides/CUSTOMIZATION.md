@@ -293,10 +293,31 @@ NX_CUSTOM_MENU_LINKS = [
 # Default: True
 NX_ENABLE_TUTORIALS = True
 
+# Enable the record annotator (adds "Annotate Record" button on detail pages)
+# Default: True
+NX_ENABLE_ANNOTATOR = True
 ```
 
 **When to Disable:**
 - **Tutorials**: If you have custom onboarding or the Shepherd.js library isn't installed
+- **Annotator**: If you want to prevent users from adding descriptions to datasets (e.g., read-only deployments)
+
+#### Record Annotator (`NX_ENABLE_ANNOTATOR`)
+
+When enabled, authenticated users see an **Annotate Record** button on every record detail page. Clicking it opens a slide-in panel listing all datasets in the record, grouped by acquisition activity. Each dataset shows its preview thumbnail and a text field for entering a description.
+
+Descriptions are stored directly in the XML record under each `<dataset>` element's `<description>` child (defined in the `nexus-experiment.xsd` schema). Once saved, descriptions automatically appear in the dataset metadata modal (the ⊞ icon in the dataset table).
+
+**Behavior:**
+- Only visible to authenticated users
+- Saves directly to the XML record via `data_api.upsert()`
+- The offcanvas panel reloads on each open to reflect the latest saved state
+- A Bootstrap toast notification confirms successful saves
+
+**To disable for a specific deployment:**
+```python
+NX_ENABLE_ANNOTATOR = False
+```
 
 #### Dataset Display Threshold
 

@@ -14,5 +14,88 @@
 </div>
 {% endcomment %}
 
+{% if NX_ENABLE_ANNOTATOR and request.user.is_authenticated %}
+<div class="row mb-2">
+  <div class="col text-end">
+    <button class="btn btn-outline-secondary btn-sm"
+            id="annotate-record-btn"
+            data-record-id="{{ data.data.id }}"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#annotate-offcanvas">
+      <i class="fa fa-pencil"></i> Annotate Record
+    </button>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="annotate-offcanvas"
+     style="width: min(600px, 50vw);">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title"><i class="fa fa-pencil"></i> Annotate Record</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body" id="annotate-offcanvas-body">
+    <div class="text-center text-muted py-4">
+      <i class="fa fa-spinner fa-spin"></i> Loading…
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var offcanvasEl = document.getElementById('annotate-offcanvas');
+  var recordId = document.getElementById('annotate-record-btn').dataset.recordId;
+
+  function bindSaveForm() {
+    var form = document.getElementById('annotate-form');
+    if (!form) { return; }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var saveBtn = document.getElementById('annotate-save-btn');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving\u2026';
+
+      var formData = new FormData(form);
+      fetch('/annotate/' + recordId + '/save/', {
+        method: 'POST',
+        body: formData,
+        headers: {'X-CSRFToken': formData.get('csrfmiddlewaretoken')},
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.success) {
+          bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
+          var toastEl = document.getElementById('annotate-toast');
+          if (toastEl) { new bootstrap.Toast(toastEl, {delay: 3000}).show(); }
+        } else {
+          alert('Error saving annotations: ' + (data.error || 'Unknown error'));
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<i class="fa fa-save"></i> Save Annotations';
+        }
+      })
+      .catch(function (err) {
+        alert('Network error: ' + err);
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fa fa-save"></i> Save Annotations';
+      });
+    });
+  }
+
+  offcanvasEl.addEventListener('show.bs.offcanvas', function () {
+    fetch('/annotate/' + recordId + '/panel/', {
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+    })
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      document.getElementById('annotate-offcanvas-body').innerHTML = html;
+      bindSaveForm();
+    })
+    .catch(function (err) {
+      document.getElementById('annotate-offcanvas-body').innerHTML =
+        '<p class="text-danger">Failed to load annotator: ' + err + '</p>';
+    });
+  });
+})();
+</script>
+{% endif %}
 
 {% include 'core_main_app/common/data/detail_data.html' %}

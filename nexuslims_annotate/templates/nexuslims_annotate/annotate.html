@@ -1,0 +1,65 @@
+{% extends "core_main_app/user/main.html" %}
+{% load i18n %}
+
+{% block title %}Annotate Record{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row mb-3">
+    <div class="col">
+      <h4><i class="fa fa-pencil"></i> Annotate Record</h4>
+      <p class="text-muted mb-0">{{ data.title }}</p>
+    </div>
+    <div class="col-auto">
+      <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}" class="btn btn-outline-secondary btn-sm">
+        <i class="fa fa-arrow-left"></i> Back to Record
+      </a>
+    </div>
+  </div>
+
+  <form id="annotate-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
+    {% csrf_token %}
+
+    {% regroup datasets by activity_seqno as activity_groups %}
+    {% for group in activity_groups %}
+      <h5 class="text-uppercase text-muted fw-semibold mt-4 mb-2" style="font-size:0.8rem;letter-spacing:0.05em;">
+        Activity {{ group.grouper }}
+      </h5>
+
+      {% for ds in group.list %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex gap-3">
+            {% if ds.preview_url %}
+            <div class="flex-shrink-0">
+              <img src="{{ ds.preview_url }}"
+                   alt="preview"
+                   style="width:80px;height:80px;object-fit:cover;border-radius:4px;"
+                   onerror="this.style.display='none'">
+            </div>
+            {% endif %}
+            <div class="flex-grow-1">
+              <div class="fw-semibold mb-2">{{ ds.name }}</div>
+              <textarea name="dataset_{{ ds.index }}_description"
+                        class="form-control"
+                        rows="2"
+                        placeholder="Add a description…">{{ ds.description }}</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% empty %}
+      <p class="text-muted">No datasets found in this record.</p>
+    {% endfor %}
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary">
+        <i class="fa fa-save"></i> Save Annotations
+      </button>
+      <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}"
+         class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
