@@ -5,7 +5,7 @@ import os
 
 SERVER_URI = os.environ["SERVER_URI"] if "SERVER_URI" in os.environ else None
 
-PROJECT_VERSION = os.getenv("PROJECT_VERSION", "3.18.0")
+PROJECT_VERSION = os.getenv("PROJECT_VERSION", "3.20.0")
 """ :py:class:`str`: Project version number.
 """
 
@@ -128,8 +128,7 @@ ID_PROVIDER_PREFIX_BLOB = os.getenv(
     "ID_PROVIDER_PREFIX_BLOB", ID_PROVIDER_PREFIXES[0]
 )
 
-# PID_XPATH = os.getenv("PID_XPATH", "root.pid")   # PID_XPATH is deprecated
-PID_PATH = os.getenv("PID_XPATH", "Experiment.@pid")
+PID_PATH = os.getenv("PID_PATH", os.getenv("PID_XPATH", "Experiment.@pid"))
 """ string: location of the PID in the document, specified as dot notation
 """
 
@@ -207,6 +206,14 @@ CAN_ANONYMOUS_ACCESS_PUBLIC_DOCUMENT = True
 """ :py:class:`bool`: Can anonymous user access public document.
 """
 VERIFY_DATA_ACCESS = False
+
+CAN_SET_PUBLIC_DATA_TO_PRIVATE = True
+""" :py:class:`bool`: Allow reverting public data to private.
+"""
+
+CAN_SET_WORKSPACE_PUBLIC = True
+""" :py:class:`bool`: Allow setting a workspace to be publicly accessible.
+"""
 
 BOOTSTRAP_VERSION = os.getenv("BOOTSTRAP_VERSION", "5.1.3")
 """ :py:class:`str`: Version of the boostrap library.

@@ -1,6 +1,9 @@
 ### custom static deployment assets and deployment settings
 config/static_files
-config/settings/custom_settings.py
+config/settings/custom_settings*.py
+
+### bind mount of schema
+schemas/nexus-experiment.xsd
 
 ### NexusLIMS test data (extracted from nexuslims-test-data.tar.gz)
 test-data/
@@ -252,6 +255,11 @@ venv/
 
 # env variables
 .env
+.env\.*\.[0-9]*
+.env*\.[0-9]*
 
 # Celery files
 celerybeat-schedule.*
+
+# claude
+settings.local.json

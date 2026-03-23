@@ -261,7 +261,7 @@ RUN uv sync --frozen --no-dev --extra core --extra server
 
 All planning and analysis documents should be stored in this repository, not in the user's home directory:
 
-- **Plans**: Store in `.claude/planning/` folder
+- **Plans**: Store in `.claude/plans/` folder
 - **Progress tracking**: Each plan should have a corresponding progress document in `.claude/plan-progress/`
 
 This ensures plans and progress are version-controlled with the codebase and accessible to all developers. Format progress documents as `{plan-name}-progress.md` to establish a clear relationship with their corresponding plans.
