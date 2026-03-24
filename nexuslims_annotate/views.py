@@ -3,9 +3,11 @@ import logging
 import xml.etree.ElementTree as ET
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 
+from core_main_app.access_control.api import check_can_write
+from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.components.data import api as data_api
 
 logger = logging.getLogger(__name__)
@@ -94,6 +96,10 @@ def _apply_descriptions(xml_content, post_data):
 def annotate_record(request, record_id):
     """Full-page fallback view."""
     data = data_api.get_by_id(record_id, request.user)
+    try:
+        check_can_write(data, request.user)
+    except AccessControlError:
+        return HttpResponseForbidden("You do not have permission to annotate this record.")
     datasets = _parse_datasets(data.content)
     return render(request, 'nexuslims_annotate/annotate.html', {
         'data': data,
@@ -107,6 +113,10 @@ def annotate_record(request, record_id):
 def annotate_panel(request, record_id):
     """AJAX: return HTML fragment for offcanvas body."""
     data = data_api.get_by_id(record_id, request.user)
+    try:
+        check_can_write(data, request.user)
+    except AccessControlError:
+        return HttpResponseForbidden("You do not have permission to annotate this record.")
     datasets = _parse_datasets(data.content)
     return render(request, 'nexuslims_annotate/_panel.html', {
         'data': data,
@@ -141,6 +151,8 @@ def annotate_save_one(request, record_id):
         data.content = _apply_descriptions(data.content, post_data)
         data_api.upsert(data, request)
         return JsonResponse({'success': True})
+    except AccessControlError as e:
+        return JsonResponse({'error': str(e)}, status=403)
     except Exception as e:
         logger.exception('Error saving annotation for record %s dataset %s', record_id, idx)
         return JsonResponse({'error': str(e)}, status=500)
@@ -161,6 +173,10 @@ def annotate_save(request, record_id):
         if is_ajax:
             return JsonResponse({'success': True})
         return redirect(f'/data?id={record_id}')
+    except AccessControlError as e:
+        if is_ajax:
+            return JsonResponse({'error': str(e)}, status=403)
+        return redirect(f'/annotate/{record_id}/?error=1')
     except Exception as e:
         logger.exception('Error saving annotations for record %s', record_id)
         if is_ajax:
