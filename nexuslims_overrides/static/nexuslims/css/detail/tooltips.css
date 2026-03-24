@@ -24,6 +24,12 @@
     word-break: break-word;
 }
 
+/* Wider tooltip for truncated dataset descriptions in activity tables */
+.nx-desc-tooltip .tooltip-inner {
+    max-width: 400px;
+    text-align: left;
+}
+
 .btn-sidebar-tooltip {
     top: calc(var(--titlebar-height) + 25px) !important;  /* titlebar height + 25px offset */
 }

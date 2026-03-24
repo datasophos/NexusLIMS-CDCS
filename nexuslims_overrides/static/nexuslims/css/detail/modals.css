@@ -46,6 +46,63 @@
     cursor: pointer;
 }
 
+/* Inline description edit pencil icon (hidden until annotator permission is present) */
+.nx-desc-edit {
+    display: none;
+    margin-left: 0.3em;
+    font-size: 0.7em;
+    color: #adb5bd;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.nx-desc-edit:hover { color: #3a65a2; }
+
+/* Floating inline-edit popup */
+#nx-inline-edit-popup {
+    display: none;
+    position: fixed;
+    z-index: 2100;
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    min-width: 280px;
+    max-width: 400px;
+}
+#nx-inline-edit-popup textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+#nx-inline-edit-popup .nx-inline-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+/* Dataset metadata modals - cap width and reset white-space (inherited from aa-table td) */
+.dataset-meta-modal .modal-content {
+    max-width: min(80vw, 900px);
+    white-space: normal;
+}
+
+/* Dataset description row inside dataset metadata modals */
+.nx-modal-desc-row {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: left;
+}
+
+.nx-modal-desc-wrapper {
+    line-height: 1.1rem;
+    margin-top: 0.5rem;
+}
+
 /* File listing modal */
 
 /* make modal full width on narrow screen */

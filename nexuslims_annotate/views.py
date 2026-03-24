@@ -116,6 +116,37 @@ def annotate_panel(request, record_id):
 
 
 @login_required
+def annotate_descriptions(request, record_id):
+    """Return current dataset names and descriptions as JSON."""
+    data = data_api.get_by_id(record_id, request.user)
+    datasets = _parse_datasets(data.content)
+    return JsonResponse({
+        'datasets': [{'index': d['index'], 'name': d['name'], 'description': d['description']} for d in datasets]
+    })
+
+
+@login_required
+def annotate_save_one(request, record_id):
+    """AJAX POST: update a single dataset's description by index."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    try:
+        idx = int(request.POST.get('dataset_index', -1))
+        description = request.POST.get('description', '').strip()
+        data = data_api.get_by_id(record_id, request.user)
+        # Build full post_data from current state, replacing only the target index
+        datasets = _parse_datasets(data.content)
+        post_data = {f'dataset_{d["index"]}_description': d['description'] for d in datasets}
+        post_data[f'dataset_{idx}_description'] = description
+        data.content = _apply_descriptions(data.content, post_data)
+        data_api.upsert(data, request)
+        return JsonResponse({'success': True})
+    except Exception as e:
+        logger.exception('Error saving annotation for record %s dataset %s', record_id, idx)
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@login_required
 def annotate_save(request, record_id):
     """AJAX POST: update <description> elements and save the record."""
     if request.method != 'POST':

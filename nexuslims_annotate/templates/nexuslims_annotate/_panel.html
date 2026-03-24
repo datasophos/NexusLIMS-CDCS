@@ -15,8 +15,8 @@
 
     {% for ds in group.list %}
     {# Green border = saved annotation, gray = empty #}
-    <div class="card mb-1"
-         style="border:none;border-left:3px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %}">
+    <div class="card annotate-card mb-1"
+         style="border-left:3px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %}">
       <div class="card-body p-2">
         <div class="d-flex gap-2 align-items-start">
           {% if ds.preview_url %}
@@ -37,7 +37,7 @@
                       rows="2"
                       placeholder="Add a description…"
                       data-original="{{ ds.description }}"
-                      style="font-size:0.8rem;resize:none;">{{ ds.description }}</textarea>
+                      >{{ ds.description }}</textarea>
           </div>
         </div>
       </div>

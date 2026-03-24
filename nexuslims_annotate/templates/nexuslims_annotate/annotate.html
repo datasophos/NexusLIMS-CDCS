@@ -5,17 +5,10 @@
 
 {% block app_css %}
 <link rel="stylesheet" href="{% static 'nexuslims_annotate/annotate.css' %}">
-<style>
-  #annotate-page-form .card {
-    border-top: none !important;
-    border-right: none !important;
-    border-bottom: none !important;
-  }
-</style>
 {% endblock %}
 
 {% block app_data %}
-<div class="container-fluid px-4 pt-3 pb-5">
+<div class="container-fluid px-4 pt-3 pb-3">
 
   {# Header row #}
   <div class="d-flex align-items-start justify-content-between mb-3 gap-3">
@@ -23,9 +16,18 @@
       <h4 class="mb-0"><i class="fa fa-pencil"></i> Annotate Record</h4>
       <p class="text-muted mb-0" style="font-size:0.9rem;">{{ record_title }}</p>
     </div>
-    <a href="/data?id={{ record_id }}" class="btn btn-outline-dark btn-top-group flex-shrink-0">
-      <i class="fas fa-arrow-left menu-fa"></i> Back to Record
-    </a>
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <button type="button"
+              class="btn btn-outline-dark btn-top-group"
+              data-bs-toggle="modal"
+              data-bs-target="#annotate-help-modal"
+              title="How to use the annotator">
+        <i class="fas fa-question menu-fa"></i> Help
+      </button>
+      <a href="/data?id={{ record_id }}" class="btn btn-outline-dark btn-top-group">
+        <i class="fas fa-arrow-left menu-fa"></i> Back to Record
+      </a>
+    </div>
   </div>
 
   {% if request.GET.error %}
@@ -39,17 +41,17 @@
     {% for group in activity_groups %}
 
       {# Activity divider #}
-      <div class="d-flex align-items-center gap-2 mt-4 mb-2">
+      <div class="d-flex align-items-center gap-2 mt-3 mb-1">
         <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
               style="font-size:0.75rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
         <hr class="flex-grow-1 my-0">
       </div>
 
-      <div class="row g-2">
+      <div class="row gx-2 gy-0">
         {% for ds in group.list %}
         <div class="col-12 col-md-6 col-xl-4">
           <div class="card h-100 annotate-card"
-               style="border:none;border-left:4px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %};">
+               style="border-left:4px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %};">
             <div class="card-body p-2">
               <div class="d-flex gap-2 align-items-start">
                 {% if ds.preview_url %}
@@ -70,7 +72,7 @@
                             rows="2"
                             placeholder="Add a description…"
                             data-original="{{ ds.description }}"
-                            style="font-size:0.8rem;resize:vertical;">{{ ds.description }}</textarea>
+                            >{{ ds.description }}</textarea>
                 </div>
               </div>
             </div>
@@ -133,4 +135,53 @@
   });
 })();
 </script>
+
+{# Annotator help modal #}
+<style>
+  #annotate-help-modal kbd { background:#f1f3f5; color:#212529; border:1px solid #ced4da; box-shadow:none; }
+  #annotate-help-modal .modal-body { line-height:1.4; }
+  #annotate-help-modal .modal-body ul { list-style:disc; padding-left:1.4rem; margin-bottom:0.5rem; }
+  #annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
+</style>
+<div class="modal fade" id="annotate-help-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa fa-question-circle me-2"></i>How to Annotate</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="font-size:0.9rem;">
+        <p class="mb-3">
+            Annotating a record lets you attach plain-language descriptions to each dataset (file) captured during an experiment.
+            These descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators
+            to understand what was acquired and why without having to open every file. They are also attached to the structured record,
+            and will be included if you download the XML or JSON of the record.
+        </p>
+        <h6 class="fw-semibold">Adding Descriptions</h6>
+        <ul class="mb-3">
+          <li>Type a description in any text box and click <strong>Save Annotations</strong> to save all at once.</li>
+          <li>Press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac) to save without using the button.</li>
+        </ul>
+        <h6 class="fw-semibold">Color Coding</h6>
+        <div class="d-flex flex-column gap-1">
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#f0fff4;border:2px solid #198754;border-radius:2px;flex-shrink:0;"></div>
+            <span>Green &mdash; description saved</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#fff8e1;border:2px solid #e67e00;border-radius:2px;flex-shrink:0;"></div>
+            <span>Orange &mdash; unsaved change</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:2px;flex-shrink:0;"></div>
+            <span>Gray &mdash; no description yet</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

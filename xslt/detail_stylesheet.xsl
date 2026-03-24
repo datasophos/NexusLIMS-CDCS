@@ -940,7 +940,9 @@ Use it like:
                         <div id="img_gallery">
                             <xsl:for-each select="//nx:dataset[nx:preview]">
                                 <xsl:variable name="aa_num" select="count(../preceding-sibling::nx:acquisitionActivity) + 1"/>
-                                <figure class="slide">
+                                <figure class="slide"
+                                        data-description="{nx:description}"
+                                        data-dataset-index="{count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)}">
                                     <img class="nx-img"><xsl:attribute name="src"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="nx:preview"/></xsl:attribute></img>
                                     <figcaption class="nx-caption">
                                         <div class="row gallery-caption-row">
@@ -1010,6 +1012,41 @@ Use it like:
                                 </figure>
                             </xsl:for-each>
                         </div>
+                        <!-- Single description div updated by JS when the active slide changes.
+                             Lives outside #img_gallery so it never affects the slide's fit-content width. -->
+                        <div id="gallery-slide-description" class="nx-dataset-description" aria-live="polite"></div>
+                        <script>
+                        (function () {
+                            var descEl = document.getElementById('gallery-slide-description');
+                            if (!descEl) { return; }
+
+                            function updateDesc() {
+                                var slides = document.querySelectorAll('#img_gallery .slide');
+                                var desc = '';
+                                for (var i = 0; i &lt; slides.length; i++) {
+                                    var d = slides[i].style.display;
+                                    if (d &amp;&amp; d !== 'none') {
+                                        desc = slides[i].dataset.description || '';
+                                        break;
+                                    }
+                                }
+                                descEl.textContent = desc;
+                            }
+
+                            window.addEventListener('load', function () {
+                                updateDesc();
+                                setTimeout(updateDesc, 0); /* defer to run after gallery init sets first slide visible */
+                                /* Wrap plusSlide so description updates on every navigation. */
+                                if (window.NexusLIMSDetail &amp;&amp; window.NexusLIMSDetail.plusSlide) {
+                                    var orig = window.NexusLIMSDetail.plusSlide.bind(window.NexusLIMSDetail);
+                                    window.NexusLIMSDetail.plusSlide = function (n) {
+                                        orig(n);
+                                        updateDesc();
+                                    };
+                                }
+                            });
+                        })();
+                        </script>
                     </div>
                 </div>
                 <hr/>
@@ -1063,7 +1100,7 @@ Use it like:
                                         </xsl:call-template>
                                     </div>
                                 </div>
-                                <div class="row aa-content-row align-items-center" style="margin-top: -20px;">
+                                <div class="row aa-content-row align-items-start" style="margin-top: -20px;">
                                     <!-- preview image column -->
                                     <div class="col-lg-4 aa-img-col">
                                         <xsl:for-each select="nx:dataset">
@@ -1148,11 +1185,23 @@ Use it like:
                                             <!-- Loop through each dataset -->
                                             <tbody>
                                                 <xsl:for-each select="nx:dataset">
-                                                    <tr img-id="{generate-id()}-aa-img">
+                                                    <tr img-id="{generate-id()}-aa-img"
+                                                        data-dataset-index="{count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)}">
                                                         <!-- Populate table values with the metadata name and value -->
                                                         <!-- generate a dataset id that matches preview image as an attribute on the first column for accessing later via JS -->
                                                         <xsl:element name="td">
-                                                            <xsl:value-of select="nx:name"/>
+                                                            <div><xsl:value-of select="nx:name"/></div>
+                                                            <div class="nx-desc-row">
+                                                            <div class="nx-table-desc">
+                                                                <xsl:if test="nx:description/text()">
+                                                                    <xsl:attribute name="title"><xsl:value-of select="nx:description"/></xsl:attribute>
+                                                                    <xsl:value-of select="nx:description"/>
+                                                                </xsl:if>
+                                                            </div>
+                                                                <i class="nx-desc-edit fas fa-pencil-alt"
+                                                                   data-dataset-index="{count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)}"
+                                                                   title="Edit description"></i>
+                                                            </div>
                                                         </xsl:element>
                                                         <xsl:element name="td">
                                                             <xsl:choose>
@@ -1218,7 +1267,8 @@ Use it like:
                                                                 <xsl:attribute name="title">Click to download this dataset's metadata in JSON format</xsl:attribute>
                                                                 <i class='fa fa-download fa-border param-button' style='margin-left:0;'/>
                                                             </xsl:element>
-                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal dataset-meta-modal modal">
+                                                            <div id="{generate-id(current())}-modal" class="nexuslims-modal dataset-meta-modal modal"
+                                                                 data-dataset-index="{count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)}">
                                                                 <div class="modal-content">
                                                                     <div class="container-fluid">
                                                                         <div class="d-flex justify-content-between align-items-start">
@@ -1226,10 +1276,10 @@ Use it like:
                                                                             <i class="close-modal fas fa-times" onclick="window.NexusLIMSDetail.closeModal('{generate-id(current())}-modal')"/>
                                                                         </div>
                                                                         <xsl:if test="nx:description/text()">
-                                                                            <div class="row">
-                                                                                <div class='col-12' style=''>
-                                                                                    <div style="font-size:15px">Dataset description:
-                                                                                        <i><xsl:value-of select="nx:description"/></i>
+                                                                            <div class="row nx-modal-desc-row">
+                                                                                <div class='col-12'>
+                                                                                    <div class="nx-modal-desc-wrapper">Dataset description:
+                                                                                        <i class="nx-modal-desc-text"><xsl:value-of select="nx:description"/></i>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -2459,6 +2509,12 @@ Use it like:
                             </xsl:element>
                         </td>
                     </tr>
+                    <!-- Description sub-row: shown only when this dataset has a description -->
+                    <xsl:if test="nx:description/text()">
+                        <tr class="nx-description-row">
+                            <td colspan="8" style="padding-left:2rem;font-style:italic;color:#555;border-top:none;padding-top:0;font-size:0.875rem;"><xsl:value-of select="nx:description"/></td>
+                        </tr>
+                    </xsl:if>
                 </xsl:for-each>
             </tbody>
         </table>
