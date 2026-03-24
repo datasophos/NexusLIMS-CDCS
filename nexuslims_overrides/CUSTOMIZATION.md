@@ -304,20 +304,37 @@ NX_ENABLE_ANNOTATOR = True
 
 #### Record Annotator (`NX_ENABLE_ANNOTATOR`)
 
-When enabled, authenticated users see an **Annotate Record** button on every record detail page. Clicking it opens a slide-in panel listing all datasets in the record, grouped by acquisition activity. Each dataset shows its preview thumbnail and a text field for entering a description.
+When enabled, authenticated users with write access to a record can attach plain-language descriptions to each dataset (file) in that record. Descriptions are stored directly in the XML under each `<dataset>` element's `<description>` child (defined in `nexus-experiment.xsd`) and appear in the gallery, dataset activity tables, and dataset metadata modals.
 
-Descriptions are stored directly in the XML record under each `<dataset>` element's `<description>` child (defined in the `nexus-experiment.xsd` schema). Once saved, descriptions automatically appear in the dataset metadata modal (the ⊞ icon in the dataset table).
+**Entry points:**
+
+- **Side panel** -- the **Annotate Record** button in the top action bar opens a slide-in offcanvas panel. All datasets are listed grouped by acquisition activity, each with a preview thumbnail and a text field. Click **Save Annotations** or press **Ctrl+Enter** / **Cmd+Enter** to save all at once.
+- **Inline editing** -- hovering over a row in a dataset activity table reveals a pencil icon next to the description. Clicking it opens a small floating popup for quick single-dataset edits. Press **Ctrl+Enter** / **Cmd+Enter** to save or **Escape** to cancel.
+- **Full-page editor** -- the expand icon (⤢) in the panel header opens `/annotate/<record_id>/` as a full-page form, useful for records with many datasets.
+
+**Color coding in the panel and full-page editor:**
+
+| Border / background | Meaning |
+|---|---|
+| Green | Description saved |
+| Orange | Unsaved change |
+| Gray | No description yet |
+
+**Help:** A `?` button in the panel header and on the full-page editor opens a modal summarizing the above.
 
 **Behavior:**
-- Only visible to authenticated users
+- Only visible to authenticated users who have write access to the record
 - Saves directly to the XML record via `data_api.upsert()`
-- The offcanvas panel reloads on each open to reflect the latest saved state
+- The panel reloads on each open to reflect the latest saved state
 - A Bootstrap toast notification confirms successful saves
+- Descriptions refresh live in the gallery and tables after saving without a full page reload
 
 **To disable for a specific deployment:**
 ```python
 NX_ENABLE_ANNOTATOR = False
 ```
+
+> **Note:** Like all Django settings, this requires a container restart to take effect (`docker compose restart cdcs`).
 
 #### Dataset Display Threshold
 

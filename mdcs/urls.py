@@ -13,6 +13,7 @@ Including another URLconf
     1. Add a URL to urlpatterns:  re_path(r'^blog/', include('blog.urls'))
 """
 
+from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.urls import re_path
@@ -30,7 +31,12 @@ urlpatterns = [
     ),
     # NexusLIMS overrides MUST come before core_main_app to override its URLs
     re_path(r"^", include("nexuslims_overrides.urls")),
-    re_path(r"^annotate/", include("nexuslims_annotate.urls")),
+    *(
+        [re_path(r"^annotate/", include("nexuslims_annotate.urls"))]
+        if "nexuslims_annotate" in settings.INSTALLED_APPS
+        and getattr(settings, "NX_ENABLE_ANNOTATOR", True)
+        else []
+    ),
     re_path(r"^", include("core_main_app.urls")),
     re_path(r"^home/", include("mdcs_home.urls")),
     re_path(r"^", include("core_website_app.urls")),
