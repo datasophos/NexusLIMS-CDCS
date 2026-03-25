@@ -67,6 +67,97 @@
     background: rgba(0, 0, 0, 0.06);
 }
 
+/* ── Dataset move feature ─────────────────────────────────────────────────── */
+
+/* Cards need position:relative for the checkbox overlay */
+.annotate-card {
+    position: relative;
+}
+
+/* Checkbox overlay: appears on hover or when any selection is active */
+.nx-select-cb-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.15s;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 3px;
+    padding: 2px 3px;
+    line-height: 1;
+    margin: 0;
+}
+.nx-dataset-col:hover .nx-select-cb-label,
+.nx-dataset-col.nx-selected .nx-select-cb-label,
+body.nx-has-selection .nx-select-cb-label {
+    opacity: 1;
+}
+.nx-select-cb-label .form-check-input {
+    cursor: pointer;
+}
+
+/* Pending-move card state (indigo) */
+.annotate-card.nx-pending-move {
+    background: #f0f4ff !important;
+    border-left-color: #6366f1 !important;
+}
+
+/* "Moved" badge inside the card name line */
+.nx-moved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #4f46e5;
+    background: #e0e7ff;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 6px;
+    vertical-align: middle;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.nx-moved-badge:hover {
+    background: #c7d2fe;
+}
+
+/* SortableJS drag ghost */
+.nx-drag-ghost {
+    opacity: 0.35;
+}
+/* Highlight drop target row while dragging */
+.nx-sortable-activity.sortable-drag-over {
+    outline: 2px dashed #6366f1;
+    outline-offset: 4px;
+    border-radius: 6px;
+    min-height: 60px;
+}
+
+/* Batch-move toolbar: fixed at bottom-center */
+.nx-move-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 8px 18px;
+    box-shadow: 0 -3px 18px rgba(0, 0, 0, 0.13);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    min-width: 380px;
+}
+
 /* At narrow widths, collapse the Annotate Record button to icon-only.
    Matches the font-size scaling used by other btn-top-group buttons. */
 @media screen and (max-width: 1280px) {

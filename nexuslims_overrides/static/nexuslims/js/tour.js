@@ -955,24 +955,14 @@
           });
         }
 
-        tour.addStep({
-            id: 'tut-xml-dl',
-            title: 'Record exporter (JSON)',
-            text: "The <i class='far fa-file-code menu-fa'></i> <em>Download JSON</em> button will download the metadata record (not the actual datafiles) in an structured format for additional analysis, if desired.",
-            attachTo: { element: '#btn-json-dl', on: 'bottom' },
-            scrollTo: true,
-            buttons: [buttons.back(true), buttons.next],
-            modalOverlayOpeningPadding: 5,
-        });
-
         // Check if edit record button is visible to determine if we should add the edit step
         var editRecordVisible = $('#btn-edit-record').is(':visible');
 
         tour.addStep({
-            id: 'tut-xml-dl',
-            title: 'Record exporter (XML)',
-            text: "The <i class='far fa-file-excel menu-fa'></i> <em>Download XML</em> button will download the metadata record (not the actual datafiles) in the native structured XML format for additional analysis, if desired.",
-            attachTo: { element: '#btn-xml-dl', on: 'bottom' },
+            id: 'tut-record-dl',
+            title: 'Record downloader',
+            text: "The <i class='fas fa-download menu-fa'></i> <em>Download Record</em> button lets you download the metadata record (not the actual datafiles) in either <i class='far fa-file-excel menu-fa'></i> <strong>XML</strong> or <i class='far fa-file-code menu-fa'></i> <strong>JSON</strong> format for additional analysis, if desired.",
+            attachTo: { element: '#btn-download-record-group', on: 'bottom' },
             scrollTo: true,
             buttons: [buttons.back(true), editRecordVisible ? buttons.next : buttons.end],
             modalOverlayOpeningPadding: 5,

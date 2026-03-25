@@ -361,17 +361,25 @@ Use it like:
                       <i class="fas fa-file-alt menu-fa"></i> Edit this record
                   </button>
 
-                  <button id="btn-xml-dl" type="button" class="btn btn-outline-dark btn-top-group"
-                      data-bs-toggle="tooltip" data-bs-placement="top"
-                      title="Download metadata contents of this record as XML">
-                      <i class="far fa-file-excel menu-fa"></i> Download XML
-                  </button>
-
-                  <button id="btn-json-dl" type="button" class="btn btn-outline-dark btn-top-group"
-                      data-bs-toggle="tooltip" data-bs-placement="top"
-                      title="Download metadata contents of this record as JSON">
-                      <i class="far fa-file-code menu-fa"></i> Download JSON
-                  </button>
+                  <div class="dropdown" id="btn-download-record-group">
+                      <button type="button" class="btn btn-outline-dark btn-top-group dropdown-toggle"
+                              data-bs-toggle="dropdown" aria-expanded="false"
+                              title="Download metadata contents of this record">
+                          <i class="fas fa-download menu-fa"></i> Download Record
+                      </button>
+                      <ul class="dropdown-menu">
+                          <li>
+                              <button id="btn-xml-dl" class="dropdown-item" type="button">
+                                  <i class="far fa-file-excel menu-fa"></i> XML
+                              </button>
+                          </li>
+                          <li>
+                              <button id="btn-json-dl" class="dropdown-item" type="button">
+                                  <i class="far fa-file-code menu-fa"></i> JSON
+                              </button>
+                          </li>
+                      </ul>
+                  </div>
 
                 <xsl:if test="not($simpleDisplay)">
                     <button id="btn-filelisting" type="button"

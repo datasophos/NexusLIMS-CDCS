@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block app_data %}
+<script>window.__nxActivities = {{ activities_json }};</script>
+
 <div class="container-fluid px-4 pt-3 pb-3">
 
   {# Header row #}
@@ -15,6 +17,11 @@
     <div>
       <h4 class="mb-0"><i class="fa fa-pencil"></i> Annotate Record</h4>
       <p class="text-muted mb-0" style="font-size:0.9rem;">{{ record_title }}</p>
+      <p class="text-muted mb-0 mt-1" style="font-size:0.8rem;">
+        Add descriptions to datasets, or drag cards and use the selection toolbar to
+        reassign datasets to different activities. You can also use the checkbox on multiple
+        datasets to reassign them to a specific activity in bulk.
+      </p>
     </div>
     <div class="d-flex align-items-center gap-2 flex-shrink-0">
       <button type="button"
@@ -36,6 +43,7 @@
 
   <form id="annotate-page-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
     {% csrf_token %}
+    <input type="hidden" id="annotate-moves-input" name="moves" value="[]">
 
     {% regroup datasets by activity_seqno as activity_groups %}
     {% for group in activity_groups %}
@@ -44,14 +52,23 @@
       <div class="d-flex align-items-center gap-2 mt-3 mb-1">
         <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
               style="font-size:0.75rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
+        <span class="nx-activity-count badge bg-light text-secondary border"
+              data-seqno="{{ group.grouper }}"
+              style="font-size:0.7rem;font-weight:500;">{{ group.list|length }}</span>
         <hr class="flex-grow-1 my-0">
       </div>
 
-      <div class="row gx-2 gy-0">
+      <div class="row gx-2 gy-0 nx-sortable-activity" data-seqno="{{ group.grouper }}">
         {% for ds in group.list %}
-        <div class="col-12 col-md-6 col-xl-4">
+        <div class="col-12 col-md-6 col-xl-4 nx-dataset-col"
+             data-dataset-index="{{ ds.index }}"
+             data-original-activity="{{ ds.activity_seqno }}"
+             data-current-activity="{{ ds.activity_seqno }}">
           <div class="card h-100 annotate-card"
                style="border-left:4px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %};">
+            <label class="nx-select-cb-label" title="Select this dataset">
+              <input type="checkbox" class="form-check-input nx-select-cb" data-index="{{ ds.index }}">
+            </label>
             <div class="card-body p-2">
               <div class="d-flex gap-2 align-items-start">
                 {% if ds.preview_url %}
@@ -63,7 +80,7 @@
                 </div>
                 {% endif %}
                 <div class="flex-grow-1 min-w-0">
-                  <div class="text-truncate mb-1" title="{{ ds.name }}"
+                  <div class="text-truncate mb-1 nx-dataset-name" title="{{ ds.name }}"
                        style="font-family:monospace;font-size:0.8rem;font-weight:600;color:#333;">
                     {{ ds.name }}
                   </div>
@@ -85,7 +102,7 @@
       <p class="text-muted text-center py-4">No datasets found in this record.</p>
     {% endfor %}
 
-    <div class="d-flex gap-2 mt-4">
+    <div class="d-flex gap-2 mt-4 mb-5">
       <button type="submit" class="btn btn-primary" id="annotate-save-btn">
         <i class="fa fa-save"></i> Save Annotations
       </button>
@@ -94,43 +111,315 @@
   </form>
 </div>
 
+{# Batch move toolbar (outside form, fixed at bottom) #}
+<div id="nx-move-toolbar" class="nx-move-toolbar d-none" role="toolbar" aria-label="Batch dataset actions">
+  <span id="nx-toolbar-label" class="text-muted" style="white-space:nowrap;"></span>
+  <div class="dropdown" id="nx-move-dropdown-wrap"
+       data-bs-placement="top"
+       title="Select one or more datasets above to move them">
+    <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+            id="nx-move-dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false" disabled>
+      <i class="fas fa-arrows-alt fa-xs me-1"></i>Move to Activity
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" id="nx-move-dropdown"></ul>
+  </div>
+  <button class="btn btn-sm btn-outline-secondary" id="nx-clear-selection" type="button" style="display:none;">
+    Clear selection
+  </button>
+  <button class="btn btn-sm btn-outline-danger" id="nx-undo-all-moves" type="button" style="display:none;">
+    Undo all moves
+  </button>
+  <button class="btn btn-sm btn-success" id="nx-toolbar-save-btn" type="button">
+    <i class="fa fa-save fa-xs me-1"></i>Save
+  </button>
+</div>
+
+{# SortableJS #}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+
 <script>
 (function () {
   var form = document.getElementById('annotate-page-form');
-  if (!form) { return; }
+  if (!form) return;
 
-  // Color-code cards live as user types
+  // ── State ────────────────────────────────────────────────────────────────
+  window.__nxPendingMoves = [];
+  var saving = false;
+
+  // ── Card color helpers ───────────────────────────────────────────────────
+  function descriptionColor(ta) {
+    var current = ta.value.trim();
+    var original = (ta.dataset.original || '').trim();
+    if (current !== original) return {bg: '#fff8e1', border: '#e67e00'};
+    if (current)              return {bg: '#f0fff4', border: '#198754'};
+    return                          {bg: '#f8f9fa', border: '#dee2e6'};
+  }
+
+  function applyCardColor(card) {
+    if (card.classList.contains('nx-pending-move')) return;
+    var ta = card.querySelector('.annotate-textarea');
+    if (!ta) return;
+    var c = descriptionColor(ta);
+    card.style.background = c.bg;
+    card.style.borderLeft = '4px solid ' + c.border;
+  }
+
+  function applyMoveColor(card, isMoved) {
+    if (isMoved) {
+      card.classList.add('nx-pending-move');
+      card.style.background = '#f0f4ff';
+      card.style.borderLeft = '4px solid #6366f1';
+    } else {
+      card.classList.remove('nx-pending-move');
+      applyCardColor(card);
+    }
+  }
+
+  // ── Textarea live color ──────────────────────────────────────────────────
   form.querySelectorAll('.annotate-textarea').forEach(function (ta) {
     ta.addEventListener('input', function () {
-      var card = ta.closest('.annotate-card');
-      var current = ta.value.trim();
-      var original = (ta.dataset.original || '').trim();
-      if (current === original) {
-        if (current) {
-          card.style.background = '#f0fff4';
-          card.style.borderLeft = '4px solid #198754';
-        } else {
-          card.style.background = '#f8f9fa';
-          card.style.borderLeft = '4px solid #dee2e6';
-        }
-      } else {
-        card.style.background = '#fff8e1';
-        card.style.borderLeft = '4px solid #e67e00';
+      applyCardColor(ta.closest('.annotate-card'));
+    });
+  });
+
+  // ── Pending move management ──────────────────────────────────────────────
+  function recordMove(dsIndex, targetSeqno, originalSeqno) {
+    window.__nxPendingMoves = window.__nxPendingMoves.filter(function (m) {
+      return m.datasetIndex !== dsIndex;
+    });
+    if (String(targetSeqno) !== String(originalSeqno)) {
+      window.__nxPendingMoves.push({datasetIndex: dsIndex, targetActivitySeqno: targetSeqno});
+    }
+  }
+
+  function setBadge(colEl, isMoved) {
+    var card = colEl.querySelector('.annotate-card');
+    var nameDiv = card.querySelector('.nx-dataset-name');
+    var existing = nameDiv && nameDiv.querySelector('.nx-moved-badge');
+    if (isMoved && !existing && nameDiv) {
+      var badge = document.createElement('span');
+      badge.className = 'nx-moved-badge';
+      badge.title = 'Click to undo this move';
+      badge.dataset.index = colEl.dataset.datasetIndex;
+      badge.innerHTML = '<i class="fas fa-arrows-alt" style="font-size:0.6rem;"></i> Moved';
+      badge.addEventListener('click', function (e) {
+        e.stopPropagation();
+        undoMove(colEl);
+      });
+      nameDiv.appendChild(badge);
+    } else if (!isMoved && existing) {
+      existing.remove();
+    }
+  }
+
+  function updateMoveVisual(colEl, targetSeqno) {
+    var origSeqno = colEl.dataset.originalActivity;
+    var isMoved = String(targetSeqno) !== String(origSeqno);
+    var card = colEl.querySelector('.annotate-card');
+    applyMoveColor(card, isMoved);
+    setBadge(colEl, isMoved);
+  }
+
+  function undoMove(colEl) {
+    var dsIndex = parseInt(colEl.dataset.datasetIndex);
+    var origSeqno = colEl.dataset.originalActivity;
+    var origRow = document.querySelector('.nx-sortable-activity[data-seqno="' + origSeqno + '"]');
+    if (!origRow) return;
+    origRow.appendChild(colEl);
+    colEl.dataset.currentActivity = origSeqno;
+    window.__nxPendingMoves = window.__nxPendingMoves.filter(function (m) {
+      return m.datasetIndex !== dsIndex;
+    });
+    updateMoveVisual(colEl, origSeqno);
+    updateActivityCounts();
+    updateToolbar();
+  }
+
+  function undoAllMoves() {
+    // Copy list since undoMove modifies it
+    var cols = Array.from(document.querySelectorAll('.nx-dataset-col')).filter(function (col) {
+      return col.dataset.currentActivity !== col.dataset.originalActivity;
+    });
+    cols.forEach(undoMove);
+  }
+
+  // ── Activity count badges ────────────────────────────────────────────────
+  function updateActivityCounts() {
+    document.querySelectorAll('.nx-sortable-activity').forEach(function (row) {
+      var seqno = row.dataset.seqno;
+      var count = row.querySelectorAll('.nx-dataset-col').length;
+      var badge = document.querySelector('.nx-activity-count[data-seqno="' + seqno + '"]');
+      if (badge) badge.textContent = count;
+    });
+  }
+
+  // ── Toolbar ──────────────────────────────────────────────────────────────
+  var toolbar         = document.getElementById('nx-move-toolbar');
+  var toolbarLabel    = document.getElementById('nx-toolbar-label');
+  var moveDropdownBtn = document.getElementById('nx-move-dropdown-btn');
+  var moveBtnWrap     = document.getElementById('nx-move-dropdown-wrap');
+  var clearSelBtn     = document.getElementById('nx-clear-selection');
+  var undoAllBtn      = document.getElementById('nx-undo-all-moves');
+  var moveDropdown    = document.getElementById('nx-move-dropdown');
+
+  function setMoveBtnTooltip(show) {
+    if (typeof bootstrap === 'undefined' || !moveBtnWrap) return;
+    if (show) {
+      bootstrap.Tooltip.getOrCreateInstance(moveBtnWrap, {trigger: 'hover focus'});
+    } else {
+      var tt = bootstrap.Tooltip.getInstance(moveBtnWrap);
+      if (tt) { tt.hide(); tt.disable(); }
+    }
+  }
+
+  function getSelectedCols() {
+    return Array.from(form.querySelectorAll('.nx-select-cb:checked')).map(function (cb) {
+      return cb.closest('.nx-dataset-col');
+    });
+  }
+
+  function updateToolbar() {
+    var selected = getSelectedCols();
+    var selCount  = selected.length;
+    var moveCount = window.__nxPendingMoves.length;
+    var visible   = selCount > 0 || moveCount > 0;
+
+    toolbar.classList.toggle('d-none', !visible);
+    document.body.classList.toggle('nx-has-selection', selCount > 0);
+
+    if (selCount > 0) {
+      toolbarLabel.textContent = selCount + (selCount === 1 ? ' dataset' : ' datasets') + ' selected';
+      moveDropdownBtn.disabled = false;
+      setMoveBtnTooltip(false);
+      clearSelBtn.style.display = '';
+      undoAllBtn.style.display = 'none';
+    } else {
+      toolbarLabel.textContent = moveCount + ' pending move' + (moveCount === 1 ? '' : 's');
+      moveDropdownBtn.disabled = true;
+      setMoveBtnTooltip(true);
+      clearSelBtn.style.display = 'none';
+      undoAllBtn.style.display = moveCount > 0 ? '' : 'none';
+    }
+  }
+
+  // Build move dropdown from activity metadata
+  function buildDropdown() {
+    if (!moveDropdown || !window.__nxActivities) return;
+    moveDropdown.innerHTML = '';
+    window.__nxActivities.forEach(function (act) {
+      var li = document.createElement('li');
+      var a  = document.createElement('a');
+      a.className = 'dropdown-item';
+      a.href = '#';
+      var label = 'Activity ' + (parseInt(act.seqno) + 1);
+      if (act.start_time) {
+        try {
+          var dt = new Date(act.start_time);
+          label += ' \u2014 ' + dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        } catch (e) { /* ignore date parse errors */ }
+      }
+      label += ' (' + act.dataset_count + ')';
+      a.textContent = label;
+      a.dataset.seqno = act.seqno;
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        batchMove(act.seqno);
+      });
+      li.appendChild(a);
+      moveDropdown.appendChild(li);
+    });
+  }
+  buildDropdown();
+
+  function batchMove(targetSeqno) {
+    var selected  = getSelectedCols();
+    var targetRow = document.querySelector('.nx-sortable-activity[data-seqno="' + targetSeqno + '"]');
+    if (!targetRow) return;
+    selected.forEach(function (colEl) {
+      var dsIndex  = parseInt(colEl.dataset.datasetIndex);
+      var origSeqno = colEl.dataset.originalActivity;
+      targetRow.appendChild(colEl);
+      colEl.dataset.currentActivity = targetSeqno;
+      // Uncheck
+      var cb = colEl.querySelector('.nx-select-cb');
+      if (cb) { cb.checked = false; }
+      colEl.classList.remove('nx-selected');
+      recordMove(dsIndex, targetSeqno, origSeqno);
+      updateMoveVisual(colEl, targetSeqno);
+    });
+    updateActivityCounts();
+    updateToolbar();
+  }
+
+  clearSelBtn.addEventListener('click', function () {
+    form.querySelectorAll('.nx-select-cb:checked').forEach(function (cb) {
+      cb.checked = false;
+      cb.closest('.nx-dataset-col').classList.remove('nx-selected');
+    });
+    updateToolbar();
+  });
+
+  undoAllBtn.addEventListener('click', undoAllMoves);
+
+  document.getElementById('nx-toolbar-save-btn').addEventListener('click', function () {
+    document.getElementById('annotate-save-btn').click();
+  });
+
+  form.addEventListener('change', function (e) {
+    if (e.target.classList.contains('nx-select-cb')) {
+      var col = e.target.closest('.nx-dataset-col');
+      col.classList.toggle('nx-selected', e.target.checked);
+      updateToolbar();
+    }
+  });
+
+  // ── SortableJS ───────────────────────────────────────────────────────────
+  document.querySelectorAll('.nx-sortable-activity').forEach(function (rowEl) {
+    Sortable.create(rowEl, {
+      group: 'datasets',
+      animation: 150,
+      ghostClass: 'nx-drag-ghost',
+      chosenClass: 'nx-drag-chosen',
+      filter: '.annotate-textarea, .nx-select-cb-label, .nx-moved-badge',
+      preventOnFilter: false,
+      onEnd: function (evt) {
+        if (evt.from === evt.to) return;
+        var colEl     = evt.item;
+        var targetSeqno = evt.to.dataset.seqno;
+        var dsIndex   = parseInt(colEl.dataset.datasetIndex);
+        var origSeqno = colEl.dataset.originalActivity;
+        colEl.dataset.currentActivity = targetSeqno;
+        recordMove(dsIndex, targetSeqno, origSeqno);
+        updateMoveVisual(colEl, targetSeqno);
+        updateActivityCounts();
+        updateToolbar();
       }
     });
   });
 
-  // Warn on navigation away with unsaved changes
-  function hasDirtyFields() {
-    return Array.from(form.querySelectorAll('.annotate-textarea')).some(function (ta) {
+  // ── Save: inject moves JSON before submission ─────────────────────────────
+  form.addEventListener('submit', function () {
+    document.getElementById('annotate-moves-input').value = JSON.stringify(window.__nxPendingMoves);
+    saving = true;
+  });
+
+  // ── Unsaved-changes guard ────────────────────────────────────────────────
+  function hasDirtyState() {
+    var dirtyText = Array.from(form.querySelectorAll('.annotate-textarea')).some(function (ta) {
       return ta.value.trim() !== (ta.dataset.original || '').trim();
     });
+    return dirtyText || window.__nxPendingMoves.length > 0;
   }
-  var saving = false;
-  form.addEventListener('submit', function () { saving = true; });
+
   window.addEventListener('beforeunload', function (e) {
-    if (!saving && hasDirtyFields()) {
-      e.preventDefault();
+    if (!saving && hasDirtyState()) { e.preventDefault(); }
+  });
+
+  // ── Keyboard shortcut: Ctrl/Cmd+Enter to save ────────────────────────────
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      var btn = document.getElementById('annotate-save-btn');
+      if (btn) btn.click();
     }
   });
 })();
@@ -144,7 +433,7 @@
   #annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
 </style>
 <div class="modal fade" id="annotate-help-modal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:560px;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="fa fa-question-circle me-2"></i>How to Annotate</h5>
@@ -162,6 +451,13 @@
           <li>Type a description in any text box and click <strong>Save Annotations</strong> to save all at once.</li>
           <li>Press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac) to save without using the button.</li>
         </ul>
+        <h6 class="fw-semibold">Moving Datasets</h6>
+        <ul class="mb-3">
+          <li>Drag any dataset card to a different activity section to reassign it.</li>
+          <li>Check one or more cards, then use the <strong>Move to Activity</strong> toolbar to batch-move them.</li>
+          <li>Click the <strong>Moved</strong> badge on a card to undo that move before saving.</li>
+          <li>Moves are saved together with descriptions when you click <strong>Save Annotations</strong>.</li>
+        </ul>
         <h6 class="fw-semibold">Color Coding</h6>
         <div class="d-flex flex-column gap-1">
           <div class="d-flex align-items-center gap-2">
@@ -175,6 +471,10 @@
           <div class="d-flex align-items-center gap-2">
             <div style="width:14px;height:14px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:2px;flex-shrink:0;"></div>
             <span>Gray &mdash; no description yet</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#f0f4ff;border:2px solid #6366f1;border-radius:2px;flex-shrink:0;"></div>
+            <span>Indigo &mdash; pending move (not yet saved)</span>
           </div>
         </div>
       </div>

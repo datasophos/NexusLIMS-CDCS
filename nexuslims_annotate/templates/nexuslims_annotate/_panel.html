@@ -1,5 +1,13 @@
 {% load i18n %}
 {% csrf_token %}
+<div class="alert alert-light border d-flex align-items-start gap-2 py-2 px-3 mb-2" style="font-size:0.82rem;line-height:1.4;">
+  <i class="fa fa-info-circle text-secondary mt-1 flex-shrink-0"></i>
+  <span>
+    Use this panel to <strong>add or edit descriptions</strong> for each dataset.
+    To <strong>reassign datasets to different activities</strong>, open the full-page annotator
+    by clicking <i class="fa fa-expand"></i> in the header above.
+  </span>
+</div>
 <form id="annotate-form" method="post">
   {% csrf_token %}
 
