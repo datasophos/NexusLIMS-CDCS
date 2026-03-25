@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "menu",
     # Local apps
     "core_main_app",
+    "nexuslims_annotate",
     "tests",
 ]
 

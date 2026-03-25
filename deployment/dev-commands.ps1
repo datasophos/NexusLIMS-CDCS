@@ -138,7 +138,7 @@ function dev-uv-upgrade {
 
 function dev-uv-sync {
     Push-Location ..
-    uv sync --no-install-project --extra core --extra server
+    uv sync
     Pop-Location
 }
 

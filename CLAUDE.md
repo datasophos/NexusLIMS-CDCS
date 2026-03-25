@@ -154,8 +154,7 @@ dev-up           # Start services
 **For local development (outside Docker):**
 ```bash
 # Install/sync dependencies locally
-# IMPORTANT: Use --no-install-project flag (this is a Django app, not a package)
-uv sync --no-install-project --extra core --extra server
+uv sync
 
 # Or use the convenience alias from deployment directory
 cd deployment
@@ -241,13 +240,11 @@ The Dockerfile uses native UV commands for optimal performance:
 COPY pyproject.toml uv.lock ./
 
 # Install from lockfile (no dependency resolution needed - fast!)
-RUN uv sync --frozen --no-dev --extra core --extra server
+RUN uv sync --frozen
 ```
 
 **Flags explained:**
 - `--frozen`: Use exact versions from lockfile (fail if lockfile is outdated)
-- `--no-dev`: Skip development dependencies (not needed in Docker)
-- `--extra core --extra server`: Install optional dependency groups
 
 ### Why UV?
 
@@ -256,6 +253,34 @@ RUN uv sync --frozen --no-dev --extra core --extra server
 - **Modern**: Follows Python packaging standards (PEP 621, PEP 631)
 - **Reliable**: Better conflict resolution than pip
 - **Efficient**: Shared cache across projects, parallel downloads
+
+## Running Tests
+
+Tests use `runtests.py` at the repo root, which runs Django tests with an in-memory SQLite database (no Docker or external services required).
+
+### Running Tests Locally
+
+```bash
+# From the repo root, with uv:
+uv run python runtests.py
+
+# Or with a local venv:
+python runtests.py
+```
+
+### How It Works
+
+- Uses `tests/test_settings.py` as the Django settings module
+- Runs `migrate` automatically before tests (in-memory SQLite)
+- Discovers and runs all tests in the `tests/` directory
+- Exits with a non-zero code if any tests fail
+
+### Test Settings (`tests/test_settings.py`)
+
+- Uses an in-memory SQLite database (`:memory:`) - no external DB needed
+- Loads `.env` via `python-dotenv` if present
+- `INSTALLED_APPS` includes `nexuslims_annotate` and `tests`
+- `ROOT_URLCONF` points to `tests.urls`
 
 ## Planning Documents
 

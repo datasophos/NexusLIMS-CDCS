@@ -57,7 +57,7 @@ alias dev-update-xslt-list='bash scripts/update-xslt.sh list'
 # Note: --no-install-project skips building the project itself (Django app, not a package)
 alias dev-uv-lock='cd .. && uv lock && cd deployment'
 alias dev-uv-upgrade='cd .. && uv lock --upgrade && cd deployment'
-alias dev-uv-sync='cd .. && uv sync --no-install-project --extra core --extra server && cd deployment'
+alias dev-uv-sync='cd .. && uv sync && cd deployment'
 alias dev-uv-add='echo "Usage: cd .. && uv add package-name && cd deployment && dev-build-clean"'
 
 echo "NexusLIMS-CDCS Development aliases loaded! Available commands:"
