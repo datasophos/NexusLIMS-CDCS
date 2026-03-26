@@ -1034,7 +1034,7 @@
             });
         }
 
-        // Only add annotate record step if the button is present (NX_ENABLE_ANNOTATOR + write access)
+        // Only add annotate record steps if the button is present (NX_ENABLE_ANNOTATOR + write access)
         if (annotateRecordVisible) {
             tour.addStep({
                 id: 'tut-annotate-record',
@@ -1042,10 +1042,45 @@
                 text: "The <i class='fa fa-pencil menu-fa'></i> <em>Annotate Record</em> button opens a side panel where you can attach plain-language descriptions to each dataset captured during the experiment. Descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators to understand what was acquired. From this panel, you can also open the full-page annotator, or edit descriptions inline by hovering over a row in any dataset table.",
                 attachTo: { element: '#annotate-record-btn', on: 'bottom' },
                 scrollTo: true,
-                buttons: [buttons.back(true), buttons.end],
+                buttons: [buttons.back(true), buttons.next],
                 modalOverlayOpeningPadding: 5,
                 popperOptions: {
                     modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+
+            tour.addStep({
+                id: 'tut-annotate-panel',
+                title: 'Annotation side panel',
+                text: "Datasets are listed here grouped by activity. Each card shows the dataset filename and a text box for its description; type directly in the boxes and click <strong>Save Annotations</strong> when done. Datasets with a green color already have descriptions. Use the <i class='fa fa-expand'></i> button in the panel header to open the full-page annotator, which also allows you to reassign datasets across activities.",
+                attachTo: { element: '#annotate-offcanvas', on: 'left' },
+                scrollTo: false,
+                buttons: [buttons.back(true), buttons.end],
+                modalOverlayOpeningPadding: 0,
+                floatingUIOptions: {
+                    middleware: [FloatingUIDOM.offset({ mainAxis: 12 })]
+                },
+                beforeShowPromise: function() {
+                    return new Promise(function(resolve) {
+                        var offcanvasEl = document.getElementById('annotate-offcanvas');
+                        // If the panel is already visible, resolve immediately
+                        if (offcanvasEl.classList.contains('show')) {
+                            resolve();
+                            return;
+                        }
+                        offcanvasEl.addEventListener('shown.bs.offcanvas', function onShown() {
+                            offcanvasEl.removeEventListener('shown.bs.offcanvas', onShown);
+                            resolve();
+                        });
+                        bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl).show();
+                    });
+                },
+                when: {
+                    hide: function() {
+                        var offcanvasEl = document.getElementById('annotate-offcanvas');
+                        var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+                        if (bsOffcanvas) { bsOffcanvas.hide(); }
+                    }
                 }
             });
         }
@@ -1061,6 +1096,13 @@
 
             // Re-enable scrolling using the page's existing scroll management mechanism
             $('body').removeClass('scrollDisabled');
+
+            // Close the annotate offcanvas if it was opened during the tour
+            if (annotateRecordVisible) {
+                var offcanvasEl = document.getElementById('annotate-offcanvas');
+                var bsOffcanvas = offcanvasEl && bootstrap.Offcanvas.getInstance(offcanvasEl);
+                if (bsOffcanvas) { bsOffcanvas.hide(); }
+            }
 
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
