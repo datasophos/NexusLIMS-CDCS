@@ -1,5 +1,20 @@
-/* Offset offcanvas below the fixed navbar (60px). */
-#annotate-offcanvas {
+/* Instructional help text shown in the offcanvas panel and full-page annotator header. */
+.nx-help-text {
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+/* Dataset filename label inside annotation cards. */
+.nx-dataset-name {
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Offset offcanvas and its backdrop below the fixed navbar (60px). */
+#annotate-offcanvas,
+.offcanvas-backdrop {
     top: 60px;
 }
 

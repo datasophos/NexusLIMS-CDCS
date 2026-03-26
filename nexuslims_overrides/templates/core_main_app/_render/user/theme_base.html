@@ -7,7 +7,7 @@ needed for detail page functionality (DataTables, Shepherd.js)
 
 This template extends the v3.18.0 base theme_base.html and adds:
 - DataTables 2.3.6 with Bootstrap 5 integration for interactive tables
-- Shepherd.js 14.5.1 for guided tours
+- Shepherd.js 11.2.0 for guided tours
 
 Libraries are loaded early in the body so XSLT-generated HTML can use them.
 {% endcomment %}
@@ -48,7 +48,7 @@ Libraries are loaded early in the body so XSLT-generated HTML can use them.
     <script type="text/javascript" src="{% static 'libs/datatables-buttons/3.2.6/buttons.print.min.js' %}"></script>
 
     {# Other libraries #}
-    <script type="text/javascript" src="{% static 'libs/shepherd.js/14.5.1/shepherd.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'libs/shepherd.js/11.2.0/shepherd.min.js' %}"></script>
 
     {# NexusLIMS detail page JavaScript modules #}
     {# These modules check for #simpleDisplay element and only run on detail pages #}

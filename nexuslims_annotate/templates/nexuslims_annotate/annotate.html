@@ -17,7 +17,7 @@
     <div>
       <h4 class="mb-0"><i class="fa fa-pencil"></i> Annotate Record</h4>
       <p class="text-muted mb-0" style="font-size:0.9rem;">{{ record_title }}</p>
-      <p class="text-muted mb-0 mt-1" style="font-size:0.8rem;">
+      <p class="text-muted mb-0 mt-1 nx-help-text">
         Add descriptions to datasets, or drag cards and use the selection toolbar to
         reassign datasets to different activities. You can also use the checkbox on multiple
         datasets to reassign them to a specific activity in bulk.
@@ -80,8 +80,7 @@
                 </div>
                 {% endif %}
                 <div class="flex-grow-1 min-w-0">
-                  <div class="text-truncate mb-1 nx-dataset-name" title="{{ ds.name }}"
-                       style="font-family:monospace;font-size:0.8rem;font-weight:600;color:#333;">
+                  <div class="text-truncate mb-1 nx-dataset-name" title="{{ ds.name }}">
                     {{ ds.name }}
                   </div>
                   <textarea name="dataset_{{ ds.index }}_description"

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% csrf_token %}
-<div class="alert alert-light border d-flex align-items-start gap-2 py-2 px-3 mb-2" style="font-size:0.82rem;line-height:1.4;">
+<div class="alert alert-light border d-flex align-items-start gap-2 py-2 px-3 mb-2 mx-3 nx-help-text">
   <i class="fa fa-info-circle text-secondary mt-1 flex-shrink-0"></i>
   <span>
     Use this panel to <strong>add or edit descriptions</strong> for each dataset.
@@ -36,8 +36,7 @@
           </div>
           {% endif %}
           <div class="flex-grow-1 min-w-0">
-            <div class="text-truncate mb-1" title="{{ ds.name }}"
-                 style="font-family:monospace;font-size:0.8rem;font-weight:600;color:#333;">
+            <div class="text-truncate mb-1 nx-dataset-name" title="{{ ds.name }}">
               {{ ds.name }}
             </div>
             <textarea name="dataset_{{ ds.index }}_description"
@@ -76,4 +75,3 @@
     </div>
   </div>
 </div>
-

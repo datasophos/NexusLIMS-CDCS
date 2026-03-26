@@ -521,6 +521,12 @@
 
         // Cleanup on exit - scroll back to starting position and blur tutorial link
         var cleanupOnExit = function() {
+            // Shepherd only removes the modal overlay from the DOM on `complete`, not on
+            // `cancel`. The overlay's SVG path keeps pointer-events:all while
+            // shepherd-modal-is-visible is set, blocking scroll and clicks after cancel.
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
@@ -705,6 +711,12 @@
         // Cleanup on exit - scroll back to starting position and blur tutorial link
         var cur_pos = $(document).scrollTop();
         var cleanupOnExit = function() {
+            // Shepherd only removes the modal overlay from the DOM on `complete`, not on
+            // `cancel`. The overlay's SVG path keeps pointer-events:all while
+            // shepherd-modal-is-visible is set, blocking scroll and clicks after cancel.
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
@@ -750,12 +762,17 @@
         // Check if any modals are visible, close them and remember to reopen at the end
         var already_open_modal = false;
         $('.modal').each(function(index, val) {
-            if ($(val).css('visibility') === 'visible' &&
+            var vis = $(val).css('visibility');
+            var disp = $(val).css('display');
+            if (vis === 'visible' && disp !== 'none' &&
                 (val.id !== 'download-modal' && val.id !== 'file-preview-modal')) {
                 Detail.closeModal(val.id);
                 already_open_modal = val.id;
             }
         });
+
+        // Disable scrolling during the tour (matches the page's existing scroll management)
+        $('body').addClass('scrollDisabled');
 
         // Close navPanel if open when tour starts (mobile)
         if ($('body').hasClass('navPanel-visible')) {
@@ -787,6 +804,9 @@
         tour.on('show', createStepNumberIndicator(tour));
 
         var buttons = createButtons(tour);
+
+        // Check if the annotate button is present (NX_ENABLE_ANNOTATOR + write access)
+        var annotateRecordVisible = $('#annotate-record-btn').length > 0;
 
         // Add tour steps
         if (!simpleDisplay) {
@@ -884,6 +904,35 @@
                 buttons: [buttons.back(true), buttons.next]
             });
 
+            if (annotateRecordVisible) {
+                var firstDescEditIcon = $('.aa_header_row .aa-table tbody tr:first-child .nx-desc-edit')[0];
+                if (firstDescEditIcon) {
+                    tour.addStep({
+                        id: 'tut-aa-inline-edit',
+                        title: 'Inline description editing',
+                        text: "Hover over any row in a dataset table to reveal the <i class='fa fa-pencil-alt' style='color:#adb5bd;font-size:0.8em;'></i> pencil icon next to the description field. Click it to open a quick-edit popup where you can type a description for that dataset and save with <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac).",
+                        attachTo: { element: firstDescEditIcon, on: 'left' },
+                        scrollTo: false,
+                        buttons: [buttons.back(true), buttons.next],
+                        modalOverlayOpeningPadding: 8,
+                        floatingUIOptions: {
+                            middleware: [FloatingUIDOM.offset({ mainAxis: 15 })]
+                        },
+                        beforeShowPromise: function() {
+                            return new Promise(function(resolve) {
+                                $(firstDescEditIcon).css('display', 'inline');
+                                resolve();
+                            });
+                        },
+                        when: {
+                            hide: function() {
+                                $(firstDescEditIcon).css('display', '');
+                            }
+                        }
+                    });
+                }
+            }
+
             tour.addStep({
                 id: 'tut-aa-meta',
                 title: 'Metadata viewer/downloader',
@@ -957,6 +1006,7 @@
 
         // Check if edit record button is visible to determine if we should add the edit step
         var editRecordVisible = $('#btn-edit-record').is(':visible');
+        var hasStepsAfterDl = editRecordVisible || annotateRecordVisible;
 
         tour.addStep({
             id: 'tut-record-dl',
@@ -964,7 +1014,7 @@
             text: "The <i class='fas fa-download menu-fa'></i> <em>Download Record</em> button lets you download the metadata record (not the actual datafiles) in either <i class='far fa-file-excel menu-fa'></i> <strong>XML</strong> or <i class='far fa-file-code menu-fa'></i> <strong>JSON</strong> format for additional analysis, if desired.",
             attachTo: { element: '#btn-download-record-group', on: 'bottom' },
             scrollTo: true,
-            buttons: [buttons.back(true), editRecordVisible ? buttons.next : buttons.end],
+            buttons: [buttons.back(true), hasStepsAfterDl ? buttons.next : buttons.end],
             modalOverlayOpeningPadding: 5,
         });
 
@@ -976,6 +1026,22 @@
                 text: "The <i class='fa fa-file-text menu-fa'></i> <em>Edit this record</em> button will allow you (if logged in and you have ownership of this record) to edit the metadata information contained within. Currently, this process is a bit cumbersome, but an improvement to the interface is on the NexusLIMS team's roadmap.",
                 attachTo: { element: '#btn-edit-record', on: 'bottom' },
                 scrollTo: false,
+                buttons: [buttons.back(true), annotateRecordVisible ? buttons.next : buttons.end],
+                modalOverlayOpeningPadding: 5,
+                popperOptions: {
+                    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+        }
+
+        // Only add annotate record step if the button is present (NX_ENABLE_ANNOTATOR + write access)
+        if (annotateRecordVisible) {
+            tour.addStep({
+                id: 'tut-annotate-record',
+                title: 'Annotate Record',
+                text: "The <i class='fa fa-pencil menu-fa'></i> <em>Annotate Record</em> button opens a side panel where you can attach plain-language descriptions to each dataset captured during the experiment. Descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators to understand what was acquired. From this panel, you can also open the full-page annotator, or edit descriptions inline by hovering over a row in any dataset table.",
+                attachTo: { element: '#annotate-record-btn', on: 'bottom' },
+                scrollTo: true,
                 buttons: [buttons.back(true), buttons.end],
                 modalOverlayOpeningPadding: 5,
                 popperOptions: {
@@ -988,19 +1054,31 @@
         var cur_pos = $(document).scrollTop();
 
         function clean_up_on_exit(modal_to_open) {
+            // Shepherd only removes the modal overlay on `complete`, not `cancel` — the
+            // overlay SVG path keeps pointer-events:all and blocks interaction after cancel.
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
+            // Re-enable scrolling using the page's existing scroll management mechanism
+            $('body').removeClass('scrollDisabled');
+
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
             }).addClass('tour-completed');
 
             if ($(document).scrollTop() === cur_pos) {
-                if (modal_to_open) { Detail.openModal(modal_to_open); }
+                if (modal_to_open) {
+                    Detail.openModal(modal_to_open);
+                }
             } else {
                 $('html, body').animate({
                     scrollTop: cur_pos
                 }, {
                     duration: 500,
-                    complete: modal_to_open ? function() { Detail.openModal(modal_to_open); } : null
+                    complete: modal_to_open ? function() {
+                        Detail.openModal(modal_to_open);
+                    } : null
                 });
             }
         }
