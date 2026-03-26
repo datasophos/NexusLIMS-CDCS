@@ -1142,6 +1142,120 @@
     }
 
     // ========================================================================
+    // Annotator Tour
+    // ========================================================================
+
+    function createAnnotatorTour() {
+        if (!shepherdAvailable()) {
+            console.log('Shepherd.js not available');
+            return null;
+        }
+
+        var tour = new Shepherd.Tour({
+            useModalOverlay: true,
+            defaultStepOptions: {
+                cancelIcon: { enabled: true },
+                classes: 'shepherd-theme-arrows',
+                scrollTo: false
+            }
+        });
+
+        var buttons = createButtons(tour);
+        tour.on('show', createStepNumberIndicator(tour));
+
+        tour.addStep({
+            id: 'tut-ann-welcome',
+            title: 'Full-page Annotator',
+            text: 'This page lets you add plain-language descriptions to every dataset in the record and, when the record has more than one activity, reassign datasets between activities. Changes are not saved until you click <strong>Save Annotations</strong>.',
+            // attachTo: { element: 'h4.mb-0', on: 'bottom' },
+            buttons: [buttons.back(false), buttons.next],
+            modalOverlayOpeningPadding: 5,
+            floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 10 })] }
+        });
+
+        var firstCard = document.querySelector('.annotate-card');
+        if (firstCard) {
+            tour.addStep({
+                id: 'tut-ann-card',
+                title: 'Dataset cards',
+                text: "Each card represents one dataset. The filename appears at the top and the text box below is where you type your description. The left border changes color as you work: <span style='color:#198754;font-weight:600;'>green</span> means the dataset has a description and the current value matches what is currently saved in the record, <span style='color:#e67e00;font-weight:600;'>orange</span> means you have unsaved changes, and gray means no description has been added yet.",
+                attachTo: { element: firstCard, on: 'bottom' },
+                scrollTo: true,
+                scrollToHandler: function(el) {
+                    var top = el.getBoundingClientRect().top + window.pageYOffset - 120;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                },
+                buttons: [buttons.back(true), buttons.next],
+                modalOverlayOpeningPadding: 6,
+                floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 12 })] }
+            });
+
+            var firstCb = document.querySelector('.nx-select-cb-label');
+            if (firstCb) {
+                tour.addStep({
+                    id: 'tut-ann-batch',
+                    title: 'Selecting and batch-moving',
+                    text: "The checkbox in the top-left corner of each card lets you select one or more datasets at once. Once a card is selected, a toolbar appears at the bottom of the page with a <strong>Move to Activity</strong> dropdown for batch reassignment. You can also drag and drop any individual card directly into a different activity section to move it. Changes are not saved until you click \"Save\".",
+                    attachTo: { element: firstCb, on: 'right' },
+                    scrollTo: true,
+                    scrollToHandler: function(el) {
+                        var top = el.getBoundingClientRect().top + window.pageYOffset - 120;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    },
+                    buttons: [buttons.back(true), buttons.next],
+                    modalOverlayOpeningPadding: 4,
+                    floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 12 })] },
+                    beforeShowPromise: function() {
+                        return new Promise(function(resolve) {
+                            $(firstCb).css('opacity', '1');
+                            resolve();
+                        });
+                    },
+                    when: {
+                        hide: function() {
+                            $(firstCb).css('opacity', '');
+                        }
+                    }
+                });
+            }
+        }
+
+        tour.addStep({
+            id: 'tut-ann-save',
+            title: 'Saving your work',
+            text: "Click <strong>Save Annotations</strong> when you're done — this saves both descriptions and any pending dataset moves in a single request. You can also press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac) to save from the keyboard.",
+            attachTo: { element: '#annotate-save-btn', on: 'top' },
+            scrollTo: true,
+            buttons: [buttons.back(true), buttons.end],
+            modalOverlayOpeningPadding: 5,
+            floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 12 })] }
+        });
+
+        function clean_up_on_exit() {
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
+            $('#menu-tutorial, nav a, #navPanel a').filter(function() {
+                return $(this).text().trim() === 'Tutorial';
+            }).addClass('tour-completed');
+        }
+
+        tour.on('complete', clean_up_on_exit);
+        tour.on('cancel', clean_up_on_exit);
+        tour.on('hide', clean_up_on_exit);
+
+        tour.on('show', function() {
+            setTimeout(function() {
+                $('.shepherd-modal-overlay-container').on('click', function() {
+                    tour.cancel();
+                });
+            }, 100);
+        });
+
+        return tour;
+    }
+
+    // ========================================================================
     // Public API
     // ========================================================================
 
@@ -1174,6 +1288,20 @@
     };
 
     /**
+     * Start the annotator page tour
+     */
+    NexusLIMSTours.startAnnotatorTour = function() {
+        if (!tutorialsEnabled()) {
+            console.log('Tutorials are disabled');
+            return;
+        }
+        var tour = createAnnotatorTour();
+        if (tour) {
+            tour.start();
+        }
+    };
+
+    /**
      * Start the detail page tour
      */
     NexusLIMSTours.startDetailTour = function() {
@@ -1197,7 +1325,10 @@
         }
 
         // Determine which page we're on
-        if ($('#simpleDisplay').length > 0) {
+        if ($('#annotate-page-form').length > 0) {
+            // We're on the full-page annotator
+            NexusLIMSTours.startAnnotatorTour();
+        } else if ($('#simpleDisplay').length > 0) {
             // We're on a detail page
             NexusLIMSTours.startDetailTour();
         } else if ($('#form_search').length > 0 || window.location.pathname.indexOf('/explore/keyword') !== -1) {
