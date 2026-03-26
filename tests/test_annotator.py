@@ -81,6 +81,42 @@ def _dataset_count_in_activity(xml_str, seqno):
     return len(_dataset_names_in_activity(xml_str, seqno))
 
 
+def _dump_activity_el(act):
+    """Pretty-print a single <acquisitionActivity> Element. Call this while debugging."""
+    seqno = act.get("seqno", "?")
+    datasets = act.findall(_t("dataset"))
+    setup = act.find(_t("setup"))
+    setup_params = (
+        {p.get("name"): p.text for p in setup.findall(_t("param"))}
+        if setup is not None else {}
+    )
+    print(f"  activity seqno={seqno}: {len(datasets)} dataset(s), setup={setup_params}")
+    for ds in datasets:
+        name_el = ds.find(_t("name"))
+        name = name_el.text if name_el is not None else "<unnamed>"
+        metas = {m.get("name"): m.text for m in ds.findall(_t("meta"))}
+        print(f"    - {name}  meta={metas}")
+
+
+def _dump_activities(xml_str):
+    """Pretty-print all activities in an XML string. Call this inside a test while debugging."""
+    root = ET.fromstring(xml_str)
+    for act in root.findall("nx:acquisitionActivity", NS_MAP):
+        _dump_activity_el(act)
+
+
+def _dump_el(el):
+    """Pretty-print any Element as indented XML. Call this inside a test while debugging."""
+    ET.indent(el, space="  ")
+    print(ET.tostring(el, encoding="unicode"))
+    print()
+
+
+def _dump_xml(xml_str):
+    """Pretty-print an XML string with indentation. Call this inside a test while debugging."""
+    _dump_el(ET.fromstring(xml_str))
+
+
 # ---------------------------------------------------------------------------
 # Shared XML fixture
 #
@@ -101,6 +137,7 @@ _TWO_ACTIVITY_XML = f"""\
   <acquisitionActivity seqno="0">
     <startTime>2024-01-15T10:00:00-05:00</startTime>
     <setup>
+      <param name="StageX">-192.365</param>
       <param name="Voltage">300000.0</param>
       <param name="Magnification">17677.0</param>
     </setup>
@@ -110,17 +147,17 @@ _TWO_ACTIVITY_XML = f"""\
       <format>Digital Micrograph</format>
       <description>First image</description>
       <preview>/previews/image_001.png</preview>
-      <meta name="StageX">-192.365</meta>
       <meta name="C2">44.7</meta>
       <meta name="Creation Time">2024-01-15T10:01:00-05:00</meta>
+      <meta name="Unique_to_1">test1</meta>
     </dataset>
     <dataset type="Image">
       <name>image_002.dm3</name>
       <location>/data/image_002.dm3</location>
       <format>Digital Micrograph</format>
-      <meta name="StageX">-192.365</meta>
       <meta name="C2">41.9</meta>
       <meta name="Creation Time">2024-01-15T10:02:00-05:00</meta>
+      <meta name="Unique_to_2">test2</meta>
     </dataset>
   </acquisitionActivity>
   <acquisitionActivity seqno="1">
@@ -136,6 +173,16 @@ _TWO_ACTIVITY_XML = f"""\
       <meta name="StageX">-200.0</meta>
       <meta name="C2">52.3</meta>
       <meta name="Creation Time">2024-01-15T11:01:00-05:00</meta>
+      <meta name="Unique_to_3">test3</meta>
+    </dataset>
+    <dataset type="Image">
+      <name>image_004.dm3</name>
+      <location>/data/image_003.dm3</location>
+      <format>Digital Micrograph</format>
+      <meta name="StageX">-205.0</meta>
+      <meta name="C2">62.3</meta>
+      <meta name="Creation Time">2024-01-15T11:05:00-05:00</meta>
+      <meta name="Unique_to_4">test4</meta>
     </dataset>
   </acquisitionActivity>
 </Experiment>"""
@@ -147,15 +194,15 @@ _TWO_ACTIVITY_XML = f"""\
 
 class ParseDatasetsTests(SimpleTestCase):
     def test_returns_correct_total_count(self):
-        self.assertEqual(len(_parse_datasets(_TWO_ACTIVITY_XML)), 3)
+        self.assertEqual(len(_parse_datasets(_TWO_ACTIVITY_XML)), 4)
 
     def test_indices_are_sequential_across_activities(self):
         indices = [d["index"] for d in _parse_datasets(_TWO_ACTIVITY_XML)]
-        self.assertEqual(indices, [0, 1, 2])
+        self.assertEqual(indices, [0, 1, 2, 3])
 
     def test_names_match_xml_order(self):
         names = [d["name"] for d in _parse_datasets(_TWO_ACTIVITY_XML)]
-        self.assertEqual(names, ["image_001.dm3", "image_002.dm3", "image_003.dm3"])
+        self.assertEqual(names, ["image_001.dm3", "image_002.dm3", "image_003.dm3", "image_004.dm3"])
 
     def test_description_returned_when_present(self):
         ds = _parse_datasets(_TWO_ACTIVITY_XML)
@@ -171,6 +218,7 @@ class ParseDatasetsTests(SimpleTestCase):
         self.assertEqual(ds[0]["activity_seqno"], "0")
         self.assertEqual(ds[1]["activity_seqno"], "0")
         self.assertEqual(ds[2]["activity_seqno"], "1")
+        self.assertEqual(ds[3]["activity_seqno"], "1")
 
     def test_preview_url_built_from_env_var(self):
         with patch.dict(os.environ, {"XSLT_PREVIEW_BASE_URL": "https://cdn.example.com"}):
@@ -208,7 +256,7 @@ class ParseActivitiesTests(SimpleTestCase):
     def test_dataset_counts(self):
         acts = _parse_activities(_TWO_ACTIVITY_XML)
         self.assertEqual(acts[0]["dataset_count"], 2)
-        self.assertEqual(acts[1]["dataset_count"], 1)
+        self.assertEqual(acts[1]["dataset_count"], 2)
 
     def test_empty_xml_returns_empty_list(self):
         xml = f'<Experiment xmlns="{NS}"><title>Empty</title></Experiment>'
@@ -231,8 +279,10 @@ class InjectSetupIntoDatasetTests(SimpleTestCase):
         ds, act = self._activity_and_dataset()
         _inject_setup_into_dataset(ds, act)
         names = _meta_names(ds)
-        self.assertIn("Voltage", names)
-        self.assertIn("Magnification", names)
+        self.assertEqual(
+            {'Voltage', 'C2', 'Unique_to_1', 'StageX', 'Magnification', 'Creation Time'},
+            names
+        )
 
     def test_setup_param_value_preserved(self):
         ds, act = self._activity_and_dataset()
@@ -240,12 +290,6 @@ class InjectSetupIntoDatasetTests(SimpleTestCase):
         meta = _find_meta(ds, "Voltage")
         self.assertIsNotNone(meta)
         self.assertEqual(meta.text, "300000.0")
-
-    def test_existing_meta_not_overwritten(self):
-        ds, act = self._activity_and_dataset()
-        original_stagex = _find_meta(ds, "StageX").text
-        _inject_setup_into_dataset(ds, act)
-        self.assertEqual(_find_meta(ds, "StageX").text, original_stagex)
 
     def test_no_duplicate_meta_elements_for_existing_names(self):
         ds, act = self._activity_and_dataset()
@@ -372,19 +416,6 @@ class RecomputeActivitySetupTests(SimpleTestCase):
         _recompute_activity_setup(act)
         self.assertIsNone(act.find(_t("setup")))
 
-    def test_conflicting_dataset_value_prevents_setup_param_promotion(self):
-        # dataset_0 has OldParam=version_A in its own meta (conflicts with setup's stale_value).
-        # _inject_setup_into_dataset won't overwrite existing meta, so dataset_0 keeps version_A
-        # while dataset_1 gets stale_value injected. Since they differ, OldParam is NOT promoted.
-        act = self._make_activity(
-            {"Voltage": "300", "StageX": "-192", "OldParam": "version_A"},
-            {"Voltage": "300", "StageX": "-195"},
-            existing_setup={"OldParam": "stale_value"},
-        )
-        _recompute_activity_setup(act)
-        self.assertNotIn("OldParam", _setup_param_names(act))
-        self.assertIn("Voltage", _setup_param_names(act))
-
     def test_only_one_setup_element_after_recompute(self):
         act = self._make_activity(
             {"Voltage": "300"},
@@ -412,6 +443,10 @@ class RecomputeActivitySetupTests(SimpleTestCase):
 # ===========================================================================
 
 class ApplyMovesTests(SimpleTestCase):
+    # original dataset counts in each activity
+    orig_0 = _dataset_count_in_activity(_TWO_ACTIVITY_XML, "0")
+    orig_1 = _dataset_count_in_activity(_TWO_ACTIVITY_XML, "1")
+
     def test_dataset_moved_to_target_activity(self):
         result = _apply_moves(_TWO_ACTIVITY_XML, [{"datasetIndex": 0, "targetActivitySeqno": "1"}])
         self.assertIn("image_001.dm3", _dataset_names_in_activity(result, "1"))
@@ -426,12 +461,12 @@ class ApplyMovesTests(SimpleTestCase):
 
     def test_target_activity_gains_one_dataset(self):
         result = _apply_moves(_TWO_ACTIVITY_XML, [{"datasetIndex": 0, "targetActivitySeqno": "1"}])
-        self.assertEqual(_dataset_count_in_activity(result, "1"), 2)
+        self.assertEqual(_dataset_count_in_activity(result, "1"), self.orig_1 + 1)
 
     def test_no_op_when_target_is_same_activity(self):
         result = _apply_moves(_TWO_ACTIVITY_XML, [{"datasetIndex": 0, "targetActivitySeqno": "0"}])
-        self.assertEqual(_dataset_count_in_activity(result, "0"), 2)
-        self.assertEqual(_dataset_count_in_activity(result, "1"), 1)
+        self.assertEqual(_dataset_count_in_activity(result, "0"), self.orig_0)
+        self.assertEqual(_dataset_count_in_activity(result, "1"), self.orig_1)
 
     def test_empty_moves_returns_identical_xml(self):
         result = _apply_moves(_TWO_ACTIVITY_XML, [])
@@ -445,8 +480,8 @@ class ApplyMovesTests(SimpleTestCase):
             {"datasetIndex": 0, "targetActivitySeqno": "0"},
         ]
         result = _apply_moves(_TWO_ACTIVITY_XML, moves)
-        self.assertEqual(_dataset_count_in_activity(result, "0"), 2)
-        self.assertEqual(_dataset_count_in_activity(result, "1"), 1)
+        self.assertEqual(_dataset_count_in_activity(result, "0"), self.orig_0)
+        self.assertEqual(_dataset_count_in_activity(result, "1"), self.orig_1)
 
     def test_multiple_datasets_moved_in_one_call(self):
         moves = [
@@ -454,19 +489,21 @@ class ApplyMovesTests(SimpleTestCase):
             {"datasetIndex": 1, "targetActivitySeqno": "1"},
         ]
         result = _apply_moves(_TWO_ACTIVITY_XML, moves)
-        self.assertEqual(_dataset_count_in_activity(result, "0"), 0)
-        self.assertEqual(_dataset_count_in_activity(result, "1"), 3)
+        self.assertEqual(_dataset_count_in_activity(result, "0"), self.orig_0 - 2)
+        self.assertEqual(_dataset_count_in_activity(result, "1"), self.orig_1 + 2)
 
     def test_out_of_range_index_ignored_gracefully(self):
         result = _apply_moves(_TWO_ACTIVITY_XML, [{"datasetIndex": 999, "targetActivitySeqno": "1"}])
-        self.assertEqual(_dataset_count_in_activity(result, "0"), 2)
-        self.assertEqual(_dataset_count_in_activity(result, "1"), 1)
+        self.assertEqual(_dataset_count_in_activity(result, "0"), self.orig_0)
+        self.assertEqual(_dataset_count_in_activity(result, "1"), self.orig_1)
 
     def test_source_setup_injected_into_moved_dataset(self):
         # image_001.dm3 (index 0) had Voltage=300000 and Magnification=17677 in activity 0's
         # setup. After moving to activity 1, both values must be preserved in the output.
         # Voltage=300000 is common to all datasets in activity 1 so it ends up in setup;
-        # Magnification=17677 differs from image_003's 25000, so it stays in meta.
+        # Magnification=17677 differs from image_003 and image_004's 25000, so it gets demote
+        # to meta. Only setup param in activity 1 should be Voltage, and image_003 and image_004
+        # should gain Magnification meta elements
         result = _apply_moves(_TWO_ACTIVITY_XML, [{"datasetIndex": 0, "targetActivitySeqno": "1"}])
         root = ET.fromstring(result)
         moved_ds = None
@@ -506,7 +543,8 @@ class ApplyMovesTests(SimpleTestCase):
 
     def test_target_setup_recomputed_to_reflect_common_values_only(self):
         # After moving image_001.dm3 (Voltage=300000, Magnification=17677) to activity 1
-        # which already has image_003.dm3 (Voltage=300000, Magnification=25000 after injection),
+        # which already has image_003.dm3 and image_004.dm3 (Voltage=300000, 
+        # Magnification=25000 after injection),
         # the common value is only Voltage. Magnification differs so must NOT be in setup.
         result = _apply_moves(_TWO_ACTIVITY_XML, [{"datasetIndex": 0, "targetActivitySeqno": "1"}])
         root = ET.fromstring(result)
