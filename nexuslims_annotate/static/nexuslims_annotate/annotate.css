@@ -141,9 +141,31 @@ body.nx-has-selection .nx-select-cb-label {
     background: #c7d2fe;
 }
 
-/* SortableJS drag ghost */
+/* SortableJS drag ghost (placeholder left behind) */
 .nx-drag-ghost {
     opacity: 0.35;
+}
+
+/* Multi-drag visual: stacked card shadows + selected-count badge */
+.nx-dataset-col.nx-multi-drag .annotate-card {
+    box-shadow: 4px 4px 0 0 #c7d2fe, 8px 8px 0 0 #e0e7ff;
+    position: relative;
+    z-index: 1;
+}
+.nx-dataset-col.nx-multi-drag::before {
+    content: attr(data-multi-count);
+    position: absolute;
+    top: -6px;
+    right: 2px;
+    background: #6366f1;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 20;
+    pointer-events: none;
+    white-space: nowrap;
 }
 
 /* Batch-move toolbar: fixed at bottom-center */

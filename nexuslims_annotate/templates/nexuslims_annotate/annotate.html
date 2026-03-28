@@ -379,6 +379,14 @@
   // Track last-clicked checkbox for shift-click range selection
   var lastChecked = null;
 
+  // Prevent text selection when shift-clicking checkboxes
+  form.addEventListener('mousedown', function (e) {
+    if (!e.shiftKey) return;
+    if (e.target.closest('.nx-select-cb-label')) {
+      e.preventDefault();
+    }
+  });
+
   form.addEventListener('click', function (e) {
     if (!e.target.classList.contains('nx-select-cb')) return;
     var cb = e.target;
@@ -421,9 +429,22 @@
       chosenClass: 'nx-drag-chosen',
       filter: '.annotate-textarea, .nx-select-cb-label, .nx-moved-badge',
       preventOnFilter: false,
+      onStart: function (evt) {
+        var colEl = evt.item;
+        if (colEl.classList.contains('nx-selected')) {
+          var selCount = getSelectedCols().length;
+          if (selCount > 1) {
+            colEl.classList.add('nx-multi-drag');
+            colEl.dataset.multiCount = selCount + ' selected';
+          }
+        }
+      },
       onEnd: function (evt) {
+        var colEl = evt.item;
+        colEl.classList.remove('nx-multi-drag');
+        delete colEl.dataset.multiCount;
+
         if (evt.from === evt.to) return;
-        var colEl       = evt.item;
         var targetRow   = evt.to;
         var targetSeqno = targetRow.dataset.seqno;
         var dsIndex     = parseInt(colEl.dataset.datasetIndex);
@@ -437,7 +458,7 @@
         if (colEl.classList.contains('nx-selected')) {
           getSelectedCols().forEach(function (otherCol) {
             if (otherCol === colEl) return;
-            var otherIndex    = parseInt(otherCol.dataset.datasetIndex);
+            var otherIndex     = parseInt(otherCol.dataset.datasetIndex);
             var otherOrigSeqno = otherCol.dataset.originalActivity;
             targetRow.appendChild(otherCol);
             otherCol.dataset.currentActivity = targetSeqno;
