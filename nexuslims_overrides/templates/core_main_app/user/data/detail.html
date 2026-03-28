@@ -273,12 +273,14 @@
 
     var r = iconEl.getBoundingClientRect();
     popup.style.display = 'block';
-    // Position below the icon, flush left; clamp to viewport right edge
-    var left = Math.min(r.left, window.innerWidth - popup.offsetWidth - 8);
-    popup.style.left = left + 'px';
-    popup.style.top  = (r.bottom + 4) + 'px';
-    textarea.focus();
-    textarea.select();
+    // Read offsetWidth after layout so the clamp is accurate
+    requestAnimationFrame(function() {
+      var left = Math.min(r.left, window.innerWidth - popup.offsetWidth - 8);
+      popup.style.left = left + 'px';
+      popup.style.top  = (r.bottom + 4) + 'px';
+      textarea.focus();
+      textarea.select();
+    });
   }
 
   function closePopup() {

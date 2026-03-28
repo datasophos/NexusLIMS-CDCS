@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 from core_main_app.access_control.api import check_can_write
 from core_main_app.access_control.exceptions import AccessControlError
@@ -334,7 +333,7 @@ def annotate_record(request, record_id):
         'record_title': _get_title(data.content),
         'datasets': datasets,
         'record_id': record_id,
-        'activities_json': mark_safe(json.dumps(activities)),
+        'activities': activities,
     })
 
 
@@ -360,7 +359,10 @@ def annotate_panel(request, record_id):
 @login_required
 def annotate_descriptions(request, record_id):
     """Return current dataset names and descriptions as JSON."""
-    data = data_api.get_by_id(record_id, request.user)
+    try:
+        data = data_api.get_by_id(record_id, request.user)
+    except DoesNotExist:
+        return JsonResponse({'error': 'Record not found'}, status=404)
     try:
         check_can_write(data, request.user)
     except AccessControlError:
@@ -377,8 +379,13 @@ def annotate_save_one(request, record_id):
     if request.method != 'POST':
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     idx = None
+    raw_idx = request.POST.get('dataset_index')
+    if raw_idx is None:
+        return JsonResponse({'error': 'dataset_index is required'}, status=400)
     try:
-        idx = int(request.POST.get('dataset_index', -1))
+        idx = int(raw_idx)
+        if idx < 0:
+            return JsonResponse({'error': 'Invalid dataset_index'}, status=400)
         description = request.POST.get('description', '').strip()
         data = data_api.get_by_id(record_id, request.user)
         # Build full post_data from current state, replacing only the target index

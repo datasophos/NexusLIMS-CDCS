@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block app_data %}
-<script>window.__nxActivities = {{ activities_json }};</script>
+{{ activities|json_script:"nx-activities-data" }}
+<script>window.__nxActivities = JSON.parse(document.getElementById('nx-activities-data').textContent);</script>
 
 <div class="container-fluid px-4 pt-3 pb-3">
 
