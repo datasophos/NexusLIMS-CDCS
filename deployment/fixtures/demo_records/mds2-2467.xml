@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>A SEM/EDS hyperspectral data set from a deep sea Mn nodule</title>
+  <summary ref="https://data.nist.gov/od/id/mds2-2467">
+    <experimenter>James Okafor</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2018-10-15T13:30:13+00:00</reservationStart>
+    <reservationEnd>2021-04-30T18:52:01+00:00</reservationEnd>
+    <motivation>An energy dispersive electron excited X-ray hyperspectral data set collected from a Mn deep sea nodule. Live time (per pixel): 0.72*4.0*18.0*3600.0/(1024*1024) # 18.0 hours on 4 detectors Energy scale: 10.0 eV/ch and 0.0 eV offset Take-Off Angle: 35.0 Probe Current: 1.0 nA Beam Energy: 20.0 keV
+
+Data source: &lt;a href="https://doi.org/10.18434/mds2-2467"&gt;https://doi.org/10.18434/mds2-2467&lt;/a&gt;
+
+U.S. Government work (public domain).</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>mds2-2467</name>
+    <description>PDR- A SEM:EDS hyperspectral data set from a deep sea Mn nodule.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2018-10-15T13:30:13+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Channel Offset">0.0</param>
+      <param name="Data Format">Y</param>
+      <param name="Data Type">EDS_Spectrum</param>
+      <param name="DatasetType">Spectrum</param>
+      <param name="EDAX Owner">Unknown</param>
+      <param name="File Format">EMSA/MAS Spectral Data File</param>
+      <param name="MSA Format Version">1.0</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Number of Data Columns">1.0</param>
+      <param name="Number of Data Points">4096.0</param>
+      <param name="Signal Type">EDS</param>
+      <param name="X Column Label">Energy (eV)</param>
+      <param name="X Column Units">eV</param>
+      <param name="Y Column Label">Counts</param>
+      <param name="Y Column Units">counts</param>
+    </setup>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Ag std.msa</name>
+      <location>/mds2-2467/Ag std.msa</location>
+      <format>MSA</format>
+      <description>EDS reference spectrum from Ag standard</description>
+      <preview>/mds2-2467/Ag std.msa.thumb.png</preview>
+      <meta name="EDAX Date">15-OCT-2018</meta>
+      <meta name="EDAX Time">10:33</meta>
+      <meta name="EDAX Title">Ag std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.489303-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T18:35:51+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Al std.msa</name>
+      <location>/mds2-2467/Al std.msa</location>
+      <format>MSA</format>
+      <description>EDS reference spectrum from Al standard</description>
+      <preview>/mds2-2467/Al std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">11:56</meta>
+      <meta name="EDAX Title">Al std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.612891-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:31:21+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>BaF2 std.msa</name>
+      <location>/mds2-2467/BaF2 std.msa</location>
+      <format>MSA</format>
+      <description>EDS reference spectrum from BaF2 standard</description>
+      <preview>/mds2-2467/BaF2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">15-OCT-2018</meta>
+      <meta name="EDAX Time">02:07</meta>
+      <meta name="EDAX Title">BaF2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.242575-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T18:50:36+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>C std.msa</name>
+      <location>/mds2-2467/C std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/C std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">11:35</meta>
+      <meta name="EDAX Title">C std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.606455-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:30:13+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>CaF2 std.msa</name>
+      <location>/mds2-2467/CaF2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/CaF2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">00:52</meta>
+      <meta name="EDAX Title">CaF2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:55.494982-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:39:08+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>CeO2 std.msa</name>
+      <location>/mds2-2467/CeO2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/CeO2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">15-OCT-2018</meta>
+      <meta name="EDAX Time">00:01</meta>
+      <meta name="EDAX Title">CeO2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:55.378012-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T18:41:37+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Cr std.msa</name>
+      <location>/mds2-2467/Cr std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Cr std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">01:35</meta>
+      <meta name="EDAX Title">Cr std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.622978-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:41:02+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Cu std.msa</name>
+      <location>/mds2-2467/Cu std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Cu std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">02:17</meta>
+      <meta name="EDAX Title">Cu std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.504865-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:43:46+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Fe std.msa</name>
+      <location>/mds2-2467/Fe std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Fe std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">01:21</meta>
+      <meta name="EDAX Title">Fe std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.463233-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:40:24+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>FeS2 std.msa</name>
+      <location>/mds2-2467/FeS2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/FeS2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">00:31</meta>
+      <meta name="EDAX Title">FeS2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.243196-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:37:45+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>GaP std.msa</name>
+      <location>/mds2-2467/GaP std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/GaP std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">00:24</meta>
+      <meta name="EDAX Title">GaP std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.243206-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:37:15+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>KBr std.msa</name>
+      <location>/mds2-2467/KBr std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/KBr std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">02:39</meta>
+      <meta name="EDAX Title">KBr std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.619808-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:45:35+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Mg std.msa</name>
+      <location>/mds2-2467/Mg std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Mg std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">00:04</meta>
+      <meta name="EDAX Title">Mg std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.435979-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:31:33+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>MgO std.msa</name>
+      <location>/mds2-2467/MgO std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/MgO std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">00:18</meta>
+      <meta name="EDAX Title">MgO std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.243469-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:36:40+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Mn std.msa</name>
+      <location>/mds2-2467/Mn std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Mn std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">01:28</meta>
+      <meta name="EDAX Title">Mn std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:55.462625-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:40:42+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>NaCl std.msa</name>
+      <location>/mds2-2467/NaCl std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/NaCl std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">00:38</meta>
+      <meta name="EDAX Title">NaCl std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:54.507565-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:38:06+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Ni std.msa</name>
+      <location>/mds2-2467/Ni std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Ni std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">02:10</meta>
+      <meta name="EDAX Title">Ni std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:59:00.284284-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:43:25+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Os std.msa</name>
+      <location>/mds2-2467/Os std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Os std.msa.thumb.png</preview>
+      <meta name="EDAX Date">30-APR-2021</meta>
+      <meta name="EDAX Time">01:14</meta>
+      <meta name="EDAX Title">Os std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.243127-06:00</meta>
+      <meta name="Offset">2.58389</meta>
+      <meta name="X Units Per Channel">9.99864</meta>
+      <meta name="Creation Time">2021-04-30T18:52:01+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Si std.msa</name>
+      <location>/mds2-2467/Si std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Si std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">11:48</meta>
+      <meta name="EDAX Title">Si std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.771502-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:31:09+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Ti std.msa</name>
+      <location>/mds2-2467/Ti std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Ti std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">01:48</meta>
+      <meta name="EDAX Title">Ti std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.256997-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:42:00+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Zn std.msa</name>
+      <location>/mds2-2467/Zn std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2467/Zn std.msa.thumb.png</preview>
+      <meta name="EDAX Date">11-OCT-2018</meta>
+      <meta name="EDAX Time">02:24</meta>
+      <meta name="EDAX Title">Zn std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:58:46.635940-06:00</meta>
+      <meta name="Offset">1.63032</meta>
+      <meta name="X Units Per Channel">9.99856</meta>
+      <meta name="Creation Time">2018-10-15T13:44:02+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

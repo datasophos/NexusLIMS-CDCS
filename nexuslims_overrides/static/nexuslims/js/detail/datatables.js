@@ -508,8 +508,10 @@
                 if (!descDiv) {
                     descDiv = document.createElement('div');
                     descDiv.className = 'nx-table-desc';
-                    var firstTd = row.querySelector('td:first-child');
-                    if (firstTd) { firstTd.appendChild(descDiv); }
+                    // Insert into .nx-desc-row so it lands in the name cell for
+                    // both aa-table and simple-filelist-table
+                    var descRow = row.querySelector('.nx-desc-row');
+                    if (descRow) { descRow.insertBefore(descDiv, descRow.firstChild); }
                 }
                 if (descDiv) {
                     descDiv.textContent = desc;
@@ -518,7 +520,10 @@
             } else if (descDiv) {
                 var tip = bootstrap.Tooltip.getInstance(descDiv);
                 if (tip) { tip.dispose(); }
-                descDiv.remove();
+                // Clear content but keep the element in the DOM so the
+                // XSLT-rendered container stays in place for future edits
+                descDiv.textContent = '';
+                descDiv.removeAttribute('title');
             }
 
             // Dataset metadata modal (lives inside the same <tr>)
@@ -626,15 +631,16 @@
             searching: true,  // Enable search
             info: true,       // Enable info display
             lengthChange: false,
+            autoWidth: false,
             columns: [
-              { searchable: false, className: 'text-center' },
-              { searchable: false, className: 'text-center' },
-              null,
-              { searchable: false },
-              { searchable: false },
-              { searchable: false, className: 'text-center' },
-              { searchable: false, className: 'text-center' },
-              { searchable: false, className: 'text-center' },
+              { searchable: false, className: 'text-center', width: '4%' },
+              { searchable: false, className: 'text-center', width: '4%' },
+              { width: '30%' },
+              { searchable: false, width: '40%' },
+              { searchable: false, width: '6%' },
+              { searchable: false, className: 'text-center', width: '5%' },
+              { searchable: false, className: 'text-center', width: '5%' },
+              { searchable: false, className: 'text-center', width: '6%' },
             ],
             layout: {
                 topStart: 'search',  // Search bar at top left
@@ -647,6 +653,14 @@
                 searchPlaceholder: 'Filter on dataset names...',
                 info: 'Showing _TOTAL_ datasets'
             }
+        });
+
+        // Apply stored descriptions and tooltips on draw (e.g. after annotator save)
+        var simpleTableEl = document.getElementById('simple-filelist-table');
+        initDescTooltips(simpleTableEl);
+        $('#simple-filelist-table').on('draw.dt', function() {
+            initDescTooltips(simpleTableEl);
+            applyStoredDescriptions(simpleTableEl);
         });
 
         // Enable fixed header for the simple file list table

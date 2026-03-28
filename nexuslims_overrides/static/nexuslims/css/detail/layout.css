@@ -139,6 +139,13 @@
         padding-left: calc(180px + var(--spacing-xl));  /* 220px (180px sidebar + 40px spacing) */
         padding-right: var(--spacing-xl);  /* 40px */
     }
+    #demo-banner {
+        margin-left: 190px;  /* Clear the fixed sidebar */
+    }
+    /* Simple display has no sidebar, so the banner should be full width */
+    body:has(#main-wrapper.simple-display) #demo-banner {
+        margin-left: 0;
+    }
 }
 
 .main .page-header {

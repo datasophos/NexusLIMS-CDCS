@@ -7,7 +7,7 @@ FROM astral/uv:python3.13-alpine3.23
 # Create application directory
 WORKDIR /srv/nexuslims
 
-RUN apk add python3-dev build-base linux-headers gettext bash \
+RUN apk add python3-dev build-base linux-headers gettext bash curl \
     && rm -rf /var/cache/apk/*
 
 # Copy dependency files for layer caching
@@ -30,6 +30,7 @@ COPY static ./static
 COPY config ./config
 COPY nexuslims_annotate ./nexuslims_annotate
 COPY nexuslims_overrides ./nexuslims_overrides
+COPY nexuslims_annotate ./nexuslims_annotate
 COPY xslt ./xslt
 
 # Create necessary directories
@@ -38,6 +39,7 @@ RUN mkdir -p /srv/nexuslims/media /srv/nexuslims/static.prod
 # Set up entrypoints and scripts
 COPY deployment/docker-entrypoint.prod.sh /docker-entrypoint.prod.sh
 COPY deployment/docker-entrypoint.dev.sh /docker-entrypoint.dev.sh
+COPY deployment/docker-entrypoint.demo.sh /docker-entrypoint.demo.sh
 COPY deployment/scripts /srv/scripts
 RUN chmod +x /docker-entrypoint.*.sh /srv/scripts/*.sh
 

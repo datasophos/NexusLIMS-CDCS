@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Hydrogen-bearing vesicles in space weathered lunar calcium-phosphates</title>
+  <summary ref="https://zenodo.org/records/8403583">
+    <experimenter>Sarah Chen</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2026-03-27T06:12:56-06:00</reservationStart>
+    <reservationEnd>2026-03-27T06:13:54-06:00</reservationEnd>
+    <motivation>Solar wind hydrogen was located and measured in space weathered apatite and merrillite grains from lunar soil 79221 using scanning transmission electron microscopy (STEM) techniques. Analyses include electron energy loss spectroscopy (EELS) and energy dispersive X-ray spectroscopy (EDS), collected as spectrum image cubes.
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.8403583"&gt;https://doi.org/10.5281/zenodo.8403583&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>8403583</name>
+    <description>Hydrogen-bearing vesicles in space weathered lunar calcium-phosphates.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T06:12:56-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Acquisition Device">QUEFINA 1</param>
+      <param name="Analytic Acquisition Mode">Parallel dispersive</param>
+      <param name="Analytic Format">Spectrum image</param>
+      <param name="Analytic Label">EELS</param>
+      <param name="Analytic Signal">EELS</param>
+      <param name="Binning (Horizontal)">1</param>
+      <param name="Binning (Vertical)">130</param>
+      <param name="Camera/Detector Processing">Gain Normalized</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="EELS – Collection semi-angle" unit="milliradian">0.0</param>
+      <param name="EELS – Convergence semi-angle" unit="milliradian">0.0</param>
+      <param name="EELS – Number of frames">1</param>
+      <param name="GMS Version">2.32.888.0</param>
+      <param name="Illumination Mode">STEM</param>
+      <param name="Imaging Mode">IMAGING</param>
+      <param name="Microscope">Nion UltraSTEM 200</param>
+      <param name="Name">Unknown</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="Operator">Kate</param>
+      <param name="STEM Camera Length" unit="millimeter">0.0</param>
+      <param name="Spectrum Imaging – Scan Mode">2D Array</param>
+      <param name="magnification">1.0</param>
+    </setup>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig2_merrillite79221_lowloss.dm4</name>
+      <location>/8403583/Fig2_merrillite79221_lowloss.dm4</location>
+      <format>DM4</format>
+      <description>EELS low-loss spectrum image of lunar merrillite 79221, 82×82 pixels</description>
+      <preview>/8403583/Fig2_merrillite79221_lowloss.dm4.thumb.png</preview>
+      <meta name="Data Dimensions">(82, 82, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.005</meta>
+      <meta name="Exposure Time" unit="second">0.005</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:35:00.344621-06:00</meta>
+      <meta name="Specimen" unit="merrillite">79221</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">43</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.005</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">82</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">82</meta>
+      <meta name="Creation Time">2026-03-27T06:13:36-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig3c_apatite_HAADF.dm4</name>
+      <location>/8403583/Fig3c_apatite_HAADF.dm4</location>
+      <format>DM4</format>
+      <description>HAADF STEM image of lunar apatite grain</description>
+      <preview>/8403583/Fig3c_apatite_HAADF.dm4.thumb.png</preview>
+      <meta name="Data Dimensions">(1024, 1024)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:34:50.755940-06:00</meta>
+      <meta name="Creation Time">2026-03-27T06:13:54-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig4_apatite79221_OKedge_vesicle.dm4</name>
+      <location>/8403583/Fig4_apatite79221_OKedge_vesicle.dm4</location>
+      <format>DM4</format>
+      <description>EELS O K-edge spectrum image of apatite vesicle, 50×52 pixels</description>
+      <preview>/8403583/Fig4_apatite79221_OKedge_vesicle.dm4.thumb.png</preview>
+      <meta name="Data Dimensions">(50, 52, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.05</meta>
+      <meta name="Exposure Time" unit="second">0.05</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:35:05.251463-06:00</meta>
+      <meta name="Specimen">L79221 apatite</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">138</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.05</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">52</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">50</meta>
+      <meta name="Creation Time">2026-03-27T06:13:50-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig4_apatite79221_lowloss_vesicle.dm4</name>
+      <location>/8403583/Fig4_apatite79221_lowloss_vesicle.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/8403583/Fig4_apatite79221_lowloss_vesicle.dm4.thumb.png</preview>
+      <meta name="Data Dimensions">(50, 52, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.005</meta>
+      <meta name="Exposure Time" unit="second">0.005</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:34:57.519996-06:00</meta>
+      <meta name="Specimen">L79221 apatite</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">18</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.005</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">52</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">50</meta>
+      <meta name="Creation Time">2026-03-27T06:13:02-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>FigS4_apatite79221_F_Fe.dm4</name>
+      <location>/8403583/FigS4_apatite79221_F_Fe.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/8403583/FigS4_apatite79221_F_Fe.dm4.thumb.png</preview>
+      <meta name="Data Dimensions">(30, 80, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.2</meta>
+      <meta name="Exposure Time" unit="second">0.2</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:34:52.960357-06:00</meta>
+      <meta name="Specimen">L79221 apatite</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">560</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.2</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">80</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">30</meta>
+      <meta name="Creation Time">2026-03-27T06:12:56-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>FigS6_apatite_ZLP.dm4</name>
+      <location>/8403583/FigS6_apatite_ZLP.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/8403583/FigS6_apatite_ZLP.dm4.thumb.png</preview>
+      <meta name="Data Dimensions">(50, 52, 2024)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.00009999999999999999</meta>
+      <meta name="Exposure Time" unit="second">0.00009999999999999999</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:34:48.217561-06:00</meta>
+      <meta name="Specimen">L79221 apatite</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">7</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.00009999999999999999</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">52</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">50</meta>
+      <meta name="Creation Time">2026-03-27T06:13:52-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

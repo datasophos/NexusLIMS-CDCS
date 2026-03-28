@@ -1,0 +1,815 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>The microstructure and He+ ion irradiation behavior of novel low-activation W-Ta-Cr-V refractory high entropy alloy f...</title>
+  <summary ref="https://zenodo.org/records/10512463">
+    <experimenter>Luca Ferretti</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2022-06-02T16:57:54+00:00</reservationStart>
+    <reservationEnd>2024-01-08T14:40:20-07:00</reservationEnd>
+    <motivation>The data is arranged into 2 folders: 1. SEM folder, which contains the raw SEM images of the surface morphology of the investigated material and the results of transmission Kikuchi diffraction (TKD).
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.10512463"&gt;https://doi.org/10.5281/zenodo.10512463&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>10512463</name>
+    <description>The microstructure and He+ ion irradiation behavior of novel low-activation W-Ta-Cr-V refractory high entropy alloy for nuclear applications.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2022-06-02T16:57:54+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>SEM_surface_1.tif</name>
+      <location>/10512463/SEM/SEM_surface_1.tif</location>
+      <format>TIF</format>
+      <description>SEM surface image of W-Ta-Cr-V refractory high entropy alloy</description>
+      <preview>/10512463/SEM/SEM_surface_1.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">5000.0</meta>
+      <meta name="Acquisition Date">06/02/2022</meta>
+      <meta name="Acquisition Time">12:56:09 PM</meta>
+      <meta name="Aperture Type">AVA</meta>
+      <meta name="Beam Mode">N-Beam</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Beam Shift X">-5.20376e-07</meta>
+      <meta name="Beam Shift Y">1.71718e-05</meta>
+      <meta name="Beam Tilt X">-0.00208333</meta>
+      <meta name="Beam Tilt Y">0.0</meta>
+      <meta name="Chamber ID">xT-SDB</meta>
+      <meta name="Chamber Pressure" unit="millipascal">2.89000</meta>
+      <meta name="Column Type">Elstar DualBeam</meta>
+      <meta name="Data Dimensions">(1536, 1024)</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="Detector Brightness (DB)">-5.88644</meta>
+      <meta name="Detector Brightness Setting">25.4735</meta>
+      <meta name="Detector Contrast (DB)">21.7564</meta>
+      <meta name="Detector Contrast Setting">58.4138</meta>
+      <meta name="Detector Grid Voltage" unit="volt">250.0</meta>
+      <meta name="Detector Mix (%)">100.0</meta>
+      <meta name="Detector Name">ETD</meta>
+      <meta name="Detector Signal">SE</meta>
+      <meta name="Device Number">9954453</meta>
+      <meta name="Digital Brightness">0.0</meta>
+      <meta name="Digital Contrast">1.0</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.0000050</meta>
+      <meta name="Dynamic Focus Enabled">False</meta>
+      <meta name="Dynamic WD Enabled">False</meta>
+      <meta name="ESEM Setting">no</meta>
+      <meta name="Electron Source">FEG</meta>
+      <meta name="Eucentric WD" unit="meter">0.0040</meta>
+      <meta name="Final Lens">Elstar</meta>
+      <meta name="Frame Average">0.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000012950</meta>
+      <meta name="Image Mode">Normal</meta>
+      <meta name="Internal Scan">True</meta>
+      <meta name="Line Integration">4.0</meta>
+      <meta name="Line Time" unit="second">0.031260</meta>
+      <meta name="Magnification Canvas Real Width">0.8288</meta>
+      <meta name="Magnification Mode">1.0</meta>
+      <meta name="Mainslock">Off</meta>
+      <meta name="Minimum Dwell Time" unit="second">1.0E-7</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:32.291344-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Operator">supervisor</meta>
+      <meta name="Pixel Height" unit="meter">8.430990E-9</meta>
+      <meta name="Pixel Width" unit="meter">8.430990E-9</meta>
+      <meta name="Post Processing">None</meta>
+      <meta name="Pre-Tilt">0.0</meta>
+      <meta name="Scan Interlacing">1.0</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.8288</meta>
+      <meta name="Screen Magnification Mode">1.0</meta>
+      <meta name="Software Version">17.3.1.10877 (build 10877)</meta>
+      <meta name="Spot Size">-3.0</meta>
+      <meta name="Stage Description">6inch</meta>
+      <meta name="Stage Position – R">3.07235</meta>
+      <meta name="Stage Position – X">-0.00813002</meta>
+      <meta name="Stage Position – Y">0.0138697</meta>
+      <meta name="Stage Position – Z">0.00399999</meta>
+      <meta name="Stage Position – α">-1.9635e-05</meta>
+      <meta name="Stage Position – β">0.0</meta>
+      <meta name="Stigmator X Value">0.006771</meta>
+      <meta name="Stigmator Y Value">0.0118079</meta>
+      <meta name="System Type">Helios 5 UX</meta>
+      <meta name="Tilt Correction Enabled">False</meta>
+      <meta name="Total Frame Time" unit="second">32.01020</meta>
+      <meta name="User Text">Helios</meta>
+      <meta name="Vacuum Mode">High vacuum</meta>
+      <meta name="Vacuum Pump">TMP</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000008633330</meta>
+      <meta name="Working Distance" unit="meter">0.004205190</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.5</meta>
+      <meta name="Zoom Pan Y">0.5</meta>
+      <meta name="warnings">['Operator']</meta>
+      <meta name="Creation Time">2022-06-02T16:57:54+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>SEM_surface_2.tif</name>
+      <location>/10512463/SEM/SEM_surface_2.tif</location>
+      <format>TIF</format>
+      <description>SEM surface image of W-Ta-Cr-V refractory high entropy alloy</description>
+      <preview>/10512463/SEM/SEM_surface_2.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">2000.0</meta>
+      <meta name="Acquisition Date">09/20/2022</meta>
+      <meta name="Acquisition Time">12:50:47 PM</meta>
+      <meta name="Aperture Type">AVA</meta>
+      <meta name="Beam Mode">N-Beam</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Beam Tilt X">0.00416667</meta>
+      <meta name="Beam Tilt Y">0.005</meta>
+      <meta name="Chamber ID">xT-SDB</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.466000</meta>
+      <meta name="Column Type">Elstar DualBeam</meta>
+      <meta name="Data Dimensions">(1536, 1024)</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="Detector Brightness (DB)">-6.30586</meta>
+      <meta name="Detector Brightness Setting">23.7259</meta>
+      <meta name="Detector Contrast (DB)">1.86575</meta>
+      <meta name="Detector Contrast Setting">40.3039</meta>
+      <meta name="Detector Name">TLD</meta>
+      <meta name="Detector Signal">SE</meta>
+      <meta name="Device Number">9954453</meta>
+      <meta name="Digital Brightness">0.0</meta>
+      <meta name="Digital Contrast">1.0</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Drift Correction Applied">True</meta>
+      <meta name="Dwell Time" unit="second">2.0E-7</meta>
+      <meta name="Dynamic Focus Enabled">False</meta>
+      <meta name="Dynamic WD Enabled">False</meta>
+      <meta name="ESEM Setting">no</meta>
+      <meta name="Electron Source">FEG</meta>
+      <meta name="Eucentric WD" unit="meter">0.0040</meta>
+      <meta name="Final Lens">Elstar</meta>
+      <meta name="Frame Average">0.0</meta>
+      <meta name="Frames Integrated">32</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.0000041440</meta>
+      <meta name="Image Mode">Normal</meta>
+      <meta name="Internal Scan">True</meta>
+      <meta name="Line Integration">1.0</meta>
+      <meta name="Line Time" unit="second">0.00037760</meta>
+      <meta name="Magnification Canvas Real Width">0.4144</meta>
+      <meta name="Magnification Mode">1.0</meta>
+      <meta name="Mainslock">Off</meta>
+      <meta name="Minimum Dwell Time" unit="second">1.0E-7</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:36.464403-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Operator">supervisor</meta>
+      <meta name="Pixel Height" unit="meter">2.697920E-9</meta>
+      <meta name="Pixel Width" unit="meter">2.697920E-9</meta>
+      <meta name="Post Processing">None</meta>
+      <meta name="Pre-Tilt">0.663225</meta>
+      <meta name="Scan Interlacing">1.0</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.4144</meta>
+      <meta name="Screen Magnification Mode">1.0</meta>
+      <meta name="Software Version">17.4.2.17341 (build 17341)</meta>
+      <meta name="Spot Size">1.0</meta>
+      <meta name="Stage Description">6inch</meta>
+      <meta name="Stage Position – R">-3.14157</meta>
+      <meta name="Stage Position – X">0.0282235</meta>
+      <meta name="Stage Position – Y">0.00699254</meta>
+      <meta name="Stage Position – Z">0.00300005</meta>
+      <meta name="Stage Position – α">-7.85398e-05</meta>
+      <meta name="Stage Position – β">0.0</meta>
+      <meta name="Stigmator X Value">-0.150631</meta>
+      <meta name="Stigmator Y Value">0.0369415</meta>
+      <meta name="System Type">Helios 5 UX</meta>
+      <meta name="Tilt Correction Enabled">False</meta>
+      <meta name="Total Frame Time" unit="second">0.3866620</meta>
+      <meta name="User Text">Helios</meta>
+      <meta name="Vacuum Mode">High vacuum</meta>
+      <meta name="Vacuum Pump">TMP</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000002762670</meta>
+      <meta name="Working Distance" unit="meter">0.003229140</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.5</meta>
+      <meta name="Zoom Pan Y">0.5</meta>
+      <meta name="warnings">['Operator']</meta>
+      <meta name="Creation Time">2022-09-20T16:53:04+00:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TKD_SEM_as-deposited.tif</name>
+      <location>/10512463/SEM/TKD_SEM_as-deposited.tif</location>
+      <format>TIF</format>
+      <description>SEM image from transmission Kikuchi diffraction, as-deposited</description>
+      <preview>/10512463/SEM/TKD_SEM_as-deposited.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:30.081370-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:03:14-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TKD_map2_KAM_as-deposited.tif</name>
+      <location>/10512463/SEM/TKD_map2_KAM_as-deposited.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/SEM/TKD_map2_KAM_as-deposited.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:27.933630-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:05:32-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TKD_map2_as-deposited.tif</name>
+      <location>/10512463/SEM/TKD_map2_as-deposited.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/SEM/TKD_map2_as-deposited.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:38.506958-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:05:08-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TKD_map_as-deposited.tif</name>
+      <location>/10512463/SEM/TKD_map_as-deposited.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/SEM/TKD_map_as-deposited.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:34.363999-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:03:38-07:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2022-09-09T06:35:42-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+    </setup>
+    <dataset type="Unknown" role="Experimental">
+      <name>EDS_map_Cr.tif</name>
+      <location>/10512463/TEM/EDS maps_as-deposited/EDS_map_Cr.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_as-deposited/EDS_map_Cr.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:57.404792-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T13:52:20-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>EDS_map_Ta.tif</name>
+      <location>/10512463/TEM/EDS maps_as-deposited/EDS_map_Ta.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_as-deposited/EDS_map_Ta.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:49.478423-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T13:52:00-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>EDS_map_V.tif</name>
+      <location>/10512463/TEM/EDS maps_as-deposited/EDS_map_V.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_as-deposited/EDS_map_V.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:55.451880-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T13:52:40-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>EDS_map_W.tif</name>
+      <location>/10512463/TEM/EDS maps_as-deposited/EDS_map_W.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_as-deposited/EDS_map_W.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:53.515045-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T13:51:40-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>STEM_as-deposited.bmp</name>
+      <location>/10512463/TEM/EDS maps_as-deposited/STEM_as-deposited.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_as-deposited/STEM_as-deposited.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:51.474537-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-07-28T08:09:54-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View000 Cr K.bmp</name>
+      <location>/10512463/TEM/EDS maps_irradiated area/View000 Cr K.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_irradiated area/View000 Cr K.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:26.338778-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:24:28-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View000 SEI(frame1).bmp</name>
+      <location>/10512463/TEM/EDS maps_irradiated area/View000 SEI(frame1).bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_irradiated area/View000 SEI(frame1).bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:15.808104-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:24:28-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View000 SEI.bmp</name>
+      <location>/10512463/TEM/EDS maps_irradiated area/View000 SEI.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_irradiated area/View000 SEI.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:24.122966-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:24:28-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View000 Ta L.bmp</name>
+      <location>/10512463/TEM/EDS maps_irradiated area/View000 Ta L.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_irradiated area/View000 Ta L.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:17.922715-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:24:28-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View000 V K.bmp</name>
+      <location>/10512463/TEM/EDS maps_irradiated area/View000 V K.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_irradiated area/View000 V K.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:22.141632-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:24:28-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View000 W L.bmp</name>
+      <location>/10512463/TEM/EDS maps_irradiated area/View000 W L.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_irradiated area/View000 W L.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:19.987416-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:24:28-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View001 Cr K.bmp</name>
+      <location>/10512463/TEM/EDS maps_unirradiated area/View001 Cr K.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_unirradiated area/View001 Cr K.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:17.814276-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:20:26-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View001 SEI(frame1).bmp</name>
+      <location>/10512463/TEM/EDS maps_unirradiated area/View001 SEI(frame1).bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_unirradiated area/View001 SEI(frame1).bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:11.558281-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:20:26-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View001 SEI.bmp</name>
+      <location>/10512463/TEM/EDS maps_unirradiated area/View001 SEI.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_unirradiated area/View001 SEI.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:21.779715-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:20:26-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View001 Ta L.bmp</name>
+      <location>/10512463/TEM/EDS maps_unirradiated area/View001 Ta L.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_unirradiated area/View001 Ta L.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:15.573270-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:20:26-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View001 V K.bmp</name>
+      <location>/10512463/TEM/EDS maps_unirradiated area/View001 V K.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_unirradiated area/View001 V K.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:19.830961-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:20:26-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>View001 W L.bmp</name>
+      <location>/10512463/TEM/EDS maps_unirradiated area/View001 W L.bmp</location>
+      <format>BMP</format>
+      <description/>
+      <preview>/10512463/TEM/EDS maps_unirradiated area/View001 W L.bmp.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:13.648788-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2023-08-29T06:20:26-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_HF_1.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_1.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_1.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:00.722794-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_HF_2.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_2.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_2.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:58.024302-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_HF_3.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_3.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_3.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:55.303148-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_HF_4.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_4.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_4.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:06.670444-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_HF_5.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_5.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_5.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:03.599473-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:24+00:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TEM_WTaCrV_HF_OF_mag.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_OF_mag.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_OF_mag.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:28.293635-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:39:04-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TEM_WTaCrV_HF_UF.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_UF.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_UF.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:36.987177-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:38:36-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TEM_WTaCrV_HF_UF_mag.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_UF_mag.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_HF_UF_mag.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:09.475430-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:38:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_LF_1.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_1.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_1.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:52.616049-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:28+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_LF_2.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_2.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_2.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:46.739587-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:30+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_LF_3.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_3.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_3.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:49.805588-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:32+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_LF_4.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_4.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_4.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:34.240590-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:32+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_LF_5.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_5.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_5.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:39.214057-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:36+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_WTaCrV_LF_6.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_6.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_6.tif.thumb.png</preview>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:44.047206-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</meta>
+      <meta name="Pixel Height" unit="meter">6.2202820E-11</meta>
+      <meta name="Pixel Width" unit="meter">6.2202820E-11</meta>
+      <meta name="Creation Time">2022-10-03T15:32:38+00:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TEM_WTaCrV_LF_OF_mag.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_OF_mag.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_OF_mag.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:41.997452-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:40:20-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TEM_WTaCrV_LF_UF.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_UF.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_UF.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:30.256746-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:39:58-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>TEM_WTaCrV_LF_UF_mag.tif</name>
+      <location>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_UF_mag.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/10512463/TEM/He bubbles/TEM_WTaCrV_LF_UF_mag.tif.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:32.235948-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2024-01-08T14:40:06-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>SAED_HF_irradiated area.dm4</name>
+      <location>/10512463/TEM/SAED_HF_irradiated area.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/10512463/TEM/SAED_HF_irradiated area.dm4.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">200000.0</meta>
+      <meta name="Acquisition Device">Rio16</meta>
+      <meta name="Actual Magnification">3627.311523175571</meta>
+      <meta name="Binning (Horizontal)">2</meta>
+      <meta name="Binning (Vertical)">2</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Exposure Time" unit="second">0.5</meta>
+      <meta name="GMS Version">3.53.4137.0</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="Imaging Mode">DIFF</meta>
+      <meta name="Name">JEOL COM, F200</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:12.615914-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="STEM Camera Length" unit="millimeter">300.0</meta>
+      <meta name="Signal Name">Rio16</meta>
+      <meta name="Specimen">W-HF-A0</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-0.07261189818382263</meta>
+      <meta name="Stage Position – Tilt Beta" unit="degree">-0.18409325182437897</meta>
+      <meta name="Stage Position – x" unit="micrometer">265.59278125000003</meta>
+      <meta name="Stage Position – y" unit="micrometer">-82.9700546875</meta>
+      <meta name="Stage Position – z" unit="millimeter">25.007841796875</meta>
+      <meta name="magnification">300.0</meta>
+      <meta name="Creation Time">2023-08-28T12:14:44-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>SAED_HF_unirradiated area.dm4</name>
+      <location>/10512463/TEM/SAED_HF_unirradiated area.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/10512463/TEM/SAED_HF_unirradiated area.dm4.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">200000.0</meta>
+      <meta name="Acquisition Device">Rio16</meta>
+      <meta name="Actual Magnification">3627.311523175571</meta>
+      <meta name="Binning (Horizontal)">2</meta>
+      <meta name="Binning (Vertical)">2</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Exposure Time" unit="second">0.5</meta>
+      <meta name="GMS Version">3.53.4137.0</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="Imaging Mode">DIFF</meta>
+      <meta name="Name">JEOL COM, F200</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:09.170443-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="STEM Camera Length" unit="millimeter">300.0</meta>
+      <meta name="Signal Name">Rio16</meta>
+      <meta name="Specimen">W-HF-A0</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-5.509033203125</meta>
+      <meta name="Stage Position – Tilt Beta" unit="degree">-1.5923020839691162</meta>
+      <meta name="Stage Position – x" unit="micrometer">264.76659375</meta>
+      <meta name="Stage Position – y" unit="micrometer">-82.453125</meta>
+      <meta name="Stage Position – z" unit="millimeter">30.253130859375002</meta>
+      <meta name="magnification">300.0</meta>
+      <meta name="Creation Time">2023-08-28T09:27:18-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_SAED_as-deposited.dm3</name>
+      <location>/10512463/TEM/TEM_SAED_as-deposited.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/10512463/TEM/TEM_SAED_as-deposited.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Acquisition Device">Orius CCD</meta>
+      <meta name="Actual Magnification">301.3616175173255</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">1</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2670, 4008)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Exposure Time" unit="second">7.0</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="Imaging Mode">DIFFRACTION</meta>
+      <meta name="Name">None</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:21:04.189420-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="Operator">KC</meta>
+      <meta name="STEM Camera Length" unit="millimeter">-1.0</meta>
+      <meta name="Specimen">wcl bor b</meta>
+      <meta name="magnification">1600.0</meta>
+      <meta name="Creation Time">2022-09-09T06:35:42-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>TEM_as-deposited.dm3</name>
+      <location>/10512463/TEM/TEM_as-deposited.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/10512463/TEM/TEM_as-deposited.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Acquisition Device">Orius CCD</meta>
+      <meta name="Actual Magnification">44660.215125817536</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">1</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2670, 4008)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Exposure Time" unit="second">0.3539743469843119</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="Name">None</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:59.369297-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="Operator">KC</meta>
+      <meta name="STEM Camera Length" unit="millimeter">-1.0</meta>
+      <meta name="Specimen">K360 HI 260</meta>
+      <meta name="magnification">250000.0</meta>
+      <meta name="Creation Time">2024-01-08T13:56:12-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>WTaCrV_HF_TEM_BF.dm4</name>
+      <location>/10512463/TEM/WTaCrV_HF_TEM_BF.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/10512463/TEM/WTaCrV_HF_TEM_BF.dm4.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">200000.0</meta>
+      <meta name="Acquisition Device">Rio16</meta>
+      <meta name="Actual Magnification">24640.926072910617</meta>
+      <meta name="Binning (Horizontal)">2</meta>
+      <meta name="Binning (Vertical)">2</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Exposure Time" unit="second">1.0</meta>
+      <meta name="GMS Version">3.53.4137.0</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="Imaging Mode">MAG1</meta>
+      <meta name="Name">JEOL COM, F200</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:22:23.779804-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="STEM Camera Length" unit="millimeter">300.0</meta>
+      <meta name="Signal Name">Rio16</meta>
+      <meta name="Specimen">W-HF-A0</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-0.07261189818382263</meta>
+      <meta name="Stage Position – Tilt Beta" unit="degree">-0.18409325182437897</meta>
+      <meta name="Stage Position – x" unit="micrometer">266.083</meta>
+      <meta name="Stage Position – y" unit="micrometer">-83.5473125</meta>
+      <meta name="Stage Position – z" unit="millimeter">25.007841796875</meta>
+      <meta name="magnification">20000.0</meta>
+      <meta name="Creation Time">2023-08-28T12:14:44-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

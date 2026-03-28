@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Electron energy loss spectra of several organic compounds</title>
+  <summary ref="https://zenodo.org/records/3975762">
+    <experimenter>Amara Diallo</experimenter>
+    <instrument pid="FEI-Titan-STEM">FEI Titan STEM</instrument>
+    <reservationStart>2026-03-27T17:39:18-06:00</reservationStart>
+    <reservationEnd>2026-03-27T17:41:02-06:00</reservationEnd>
+    <motivation>We placed crystals of different compounds to explore the possibility of fingerprinting them through EELS. Here are representative datasets of 7 different compounds: b-cyclodextrin hexacarboxy cyclohexane tannin TH-15 peptide TH-27 peptide two different forms of piroxicam The datasets were collected at EMAT, using a monochromated FEI Titan 3 TEM, within the scope of an EUSMI request.
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.3975762"&gt;https://doi.org/10.5281/zenodo.3975762&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>3975762</name>
+    <description>Electron energy loss spectra of several organic compounds.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T17:39:18-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acquisition Device">ENFINIUM</param>
+      <param name="Analytic Acquisition Mode">Parallel dispersive</param>
+      <param name="Analytic Format">Spectrum image</param>
+      <param name="Analytic Label">EELS</param>
+      <param name="Analytic Signal">EELS</param>
+      <param name="Binning (Horizontal)">1</param>
+      <param name="Camera/Detector Processing">Gain Normalized</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="EELS – Collection semi-angle" unit="milliradian">100.0</param>
+      <param name="EELS – Convergence semi-angle" unit="milliradian">0.0</param>
+      <param name="EELS – Number of frames">1</param>
+      <param name="Horizontal Field Width" unit="micrometer">15.998975781250003</param>
+      <param name="Imaging Mode">DIFFRACTION</param>
+      <param name="Name">FEI Tecnai</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="STEM Camera Length" unit="millimeter">29.500000000000004</param>
+      <param name="Spectrum Imaging – Scan Mode">2D Array</param>
+    </setup>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>TH_15.dm3</name>
+      <location>/3975762/TH_15.dm3</location>
+      <format>DM3</format>
+      <description>EELS spectrum image of TH-15 peptide, 164×170 spatial pixels</description>
+      <preview>/3975762/TH_15.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Data Dimensions">(164, 170, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.0005</meta>
+      <meta name="Exposure Time" unit="second">0.0005</meta>
+      <meta name="GMS Version">2.32.888.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:43:41.835021-06:00</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">47</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.0005</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">170</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">164</meta>
+      <meta name="magnification">5000.0</meta>
+      <meta name="Creation Time">2026-03-27T17:40:34-06:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>TH_27.dm3</name>
+      <location>/3975762/TH_27.dm3</location>
+      <format>DM3</format>
+      <description>STEM-EELS spectrum of TH-27 peptide</description>
+      <preview>/3975762/TH_27.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Data Dimensions">(142, 226, 1000)</meta>
+      <meta name="Data Type">STEM_EELS</meta>
+      <meta name="EELS – Processing Steps">Calibrated Post-acquisition</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="Indicated Magnification">5000.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T22:59:49.162602-06:00</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Creation Time">2026-03-27T17:39:40-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>b-cyclodextrin.dm3</name>
+      <location>/3975762/b-cyclodextrin.dm3</location>
+      <format>DM3</format>
+      <description>EELS spectrum image of beta-cyclodextrin, 184×112 spatial pixels</description>
+      <preview>/3975762/b-cyclodextrin.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Data Dimensions">(184, 112, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.0005</meta>
+      <meta name="Exposure Time" unit="second">0.0005</meta>
+      <meta name="GMS Version">2.32.888.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:43:46.517919-06:00</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">35</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.0005</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">112</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">184</meta>
+      <meta name="magnification">5000.0</meta>
+      <meta name="Creation Time">2026-03-27T17:39:18-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>hexacarboxy cyclohexane.dm3</name>
+      <location>/3975762/hexacarboxy cyclohexane.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/3975762/hexacarboxy cyclohexane.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Data Dimensions">(172, 146, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.001</meta>
+      <meta name="Exposure Time" unit="second">0.001</meta>
+      <meta name="GMS Version">2.32.888.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:43:52.454702-06:00</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">43</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.001</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">146</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">172</meta>
+      <meta name="magnification">5000.0</meta>
+      <meta name="Creation Time">2026-03-27T17:39:50-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>piroxicam_form_1.dm3</name>
+      <location>/3975762/piroxicam_form_1.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/3975762/piroxicam_form_1.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">300000.0</meta>
+      <meta name="Binning (Vertical)">1</meta>
+      <meta name="Data Dimensions">(100, 100, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.02</meta>
+      <meta name="Exposure Time" unit="second">0.02</meta>
+      <meta name="GMS Version">3.23.1508.0</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:43:56.301141-06:00</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">350</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.02</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">100</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">100</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.006832000000000001</meta>
+      <meta name="Stage Position – x" unit="micrometer">-5.079359999999999</meta>
+      <meta name="Stage Position – y" unit="micrometer">-16.242952000000002</meta>
+      <meta name="Stage Position – z" unit="millimeter">-130.73109000000002</meta>
+      <meta name="magnification">29.500000000000004</meta>
+      <meta name="Creation Time">2026-03-27T17:41:02-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>piroxicam_form_2.dm3</name>
+      <location>/3975762/piroxicam_form_2.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/3975762/piroxicam_form_2.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">300000.0</meta>
+      <meta name="Binning (Vertical)">1</meta>
+      <meta name="Data Dimensions">(100, 100, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.02</meta>
+      <meta name="Exposure Time" unit="second">0.02</meta>
+      <meta name="GMS Version">3.23.1508.0</meta>
+      <meta name="Illumination Mode">TEM</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:43:59.136304-06:00</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">350</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.02</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">100</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">100</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.007320000000000001</meta>
+      <meta name="Stage Position – x" unit="micrometer">-28.9926</meta>
+      <meta name="Stage Position – y" unit="micrometer">33.327448</meta>
+      <meta name="Stage Position – z" unit="millimeter">-155.21706</meta>
+      <meta name="magnification">29.500000000000004</meta>
+      <meta name="Creation Time">2026-03-27T17:40:26-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>tannin.dm3</name>
+      <location>/3975762/tannin.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/3975762/tannin.dm3.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">120000.0</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Data Dimensions">(197, 114, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Exposure" unit="second">0.001</meta>
+      <meta name="Exposure Time" unit="second">0.001</meta>
+      <meta name="GMS Version">2.32.888.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:43:38.270730-06:00</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">39</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.001</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">114</meta>
+      <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">197</meta>
+      <meta name="magnification">5000.0</meta>
+      <meta name="Creation Time">2026-03-27T17:40:08-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

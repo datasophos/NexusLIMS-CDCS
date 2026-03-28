@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Dataset for "Xenon Plasma Focused Ion Beam Milling for Obtaining Soft X-Ray Transparent Samples"</title>
+  <summary ref="https://zenodo.org/records/4753181">
+    <experimenter>Amara Diallo</experimenter>
+    <instrument pid="TESCAN-FERA-FIB-SEM">TESCAN FERA FIB-SEM</instrument>
+    <reservationStart>2018-11-14T22:15:08+00:00</reservationStart>
+    <reservationEnd>2021-05-12T10:17:46-06:00</reservationEnd>
+    <motivation>Dataset associated with the publication "Xenon Plasma Focused Ion Beam Milling for Obtaining Soft X-Ray Transparent Samples" by Sina Mayr 1,2,* , Simone Finizio 1 , Joakim Reuteler 3 , Stefan Stutz 1 , Carsten Dubs 4 , Markus Weigand 5 , Ale&amp;scaron; Hrabec 1,2,6 , J&amp;ouml;rg Raabe 1 and Sebastian Wintz 1,7,* . 1 Paul Scherrer Institut, 5232 Villigen PSI, Switzerland 2 Laboratory for Mesoscopic Systems, Department of Materials, ETH Zurich, 8093 Zurich, Switzerland 3 Scientific Center for Optica...
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.4753181"&gt;https://doi.org/10.5281/zenodo.4753181&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>4753181</name>
+    <description>Dataset for "Xenon Plasma Focused Ion Beam Milling for Obtaining Soft X-Ray Transparent Samples".</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2018-11-14T22:15:08+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="kilovolt">10.0000</param>
+      <param name="Accumulated Frames">1</param>
+      <param name="Acquisition Date">2018-11-14</param>
+      <param name="Acquisition Time">14:14:44</param>
+      <param name="Chamber Pressure" unit="millipascal">0.215310000</param>
+      <param name="Data Dimensions">(1280, 1430)</param>
+      <param name="Data Type">SEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Detector 0 Gain">33.800</param>
+      <param name="Detector 0 Offset">95.700</param>
+      <param name="Detector Name">SE</param>
+      <param name="Device">FERA 3 GMH</param>
+      <param name="Dwell Time" unit="microsecond">32.0000000000</param>
+      <param name="Emission Current" unit="microampere">166.880000000</param>
+      <param name="Full User Name">Joakim Reuteler</param>
+      <param name="Gun Shift X">0.0</param>
+      <param name="Gun Shift Y">0.0</param>
+      <param name="Gun Tilt X">-2.7100</param>
+      <param name="Gun Tilt Y">-3.7100</param>
+      <param name="Gun Type">Schottky</param>
+      <param name="IML Centering X">-3.3000</param>
+      <param name="IML Centering Y">-4.3100</param>
+      <param name="Image Shift X" unit="nanometer">3508.80000000000</param>
+      <param name="Image Shift Y" unit="nanometer">-0.742090000000000</param>
+      <param name="Image Strip Size">150</param>
+      <param name="LUT Gamma">1.0000</param>
+      <param name="LUT Maximum">255</param>
+      <param name="LUT Minimum">0</param>
+      <param name="Magnification" unit="kiloX">3.4588</param>
+      <param name="Make">TESCAN - http://www.tescan.com/</param>
+      <param name="Model">FERA 3 GMH MI3861481</param>
+      <param name="NexusLIMS Extraction – Date">2026-03-27T10:47:30.473352-06:00</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.tescan_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="OBJ Centering X">2.0118</param>
+      <param name="OBJ Centering Y">-23.194</param>
+      <param name="OBJ Pre-Centering X">-11.410</param>
+      <param name="OBJ Pre-Centering Y">3.9600</param>
+      <param name="Operator">Joakim Reuteler</param>
+      <param name="Pixel Height" unit="nanometer">78.1520000000000</param>
+      <param name="Pixel Width" unit="nanometer">78.1520000000000</param>
+      <param name="Predicted Beam Current" unit="picoampere">1138.006775180000000000000</param>
+      <param name="Primary Detector Gain">33.800</param>
+      <param name="Primary Detector Offset">95.700</param>
+      <param name="Scan Mode">RESOLUTION</param>
+      <param name="Scan Rotation" unit="degree">0.0</param>
+      <param name="Scan Speed">6</param>
+      <param name="Serial Number">MI3861481</param>
+      <param name="Specimen Current" unit="picoampere">392.6739926740000000000000</param>
+      <param name="Spot Size" unit="nanometer">25.73424115910000000000</param>
+      <param name="Stage Position – Rotation" unit="degree">208.26</param>
+      <param name="Stage Position – Tilt" unit="degree">55.000</param>
+      <param name="Stage Position – X" unit="meter">0.00037281</param>
+      <param name="Stage Position – Y" unit="meter">-0.0062242</param>
+      <param name="Stage Position – Z" unit="meter">0.021506</param>
+      <param name="Stigmator X Value">-0.19200</param>
+      <param name="Stigmator Y Value">1.5700</param>
+      <param name="TIFF DateTime">2018:11:14 14:15:06</param>
+      <param name="Tilt Correction">35.000</param>
+      <param name="User Name">rjoakim</param>
+      <param name="Working Distance" unit="millimeter">9.10670000</param>
+      <param name="warnings">['Operator']</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>20181114_STO.tif</name>
+      <location>/4753181/Figure1/20181114_STO.tif</location>
+      <format>TIF</format>
+      <description>SEM SE image of STO sample, 10 kV, stage tilted 55°</description>
+      <preview>/4753181/Figure1/20181114_STO.tif.thumb.png</preview>
+      <meta name="Creation Time">2018-11-14T22:15:08+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2018-11-21T19:36:56+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Accumulated Frames">1</param>
+      <param name="Acquisition Date">2018-11-21</param>
+      <param name="Data Dimensions">(1024, 1144)</param>
+      <param name="Detector Name">SE</param>
+      <param name="Device">FERA 3 GMH</param>
+      <param name="Dwell Time" unit="microsecond">32.0000000000</param>
+      <param name="Full User Name">Joakim Reuteler</param>
+      <param name="Gun Shift X">0.0</param>
+      <param name="Gun Shift Y">0.0</param>
+      <param name="Gun Type">Schottky</param>
+      <param name="Image Strip Size">120</param>
+      <param name="LUT Gamma">1.0000</param>
+      <param name="LUT Maximum">255</param>
+      <param name="LUT Minimum">0</param>
+      <param name="Magnification" unit="kiloX">0.11533</param>
+      <param name="Make">TESCAN - http://www.tescan.com/</param>
+      <param name="Model">FERA 3 GMH MI3861481</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operator">Joakim Reuteler</param>
+      <param name="Scan Mode">RESOLUTION</param>
+      <param name="Scan Rotation" unit="degree">0.0</param>
+      <param name="Scan Speed">6</param>
+      <param name="Serial Number">MI3861481</param>
+      <param name="Stage Position – Rotation" unit="degree">34.966</param>
+      <param name="Stage Position – Tilt" unit="degree">0.0</param>
+      <param name="Stage Position – X" unit="meter">0.00016781</param>
+      <param name="Stage Position – Y" unit="meter">0.0066789</param>
+      <param name="Stage Position – Z" unit="meter">0.032308</param>
+      <param name="Tilt Correction">0.0</param>
+      <param name="User Name">rjoakim</param>
+      <param name="warnings">['Operator']</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>STO-50um_overview_15kV.tif</name>
+      <location>/4753181/Figure2/STO-50um_overview_15kV.tif</location>
+      <format>TIF</format>
+      <description>SEM SE overview of 50 µm STO lamella at 15 kV</description>
+      <preview>/4753181/Figure2/STO-50um_overview_15kV.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="kilovolt">15.000</meta>
+      <meta name="Acquisition Time">11:36:49</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.128730000</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="Detector 0 Gain">37.406</meta>
+      <meta name="Detector 0 Offset">96.850</meta>
+      <meta name="Emission Current" unit="microampere">154.920000000</meta>
+      <meta name="Gun Tilt X">-2.7100</meta>
+      <meta name="Gun Tilt Y">-3.7100</meta>
+      <meta name="IML Centering X">-3.3000</meta>
+      <meta name="IML Centering Y">-4.3100</meta>
+      <meta name="Image Shift X" unit="nanometer">8001.40000000000</meta>
+      <meta name="Image Shift Y" unit="nanometer">78.3230000000000</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:46:56.036295-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.tescan_tif_extractor</meta>
+      <meta name="OBJ Centering X">-43.116</meta>
+      <meta name="OBJ Centering Y">53.173</meta>
+      <meta name="OBJ Pre-Centering X">-11.410</meta>
+      <meta name="OBJ Pre-Centering Y">3.9600</meta>
+      <meta name="Pixel Height" unit="nanometer">2343.80000000000</meta>
+      <meta name="Pixel Width" unit="nanometer">2343.80000000000</meta>
+      <meta name="Predicted Beam Current" unit="picoampere">2237.008663050000000000000</meta>
+      <meta name="Primary Detector Gain">37.406</meta>
+      <meta name="Primary Detector Offset">96.850</meta>
+      <meta name="Specimen Current" unit="picoampere">1571.428571430000000000000</meta>
+      <meta name="Spot Size" unit="nanometer">35.71763780760000000000</meta>
+      <meta name="Stigmator X Value">-1.5250</meta>
+      <meta name="Stigmator Y Value">-0.22700</meta>
+      <meta name="TIFF DateTime">2018:11:21 11:36:55</meta>
+      <meta name="Working Distance" unit="millimeter">15.2760000</meta>
+      <meta name="Creation Time">2018-11-21T19:36:56+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>STO-50um_overview_20kV.tif</name>
+      <location>/4753181/Figure2/STO-50um_overview_20kV.tif</location>
+      <format>TIF</format>
+      <description>SEM SE overview of 50 µm STO lamella at 20 kV</description>
+      <preview>/4753181/Figure2/STO-50um_overview_20kV.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="kilovolt">20.000</meta>
+      <meta name="Acquisition Time">11:38:46</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.128730000</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="Detector 0 Gain">41.646</meta>
+      <meta name="Detector 0 Offset">94.737</meta>
+      <meta name="Emission Current" unit="microampere">154.910000000</meta>
+      <meta name="Gun Tilt X">-9.3000</meta>
+      <meta name="Gun Tilt Y">-3.1000</meta>
+      <meta name="IML Centering X">-5.9300</meta>
+      <meta name="IML Centering Y">-3.9200</meta>
+      <meta name="Image Shift X" unit="nanometer">8019.80000000000</meta>
+      <meta name="Image Shift Y" unit="nanometer">68.7110000000000</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:47:02.477524-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.tescan_tif_extractor</meta>
+      <meta name="OBJ Centering X">41.960</meta>
+      <meta name="OBJ Centering Y">-86.230</meta>
+      <meta name="OBJ Pre-Centering X">-9.7000</meta>
+      <meta name="OBJ Pre-Centering Y">2.7400</meta>
+      <meta name="Pixel Height" unit="nanometer">2343.70000000000</meta>
+      <meta name="Pixel Width" unit="nanometer">2343.70000000000</meta>
+      <meta name="Predicted Beam Current" unit="picoampere">1614.131932600000000000000</meta>
+      <meta name="Primary Detector Gain">41.646</meta>
+      <meta name="Primary Detector Offset">94.737</meta>
+      <meta name="Specimen Current" unit="picoampere">914.2857142860000000000000</meta>
+      <meta name="Spot Size" unit="nanometer">15.38577555900000000000</meta>
+      <meta name="Stigmator X Value">-1.2080</meta>
+      <meta name="Stigmator Y Value">-0.16800</meta>
+      <meta name="TIFF DateTime">2018:11:21 11:38:53</meta>
+      <meta name="Working Distance" unit="millimeter">15.1710000</meta>
+      <meta name="Creation Time">2018-11-21T19:38:54+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>STO-50um_overview_30kV.tif</name>
+      <location>/4753181/Figure2/STO-50um_overview_30kV.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/4753181/Figure2/STO-50um_overview_30kV.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="kilovolt">30.000</meta>
+      <meta name="Acquisition Time">11:41:07</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.130550000</meta>
+      <meta name="Data Type">SEM_Imaging</meta>
+      <meta name="Detector 0 Gain">38.880</meta>
+      <meta name="Detector 0 Offset">95.137</meta>
+      <meta name="Emission Current" unit="microampere">154.900000000</meta>
+      <meta name="Gun Tilt X">-9.3000</meta>
+      <meta name="Gun Tilt Y">-3.1000</meta>
+      <meta name="IML Centering X">-5.9300</meta>
+      <meta name="IML Centering Y">-3.9200</meta>
+      <meta name="Image Shift X" unit="nanometer">8000.10000000000</meta>
+      <meta name="Image Shift Y" unit="nanometer">78.7490000000000</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:46:58.207381-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.tescan_tif_extractor</meta>
+      <meta name="OBJ Centering X">-6.4572</meta>
+      <meta name="OBJ Centering Y">5.2234</meta>
+      <meta name="OBJ Pre-Centering X">-9.7000</meta>
+      <meta name="OBJ Pre-Centering Y">2.7400</meta>
+      <meta name="Pixel Height" unit="nanometer">2343.70000000000</meta>
+      <meta name="Pixel Width" unit="nanometer">2343.70000000000</meta>
+      <meta name="Predicted Beam Current" unit="picoampere">2249.857834980000000000000</meta>
+      <meta name="Primary Detector Gain">38.880</meta>
+      <meta name="Primary Detector Offset">95.137</meta>
+      <meta name="Specimen Current" unit="picoampere">1688.644688640000000000000</meta>
+      <meta name="Spot Size" unit="nanometer">10.61934427320000000000</meta>
+      <meta name="Stigmator X Value">-0.50000</meta>
+      <meta name="Stigmator Y Value">0.16800</meta>
+      <meta name="TIFF DateTime">2018:11:21 11:41:15</meta>
+      <meta name="Working Distance" unit="millimeter">15.0140000</meta>
+      <meta name="Creation Time">2018-11-21T19:41:16+00:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>Window_Transmission_181127.png</name>
+      <location>/4753181/Figure2/Window_Transmission_181127.png</location>
+      <format>PNG</format>
+      <description/>
+      <preview>/4753181/Figure2/Window_Transmission_181127.png.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T10:47:00.233667-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2021-05-12T10:17:46-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

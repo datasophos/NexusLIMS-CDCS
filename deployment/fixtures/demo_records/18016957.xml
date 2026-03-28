@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>DATASET Momentum-resolved EELS of phonons, excitons and plasmons in 2D materials and their heterostructures</title>
+  <summary ref="https://zenodo.org/records/18016957">
+    <experimenter>David Osei</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2026-03-27T06:14:16-06:00</reservationStart>
+    <reservationEnd>2026-03-27T06:14:18-06:00</reservationEnd>
+    <motivation>Momentum-resolved EELS of phonons, excitons and plasmons in 2D materials and their heterostructures
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.18016957"&gt;https://doi.org/10.5281/zenodo.18016957&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>18016957</name>
+    <description>Momentum-resolved EELS of phonons, excitons and plasmons in 2D materials and their heterostructures.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T06:14:16-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Data Format">XY</param>
+      <param name="EDAX Date"></param>
+      <param name="EDAX Owner"></param>
+      <param name="EDAX Time"></param>
+      <param name="File Format">EMSA/MAS Spectral Data File</param>
+      <param name="MSA Format Version">1.0</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Number of Data Columns">1.0</param>
+      <param name="Signal Type">ELS</param>
+      <param name="X Column Units">eV</param>
+      <param name="Y Column Units">counts</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>EELS ref EELS MOS2.dm3</name>
+      <location>/18016957/EELS ref EELS MOS2.dm3</location>
+      <format>DM3</format>
+      <description>EELS reference spectrum from MoS2</description>
+      <preview>/18016957/EELS ref EELS MOS2.dm3.thumb.png</preview>
+      <meta name="Analytic Format">Spectrum</meta>
+      <meta name="Data Dimensions">(1249,)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:14.463148-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Creation Time">2026-03-27T06:14:16-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>Hbn_spectra_overlaid.dm5</name>
+      <location>/18016957/Hbn_spectra_overlaid.dm5</location>
+      <format>DM5</format>
+      <description>Overlaid EELS spectra from hBN sample</description>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:28.308215-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2026-03-27T06:14:18-06:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>MoS2.msa</name>
+      <location>/18016957/MoS2.msa</location>
+      <format>MSA</format>
+      <description>EELS spectrum from MoS2 sample</description>
+      <preview>/18016957/MoS2.msa.thumb.png</preview>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Title">MoS2</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:30.991581-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Points">722.0</meta>
+      <meta name="Offset">1.188217</meta>
+      <meta name="X Units Per Channel">0.00534</meta>
+      <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>MoS2_different sampleEELS-REF.msa</name>
+      <location>/18016957/MoS2_different sampleEELS-REF.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/18016957/MoS2_different sampleEELS-REF.msa.thumb.png</preview>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Title">MoS2_different sampleEELS-REF</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:17.117220-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Points">740.0</meta>
+      <meta name="Offset">1.135866</meta>
+      <meta name="X Units Per Channel">0.005340765</meta>
+      <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>WSe2 MoS2 close to aligned.msa</name>
+      <location>/18016957/WSe2 MoS2 close to aligned.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/18016957/WSe2 MoS2 close to aligned.msa.thumb.png</preview>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Title">cta_k1</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:05.908627-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Points">762.0</meta>
+      <meta name="Offset">0.5477922</meta>
+      <meta name="X Units Per Channel">0.00534</meta>
+      <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>WSe2 MoS2 large twist.msa</name>
+      <location>/18016957/WSe2 MoS2 large twist.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/18016957/WSe2 MoS2 large twist.msa.thumb.png</preview>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Title">large_twist_rot2c</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:11.810061-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Points">788.0</meta>
+      <meta name="Offset">0.4083641</meta>
+      <meta name="X Units Per Channel">0.00534</meta>
+      <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>WSe2 MoS2 small twist.msa</name>
+      <location>/18016957/WSe2 MoS2 small twist.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/18016957/WSe2 MoS2 small twist.msa.thumb.png</preview>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Title">small_twist_m2</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:25.024983-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Points">854.0</meta>
+      <meta name="Offset">0.5049834</meta>
+      <meta name="X Units Per Channel">0.00534</meta>
+      <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>WSe2.msa</name>
+      <location>/18016957/WSe2.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/18016957/WSe2.msa.thumb.png</preview>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Title">WSe2</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:08.895768-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Points">731.0</meta>
+      <meta name="Offset">1.010184</meta>
+      <meta name="X Units Per Channel">0.00534</meta>
+      <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>thin hBN thickness spectra.dm3</name>
+      <location>/18016957/thin hBN thickness spectra.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18016957/thin hBN thickness spectra.dm3.thumb.png</preview>
+      <meta name="Analytic Format">Spectrum</meta>
+      <meta name="Data Dimensions">(1028,)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:21.986836-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Creation Time">2026-03-27T06:14:16-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

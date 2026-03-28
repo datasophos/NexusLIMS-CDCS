@@ -1,0 +1,541 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Electron energy loss spectroscopy (EELS) and energy dispersive spectroscopy (EDS) data from two pyroxene grains from ...</title>
+  <summary ref="https://zenodo.org/records/7439174">
+    <experimenter>Yuki Tanaka</experimenter>
+    <instrument pid="FEI-Titan-STEM">FEI Titan STEM</instrument>
+    <reservationStart>2021-04-14T16:17:04-06:00</reservationStart>
+    <reservationEnd>2022-12-14T16:40:26-07:00</reservationEnd>
+    <motivation>This dataset contains hyperspectral EELS and EDS data for two pyroxene grains from Apollo 17 soil 71501 as well as iron oxidation state standards used in the original article "Detection of ferric iron in an exsolved lunar pyroxene using electron energy loss spectroscopy (EELS): Implications for space weathering and redox conditions on the Moon" by Brittany Cymes, Katherine Burgess, and Rhonda Stroud. (doi: 10.1111/maps.13941).
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.7439174"&gt;https://doi.org/10.5281/zenodo.7439174&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>7439174</name>
+    <description>Electron energy loss spectroscopy (EELS) and energy dispersive spectroscopy (EDS) data from two pyroxene grains from Apollo 17 soil 71501.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2022-12-07T16:18:16-07:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Air Glass_Fe3+EELS Standard.dm4</name>
+      <location>/7439174/Air Glass_Fe3+EELS Standard.dm4</location>
+      <format>DM4</format>
+      <description>EELS Fe3+ reference spectrum from air glass standard</description>
+      <preview>/7439174/Air Glass_Fe3+EELS Standard.dm4.thumb.png</preview>
+      <meta name="Analytic Format">Spectrum</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Data Dimensions">(2048,)</meta>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="GMS Version">2.31.734.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T22:16:55.810376-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Creation Time">2022-12-07T16:18:54-07:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Air Glass_Fe3+EELS Standard.msa</name>
+      <location>/7439174/Air Glass_Fe3+EELS Standard.msa</location>
+      <format>MSA</format>
+      <description>EELS Fe3+ reference spectrum from air glass, MSA format</description>
+      <preview>/7439174/Air Glass_Fe3+EELS Standard.msa.thumb.png</preview>
+      <meta name="Data Format">XY</meta>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Date"></meta>
+      <meta name="EDAX Owner"></meta>
+      <meta name="EDAX Time"></meta>
+      <meta name="EDAX Title">Air Glass</meta>
+      <meta name="File Format">EMSA/MAS Spectral Data File</meta>
+      <meta name="MSA Format Version">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:51.051023-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Columns">1.0</meta>
+      <meta name="Number of Data Points">2048.0</meta>
+      <meta name="Offset">673.2198</meta>
+      <meta name="Signal Type">ELS</meta>
+      <meta name="X Column Units">eV</meta>
+      <meta name="X Units Per Channel">0.05058</meta>
+      <meta name="Y Column Units"></meta>
+      <meta name="Creation Time">2022-12-07T23:21:22+00:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>Data Documentation.txt</name>
+      <location>/7439174/Data Documentation.txt</location>
+      <format>TXT</format>
+      <description>Text documentation describing the pyroxene EELS/EDS dataset</description>
+      <preview>/7439174/Data Documentation.txt.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:59.435330-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2022-12-14T16:40:26-07:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>FeNi_Fe0EELS Standard.dm4</name>
+      <location>/7439174/FeNi_Fe0EELS Standard.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/FeNi_Fe0EELS Standard.dm4.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">200000.0</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2048,)</meta>
+      <meta name="Data Type">STEM_EELS</meta>
+      <meta name="EELS – Background Removal Model">Power Law</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.05</meta>
+      <meta name="EELS – Number of frames">400</meta>
+      <meta name="EELS – Processing Steps">Background Removal, Extracted from SI</meta>
+      <meta name="GMS Version">2.31.734.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="Indicated Magnification">1000.0</meta>
+      <meta name="Name">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:21:29.751089-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Operator">Kate</meta>
+      <meta name="STEM Camera Length" unit="millimeter">0.0</meta>
+      <meta name="Specimen">Fe/Ni alloy</meta>
+      <meta name="Creation Time">2022-12-07T16:19:20-07:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>FeNi_Fe0EELS Standard.msa</name>
+      <location>/7439174/FeNi_Fe0EELS Standard.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/7439174/FeNi_Fe0EELS Standard.msa.thumb.png</preview>
+      <meta name="Data Format">XY</meta>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Date"></meta>
+      <meta name="EDAX Owner">Kate</meta>
+      <meta name="EDAX Time"></meta>
+      <meta name="EDAX Title">FeNi</meta>
+      <meta name="File Format">EMSA/MAS Spectral Data File</meta>
+      <meta name="MSA Format Version">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:53.121796-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Columns">1.0</meta>
+      <meta name="Number of Data Points">2048.0</meta>
+      <meta name="Offset">670.0</meta>
+      <meta name="Signal Type">ELS</meta>
+      <meta name="X Column Units">eV</meta>
+      <meta name="X Units Per Channel">0.05</meta>
+      <meta name="Y Column Units"></meta>
+      <meta name="Creation Time">2022-12-07T23:21:34+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>FeO_Fe2+EELS Standard.dm4</name>
+      <location>/7439174/FeO_Fe2+EELS Standard.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/FeO_Fe2+EELS Standard.dm4.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">200000.0</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2048,)</meta>
+      <meta name="Data Type">STEM_EELS</meta>
+      <meta name="EELS – Background Removal Model">Power Law</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.1</meta>
+      <meta name="EELS – Number of frames">576</meta>
+      <meta name="EELS – Processing Steps">Background Removal, Extracted from SI</meta>
+      <meta name="GMS Version">2.31.734.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="Indicated Magnification">1000.0</meta>
+      <meta name="Name">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:21:34.109968-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Operator">Kate</meta>
+      <meta name="STEM Camera Length" unit="millimeter">0.0</meta>
+      <meta name="Specimen">FeO</meta>
+      <meta name="Creation Time">2022-12-07T16:19:46-07:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>FeO_Fe2+EELS Standard.msa</name>
+      <location>/7439174/FeO_Fe2+EELS Standard.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/7439174/FeO_Fe2+EELS Standard.msa.thumb.png</preview>
+      <meta name="Data Format">XY</meta>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Date"></meta>
+      <meta name="EDAX Owner">Kate</meta>
+      <meta name="EDAX Time"></meta>
+      <meta name="EDAX Title">FeO</meta>
+      <meta name="File Format">EMSA/MAS Spectral Data File</meta>
+      <meta name="MSA Format Version">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:19:03.631425-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Columns">1.0</meta>
+      <meta name="Number of Data Points">2048.0</meta>
+      <meta name="Offset">660.0</meta>
+      <meta name="Signal Type">ELS</meta>
+      <meta name="X Column Units">eV</meta>
+      <meta name="X Units Per Channel">0.05</meta>
+      <meta name="Y Column Units"></meta>
+      <meta name="Creation Time">2022-12-07T23:21:50+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Magnetite_Fe2+Fe3+EELS Standard.dm4</name>
+      <location>/7439174/Magnetite_Fe2+Fe3+EELS Standard.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Magnetite_Fe2+Fe3+EELS Standard.dm4.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">200000.0</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Cs" unit="millimeter">0.0</meta>
+      <meta name="Data Dimensions">(2048,)</meta>
+      <meta name="Data Type">STEM_EELS</meta>
+      <meta name="EELS – Background Removal Model">Power Law</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.01</meta>
+      <meta name="EELS – Number of frames">3128</meta>
+      <meta name="EELS – Processing Steps">Background Removal, Extracted from SI</meta>
+      <meta name="GMS Version">2.31.734.0</meta>
+      <meta name="Illumination Mode">STEM</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="Indicated Magnification">1000.0</meta>
+      <meta name="Name">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:21:36.347231-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Operation Mode">SCANNING</meta>
+      <meta name="Operator">Rhonda</meta>
+      <meta name="STEM Camera Length" unit="millimeter">0.0</meta>
+      <meta name="Specimen">Bonanza SiC</meta>
+      <meta name="Creation Time">2022-12-07T16:18:16-07:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Magnetite_Fe2+Fe3+EELS Standard.msa</name>
+      <location>/7439174/Magnetite_Fe2+Fe3+EELS Standard.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/7439174/Magnetite_Fe2+Fe3+EELS Standard.msa.thumb.png</preview>
+      <meta name="Data Format">XY</meta>
+      <meta name="Data Type">EDS_Spectrum</meta>
+      <meta name="EDAX Date"></meta>
+      <meta name="EDAX Owner">Rhonda</meta>
+      <meta name="EDAX Time"></meta>
+      <meta name="EDAX Title">Magnetite</meta>
+      <meta name="File Format">EMSA/MAS Spectral Data File</meta>
+      <meta name="MSA Format Version">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:57.190192-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</meta>
+      <meta name="Number of Data Columns">1.0</meta>
+      <meta name="Number of Data Points">2048.0</meta>
+      <meta name="Offset">678.2778</meta>
+      <meta name="Signal Type">ELS</meta>
+      <meta name="X Column Units">eV</meta>
+      <meta name="X Units Per Channel">0.05058</meta>
+      <meta name="Y Column Units"></meta>
+      <meta name="Creation Time">2022-12-07T23:20:24+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2021-04-14T16:17:04-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="GMS Version">2.32.888.0</param>
+      <param name="Illumination Mode">STEM</param>
+      <param name="Imaging Mode">IMAGING</param>
+      <param name="Microscope">Nion UltraSTEM 200</param>
+      <param name="Name">Unknown</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="Operator">Brittany</param>
+      <param name="STEM Camera Length" unit="millimeter">0.0</param>
+      <param name="Specimen">RT76241</param>
+      <param name="Spectrum Imaging – Scan Mode">2D Array</param>
+      <param name="Spectrum Imaging – Spatial Sampling (Horizontal)">120</param>
+      <param name="Spectrum Imaging – Spatial Sampling (Vertical)">163</param>
+      <param name="magnification">1000.0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_CaM_290-392eV_Analog 0.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_CaM_290-392eV/Fig. 10_EELS-SI_CaM_290-392eV_Analog 0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_CaM_290-392eV/Fig. 10_EELS-SI_CaM_290-392eV_Analog 0.dm4.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(163, 120)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:36.673414-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">114</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.005</meta>
+      <meta name="Creation Time">2021-04-14T16:23:10-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig. 10_EELS-SI_CaM_290-392eV_EELS Spectrum Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_CaM_290-392eV/Fig. 10_EELS-SI_CaM_290-392eV_EELS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_CaM_290-392eV/Fig. 10_EELS-SI_CaM_290-392eV_EELS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">QUEFINA 1</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(163, 120, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.005</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.005</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:41.401772-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">114</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.005</meta>
+      <meta name="Creation Time">2021-04-14T16:23:10-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_CaM_290-392eV_SI Survey Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_CaM_290-392eV/Fig. 10_EELS-SI_CaM_290-392eV_SI Survey Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_CaM_290-392eV/Fig. 10_EELS-SI_CaM_290-392eV_SI Survey Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">DigiScan</meta>
+      <meta name="Analytic Label">Survey</meta>
+      <meta name="Data Dimensions">(512, 512)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:38.747450-06:00</meta>
+      <meta name="Creation Time">2021-04-14T16:23:10-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_FeL_650-752eV_Analog 0.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_FeL_650-752eV/Fig. 10_EELS-SI_FeL_650-752eV_Analog 0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_FeL_650-752eV/Fig. 10_EELS-SI_FeL_650-752eV_Analog 0.dm4.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(163, 120)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:15.048158-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">1002</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.05</meta>
+      <meta name="Creation Time">2021-04-14T16:45:06-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig. 10_EELS-SI_FeL_650-752eV_EELS Spectrum Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_FeL_650-752eV/Fig. 10_EELS-SI_FeL_650-752eV_EELS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_FeL_650-752eV/Fig. 10_EELS-SI_FeL_650-752eV_EELS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">QUEFINA 1</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(163, 120, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.05</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.05</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:17.223905-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">1002</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.05</meta>
+      <meta name="Creation Time">2021-04-14T16:45:06-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_FeL_650-752eV_SI Survey Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_FeL_650-752eV/Fig. 10_EELS-SI_FeL_650-752eV_SI Survey Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_FeL_650-752eV/Fig. 10_EELS-SI_FeL_650-752eV_SI Survey Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">DigiScan</meta>
+      <meta name="Analytic Label">Survey</meta>
+      <meta name="Data Dimensions">(512, 512)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:12.301475-06:00</meta>
+      <meta name="Creation Time">2021-04-14T16:45:06-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_LL_2-104eV_Analog 0.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_LL_2-104eV/Fig. 10_EELS-SI_LL_2-104eV_Analog 0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_LL_2-104eV/Fig. 10_EELS-SI_LL_2-104eV_Analog 0.dm4.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(163, 120)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:31.173994-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">36</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.001</meta>
+      <meta name="Creation Time">2021-04-14T16:19:28-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig. 10_EELS-SI_LL_2-104eV_EELS Spectrum Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_LL_2-104eV/Fig. 10_EELS-SI_LL_2-104eV_EELS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_LL_2-104eV/Fig. 10_EELS-SI_LL_2-104eV_EELS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">QUEFINA 1</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(163, 120, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.001</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.001</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:33.303815-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">36</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.001</meta>
+      <meta name="Creation Time">2021-04-14T16:19:28-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_LL_2-104eV_SI Survey Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_LL_2-104eV/Fig. 10_EELS-SI_LL_2-104eV_SI Survey Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_LL_2-104eV/Fig. 10_EELS-SI_LL_2-104eV_SI Survey Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">DigiScan</meta>
+      <meta name="Analytic Label">Survey</meta>
+      <meta name="Data Dimensions">(512, 512)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:28.866423-06:00</meta>
+      <meta name="Creation Time">2021-04-14T16:19:28-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_OK_480-582eV_Analog 0.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_OK_480-582eV/Fig. 10_EELS-SI_OK_480-582eV_Analog 0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_OK_480-582eV/Fig. 10_EELS-SI_OK_480-582eV_Analog 0.dm4.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(163, 120)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:09.901922-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">214</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.01</meta>
+      <meta name="Creation Time">2021-04-14T16:27:28-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig. 10_EELS-SI_OK_480-582eV_EELS Spectrum Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_OK_480-582eV/Fig. 10_EELS-SI_OK_480-582eV_EELS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_OK_480-582eV/Fig. 10_EELS-SI_OK_480-582eV_EELS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">QUEFINA 1</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(163, 120, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.01</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.01</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:04.219821-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">214</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.01</meta>
+      <meta name="Creation Time">2021-04-14T16:27:28-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_OK_480-582eV_SI Survey Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_OK_480-582eV/Fig. 10_EELS-SI_OK_480-582eV_SI Survey Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_OK_480-582eV/Fig. 10_EELS-SI_OK_480-582eV_SI Survey Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">DigiScan</meta>
+      <meta name="Analytic Label">Survey</meta>
+      <meta name="Data Dimensions">(512, 512)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:07.531714-06:00</meta>
+      <meta name="Creation Time">2021-04-14T16:27:28-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_ZLP_-10-92eV_Analog 0.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_ZLP_-10-92eV/Fig. 10_EELS-SI_ZLP_-10-92eV_Analog 0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_ZLP_-10-92eV/Fig. 10_EELS-SI_ZLP_-10-92eV_Analog 0.dm4.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(163, 120)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:26.807446-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">34</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.000049999999999999996</meta>
+      <meta name="Creation Time">2021-04-14T16:17:04-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>Fig. 10_EELS-SI_ZLP_-10-92eV_EELS Spectrum Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_ZLP_-10-92eV/Fig. 10_EELS-SI_ZLP_-10-92eV_EELS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_ZLP_-10-92eV/Fig. 10_EELS-SI_ZLP_-10-92eV_EELS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">QUEFINA 1</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(163, 120, 2048)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">100.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.000049999999999999996</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.000049999999999999996</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:20.853846-06:00</meta>
+      <meta name="Spectrum Imaging – Acquisition Duration" unit="second">34</meta>
+      <meta name="Spectrum Imaging – Pixel time" unit="second">0.000049999999999999996</meta>
+      <meta name="Creation Time">2021-04-14T16:17:04-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig. 10_EELS-SI_ZLP_-10-92eV_SI Survey Image.dm4</name>
+      <location>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_ZLP_-10-92eV/Fig. 10_EELS-SI_ZLP_-10-92eV_SI Survey Image.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/7439174/Fig. 10_EELS-SI_2pyx/Fig. 10_EELS-SI_ZLP_-10-92eV/Fig. 10_EELS-SI_ZLP_-10-92eV_SI Survey Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">DigiScan</meta>
+      <meta name="Analytic Label">Survey</meta>
+      <meta name="Data Dimensions">(512, 512)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T09:18:24.383453-06:00</meta>
+      <meta name="Creation Time">2021-04-14T16:17:04-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

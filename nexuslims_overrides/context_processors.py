@@ -43,6 +43,7 @@ def nexuslims_features(request):
     return {
         'NX_ENABLE_TUTORIALS': getattr(settings, 'NX_ENABLE_TUTORIALS', True),
         'NX_ENABLE_ANNOTATOR': getattr(settings, 'NX_ENABLE_ANNOTATOR', True),
+        'IS_PUBLIC_DEMO': getattr(settings, 'IS_PUBLIC_DEMO', False),
     }
 
 def nexuslims_colors(request):

@@ -1,0 +1,33 @@
+app = "nexuslims-demo"
+primary_region = "iad"
+
+[build]
+  dockerfile = "deployment/Dockerfile"
+
+[env]
+  DJANGO_SETTINGS_MODULE = "config.settings.demo_settings"
+  POSTGRES_HOST = "nexuslims-demo-db.internal"
+  POSTGRES_PORT = "5432"
+  REDIS_HOST = "nexuslims-demo-redis.internal"
+  REDIS_PORT = "6379"
+  GUNICORN_WORKERS = "4"
+  GUNICORN_THREADS = "2"
+  GUNICORN_TIMEOUT = "120"
+
+[http_service]
+  internal_port = 8000
+  auto_stop_machines = false
+  min_machines_running = 1
+  force_https = true
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "10s"
+    grace_period = "120s"
+    method = "GET"
+    path = "/"
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1

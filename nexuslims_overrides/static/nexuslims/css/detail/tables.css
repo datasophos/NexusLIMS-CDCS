@@ -132,8 +132,9 @@
     justify-content: flex-end;
 }
 
-/* Activity table - prevent columns from growing beyond specified widths */
-table.aa-table {
+/* Activity table and simple file list table - prevent columns from growing beyond specified widths */
+table.aa-table,
+table#simple-filelist-table {
     table-layout: fixed;
     width: 100%;
 }

@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>EELS and EDS maps of YAlO3</title>
+  <summary ref="https://zenodo.org/records/10609594">
+    <experimenter>Marcus Webb</experimenter>
+    <instrument pid="FEI-Titan-STEM">FEI Titan STEM</instrument>
+    <reservationStart>2026-03-27T18:08:40-06:00</reservationStart>
+    <reservationEnd>2026-03-27T18:08:58-06:00</reservationEnd>
+    <motivation>Simultaneously collected EELS / EDX signals acquired on E01 microscope (JEOL ARM200F) at ePSIC, DLS Date collected: 20170512 Acc. Voltage: 200 kV MAG: 25Mx Sample: YAlO3 powder sample
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.10609594"&gt;https://doi.org/10.5281/zenodo.10609594&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>10609594</name>
+    <description>EELS and EDS maps of YAlO3.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T18:08:40-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Analytic Acquisition Mode">Parallel dispersive</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="GMS Version">3.12.1200.0</param>
+      <param name="Horizontal Field Width" unit="micrometer">0.011497294921875</param>
+      <param name="Illumination Mode">STEM</param>
+      <param name="Imaging Mode">AMAG</param>
+      <param name="Name">JEOL COM</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="STEM Camera Length" unit="millimeter">40.0</param>
+      <param name="Specimen">A8</param>
+      <param name="Spectrum Imaging – Acquisition Duration" unit="second">337</param>
+      <param name="Spectrum Imaging – Pixel time" unit="second">0.01</param>
+      <param name="Spectrum Imaging – Scan Mode">2D Array</param>
+      <param name="Spectrum Imaging – Spatial Sampling (Horizontal)">46</param>
+      <param name="Spectrum Imaging – Spatial Sampling (Vertical)">104</param>
+      <param name="Stage Position – Tilt Beta" unit="degree">-5.860000133514404</param>
+      <param name="Stage Position – x" unit="micrometer">26.543099609375002</param>
+      <param name="Stage Position – y" unit="micrometer">-4.64989990234375</param>
+      <param name="Stage Position – z" unit="millimeter">85.003703125</param>
+      <param name="magnification">25000000.0</param>
+    </setup>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>EDS Spectrum Image.dm4</name>
+      <location>/10609594/EDS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description>EDS spectrum image, 104×46 spatial pixels, YAlO3</description>
+      <preview>/10609594/EDS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EDS</meta>
+      <meta name="Analytic Signal">X-ray</meta>
+      <meta name="Data Dimensions">(104, 46, 2048)</meta>
+      <meta name="Data Type">EDS_Spectrum_Imaging</meta>
+      <meta name="EDS – Active layer">0.30000000000000004</meta>
+      <meta name="EDS – Azimuthal angle" unit="degree">0.0</meta>
+      <meta name="EDS – Count rate (SI Average)">0.0</meta>
+      <meta name="EDS – Dead layer">1.0000000000000002e-06</meta>
+      <meta name="EDS – Detector type">SDD</meta>
+      <meta name="EDS – Elevation angle" unit="degree">40.0</meta>
+      <meta name="EDS – Exposure" unit="second">0.01</meta>
+      <meta name="EDS – Gold layer">1.0000000000000002e-06</meta>
+      <meta name="EDS – Live time (SI Average)">0.01077995251418001</meta>
+      <meta name="EDS – Real time (SI Average)">0.011265846524336204</meta>
+      <meta name="EDS – Stage tilt" unit="degree">0.0</meta>
+      <meta name="EDS – Window thickness">0.30000000000000004</meta>
+      <meta name="EDS – Window type">17</meta>
+      <meta name="EDS – Zero fwhm">0.08</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:10:49.963345-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.949999988079071</meta>
+      <meta name="warnings">['EDS', 'Active layer']; ['EDS', 'Azimuthal angle']; ['EDS', 'Dead layer']; ['EDS', 'Detector type']; ['EDS', 'Elevation angle']; ['EDS', 'Gold layer']; ['EDS', 'Stage tilt']; ['EDS', 'Window thickness']; ['EDS', 'Window type']; ['EDS', 'Zero fwhm']</meta>
+      <meta name="Creation Time">2026-03-27T18:08:44-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>EELS Spectrum Image (high-loss) (aligned).dm4</name>
+      <location>/10609594/EELS Spectrum Image (high-loss) (aligned).dm4</location>
+      <format>DM4</format>
+      <description>EELS high-loss spectrum image, aligned, 104×46 spatial pixels</description>
+      <preview>/10609594/EELS Spectrum Image (high-loss) (aligned).dm4.thumb.png</preview>
+      <meta name="Acquisition Device">US1000FTXP</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(104, 46, 2046)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">41.666666666666664</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.009950248756218905</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.010009999768954003</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:10:54.694463-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.949999988079071</meta>
+      <meta name="Creation Time">2026-03-27T18:08:40-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>EELS Spectrum Image (low-loss) (aligned).dm4</name>
+      <location>/10609594/EELS Spectrum Image (low-loss) (aligned).dm4</location>
+      <format>DM4</format>
+      <description>EELS low-loss spectrum image, aligned, 104×46 spatial pixels</description>
+      <preview>/10609594/EELS Spectrum Image (low-loss) (aligned).dm4.thumb.png</preview>
+      <meta name="Acquisition Device">US1000FTXP</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">130</meta>
+      <meta name="Camera/Detector Processing">Gain Normalized</meta>
+      <meta name="Data Dimensions">(104, 46, 2046)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">41.666666666666664</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">0.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.0000497512437810943</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.010009999768954003</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:10:52.143983-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.949999988079071</meta>
+      <meta name="Creation Time">2026-03-27T18:08:48-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>HAADF Image (SI Survey).dm4</name>
+      <location>/10609594/HAADF Image (SI Survey).dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/10609594/HAADF Image (SI Survey).dm4.thumb.png</preview>
+      <meta name="Acquisition Device">DigiScan</meta>
+      <meta name="Analytic Format">Image</meta>
+      <meta name="Analytic Label">Survey</meta>
+      <meta name="Analytic Signal">DigiScan</meta>
+      <meta name="Data Dimensions">(256, 256)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:09:13.207913-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
+      <meta name="Signal Name">HAADF</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">1.0099999904632568</meta>
+      <meta name="Creation Time">2026-03-27T18:08:58-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>ReadMe.txt.txt</name>
+      <location>/10609594/ReadMe.txt.txt</location>
+      <format>TXT</format>
+      <description/>
+      <preview>/10609594/ReadMe.txt.txt.thumb.png</preview>
+      <meta name="Data Type">Unknown</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:10:57.260579-06:00</meta>
+      <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
+      <meta name="Creation Time">2026-03-27T18:08:58-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

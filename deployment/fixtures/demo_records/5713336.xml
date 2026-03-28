@@ -1,0 +1,1912 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Dataset for Using Your Beam Efficiently: Reducing Electron-dose in the STEM via Flyback Compensation</title>
+  <summary ref="https://zenodo.org/records/5713336">
+    <experimenter>James Okafor</experimenter>
+    <instrument pid="FEI-Titan-STEM">FEI Titan STEM</instrument>
+    <reservationStart>2021-01-25T11:54:32-07:00</reservationStart>
+    <reservationEnd>2021-01-25T14:02:22-07:00</reservationEnd>
+    <motivation>Experimental scanning transmission electron microscopy dataset for the paper "Using Your Beam Efficiently: Reducing Electron-dose in the STEM via Flyback Compensation"
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.5713336"&gt;https://doi.org/10.5281/zenodo.5713336&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>5713336</name>
+    <description>Dataset for Using Your Beam Efficiently- Reducing Electron-dose in the STEM via Flyback Compensation.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2021-01-25T12:10:40-07:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Acquisition Device">DigiScan</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="Data Dimensions">(512, 512)</param>
+      <param name="Data Type">STEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="GMS Version">2.32.888.0</param>
+      <param name="Illumination Mode">STEM</param>
+      <param name="Imaging Mode">IMAGING</param>
+      <param name="Name">Unknown</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="STEM Camera Length" unit="millimeter">30.0</param>
+      <param name="magnification">1000.0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description>STEM image, 1 µs dwell time, no flyback compensation</description>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:58.860014-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:10:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description>STEM image, 1 µs dwell time, 10% flyback compensation</description>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:29.510321-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:51:00-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description>STEM image, 1 µs dwell time, 20% flyback compensation</description>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:28.008756-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:53:22-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:52.976495-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:54:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.560348-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:56:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:13.463799-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:59:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.762176-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:21:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_1-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_1-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_1-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">1.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:20.588193-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:26:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_10-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_10-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_10-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">10.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:16.230329-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:13:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_10-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_10-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_10-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">10.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:00.147098-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:24:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_10-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_10-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_10-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">10.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:46.601568-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:36:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_10-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_10-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_10-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">10.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:20.610048-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:47:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_10-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_10-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_10-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">10.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:20.750398-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:58:18-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_10-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_10-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_10-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">10.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.580706-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:09:28-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.559563-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:14:28-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.294395-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:25:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:24.120345-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:36:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:13.403946-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:47:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:28.299114-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:58:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:58.846799-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:10:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:05.746551-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:23:28-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_11-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_11-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_11-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">11.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:52.354137-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:28:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_12-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_12-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_12-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">12.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:37.803557-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:15:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_12-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_12-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_12-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">12.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.674121-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:26:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_12-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_12-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_12-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">12.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:14.030887-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:54:24-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_12-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_12-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_12-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">12.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:33.341788-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:48:22-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_12-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_12-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_12-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">12.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:53.361473-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:57:18-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_12-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_12-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_12-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">12.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:27.631516-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:10:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:52.239173-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:15:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:16.164103-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:26:50-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:21.946566-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:37:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:52.444355-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:49:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.554497-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:00:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:14.383972-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:11:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:44.700879-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:24:08-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_13-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_13-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_13-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">13.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:12.576095-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:29:28-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_14-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_14-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_14-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">14.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:58.768223-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:16:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_14-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_14-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_14-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">14.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.573793-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:27:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_14-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_14-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_14-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">14.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:40.319571-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:38:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_14-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_14-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_14-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">14.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:38.274753-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:49:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_14-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_14-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_14-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">14.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:22.373063-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:00:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_14-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_14-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_14-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">14.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:00.697351-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:12:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.376359-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:17:12-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:58.861849-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:28:18-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:07.044796-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:39:22-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:23.231308-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:50:30-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:36.441982-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:01:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.847999-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:12:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:26.425765-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:24:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_15-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_15-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_15-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">15.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:40.815818-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:30:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_16-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_16-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_16-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.563364-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:18:00-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_16-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_16-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_16-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:27.996467-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:29:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_16-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_16-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_16-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.038488-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:40:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_16-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_16-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_16-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:12.334852-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:51:18-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_16-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_16-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_16-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.035204-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:58:06-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_16-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_16-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_16-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">16.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.607217-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:13:34-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:23.241336-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:18:50-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:19.212387-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:52:16-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:45.143087-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:41:00-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:41.183131-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:52:08-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:00.453196-06:00</meta>
+      <meta name="Creation Time">2021-01-25T14:02:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:16.314635-06:00</meta>
+      <meta name="Creation Time">2021-01-25T14:02:22-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:27.599315-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:25:42-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_17-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_17-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_17-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">17.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:22.441490-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:31:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_18-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_18-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_18-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">18.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:16.524018-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:19:42-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_18-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_18-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_18-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">18.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:13.790570-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:30:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_18-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_18-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_18-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">18.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.093813-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:41:54-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_18-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_18-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_18-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">18.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:34.176735-06:00</meta>
+      <meta name="Creation Time">2021-01-25T14:01:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_18-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_18-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_18-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">18.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:07.841742-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:04:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_18-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_18-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_18-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">18.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:29.600939-06:00</meta>
+      <meta name="Creation Time">2021-01-25T14:00:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.560502-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:20:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:20.699559-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:31:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:16.179014-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:42:50-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:59.809490-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:53:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:41.003933-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:05:06-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:45.052380-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:16:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:19.050699-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:26:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_19-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_19-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_19-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">19.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:37.761508-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:32:00-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_2-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_2-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">2.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:23.479593-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:10:50-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_2-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_2-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">2.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:07.228093-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:51:12-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_2-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_2-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">2.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:53.392768-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:53:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_2-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_2-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">2.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:28.327672-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:54:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_2-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_2-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">2.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:12.793307-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:56:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_2-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_2-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">2.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:28.676900-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:59:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_20-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_20-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_20-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">20.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:59.985143-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:21:36-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_20-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_20-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_20-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">20.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:45.140325-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:53:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_20-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_20-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_20-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">20.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:19.161555-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:43:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_20-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_20-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_20-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">20.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.590061-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:54:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_20-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_20-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_20-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">20.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:52.458052-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:06:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_20-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_20-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_20-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">20.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:27.006925-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:17:12-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.606731-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:11:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.874660-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:51:24-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:15.868396-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:53:46-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:19.542847-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:54:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:20.584901-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:56:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:45.385905-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:06:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:05.596641-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:21:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_3-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_3-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_3-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">3.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:53.292559-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:27:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_4-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_4-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_4-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">4.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:15.978651-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:11:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_4-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_4-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_4-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">4.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:27.593054-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:22:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_4-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_4-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_4-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">4.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:15.879853-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:33:30-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_4-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_4-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_4-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">4.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:59.990617-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:55:12-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_4-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_4-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_4-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">4.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:41.062211-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:55:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_4-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_4-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_4-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">4.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:45.490202-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:06:54-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:16.116138-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:11:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:13.604954-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:22:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:30.770462-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:33:50-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:29.373216-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:44:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:12.268350-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:56:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:29.505759-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:07:12-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:28.409598-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:21:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_5-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_5-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_5-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">5.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:22.237392-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:27:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_6-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_6-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_6-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">6.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:46.874808-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:12:00-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_6-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_6-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_6-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">6.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:31.132636-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:23:06-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_6-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_6-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_6-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">6.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.410345-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:34:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_6-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_6-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_6-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">6.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:37.187767-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:45:18-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_6-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_6-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_6-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">6.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:23.235813-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:56:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_6-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_6-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_6-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">6.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:07.015886-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:07:34-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:38.507944-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:12:24-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:46.408883-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:23:30-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:05.791662-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:34:36-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:22.223917-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:45:42-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:39.122891-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:56:50-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:37.123599-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:07:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:15.592089-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:22:22-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_7-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_7-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_7-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">7.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.135594-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:27:44-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_8-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_8-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_8-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">8.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:37.655190-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:12:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_8-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_8-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_8-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">8.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:53.305533-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:23:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_8-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_8-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_8-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">8.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:06.981812-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:35:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_8-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_8-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_8-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">8.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:23.254845-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:46:08-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_8-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_8-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_8-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">8.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:36.786892-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:57:16-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_8-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_8-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_8-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">8.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:35.062364-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:08:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_0-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:52.963616-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:13:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_10-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_10-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_10-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:07.559664-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:24:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_20-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:36.113157-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:35:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_30-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_30-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_30-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:39.457502-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:46:38-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_40-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_40-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_40-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:22.195160-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:57:46-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_50-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_50-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_50-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:06.003346-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:08:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_60-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_60-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_60-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:46.321984-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:22:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_9-fb_80-rot_0.dm4</name>
+      <location>/5713336/non_rotation/Analog 0-dt_9-fb_80-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/non_rotation/Analog 0-dt_9-fb_80-rot_0.dm4.thumb.png</preview>
+      <meta name="Dwell Time" unit="microsecond">9.0</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:07.903273-06:00</meta>
+      <meta name="Creation Time">2021-01-25T13:28:14-07:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2021-01-25T11:54:32-07:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Acquisition Device">DigiScan</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="Data Dimensions">(512, 512)</param>
+      <param name="Data Type">STEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Dwell Time" unit="microsecond">2.0</param>
+      <param name="GMS Version">2.32.888.0</param>
+      <param name="Illumination Mode">STEM</param>
+      <param name="Imaging Mode">IMAGING</param>
+      <param name="Name">Unknown</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="STEM Camera Length" unit="millimeter">30.0</param>
+      <param name="magnification">1000.0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_0.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_0.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:39.629515-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:54:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_105.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_105.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_105.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:24.199816-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:57:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_120.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_120.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_120.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:09.913414-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:57:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_135.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_135.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_135.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:14.489992-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:57:46-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_15.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_15.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_15.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:27.625516-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:54:54-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_150.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_150.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_150.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:30.581225-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:58:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_165.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_165.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_165.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:04.996781-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:58:30-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_180.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_180.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_180.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:37.439276-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:58:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_195.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_195.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_195.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:44.377677-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:59:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_210.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_210.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_210.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:55.677190-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:59:36-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_225.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_225.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_225.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:22.599085-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:59:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_240.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_240.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_240.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:05.133285-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:00:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_255.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_255.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_255.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:00.725390-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:00:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_270.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_270.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_270.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:38.761762-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:01:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_285.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_285.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_285.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:56.152390-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:01:24-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_30.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_30.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_30.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:07.362133-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:55:16-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_300.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_300.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_300.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:41.162233-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:01:46-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_315.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_315.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_315.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:43.458799-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:02:08-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_330.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_330.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_330.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:58.521135-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:02:30-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_345.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_345.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_345.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:20.187329-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:02:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_360.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_360.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_360.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:15.245059-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:03:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_45.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_45.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_45.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:53.322469-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:55:36-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_60.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_60.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_60.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:51.303628-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:55:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_75.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_75.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_75.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:48.882929-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:56:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_0-rot_90.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_0-rot_90.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_0-rot_90.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:45.741916-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:56:42-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_0.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_0.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_0.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:12.235551-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:54:42-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_105.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_105.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_105.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:02.906663-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:57:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_120.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_120.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_120.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:34.218771-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:57:36-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_135.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_135.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_135.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:36.519353-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:57:58-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_15.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_15.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_15.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:35.134454-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:55:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_150.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_150.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_150.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:17.563611-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:58:20-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_165.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_165.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_165.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:42.129636-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:58:42-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_180.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_180.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_180.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:00.462103-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:59:04-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_195.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_195.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_195.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:02.722194-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:59:24-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_210.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_210.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_210.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:32.906412-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:59:46-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_225.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_225.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_225.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:12.650600-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:00:08-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_240.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_240.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_240.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:26.720104-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:00:30-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_255.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_255.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_255.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:21.866962-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:00:52-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_270.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_270.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_270.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:16.678294-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:01:14-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_285.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_285.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_285.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:48.422876-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:01:36-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_30.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_30.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_30.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:57.980710-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:55:26-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_300.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_300.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_300.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:46.511481-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:01:56-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_315.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_315.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_315.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:53.726325-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:02:18-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_330.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_330.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_330.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:51.029274-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:02:40-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_345.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_345.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_345.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:38:10.013301-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:03:02-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_360.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_360.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_360.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:36:25.206267-06:00</meta>
+      <meta name="Creation Time">2021-01-25T12:03:24-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_45.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_45.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_45.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:29.141646-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:55:48-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_60.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_60.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_60.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:07.542681-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:56:10-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_75.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_75.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_75.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:19.379556-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:56:32-07:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Analog 0-dt_2-fb_20-rot_90.dm4</name>
+      <location>/5713336/rotation/Analog 0-dt_2-fb_20-rot_90.dm4</location>
+      <format>DM4</format>
+      <description/>
+      <preview>/5713336/rotation/Analog 0-dt_2-fb_20-rot_90.dm4.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:37:31.696580-06:00</meta>
+      <meta name="Creation Time">2021-01-25T11:56:52-07:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

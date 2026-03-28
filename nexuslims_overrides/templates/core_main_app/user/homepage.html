@@ -4,6 +4,44 @@
 {# NexusLIMS Homepage Template #}
 {# Migrated from templates/core_main_app/user/homepage.html #}
 
+{% if IS_PUBLIC_DEMO %}
+<div class="row align-items-center rounded mb-2" id="intro"
+     style="background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%); color: white;">
+    <div id="homepage-text-col" class="col-md-7 offset-md-1 py-4">
+        <h1 class="fw-bold mb-2" style="color: white; text-align: left; line-height: 1.2;">
+            NexusLIMS: An Automated Laboratory Information Management System for Materials Characterization Facilities
+        </h1>
+        <p class="mb-3" style="opacity: 0.92;">
+            NexusLIMS automatically harvests experimental records from microscopy instruments,
+            organizes them with rich metadata, and makes them searchable and shareable across
+            your facility. It enables your facility to meet the
+            <a href="https://www.go-fair.org/fair-principles/" style="color: #a8d4f5;">FAIR data principles</a> with
+            no additional effort from staff or researchers.
+        </p>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/explore/keyword/"
+               class="btn btn-light btn-lg fw-semibold">
+                <i class="fas fa-search me-1"></i> Browse demo records
+            </a>
+            <a href="https://datasophos.github.io/NexusLIMS/stable/frontend_guide.html" target="_blank" rel="noopener noreferrer"
+               class="btn btn-light btn-lg fw-semibold">
+                <i class="fas fa-book me-1"></i> Learn more
+            </a>
+            <a href="https://datasophos.co" target="_blank" rel="noopener noreferrer"
+               class="btn btn-outline-light btn-lg fw-semibold">
+                <i class="fas fa-envelope me-1"></i> Need help deploying NexusLIMS? Contact Datasophos today!
+            </a>
+        </div>
+    </div>
+    <div id="homepage-logo-col" class="col-md-3 text-center py-3">
+        <img id="nexuslims-logo"
+             src="{% static NX_HOMEPAGE_LOGO %}"
+             alt="NexusLIMS Logo"
+             class="nexuslims-logo"
+             style="background: white; border-radius: 8px; padding: 12px;">
+    </div>
+</div>
+{% else %}
 <div class="row align-items-center" id="intro">
         <div id="homepage-text-col" class="col-md-7 offset-md-1">
             <h1>{{ CUSTOM_TITLE }}</h1>
@@ -28,6 +66,7 @@
                  class="nexuslims-logo">
         </div>
 </div>
+{% endif %}
 <div class="row">
     <div class="col-md-10 offset-md-1" id="tiles">
     </div>
