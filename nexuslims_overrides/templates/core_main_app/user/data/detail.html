@@ -246,8 +246,6 @@
 </script>
 
 {# Inline description edit icons and popup (only for users with write access) #}
-<style>.aa-table tbody tr:hover .nx-desc-edit { display: inline; }</style>
-
 <div id="nx-inline-edit-popup">
   <textarea id="nx-inline-edit-textarea" rows="3" placeholder="Enter dataset description…"></textarea>
   <div class="nx-inline-edit-actions">
@@ -267,8 +265,7 @@
   var saveBtn  = document.getElementById('nx-inline-edit-save');
   var cancelBtn = document.getElementById('nx-inline-edit-cancel');
   var activeIdx = null;
-  var csrfToken = document.cookie.match(/csrftoken=([^;]+)/);
-  csrfToken = csrfToken ? csrfToken[1] : '';
+  var csrfToken = '{{ csrf_token }}';
 
   function openPopup(iconEl) {
     activeIdx = parseInt(iconEl.dataset.datasetIndex, 10);
@@ -351,13 +348,7 @@
 })();
 </script>
 
-{# Annotator help modal #}
-<style>
-  #annotate-help-modal kbd { background:#f1f3f5; color:#212529; border:1px solid #ced4da; box-shadow:none; }
-  #annotate-help-modal .modal-body { line-height:1.4; }
-  #annotate-help-modal .modal-body ul { list-style:disc; padding-left:1.4rem; margin-bottom:0.5rem; }
-  #annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
-</style>
+{# Annotator help modal — styles live in annotate.css #}
 <div class="modal fade" id="annotate-help-modal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
     <div class="modal-content">

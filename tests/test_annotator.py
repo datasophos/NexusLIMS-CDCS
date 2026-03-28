@@ -174,7 +174,7 @@ _TWO_ACTIVITY_XML = f"""\
     </dataset>
     <dataset type="Image">
       <name>image_004.dm3</name>
-      <location>/data/image_003.dm3</location>
+      <location>/data/image_004.dm3</location>
       <format>Digital Micrograph</format>
       <meta name="StageX">-205.0</meta>
       <meta name="C2">62.3</meta>
@@ -1041,6 +1041,60 @@ def _make_mock_data(xml_content=None):
     return data
 
 
+class AnnotateRecordViewTest(TestCase):
+    """Tests for the annotate_record full-page view."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser_rec", password="pass")
+        self.client.force_login(self.user)
+
+    def test_unauthenticated_redirects(self):
+        self.client.logout()
+        response = self.client.get("/annotate/some-id/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/login", response["Location"])
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    def test_missing_record_returns_404(self, mock_get):
+        from core_main_app.commons.exceptions import DoesNotExist
+        mock_get.side_effect = DoesNotExist("not found")
+        response = self.client.get("/annotate/bad-id/")
+        self.assertEqual(response.status_code, 404)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_unauthorized_returns_403(self, mock_check, mock_get):
+        from core_main_app.access_control.exceptions import AccessControlError
+        mock_get.return_value = _make_mock_data()
+        mock_check.side_effect = AccessControlError("no access")
+        response = self.client.get("/annotate/test-id/")
+        self.assertEqual(response.status_code, 403)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_malformed_xml_returns_500_with_template(self, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data(xml_content="<not valid xml <<")
+        response = self.client.get("/annotate/test-id/")
+        self.assertEqual(response.status_code, 500)
+        self.assertTemplateUsed(response, "nexuslims_annotate/annotate.html")
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_success_renders_annotate_template(self, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data()
+        response = self.client.get("/annotate/test-id/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "nexuslims_annotate/annotate.html")
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_error_query_param_shows_save_error_banner(self, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data()
+        response = self.client.get("/annotate/test-id/?error=1")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "An error occurred while saving")
+
+
 class AnnotateDescriptionsViewTest(TestCase):
     """Tests for the annotate_descriptions view permission check."""
 
@@ -1089,15 +1143,14 @@ class AnnotateSaveOneViewTest(TestCase):
 
     @patch("nexuslims_annotate.views.data_api.get_by_id")
     @patch("nexuslims_annotate.views.data_api.upsert")
-    def test_non_integer_dataset_index_returns_500_not_unbound(self, mock_upsert, mock_get):
-        """A non-integer dataset_index should return 500, not crash with UnboundLocalError."""
+    def test_non_integer_dataset_index_returns_400(self, mock_upsert, mock_get):
+        """A non-integer dataset_index should return 400."""
         mock_get.return_value = _make_mock_data()
         response = self.client.post(
             "/annotate/test-id/save-one/",
             {"dataset_index": "not-an-int", "description": "hello"},
         )
-        # Should return 500 with JSON error, not raise UnboundLocalError
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 400)
         body = json.loads(response.content)
         self.assertIn("error", body)
 
@@ -1112,6 +1165,34 @@ class AnnotateSaveOneViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         body = json.loads(response.content)
         self.assertTrue(body.get("success"))
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_out_of_range_dataset_index_returns_400(self, mock_upsert, mock_get):
+        """dataset_index beyond the number of datasets returns 400."""
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            "/annotate/test-id/save-one/",
+            {"dataset_index": "999", "description": "hello"},
+        )
+        self.assertEqual(response.status_code, 400)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_unauthorized_returns_403(self, mock_upsert, mock_get):
+        """upsert raising AccessControlError returns 403."""
+        from core_main_app.access_control.exceptions import AccessControlError
+        mock_get.return_value = _make_mock_data()
+        mock_upsert.side_effect = AccessControlError("no write access")
+        response = self.client.post(
+            "/annotate/test-id/save-one/",
+            {"dataset_index": "0", "description": "hello"},
+        )
+        self.assertEqual(response.status_code, 403)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
 
 
 class AnnotatePanelViewTest(TestCase):

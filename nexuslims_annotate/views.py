@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 
 from core_main_app.access_control.api import check_can_write
 from core_main_app.access_control.exceptions import AccessControlError
@@ -209,6 +209,9 @@ def _apply_moves(xml_content, moves):
     # Deduplicate: last move wins for each dataset index
     seen = {}
     for m in moves:
+        if not isinstance(m, dict) or 'datasetIndex' not in m or 'targetActivitySeqno' not in m:
+            logger.warning('Skipping malformed move entry: %r', m)
+            continue
         seen[m['datasetIndex']] = m
     moves = list(seen.values())
 
@@ -330,11 +333,19 @@ def annotate_record(request, record_id):
     try:
         datasets = _parse_datasets(data.content)
         activities = _parse_activities(data.content)
+        record_title = _get_title(data.content)
     except ET.ParseError:
-        return JsonResponse({'error': 'Record XML is malformed'}, status=500)
+        return render(request, 'nexuslims_annotate/annotate.html', {
+            'data': data,
+            'record_title': '',
+            'datasets': [],
+            'record_id': record_id,
+            'activities': [],
+            'xml_error': True,
+        }, status=500)
     return render(request, 'nexuslims_annotate/annotate.html', {
         'data': data,
-        'record_title': _get_title(data.content),
+        'record_title': record_title,
         'datasets': datasets,
         'record_id': record_id,
         'activities': activities,
@@ -352,7 +363,7 @@ def annotate_panel(request, record_id):
     try:
         check_can_write(data, request.user)
     except AccessControlError:
-        return HttpResponseForbidden("You do not have permission to annotate this record.")
+        return JsonResponse({'error': 'You do not have permission to annotate this record.'}, status=403)
     try:
         datasets = _parse_datasets(data.content)
     except ET.ParseError:
@@ -385,11 +396,9 @@ def annotate_descriptions(request, record_id):
 
 
 @login_required
+@require_POST
 def annotate_save_one(request, record_id):
     """AJAX POST: update a single dataset's description by index."""
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
-    idx = None
     raw_idx = request.POST.get('dataset_index')
     if raw_idx is None:
         return JsonResponse({'error': 'dataset_index is required'}, status=400)
@@ -397,30 +406,36 @@ def annotate_save_one(request, record_id):
         idx = int(raw_idx)
         if idx < 0:
             return JsonResponse({'error': 'Invalid dataset_index'}, status=400)
+    except ValueError:
+        return JsonResponse({'error': 'dataset_index must be an integer'}, status=400)
+    try:
         description = request.POST.get('description', '').strip()
         data = data_api.get_by_id(record_id, request.user)
         # Build full post_data from current state, replacing only the target index
         datasets = _parse_datasets(data.content)
+        if idx >= len(datasets):
+            return JsonResponse({'error': 'dataset_index out of range'}, status=400)
         post_data = {f'dataset_{d["index"]}_description': d['description'] for d in datasets}
         post_data[f'dataset_{idx}_description'] = description
         data.content = _apply_descriptions(data.content, post_data)
+        # Write permission is enforced by upsert (raises AccessControlError on failure).
+        # Read-path views also call check_can_write explicitly to deny reads to write-only
+        # users; write-path views rely on upsert instead.
         data_api.upsert(data, request)
         return JsonResponse({'success': True})
     except (DoesNotExist, ModelError):
         return JsonResponse({'error': 'Record not found'}, status=404)
     except AccessControlError as e:
         return JsonResponse({'error': str(e)}, status=403)
-    except Exception as e:
-        logger.exception('Error saving annotation for record %s dataset %s', record_id, idx)
-        return JsonResponse({'error': str(e)}, status=500)
+    except Exception:
+        logger.exception('Error saving annotation for record %s dataset %s', record_id, raw_idx)
+        return JsonResponse({'error': 'Internal server error'}, status=500)
 
 
 @login_required
+@require_POST
 def annotate_save(request, record_id):
     """AJAX POST: update <description> elements and save the record."""
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
-
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     try:
         data = data_api.get_by_id(record_id, request.user)
@@ -431,10 +446,14 @@ def annotate_save(request, record_id):
         try:
             moves = json.loads(moves_json)
         except (json.JSONDecodeError, ValueError):
+            logger.warning('Ignoring malformed moves JSON for record %s: %r', record_id, moves_json)
             moves = []
         if moves:
             updated_xml = _apply_moves(updated_xml, moves)
         data.content = updated_xml
+        # Write permission is enforced by upsert (raises AccessControlError on failure).
+        # Read-path views also call check_can_write explicitly to deny reads to write-only
+        # users; write-path views rely on upsert instead.
         data_api.upsert(data, request)
         if is_ajax:
             return JsonResponse({'success': True})
@@ -447,8 +466,8 @@ def annotate_save(request, record_id):
         if is_ajax:
             return JsonResponse({'error': str(e)}, status=403)
         return redirect(reverse('nexuslims_annotate_record', args=[record_id]) + '?error=1')
-    except Exception as e:
+    except Exception:
         logger.exception('Error saving annotations for record %s', record_id)
         if is_ajax:
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse({'error': 'Internal server error'}, status=500)
         return redirect(reverse('nexuslims_annotate_record', args=[record_id]) + '?error=1')

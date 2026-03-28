@@ -145,13 +145,6 @@ body.nx-has-selection .nx-select-cb-label {
 .nx-drag-ghost {
     opacity: 0.35;
 }
-/* Highlight drop target row while dragging */
-.nx-sortable-activity.sortable-drag-over {
-    outline: 2px dashed #6366f1;
-    outline-offset: 4px;
-    border-radius: 6px;
-    min-height: 60px;
-}
 
 /* Batch-move toolbar: fixed at bottom-center */
 .nx-move-toolbar {
@@ -189,3 +182,12 @@ body.nx-has-selection .nx-select-cb-label {
     #annotate-record-btn i { font-size: 8pt; }
     #annotate-offcanvas { width: 100vw !important; }
 }
+
+/* Annotator help modal */
+#annotate-help-modal kbd { background:#f1f3f5; color:#212529; border:1px solid #ced4da; box-shadow:none; }
+#annotate-help-modal .modal-body { line-height:1.4; }
+#annotate-help-modal .modal-body ul { list-style:disc; padding-left:1.4rem; margin-bottom:0.5rem; }
+#annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
+
+/* Inline description edit icon: show on table row hover */
+.aa-table tbody tr:hover .nx-desc-edit { display: inline; }

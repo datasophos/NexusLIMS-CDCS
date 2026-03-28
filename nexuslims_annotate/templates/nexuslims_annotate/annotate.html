@@ -41,6 +41,9 @@
   {% if request.GET.error %}
   <div class="alert alert-danger">An error occurred while saving. Please try again.</div>
   {% endif %}
+  {% if xml_error %}
+  <div class="alert alert-danger">This record&#x27;s XML could not be parsed. The annotation editor is unavailable.</div>
+  {% endif %}
 
   <form id="annotate-page-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
     {% csrf_token %}
@@ -251,7 +254,13 @@
       var count = row.querySelectorAll('.nx-dataset-col').length;
       var badge = document.querySelector('.nx-activity-count[data-seqno="' + seqno + '"]');
       if (badge) badge.textContent = count;
+      // Keep __nxActivities in sync so the move dropdown shows current counts
+      if (window.__nxActivities) {
+        var act = window.__nxActivities.find(function (a) { return String(a.seqno) === String(seqno); });
+        if (act) act.dataset_count = count;
+      }
     });
+    buildDropdown();
   }
 
   // ── Toolbar ──────────────────────────────────────────────────────────────
@@ -416,6 +425,8 @@
   window.addEventListener('beforeunload', function (e) {
     if (!saving && hasDirtyState()) { e.preventDefault(); }
   });
+  // Reset saving if the page is restored from bfcache or the POST fails mid-flight
+  window.addEventListener('pageshow', function () { saving = false; });
 
   // ── Keyboard shortcut: Ctrl/Cmd+Enter to save ────────────────────────────
   document.addEventListener('keydown', function (e) {
@@ -428,12 +439,6 @@
 </script>
 
 {# Annotator help modal #}
-<style>
-  #annotate-help-modal kbd { background:#f1f3f5; color:#212529; border:1px solid #ced4da; box-shadow:none; }
-  #annotate-help-modal .modal-body { line-height:1.4; }
-  #annotate-help-modal .modal-body ul { list-style:disc; padding-left:1.4rem; margin-bottom:0.5rem; }
-  #annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
-</style>
 <div class="modal fade" id="annotate-help-modal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered" style="max-width:560px;">
     <div class="modal-content">

@@ -63,6 +63,7 @@ TEMPLATES = [
     },
 ]
 
+CUSTOM_NAME = ""
 LOGIN_URL = "/login"
 STATIC_URL = "/static/"
 ROOT_URLCONF = "tests.urls"
