@@ -20,8 +20,8 @@
       <p class="text-muted mb-0" style="font-size:0.9rem;">{{ record_title }}</p>
       <p class="text-muted mb-0 mt-1 nx-help-text">
         Add descriptions to datasets, or drag cards and use the selection toolbar to
-        reassign datasets to different activities. You can also use the checkbox on multiple
-        datasets to reassign them to a specific activity in bulk.
+        reassign datasets to different activities. Use checkboxes (or shift-click to select a range)
+        to select multiple datasets, then bulk-move or drag them together.
       </p>
     </div>
     <div class="d-flex align-items-center gap-2 flex-shrink-0">
@@ -376,6 +376,34 @@
     document.getElementById('annotate-save-btn').click();
   });
 
+  // Track last-clicked checkbox for shift-click range selection
+  var lastChecked = null;
+
+  form.addEventListener('click', function (e) {
+    if (!e.target.classList.contains('nx-select-cb')) return;
+    var cb = e.target;
+
+    if (e.shiftKey && lastChecked && lastChecked !== cb) {
+      var allCbs = Array.from(form.querySelectorAll('.nx-select-cb'));
+      var i1 = allCbs.indexOf(lastChecked);
+      var i2 = allCbs.indexOf(cb);
+      var start = Math.min(i1, i2);
+      var end   = Math.max(i1, i2);
+      var targetState = cb.checked;
+      // Set all in range except the clicked element (the change handler covers that one)
+      for (var i = start; i <= end; i++) {
+        if (allCbs[i] !== cb) {
+          allCbs[i].checked = targetState;
+          allCbs[i].closest('.nx-dataset-col').classList.toggle('nx-selected', targetState);
+        }
+      }
+      // Don't update lastChecked on shift-click (standard browser behavior)
+    } else {
+      lastChecked = cb;
+    }
+    // updateToolbar is called by the change handler below
+  });
+
   form.addEventListener('change', function (e) {
     if (e.target.classList.contains('nx-select-cb')) {
       var col = e.target.closest('.nx-dataset-col');
@@ -395,13 +423,36 @@
       preventOnFilter: false,
       onEnd: function (evt) {
         if (evt.from === evt.to) return;
-        var colEl     = evt.item;
-        var targetSeqno = evt.to.dataset.seqno;
-        var dsIndex   = parseInt(colEl.dataset.datasetIndex);
-        var origSeqno = colEl.dataset.originalActivity;
+        var colEl       = evt.item;
+        var targetRow   = evt.to;
+        var targetSeqno = targetRow.dataset.seqno;
+        var dsIndex     = parseInt(colEl.dataset.datasetIndex);
+        var origSeqno   = colEl.dataset.originalActivity;
+
         colEl.dataset.currentActivity = targetSeqno;
         recordMove(dsIndex, targetSeqno, origSeqno);
         updateMoveVisual(colEl, targetSeqno);
+
+        // If the dragged card was selected, bring along all other selected cards
+        if (colEl.classList.contains('nx-selected')) {
+          getSelectedCols().forEach(function (otherCol) {
+            if (otherCol === colEl) return;
+            var otherIndex    = parseInt(otherCol.dataset.datasetIndex);
+            var otherOrigSeqno = otherCol.dataset.originalActivity;
+            targetRow.appendChild(otherCol);
+            otherCol.dataset.currentActivity = targetSeqno;
+            recordMove(otherIndex, targetSeqno, otherOrigSeqno);
+            updateMoveVisual(otherCol, targetSeqno);
+            var cb = otherCol.querySelector('.nx-select-cb');
+            if (cb) { cb.checked = false; }
+            otherCol.classList.remove('nx-selected');
+          });
+          // Uncheck the dragged card too
+          var draggedCb = colEl.querySelector('.nx-select-cb');
+          if (draggedCb) { draggedCb.checked = false; }
+          colEl.classList.remove('nx-selected');
+        }
+
         updateActivityCounts();
         updateToolbar();
       }
@@ -461,7 +512,8 @@
         <h6 class="fw-semibold">Moving Datasets</h6>
         <ul class="mb-3">
           <li>Drag any dataset card to a different activity section to reassign it.</li>
-          <li>Check one or more cards, then use the <strong>Move to Activity</strong> toolbar to batch-move them.</li>
+          <li>Check one or more cards (or <kbd>Shift</kbd>-click to select a range), then use the <strong>Move to Activity</strong> toolbar to batch-move them.</li>
+          <li>Drag a selected card to move all selected cards together to a new activity.</li>
           <li>Click the <strong>Moved</strong> badge on a card to undo that move before saving.</li>
           <li>Moves are saved together with descriptions when you click <strong>Save Annotations</strong>.</li>
         </ul>
