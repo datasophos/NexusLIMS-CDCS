@@ -209,10 +209,12 @@ def _apply_moves(xml_content, moves):
     # Deduplicate: last move wins for each dataset index
     seen = {}
     for m in moves:
-        if not isinstance(m, dict) or 'datasetIndex' not in m or 'targetActivitySeqno' not in m:
+        idx = m.get('datasetIndex') if isinstance(m, dict) else None
+        target_seqno = m.get('targetActivitySeqno') if isinstance(m, dict) else None
+        if not isinstance(m, dict) or not isinstance(idx, int) or idx < 0 or target_seqno is None:
             logger.warning('Skipping malformed move entry: %r', m)
             continue
-        seen[m['datasetIndex']] = m
+        seen[idx] = m
     moves = list(seen.values())
 
     ET.register_namespace('', NS)
