@@ -450,6 +450,9 @@ def annotate_save(request, record_id):
         except (json.JSONDecodeError, ValueError):
             logger.warning('Ignoring malformed moves JSON for record %s: %r', record_id, moves_json)
             moves = []
+        if not isinstance(moves, list):
+            logger.warning('moves is not a list for record %s, ignoring', record_id)
+            moves = []
         if moves:
             updated_xml = _apply_moves(updated_xml, moves)
         data.content = updated_xml
