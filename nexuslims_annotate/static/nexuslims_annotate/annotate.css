@@ -146,17 +146,16 @@ body.nx-has-selection .nx-select-cb-label {
     opacity: 0.35;
 }
 
-/* Multi-drag visual: stacked card shadows + selected-count badge */
+/* Multi-drag visual: stacked card shadows */
 .nx-dataset-col.nx-multi-drag .annotate-card {
     box-shadow: 4px 4px 0 0 #c7d2fe, 8px 8px 0 0 #e0e7ff;
-    position: relative;
-    z-index: 1;
 }
-.nx-dataset-col.nx-multi-drag::before {
-    content: attr(data-multi-count);
+
+/* Badge injected as a real DOM element so it isn't cloned into the ghost placeholder */
+.nx-multi-drag-badge {
     position: absolute;
-    top: -6px;
-    right: 2px;
+    top: -8px;
+    right: 4px;
     background: #6366f1;
     color: #fff;
     border-radius: 10px;

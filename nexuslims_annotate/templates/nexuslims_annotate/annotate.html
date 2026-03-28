@@ -434,15 +434,27 @@
         if (colEl.classList.contains('nx-selected')) {
           var selCount = getSelectedCols().length;
           if (selCount > 1) {
+            // Add class synchronously so the ghost clone also gets the stacked shadow
             colEl.classList.add('nx-multi-drag');
-            colEl.dataset.multiCount = selCount + ' selected';
+            // Defer badge injection until after SortableJS has cloned the ghost,
+            // so the badge only appears on the dragged element, not the placeholder
+            setTimeout(function () {
+              var card = colEl.querySelector('.annotate-card');
+              if (card && !card.querySelector('.nx-multi-drag-badge')) {
+                var badge = document.createElement('span');
+                badge.className = 'nx-multi-drag-badge';
+                badge.textContent = selCount + ' selected';
+                card.appendChild(badge);
+              }
+            }, 0);
           }
         }
       },
       onEnd: function (evt) {
         var colEl = evt.item;
         colEl.classList.remove('nx-multi-drag');
-        delete colEl.dataset.multiCount;
+        var badge = colEl.querySelector('.nx-multi-drag-badge');
+        if (badge) badge.remove();
 
         if (evt.from === evt.to) return;
         var targetRow   = evt.to;
