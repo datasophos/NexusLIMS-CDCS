@@ -6,12 +6,14 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from core_main_app.access_control.api import check_can_write
 from core_main_app.access_control.exceptions import AccessControlError
+from core_main_app.commons.exceptions import DoesNotExist
 from core_main_app.components.data import api as data_api
 
 logger = logging.getLogger(__name__)
@@ -183,7 +185,13 @@ def _sort_datasets_by_creation_time(activity_el):
     datasets = list(activity_el.findall(f'{{{NS}}}dataset'))
     if len(datasets) <= 1:
         return
-    sorted_datasets = sorted(datasets, key=lambda ds: (_dataset_creation_time(ds) is None, _dataset_creation_time(ds)))
+    _EPOCH = datetime.min
+
+    def _sort_key(ds):
+        t = _dataset_creation_time(ds)
+        return (t is None, t if t is not None else _EPOCH)
+
+    sorted_datasets = sorted(datasets, key=_sort_key)
     for ds in datasets:
         activity_el.remove(ds)
     for ds in sorted_datasets:
@@ -311,7 +319,10 @@ def _apply_descriptions(xml_content, post_data):
 @login_required
 def annotate_record(request, record_id):
     """Full-page fallback view."""
-    data = data_api.get_by_id(record_id, request.user)
+    try:
+        data = data_api.get_by_id(record_id, request.user)
+    except DoesNotExist:
+        raise Http404(f"Record {record_id} not found.")
     try:
         check_can_write(data, request.user)
     except AccessControlError:
@@ -330,7 +341,10 @@ def annotate_record(request, record_id):
 @login_required
 def annotate_panel(request, record_id):
     """AJAX: return HTML fragment for offcanvas body."""
-    data = data_api.get_by_id(record_id, request.user)
+    try:
+        data = data_api.get_by_id(record_id, request.user)
+    except DoesNotExist:
+        return JsonResponse({'error': 'Record not found'}, status=404)
     try:
         check_can_write(data, request.user)
     except AccessControlError:
@@ -347,6 +361,10 @@ def annotate_panel(request, record_id):
 def annotate_descriptions(request, record_id):
     """Return current dataset names and descriptions as JSON."""
     data = data_api.get_by_id(record_id, request.user)
+    try:
+        check_can_write(data, request.user)
+    except AccessControlError:
+        return JsonResponse({'error': 'Permission denied'}, status=403)
     datasets = _parse_datasets(data.content)
     return JsonResponse({
         'datasets': [{'index': d['index'], 'name': d['name'], 'description': d['description']} for d in datasets]
@@ -358,6 +376,7 @@ def annotate_save_one(request, record_id):
     """AJAX POST: update a single dataset's description by index."""
     if request.method != 'POST':
         return JsonResponse({'error': 'Method not allowed'}, status=405)
+    idx = None
     try:
         idx = int(request.POST.get('dataset_index', -1))
         description = request.POST.get('description', '').strip()
@@ -399,13 +418,13 @@ def annotate_save(request, record_id):
         data_api.upsert(data, request)
         if is_ajax:
             return JsonResponse({'success': True})
-        return redirect(f'/data?id={record_id}')
+        return redirect(reverse('core_main_app_data_detail') + f'?id={record_id}')
     except AccessControlError as e:
         if is_ajax:
             return JsonResponse({'error': str(e)}, status=403)
-        return redirect(f'/annotate/{record_id}/?error=1')
+        return redirect(reverse('nexuslims_annotate_record', args=[record_id]) + '?error=1')
     except Exception as e:
         logger.exception('Error saving annotations for record %s', record_id)
         if is_ajax:
             return JsonResponse({'error': str(e)}, status=500)
-        return redirect(f'/annotate/{record_id}/?error=1')
+        return redirect(reverse('nexuslims_annotate_record', args=[record_id]) + '?error=1')

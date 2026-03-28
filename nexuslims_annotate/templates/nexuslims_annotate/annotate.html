@@ -31,7 +31,7 @@
               title="How to use the annotator">
         <i class="fas fa-question menu-fa"></i> Help
       </button>
-      <a href="/data?id={{ record_id }}" class="btn btn-outline-dark btn-top-group">
+      <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}" class="btn btn-outline-dark btn-top-group">
         <i class="fas fa-arrow-left menu-fa"></i> Back to Record
       </a>
     </div>
@@ -50,6 +50,7 @@
 
       {# Activity divider #}
       <div class="d-flex align-items-center gap-2 mt-3 mb-1">
+        {# seqno is always a zero-based integer string per the NexusLIMS schema #}
         <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
               style="font-size:0.75rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
         <span class="nx-activity-count badge bg-light text-secondary border"
@@ -105,7 +106,7 @@
       <button type="submit" class="btn btn-primary" id="annotate-save-btn">
         <i class="fa fa-save"></i> Save Annotations
       </button>
-      <a href="/data?id={{ record_id }}" class="btn btn-outline-secondary">Cancel</a>
+      <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}" class="btn btn-outline-secondary">Cancel</a>
     </div>
   </form>
 </div>
@@ -133,8 +134,8 @@
   </button>
 </div>
 
-{# SortableJS #}
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+{# SortableJS (vendored locally) #}
+<script src="{% static 'nexuslims_annotate/libs/sortablejs/1.15.6/Sortable.min.js' %}"></script>
 
 <script>
 (function () {
@@ -310,6 +311,7 @@
       var a  = document.createElement('a');
       a.className = 'dropdown-item';
       a.href = '#';
+      // seqno is always a zero-based integer string per the NexusLIMS schema
       var label = 'Activity ' + (parseInt(act.seqno) + 1);
       if (act.start_time) {
         try {

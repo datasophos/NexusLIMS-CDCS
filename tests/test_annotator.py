@@ -1,15 +1,12 @@
-"""Unit tests for nexuslims_annotate helper functions.
-
-
-
-All tested functions are pure XML-processing helpers in views.py that take XML strings
-or ElementTree elements as inputs and return results without touching the database.
-"""
+"""Unit tests for nexuslims_annotate helper functions and views."""
+import json
 import os
 import xml.etree.ElementTree as ET
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import MagicMock, patch
 
-from django.test import SimpleTestCase
+from django.contrib.auth import get_user_model
+from django.test import SimpleTestCase, TestCase
 
 from nexuslims_annotate.views import (
     _apply_descriptions,
@@ -972,3 +969,166 @@ class ApplyMovesNoContaminationTests(SimpleTestCase):
                 "TEM_Mag", _meta_names(ds),
                 f"{name} was contaminated with TEM_Mag",
             )
+
+
+# ---------------------------------------------------------------------------
+# Sort fix: multiple datasets without timestamps must not raise TypeError
+# ---------------------------------------------------------------------------
+
+class SortNoTimestampTest(SimpleTestCase):
+    """_sort_datasets_by_creation_time must not raise when multiple datasets lack timestamps."""
+
+    def _make_activity_xml(self, names):
+        """Build an activity element whose datasets have the given names and no timestamps."""
+        activity = ET.Element(f"{{{NS}}}acquisitionActivity")
+        activity.set("seqno", "0")
+        for name in names:
+            ds = ET.SubElement(activity, f"{{{NS}}}dataset")
+            name_el = ET.SubElement(ds, f"{{{NS}}}name")
+            name_el.text = name
+        return activity
+
+    def test_all_datasets_missing_timestamp_no_error(self):
+        """Three datasets without any timestamp should not raise TypeError."""
+        activity = self._make_activity_xml(["a.dm3", "b.dm3", "c.dm3"])
+        # Must not raise TypeError
+        from nexuslims_annotate.views import _sort_datasets_by_creation_time
+        _sort_datasets_by_creation_time(activity)
+        names_after = [
+            ds.find(f"{{{NS}}}name").text
+            for ds in activity.findall(f"{{{NS}}}dataset")
+        ]
+        # All names still present (order is stable for ties)
+        self.assertEqual(set(names_after), {"a.dm3", "b.dm3", "c.dm3"})
+
+    def test_mixed_timestamp_and_no_timestamp(self):
+        """Datasets with timestamps sort before those without."""
+        activity = self._make_activity_xml(["no_ts_1.dm3", "no_ts_2.dm3"])
+        # Add a third dataset that does have a timestamp
+        ds_with_ts = ET.SubElement(activity, f"{{{NS}}}dataset")
+        name_el = ET.SubElement(ds_with_ts, f"{{{NS}}}name")
+        name_el.text = "has_ts.dm3"
+        meta = ET.SubElement(ds_with_ts, f"{{{NS}}}meta")
+        meta.set("name", "Creation Time")
+        meta.text = "2024-01-15T10:00:00"
+
+        from nexuslims_annotate.views import _sort_datasets_by_creation_time
+        _sort_datasets_by_creation_time(activity)
+        names_after = [
+            ds.find(f"{{{NS}}}name").text
+            for ds in activity.findall(f"{{{NS}}}dataset")
+        ]
+        # Timestamped dataset sorts first
+        self.assertEqual(names_after[0], "has_ts.dm3")
+        self.assertIn("no_ts_1.dm3", names_after[1:])
+        self.assertIn("no_ts_2.dm3", names_after[1:])
+
+
+# ---------------------------------------------------------------------------
+# View integration tests
+# ---------------------------------------------------------------------------
+
+User = get_user_model()
+
+
+def _make_mock_data(xml_content=None):
+    """Return a minimal mock data object mimicking core_main_app Data."""
+    if xml_content is None:
+        xml_content = _TWO_ACTIVITY_XML
+    data = MagicMock()
+    data.content = xml_content
+    data.id = "test-record-id"
+    return data
+
+
+class AnnotateDescriptionsViewTest(TestCase):
+    """Tests for the annotate_descriptions view permission check."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="pass")
+        self.client.force_login(self.user)
+
+    def test_unauthenticated_redirects_to_login(self):
+        self.client.logout()
+        response = self.client.get("/annotate/some-id/descriptions/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/login", response["Location"])
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_authenticated_with_access_returns_200(self, mock_check, mock_get):
+        mock_get.return_value = _make_mock_data()
+        # check_can_write succeeds (no exception)
+        response = self.client.get("/annotate/test-id/descriptions/")
+        self.assertEqual(response.status_code, 200)
+        body = json.loads(response.content)
+        self.assertIn("datasets", body)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_authenticated_without_write_access_returns_403(self, mock_check, mock_get):
+        from core_main_app.access_control.exceptions import AccessControlError
+        mock_get.return_value = _make_mock_data()
+        mock_check.side_effect = AccessControlError("no access")
+        response = self.client.get("/annotate/test-id/descriptions/")
+        self.assertEqual(response.status_code, 403)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+
+class AnnotateSaveOneViewTest(TestCase):
+    """Tests for the annotate_save_one view."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser2", password="pass")
+        self.client.force_login(self.user)
+
+    def test_get_method_returns_405(self):
+        response = self.client.get("/annotate/test-id/save-one/")
+        self.assertEqual(response.status_code, 405)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_non_integer_dataset_index_returns_500_not_unbound(self, mock_upsert, mock_get):
+        """A non-integer dataset_index should return 500, not crash with UnboundLocalError."""
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            "/annotate/test-id/save-one/",
+            {"dataset_index": "not-an-int", "description": "hello"},
+        )
+        # Should return 500 with JSON error, not raise UnboundLocalError
+        self.assertEqual(response.status_code, 500)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_valid_post_returns_success(self, mock_upsert, mock_get):
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            "/annotate/test-id/save-one/",
+            {"dataset_index": "0", "description": "A test description"},
+        )
+        self.assertEqual(response.status_code, 200)
+        body = json.loads(response.content)
+        self.assertTrue(body.get("success"))
+
+
+class AnnotatePanelViewTest(TestCase):
+    """Tests for the annotate_panel view."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser3", password="pass")
+        self.client.force_login(self.user)
+
+    def test_unauthenticated_redirects(self):
+        self.client.logout()
+        response = self.client.get("/annotate/some-id/panel/")
+        self.assertEqual(response.status_code, 302)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    def test_missing_record_returns_404(self, mock_get):
+        from core_main_app.commons.exceptions import DoesNotExist
+        mock_get.side_effect = DoesNotExist("not found")
+        response = self.client.get("/annotate/bad-id/panel/")
+        self.assertEqual(response.status_code, 404)

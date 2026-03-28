@@ -22,6 +22,10 @@
   <button class="btn btn-outline-dark btn-top-group"
           id="annotate-record-btn"
           data-record-id="{{ data.data.id }}"
+          data-url-panel="{% url 'nexuslims_annotate_panel' data.data.id %}"
+          data-url-save="{% url 'nexuslims_annotate_save' data.data.id %}"
+          data-url-descriptions="{% url 'nexuslims_annotate_descriptions' data.data.id %}"
+          data-url-save-one="{% url 'nexuslims_annotate_save_one' data.data.id %}"
           data-bs-toggle="offcanvas"
           data-bs-target="#annotate-offcanvas"
           title="Annotate dataset descriptions or reassign datasets to activities">
@@ -41,7 +45,7 @@
             title="How to use the annotator">
       <i class="fa fa-question-circle"></i>
     </button>
-    <a href="/annotate/{{ data.data.id }}/"
+    <a href="{% url 'nexuslims_annotate_record' data.data.id %}"
        id="annotate-expand-btn"
        class="btn btn-outline-secondary btn-sm me-2"
        title="Open full-page annotator">
@@ -59,7 +63,11 @@
 <script>
 (function () {
   var offcanvasEl = document.getElementById('annotate-offcanvas');
-  var recordId = document.getElementById('annotate-record-btn').dataset.recordId;
+  var annotateBtn = document.getElementById('annotate-record-btn');
+  var recordId = annotateBtn.dataset.recordId;
+  var urlPanel = annotateBtn.dataset.urlPanel;
+  var urlSave = annotateBtn.dataset.urlSave;
+  var urlDescriptions = annotateBtn.dataset.urlDescriptions;
 
   // Move the annotate button to the end of the action bar.
   // Use window load (not DOMContentLoaded) so CDCS has already populated #top-button-div.
@@ -115,7 +123,7 @@
       saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving\u2026';
 
       var formData = new FormData(form);
-      fetch('/annotate/' + recordId + '/save/', {
+      fetch(urlSave, {
         method: 'POST',
         body: formData,
         headers: {'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
@@ -128,7 +136,7 @@
           bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
           var toastEl = document.getElementById('annotate-toast');
           if (toastEl) { new bootstrap.Toast(toastEl, {delay: 3000}).show(); }
-          refreshDisplayedDescriptions(recordId);
+          refreshDisplayedDescriptions();
         } else {
           alert('Error saving annotations: ' + (data.error || 'Unknown error'));
           saveBtn.disabled = false;
@@ -167,8 +175,8 @@
     setTimeout(function () { document.getElementById('annotate-record-btn').blur(); }, 0);
   });
 
-  window.refreshDisplayedDescriptions = function refreshDisplayedDescriptions(recordId) {
-    fetch('/annotate/' + recordId + '/descriptions/', {
+  window.refreshDisplayedDescriptions = function refreshDisplayedDescriptions() {
+    fetch(urlDescriptions, {
       headers: {'X-Requested-With': 'XMLHttpRequest'},
     })
     .then(function (r) { return r.json(); })
@@ -217,7 +225,7 @@
   }
 
   offcanvasEl.addEventListener('show.bs.offcanvas', function () {
-    fetch('/annotate/' + recordId + '/panel/', {
+    fetch(urlPanel, {
       headers: {'X-Requested-With': 'XMLHttpRequest'},
     })
     .then(function (r) { return r.text(); })
@@ -248,7 +256,8 @@
 
 <script>
 (function () {
-  var recordId = document.getElementById('annotate-record-btn').dataset.recordId;
+  var annotateBtn2 = document.getElementById('annotate-record-btn');
+  var urlSaveOne = annotateBtn2.dataset.urlSaveOne;
   var popup   = document.getElementById('nx-inline-edit-popup');
   var textarea = document.getElementById('nx-inline-edit-textarea');
   var saveBtn  = document.getElementById('nx-inline-edit-save');
@@ -300,7 +309,7 @@
       dataset_index: activeIdx,
       description: desc,
     });
-    fetch('/annotate/' + recordId + '/save-one/', {
+    fetch(urlSaveOne, {
       method: 'POST',
       body: body,
       headers: {
@@ -313,7 +322,7 @@
     .then(function (data) {
       if (data.success) {
         closePopup();
-        refreshDisplayedDescriptions(recordId);
+        refreshDisplayedDescriptions();
       } else {
         alert('Error saving: ' + (data.error || 'Unknown error'));
       }
