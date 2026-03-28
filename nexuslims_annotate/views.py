@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.http import require_GET
 
 from core_main_app.access_control.api import check_can_write
 from core_main_app.access_control.exceptions import AccessControlError
-from core_main_app.commons.exceptions import DoesNotExist
+from core_main_app.commons.exceptions import DoesNotExist, ModelError
 from core_main_app.components.data import api as data_api
 
 logger = logging.getLogger(__name__)
@@ -320,14 +321,17 @@ def annotate_record(request, record_id):
     """Full-page fallback view."""
     try:
         data = data_api.get_by_id(record_id, request.user)
-    except DoesNotExist:
+    except (DoesNotExist, ModelError):
         raise Http404(f"Record {record_id} not found.")
     try:
         check_can_write(data, request.user)
     except AccessControlError:
         return HttpResponseForbidden("You do not have permission to annotate this record.")
-    datasets = _parse_datasets(data.content)
-    activities = _parse_activities(data.content)
+    try:
+        datasets = _parse_datasets(data.content)
+        activities = _parse_activities(data.content)
+    except ET.ParseError:
+        return JsonResponse({'error': 'Record XML is malformed'}, status=500)
     return render(request, 'nexuslims_annotate/annotate.html', {
         'data': data,
         'record_title': _get_title(data.content),
@@ -338,17 +342,21 @@ def annotate_record(request, record_id):
 
 
 @login_required
+@require_GET
 def annotate_panel(request, record_id):
     """AJAX: return HTML fragment for offcanvas body."""
     try:
         data = data_api.get_by_id(record_id, request.user)
-    except DoesNotExist:
+    except (DoesNotExist, ModelError):
         return JsonResponse({'error': 'Record not found'}, status=404)
     try:
         check_can_write(data, request.user)
     except AccessControlError:
         return HttpResponseForbidden("You do not have permission to annotate this record.")
-    datasets = _parse_datasets(data.content)
+    try:
+        datasets = _parse_datasets(data.content)
+    except ET.ParseError:
+        return JsonResponse({'error': 'Record XML is malformed'}, status=500)
     return render(request, 'nexuslims_annotate/_panel.html', {
         'data': data,
         'datasets': datasets,
@@ -361,13 +369,16 @@ def annotate_descriptions(request, record_id):
     """Return current dataset names and descriptions as JSON."""
     try:
         data = data_api.get_by_id(record_id, request.user)
-    except DoesNotExist:
+    except (DoesNotExist, ModelError):
         return JsonResponse({'error': 'Record not found'}, status=404)
     try:
         check_can_write(data, request.user)
     except AccessControlError:
         return JsonResponse({'error': 'Permission denied'}, status=403)
-    datasets = _parse_datasets(data.content)
+    try:
+        datasets = _parse_datasets(data.content)
+    except ET.ParseError:
+        return JsonResponse({'error': 'Record XML is malformed'}, status=500)
     return JsonResponse({
         'datasets': [{'index': d['index'], 'name': d['name'], 'description': d['description']} for d in datasets]
     })
@@ -395,6 +406,8 @@ def annotate_save_one(request, record_id):
         data.content = _apply_descriptions(data.content, post_data)
         data_api.upsert(data, request)
         return JsonResponse({'success': True})
+    except (DoesNotExist, ModelError):
+        return JsonResponse({'error': 'Record not found'}, status=404)
     except AccessControlError as e:
         return JsonResponse({'error': str(e)}, status=403)
     except Exception as e:
@@ -426,6 +439,10 @@ def annotate_save(request, record_id):
         if is_ajax:
             return JsonResponse({'success': True})
         return redirect(reverse('core_main_app_data_detail') + f'?id={record_id}')
+    except (DoesNotExist, ModelError):
+        if is_ajax:
+            return JsonResponse({'error': 'Record not found'}, status=404)
+        raise Http404(f"Record {record_id} not found.")
     except AccessControlError as e:
         if is_ajax:
             return JsonResponse({'error': str(e)}, status=403)

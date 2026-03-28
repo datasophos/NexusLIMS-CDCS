@@ -1132,3 +1132,103 @@ class AnnotatePanelViewTest(TestCase):
         mock_get.side_effect = DoesNotExist("not found")
         response = self.client.get("/annotate/bad-id/panel/")
         self.assertEqual(response.status_code, 404)
+
+    def test_post_method_returns_405(self):
+        response = self.client.post("/annotate/some-id/panel/")
+        self.assertEqual(response.status_code, 405)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_malformed_xml_returns_500(self, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data(xml_content="<not valid xml <<")
+        response = self.client.get("/annotate/test-id/panel/")
+        self.assertEqual(response.status_code, 500)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+
+class AnnotateSaveViewTest(TestCase):
+    """Tests for the annotate_save view."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser4", password="pass")
+        self.client.force_login(self.user)
+
+    def test_get_method_returns_405(self):
+        response = self.client.get("/annotate/test-id/save/")
+        self.assertEqual(response.status_code, 405)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    def test_missing_record_returns_404_for_ajax(self, mock_get):
+        from core_main_app.commons.exceptions import DoesNotExist
+        mock_get.side_effect = DoesNotExist("not found")
+        response = self.client.post(
+            "/annotate/bad-id/save/",
+            {"dataset_0_description": "hello"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+        self.assertEqual(response.status_code, 404)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_valid_post_returns_success(self, _mock_upsert, mock_get):
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            "/annotate/test-id/save/",
+            {"dataset_0_description": "A description"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+        )
+        self.assertEqual(response.status_code, 200)
+        body = json.loads(response.content)
+        self.assertTrue(body.get("success"))
+
+
+class AnnotateSaveOneDoesNotExistTest(TestCase):
+    """DoesNotExist handling in annotate_save_one."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser5", password="pass")
+        self.client.force_login(self.user)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    def test_missing_record_returns_404(self, mock_get):
+        from core_main_app.commons.exceptions import DoesNotExist
+        mock_get.side_effect = DoesNotExist("not found")
+        response = self.client.post(
+            "/annotate/bad-id/save-one/",
+            {"dataset_index": "0", "description": "hello"},
+        )
+        self.assertEqual(response.status_code, 404)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+
+class MalformedXmlViewTest(TestCase):
+    """Malformed XML is handled cleanly in read-path views."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser6", password="pass")
+        self.client.force_login(self.user)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_descriptions_malformed_xml_returns_500(self, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data(xml_content="<not valid xml <<")
+        response = self.client.get("/annotate/test-id/descriptions/")
+        self.assertEqual(response.status_code, 500)
+        body = json.loads(response.content)
+        self.assertIn("error", body)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_save_one_malformed_xml_returns_500(self, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data(xml_content="<not valid xml <<")
+        response = self.client.post(
+            "/annotate/test-id/save-one/",
+            {"dataset_index": "0", "description": "hello"},
+        )
+        self.assertEqual(response.status_code, 500)
+        body = json.loads(response.content)
+        self.assertIn("error", body)

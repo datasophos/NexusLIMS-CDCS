@@ -234,8 +234,12 @@
       bindSaveForm();
     })
     .catch(function (err) {
-      document.getElementById('annotate-offcanvas-body').innerHTML =
-        '<p class="text-danger">Failed to load annotator: ' + err + '</p>';
+      var p = document.createElement('p');
+      p.className = 'text-danger';
+      p.textContent = 'Failed to load annotator: ' + err;
+      var body = document.getElementById('annotate-offcanvas-body');
+      body.innerHTML = '';
+      body.appendChild(p);
     });
   });
 })();
