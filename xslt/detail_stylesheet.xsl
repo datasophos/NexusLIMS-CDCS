@@ -313,7 +313,7 @@ Use it like:
 
 
             <div id="loading">
-                <img src="/static/img/logo_bare.png"/>
+                <img src="/static/nexuslims/img/favicon.png"/>
             </div>
 
 
