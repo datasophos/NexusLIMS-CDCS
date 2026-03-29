@@ -1,0 +1,80 @@
+{% load static %}
+{% load stripjs %}
+<style>
+/* ── Terms of Use page ─────────────────────────────────────────────────── */
+.nx-terms-content {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+/* Page title */
+.nx-terms-content > h2:first-child {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+/* Section headings (inside the stored content) */
+.nx-terms-content h1,
+.nx-terms-content h3,
+.nx-terms-content h4,
+.nx-terms-content h5,
+.nx-terms-content h6,
+.nx-terms-content h2:not(:first-child) {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.6rem;
+    margin-bottom: 0.2rem;
+}
+
+/* Paragraphs */
+.nx-terms-content p {
+    margin-bottom: 0.6rem;
+}
+
+/* First paragraph: introductory lead style */
+.nx-terms-content > p:first-child {
+    color: #555;
+    border-left: 3px solid #dee2e6;
+    padding-left: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Horizontal rules as section dividers */
+.nx-terms-content hr {
+    margin: 1.25rem 0;
+    opacity: 0.2;
+}
+
+/* Lists */
+.nx-terms-content ul,
+.nx-terms-content ol {
+    padding-left: 1.5rem;
+    margin-bottom: 0.6rem;
+}
+.nx-terms-content li {
+    margin-bottom: 0.2rem;
+}
+
+/* Timestamps / small print */
+.nx-terms-content small,
+.nx-terms-content .text-muted {
+    font-size: 0.82rem;
+}
+</style>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="nx-terms-content word-wrap">
+      <h2 class="mb-3">Terms of Use</h2>
+      {% if data.terms %}
+        {{ data.terms.content|stripjs }}
+      {% else %}
+        <p><a href="{% url 'core_website_app_contact' %}">Contact the administrator</a> for terms of use information.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

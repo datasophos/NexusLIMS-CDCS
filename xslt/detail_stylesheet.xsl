@@ -313,7 +313,33 @@ Use it like:
 
 
             <div id="loading">
-                <img src="/static/nexuslims/img/favicon.png"/>
+                <!--
+                  Inline SVG spinner: counter-rotating diffraction rings.
+                  Positions are computed from icon.svg geometry (scale 1.828, center at 60,60).
+                  Outer ring (r≈45.7): green/light-green/yellow, rotates counter-clockwise.
+                  Inner ring (r≈27.4) + center: light blue / dark blue, rotates clockwise.
+                  Animation is handled entirely by loading.css (#nx-spin-inner, #nx-spin-outer).
+                -->
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="400" height="400">
+                    <xsl:attribute name="viewBox">0 0 120 120</xsl:attribute>
+                    <g id="nx-spin-outer" opacity="0.9">
+                        <circle cx="60"   cy="14.3"  r="6.4" fill="#2ea83e"/>
+                        <circle cx="99.6" cy="37.1"  r="6.4" fill="#66b572"/>
+                        <circle cx="99.6" cy="82.9"  r="6.4" fill="#ffca28"/>
+                        <circle cx="60"   cy="105.7" r="6.4" fill="#2ea83e"/>
+                        <circle cx="20.4" cy="82.9"  r="6.4" fill="#66b572"/>
+                        <circle cx="20.4" cy="37.1"  r="6.4" fill="#ffca28"/>
+                    </g>
+                    <g id="nx-spin-inner" opacity="0.9">
+                        <circle cx="87.4" cy="60"   r="5.5" fill="#5ba3d0"/>
+                        <circle cx="73.7" cy="36.3" r="5.5" fill="#5ba3d0"/>
+                        <circle cx="46.3" cy="36.3" r="5.5" fill="#5ba3d0"/>
+                        <circle cx="32.6" cy="60"   r="5.5" fill="#5ba3d0"/>
+                        <circle cx="46.3" cy="83.7" r="5.5" fill="#5ba3d0"/>
+                        <circle cx="73.7" cy="83.7" r="5.5" fill="#5ba3d0"/>
+                        <circle cx="60"   cy="60"   r="11"  fill="#0064a6"/>
+                    </g>
+                </svg>
             </div>
 
 

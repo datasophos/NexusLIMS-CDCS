@@ -751,6 +751,33 @@ If your custom theme colors aren't appearing:
 
 ---
 
+## Terms of Use Page
+
+NexusLIMS ships a default Terms of Use page that is written to the database the
+first time `init_environment.py` runs (or `admin-init` in production). The page
+is visible to all users at `/terms/` and is linked from the site footer.
+
+### Updating the Terms
+
+The content is stored in the Django database, **not** in a file. To edit it:
+
+1. Log in as a superuser
+2. Navigate to **Admin > Website > Terms of Use**
+   (direct URL: `/admin/core-admin/core_website_app_terms`)
+3. Edit the HTML in the rich-text editor and save
+
+Changes take effect immediately -- no restart required.
+
+### Behaviour
+
+- `init_environment.py` only writes the default content when **no** Terms of Use
+  record exists. Once you save custom content via the admin UI, re-running
+  `init_environment.py` will not overwrite it.
+- If you need to reset to the default, delete the record in the admin UI and
+  re-run `init_environment.py` (or `docker exec <container> python /srv/scripts/init_environment.py`).
+
+---
+
 ## Getting Help
 
 - **Documentation**: [NexusLIMS GitHub](https://github.com/datasophos/NexusLIMS-CDCS)
