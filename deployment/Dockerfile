@@ -28,6 +28,7 @@ COPY static ./static
 # config is included in image for remote builds (Git URL context)
 # For local dev, it can be overridden via bind mount in docker-compose.dev.yml
 COPY config ./config
+COPY nexuslims_annotate ./nexuslims_annotate
 COPY nexuslims_overrides ./nexuslims_overrides
 COPY xslt ./xslt
 
