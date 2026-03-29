@@ -521,6 +521,12 @@
 
         // Cleanup on exit - scroll back to starting position and blur tutorial link
         var cleanupOnExit = function() {
+            // Shepherd only removes the modal overlay from the DOM on `complete`, not on
+            // `cancel`. The overlay's SVG path keeps pointer-events:all while
+            // shepherd-modal-is-visible is set, blocking scroll and clicks after cancel.
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
@@ -705,6 +711,12 @@
         // Cleanup on exit - scroll back to starting position and blur tutorial link
         var cur_pos = $(document).scrollTop();
         var cleanupOnExit = function() {
+            // Shepherd only removes the modal overlay from the DOM on `complete`, not on
+            // `cancel`. The overlay's SVG path keeps pointer-events:all while
+            // shepherd-modal-is-visible is set, blocking scroll and clicks after cancel.
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
@@ -750,12 +762,17 @@
         // Check if any modals are visible, close them and remember to reopen at the end
         var already_open_modal = false;
         $('.modal').each(function(index, val) {
-            if ($(val).css('visibility') === 'visible' &&
+            var vis = $(val).css('visibility');
+            var disp = $(val).css('display');
+            if (vis === 'visible' && disp !== 'none' &&
                 (val.id !== 'download-modal' && val.id !== 'file-preview-modal')) {
                 Detail.closeModal(val.id);
                 already_open_modal = val.id;
             }
         });
+
+        // Disable scrolling during the tour (matches the page's existing scroll management)
+        $('body').addClass('scrollDisabled');
 
         // Close navPanel if open when tour starts (mobile)
         if ($('body').hasClass('navPanel-visible')) {
@@ -787,6 +804,9 @@
         tour.on('show', createStepNumberIndicator(tour));
 
         var buttons = createButtons(tour);
+
+        // Check if the annotate button is present (NX_ENABLE_ANNOTATOR + write access)
+        var annotateRecordVisible = $('#annotate-record-btn').length > 0;
 
         // Add tour steps
         if (!simpleDisplay) {
@@ -884,6 +904,35 @@
                 buttons: [buttons.back(true), buttons.next]
             });
 
+            if (annotateRecordVisible) {
+                var firstDescEditIcon = $('.aa_header_row .aa-table tbody tr:first-child .nx-desc-edit')[0];
+                if (firstDescEditIcon) {
+                    tour.addStep({
+                        id: 'tut-aa-inline-edit',
+                        title: 'Inline description editing',
+                        text: "Hover over any row in a dataset table to reveal the <i class='fa fa-pencil-alt' style='color:#adb5bd;font-size:0.8em;'></i> pencil icon next to the description field. Click it to open a quick-edit popup where you can type a description for that dataset and save with <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac).",
+                        attachTo: { element: firstDescEditIcon, on: 'left' },
+                        scrollTo: false,
+                        buttons: [buttons.back(true), buttons.next],
+                        modalOverlayOpeningPadding: 8,
+                        floatingUIOptions: {
+                            middleware: [FloatingUIDOM.offset({ mainAxis: 15 })]
+                        },
+                        beforeShowPromise: function() {
+                            return new Promise(function(resolve) {
+                                $(firstDescEditIcon).css('display', 'inline');
+                                resolve();
+                            });
+                        },
+                        when: {
+                            hide: function() {
+                                $(firstDescEditIcon).css('display', '');
+                            }
+                        }
+                    });
+                }
+            }
+
             tour.addStep({
                 id: 'tut-aa-meta',
                 title: 'Metadata viewer/downloader',
@@ -955,26 +1004,17 @@
           });
         }
 
-        tour.addStep({
-            id: 'tut-xml-dl',
-            title: 'Record exporter (JSON)',
-            text: "The <i class='far fa-file-code menu-fa'></i> <em>Download JSON</em> button will download the metadata record (not the actual datafiles) in an structured format for additional analysis, if desired.",
-            attachTo: { element: '#btn-json-dl', on: 'bottom' },
-            scrollTo: true,
-            buttons: [buttons.back(true), buttons.next],
-            modalOverlayOpeningPadding: 5,
-        });
-
         // Check if edit record button is visible to determine if we should add the edit step
         var editRecordVisible = $('#btn-edit-record').is(':visible');
+        var hasStepsAfterDl = editRecordVisible || annotateRecordVisible;
 
         tour.addStep({
-            id: 'tut-xml-dl',
-            title: 'Record exporter (XML)',
-            text: "The <i class='far fa-file-excel menu-fa'></i> <em>Download XML</em> button will download the metadata record (not the actual datafiles) in the native structured XML format for additional analysis, if desired.",
-            attachTo: { element: '#btn-xml-dl', on: 'bottom' },
+            id: 'tut-record-dl',
+            title: 'Record downloader',
+            text: "The <i class='fas fa-download menu-fa'></i> <em>Download Record</em> button lets you download the metadata record (not the actual datafiles) in either <i class='far fa-file-excel menu-fa'></i> <strong>XML</strong> or <i class='far fa-file-code menu-fa'></i> <strong>JSON</strong> format for additional analysis, if desired.",
+            attachTo: { element: '#btn-download-record-group', on: 'bottom' },
             scrollTo: true,
-            buttons: [buttons.back(true), editRecordVisible ? buttons.next : buttons.end],
+            buttons: [buttons.back(true), hasStepsAfterDl ? buttons.next : buttons.end],
             modalOverlayOpeningPadding: 5,
         });
 
@@ -986,10 +1026,61 @@
                 text: "The <i class='fa fa-file-text menu-fa'></i> <em>Edit this record</em> button will allow you (if logged in and you have ownership of this record) to edit the metadata information contained within. Currently, this process is a bit cumbersome, but an improvement to the interface is on the NexusLIMS team's roadmap.",
                 attachTo: { element: '#btn-edit-record', on: 'bottom' },
                 scrollTo: false,
-                buttons: [buttons.back(true), buttons.end],
+                buttons: [buttons.back(true), annotateRecordVisible ? buttons.next : buttons.end],
                 modalOverlayOpeningPadding: 5,
                 popperOptions: {
                     modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+        }
+
+        // Only add annotate record steps if the button is present (NX_ENABLE_ANNOTATOR + write access)
+        if (annotateRecordVisible) {
+            tour.addStep({
+                id: 'tut-annotate-record',
+                title: 'Annotate Record',
+                text: "The <i class='fa fa-pencil menu-fa'></i> <em>Annotate Record</em> button opens a side panel where you can attach plain-language descriptions to each dataset captured during the experiment. Descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators to understand what was acquired. From this panel, you can also open the full-page annotator, or edit descriptions inline by hovering over a row in any dataset table.",
+                attachTo: { element: '#annotate-record-btn', on: 'bottom' },
+                scrollTo: true,
+                buttons: [buttons.back(true), buttons.next],
+                modalOverlayOpeningPadding: 5,
+                popperOptions: {
+                    modifiers: [{ name: 'offset', options: { offset: [0, 10] } }]
+                }
+            });
+
+            tour.addStep({
+                id: 'tut-annotate-panel',
+                title: 'Annotation side panel',
+                text: "Datasets are listed here grouped by activity. Each card shows the dataset filename and a text box for its description; type directly in the boxes and click <strong>Save Annotations</strong> when done. Datasets with a green color already have descriptions. Use the <i class='fa fa-expand'></i> button in the panel header to open the full-page annotator, which also allows you to reassign datasets across activities.",
+                attachTo: { element: '#annotate-offcanvas', on: 'left' },
+                scrollTo: false,
+                buttons: [buttons.back(true), buttons.end],
+                modalOverlayOpeningPadding: 0,
+                floatingUIOptions: {
+                    middleware: [FloatingUIDOM.offset({ mainAxis: 12 })]
+                },
+                beforeShowPromise: function() {
+                    return new Promise(function(resolve) {
+                        var offcanvasEl = document.getElementById('annotate-offcanvas');
+                        // If the panel is already visible, resolve immediately
+                        if (offcanvasEl.classList.contains('show')) {
+                            resolve();
+                            return;
+                        }
+                        offcanvasEl.addEventListener('shown.bs.offcanvas', function onShown() {
+                            offcanvasEl.removeEventListener('shown.bs.offcanvas', onShown);
+                            resolve();
+                        });
+                        bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl).show();
+                    });
+                },
+                when: {
+                    hide: function() {
+                        var offcanvasEl = document.getElementById('annotate-offcanvas');
+                        var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+                        if (bsOffcanvas) { bsOffcanvas.hide(); }
+                    }
                 }
             });
         }
@@ -998,19 +1089,38 @@
         var cur_pos = $(document).scrollTop();
 
         function clean_up_on_exit(modal_to_open) {
+            // Shepherd only removes the modal overlay on `complete`, not `cancel` — the
+            // overlay SVG path keeps pointer-events:all and blocks interaction after cancel.
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
+            // Re-enable scrolling using the page's existing scroll management mechanism
+            $('body').removeClass('scrollDisabled');
+
+            // Close the annotate offcanvas if it was opened during the tour
+            if (annotateRecordVisible) {
+                var offcanvasEl = document.getElementById('annotate-offcanvas');
+                var bsOffcanvas = offcanvasEl && bootstrap.Offcanvas.getInstance(offcanvasEl);
+                if (bsOffcanvas) { bsOffcanvas.hide(); }
+            }
+
             // Remove focus outline from tutorial link
             $('#menu-tutorial, nav a, #navPanel a').filter(function() {
                 return $(this).text().trim() === 'Tutorial';
             }).addClass('tour-completed');
 
             if ($(document).scrollTop() === cur_pos) {
-                if (modal_to_open) { Detail.openModal(modal_to_open); }
+                if (modal_to_open) {
+                    Detail.openModal(modal_to_open);
+                }
             } else {
                 $('html, body').animate({
                     scrollTop: cur_pos
                 }, {
                     duration: 500,
-                    complete: modal_to_open ? function() { Detail.openModal(modal_to_open); } : null
+                    complete: modal_to_open ? function() {
+                        Detail.openModal(modal_to_open);
+                    } : null
                 });
             }
         }
@@ -1020,6 +1130,120 @@
         tour.on('hide', function() { clean_up_on_exit(already_open_modal); });
 
         // Allow clicking overlay to cancel
+        tour.on('show', function() {
+            setTimeout(function() {
+                $('.shepherd-modal-overlay-container').on('click', function() {
+                    tour.cancel();
+                });
+            }, 100);
+        });
+
+        return tour;
+    }
+
+    // ========================================================================
+    // Annotator Tour
+    // ========================================================================
+
+    function createAnnotatorTour() {
+        if (!shepherdAvailable()) {
+            console.log('Shepherd.js not available');
+            return null;
+        }
+
+        var tour = new Shepherd.Tour({
+            useModalOverlay: true,
+            defaultStepOptions: {
+                cancelIcon: { enabled: true },
+                classes: 'shepherd-theme-arrows',
+                scrollTo: false
+            }
+        });
+
+        var buttons = createButtons(tour);
+        tour.on('show', createStepNumberIndicator(tour));
+
+        tour.addStep({
+            id: 'tut-ann-welcome',
+            title: 'Full-page Annotator',
+            text: 'This page lets you add plain-language descriptions to every dataset in the record and, when the record has more than one activity, reassign datasets between activities. Changes are not saved until you click <strong>Save Annotations</strong>.',
+            // attachTo: { element: 'h4.mb-0', on: 'bottom' },
+            buttons: [buttons.back(false), buttons.next],
+            modalOverlayOpeningPadding: 5,
+            floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 10 })] }
+        });
+
+        var firstCard = document.querySelector('.annotate-card');
+        if (firstCard) {
+            tour.addStep({
+                id: 'tut-ann-card',
+                title: 'Dataset cards',
+                text: "Each card represents one dataset. The filename appears at the top and the text box below is where you type your description. The left border changes color as you work: <span style='color:#198754;font-weight:600;'>green</span> means the dataset has a description and the current value matches what is currently saved in the record, <span style='color:#e67e00;font-weight:600;'>orange</span> means you have unsaved changes, and gray means no description has been added yet.",
+                attachTo: { element: firstCard, on: 'bottom' },
+                scrollTo: true,
+                scrollToHandler: function(el) {
+                    var top = el.getBoundingClientRect().top + window.pageYOffset - 120;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                },
+                buttons: [buttons.back(true), buttons.next],
+                modalOverlayOpeningPadding: 6,
+                floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 12 })] }
+            });
+
+            var firstCb = document.querySelector('.nx-select-cb-label');
+            if (firstCb) {
+                tour.addStep({
+                    id: 'tut-ann-batch',
+                    title: 'Selecting and batch-moving',
+                    text: "The checkbox in the top-left corner of each card lets you select one or more datasets at once. Once a card is selected, a toolbar appears at the bottom of the page with a <strong>Move to Activity</strong> dropdown for batch reassignment. You can also drag and drop any individual card directly into a different activity section to move it. Changes are not saved until you click \"Save\".",
+                    attachTo: { element: firstCb, on: 'right' },
+                    scrollTo: true,
+                    scrollToHandler: function(el) {
+                        var top = el.getBoundingClientRect().top + window.pageYOffset - 120;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    },
+                    buttons: [buttons.back(true), buttons.next],
+                    modalOverlayOpeningPadding: 4,
+                    floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 12 })] },
+                    beforeShowPromise: function() {
+                        return new Promise(function(resolve) {
+                            $(firstCb).css('opacity', '1');
+                            resolve();
+                        });
+                    },
+                    when: {
+                        hide: function() {
+                            $(firstCb).css('opacity', '');
+                        }
+                    }
+                });
+            }
+        }
+
+        tour.addStep({
+            id: 'tut-ann-save',
+            title: 'Saving your work',
+            text: "Click <strong>Save Annotations</strong> when you're done — this saves both descriptions and any pending dataset moves in a single request. You can also press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac) to save from the keyboard.",
+            attachTo: { element: '#annotate-save-btn', on: 'top' },
+            scrollTo: true,
+            buttons: [buttons.back(true), buttons.end],
+            modalOverlayOpeningPadding: 5,
+            floatingUIOptions: { middleware: [FloatingUIDOM.offset({ mainAxis: 12 })] }
+        });
+
+        function clean_up_on_exit() {
+            var overlay = document.querySelector('.shepherd-modal-overlay-container');
+            if (overlay) { overlay.remove(); }
+
+            $('#menu-tutorial, nav a, #navPanel a').filter(function() {
+                return $(this).text().trim() === 'Tutorial';
+            }).addClass('tour-completed');
+        }
+
+        tour.on('complete', clean_up_on_exit);
+        tour.on('cancel', clean_up_on_exit);
+        tour.on('hide', clean_up_on_exit);
+
         tour.on('show', function() {
             setTimeout(function() {
                 $('.shepherd-modal-overlay-container').on('click', function() {
@@ -1064,6 +1288,20 @@
     };
 
     /**
+     * Start the annotator page tour
+     */
+    NexusLIMSTours.startAnnotatorTour = function() {
+        if (!tutorialsEnabled()) {
+            console.log('Tutorials are disabled');
+            return;
+        }
+        var tour = createAnnotatorTour();
+        if (tour) {
+            tour.start();
+        }
+    };
+
+    /**
      * Start the detail page tour
      */
     NexusLIMSTours.startDetailTour = function() {
@@ -1087,7 +1325,10 @@
         }
 
         // Determine which page we're on
-        if ($('#simpleDisplay').length > 0) {
+        if ($('#annotate-page-form').length > 0) {
+            // We're on the full-page annotator
+            NexusLIMSTours.startAnnotatorTour();
+        } else if ($('#simpleDisplay').length > 0) {
             // We're on a detail page
             NexusLIMSTours.startDetailTour();
         } else if ($('#form_search').length > 0 || window.location.pathname.indexOf('/explore/keyword') !== -1) {

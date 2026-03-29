@@ -1,0 +1,214 @@
+/* Instructional help text shown in the offcanvas panel and full-page annotator header. */
+.nx-help-text {
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+/* Dataset filename label inside annotation cards. */
+.nx-dataset-name {
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Offset offcanvas and its backdrop below the fixed navbar (60px). */
+#annotate-offcanvas,
+.offcanvas-backdrop {
+    top: 60px;
+}
+
+/* Flex column layout so the form scrolls and the footer sticks to the bottom. */
+#annotate-offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+}
+
+#annotate-form {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.25rem 1rem 0.5rem;
+}
+
+/* Dataset cards: suppress Bootstrap's default card border on all sides except
+   left, so our left-border accent (set via inline style) is the only one shown.
+   Shared by both the offcanvas panel and the full-page annotator. */
+.annotate-card {
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.15s;
+}
+
+/* The CDCS theme applies padding-top: 40px and margin-top: -40px to direct children
+   of certain containers. Zero both so spacing is controlled via Bootstrap margin
+   utilities (mt-*, mb-*) and the card's own margin-top only. */
+#annotate-page-form > *,
+#annotate-page-form .row > * {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+#annotate-page-form > div.row {
+    margin-top: 0 !important;
+    row-gap: 0.4rem;
+}
+#annotate-page-form .row > * {
+    margin-top: 0 !important;
+}
+.annotate-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.11);
+}
+
+/* Shared textarea style for both views.
+   Borderless, blends into the card background; subtle fill on focus. */
+.annotate-textarea {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    resize: none;
+    border: none;
+    border-radius: 0.375rem;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 0.4rem 0.6rem;
+    transition: background 0.15s, box-shadow 0.15s;
+    box-shadow: none;
+}
+.annotate-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* ── Dataset move feature ─────────────────────────────────────────────────── */
+
+/* Cards need position:relative for the checkbox overlay */
+.annotate-card {
+    position: relative;
+}
+
+/* Checkbox overlay: appears on hover or when any selection is active */
+.nx-select-cb-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.15s;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 3px;
+    padding: 2px 3px;
+    line-height: 1;
+    margin: 0;
+}
+.nx-dataset-col:hover .nx-select-cb-label,
+.nx-dataset-col.nx-selected .nx-select-cb-label,
+body.nx-has-selection .nx-select-cb-label {
+    opacity: 1;
+}
+.nx-select-cb-label .form-check-input {
+    cursor: pointer;
+}
+
+/* Pending-move card state (indigo) */
+.annotate-card.nx-pending-move {
+    background: #f0f4ff !important;
+    border-left-color: #6366f1 !important;
+}
+
+/* "Moved" badge inside the card name line */
+.nx-moved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #4f46e5;
+    background: #e0e7ff;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 6px;
+    vertical-align: middle;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.nx-moved-badge:hover {
+    background: #c7d2fe;
+}
+
+/* SortableJS drag ghost (placeholder left behind) */
+.nx-drag-ghost {
+    opacity: 0.35;
+}
+
+/* Multi-drag visual: stacked card shadows */
+.nx-dataset-col.nx-multi-drag .annotate-card {
+    box-shadow: 4px 4px 0 0 #c7d2fe, 8px 8px 0 0 #e0e7ff;
+}
+
+/* Badge injected as a real DOM element so it isn't cloned into the ghost placeholder */
+.nx-multi-drag-badge {
+    position: absolute;
+    top: -8px;
+    right: 4px;
+    background: #6366f1;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 20;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Batch-move toolbar: fixed at bottom-center */
+.nx-move-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 8px 18px;
+    box-shadow: 0 -3px 18px rgba(0, 0, 0, 0.13);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    min-width: 380px;
+}
+
+/* At narrow widths, collapse the Annotate Record button to icon-only.
+   Matches the font-size scaling used by other btn-top-group buttons. */
+@media screen and (max-width: 1280px) {
+    #annotate-record-btn { font-size: 10pt; }
+}
+@media screen and (max-width: 992px) {
+    #annotate-record-btn { font-size: 9.5pt; }
+}
+@media screen and (max-width: 768px) {
+    #annotate-record-btn { font-size: 8.5pt; }
+}
+@media screen and (max-width: 696px) {
+    #annotate-record-btn { font-size: 0; }
+    #annotate-record-btn i { font-size: 8pt; }
+    #annotate-offcanvas { width: 100vw !important; }
+}
+
+/* Annotator help modal */
+#annotate-help-modal kbd { background:#f1f3f5; color:#212529; border:1px solid #ced4da; box-shadow:none; }
+#annotate-help-modal .modal-body { line-height:1.4; }
+#annotate-help-modal .modal-body ul { list-style:disc; padding-left:1.4rem; margin-bottom:0.5rem; }
+#annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
+
+/* Inline description edit icon: show on table row hover */
+.aa-table tbody tr:hover .nx-desc-edit { display: inline; }

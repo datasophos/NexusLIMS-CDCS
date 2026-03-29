@@ -14,5 +14,389 @@
 </div>
 {% endcomment %}
 
+{% if NX_ENABLE_ANNOTATOR and data.can_write %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'nexuslims_annotate/annotate.css' %}">
+{# Button is hidden here; JS moves it into #top-button-div after the DOM loads #}
+<div id="annotate-btn-wrapper" style="display:none">
+  <button class="btn btn-outline-dark btn-top-group"
+          id="annotate-record-btn"
+          data-record-id="{{ data.data.id }}"
+          data-url-panel="{% url 'nexuslims_annotate_panel' data.data.id %}"
+          data-url-save="{% url 'nexuslims_annotate_save' data.data.id %}"
+          data-url-descriptions="{% url 'nexuslims_annotate_descriptions' data.data.id %}"
+          data-url-save-one="{% url 'nexuslims_annotate_save_one' data.data.id %}"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#annotate-offcanvas"
+          title="Annotate dataset descriptions or reassign datasets to activities">
+    <i class="fa fa-pencil"></i> Annotate Record
+  </button>
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="annotate-offcanvas"
+     style="width: min(600px, 50vw);">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title"><i class="fa fa-pencil"></i> Annotate Record</h5>
+    <button type="button"
+            class="btn btn-outline-secondary btn-sm ms-auto me-1"
+            id="annotate-help-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#annotate-help-modal"
+            title="How to use the annotator">
+      <i class="fa fa-question-circle"></i>
+    </button>
+    <a href="{% url 'nexuslims_annotate_record' data.data.id %}"
+       id="annotate-expand-btn"
+       class="btn btn-outline-secondary btn-sm me-2"
+       title="Open full-page annotator">
+      <i class="fa fa-expand"></i>
+    </a>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body" id="annotate-offcanvas-body">
+    <div class="text-center text-muted py-4">
+      <i class="fa fa-spinner fa-spin"></i> Loading…
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var offcanvasEl = document.getElementById('annotate-offcanvas');
+  var annotateBtn = document.getElementById('annotate-record-btn');
+  var recordId = annotateBtn.dataset.recordId;
+  var urlPanel = annotateBtn.dataset.urlPanel;
+  var urlSave = annotateBtn.dataset.urlSave;
+  var urlDescriptions = annotateBtn.dataset.urlDescriptions;
+
+  // Move the annotate button to the end of the action bar.
+  // Use window load (not DOMContentLoaded) so CDCS has already populated #top-button-div.
+  window.addEventListener('load', function () {
+    var btn = document.getElementById('annotate-record-btn');
+    var topBtnDiv = document.getElementById('top-button-div');
+    if (btn && topBtnDiv) {
+      topBtnDiv.prepend(btn);
+      document.getElementById('annotate-btn-wrapper').remove();
+      new bootstrap.Tooltip(btn, {placement: 'top'});
+      new bootstrap.Tooltip(document.getElementById('annotate-expand-btn'), {placement: 'left'});
+      new bootstrap.Tooltip(document.getElementById('annotate-help-btn'), {placement: 'left'});
+    }
+  });
+
+  function bindSaveForm() {
+    var form = document.getElementById('annotate-form');
+    if (!form) { return; }
+
+    // Update card accent color live as user types:
+    // green = saved annotation, yellow = unsaved change, gray = empty
+    form.querySelectorAll('.annotate-textarea').forEach(function (ta) {
+      ta.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          form.dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));
+        }
+      });
+      ta.addEventListener('input', function () {
+        var card = ta.closest('.card');
+        var current = ta.value.trim();
+        var original = (ta.dataset.original || '').trim();
+        if (current === original) {
+          // Unchanged — restore saved state
+          if (current) {
+            card.style.background = '#f0fff4';
+            card.style.borderLeft = '3px solid #198754';
+          } else {
+            card.style.background = '#f8f9fa';
+            card.style.borderLeft = '3px solid #dee2e6';
+          }
+        } else {
+          // Dirty — unsaved change
+          card.style.background = '#fff8e1';
+          card.style.borderLeft = '3px solid #e67e00';
+        }
+      });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var saveBtn = document.getElementById('annotate-save-btn');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving\u2026';
+
+      var formData = new FormData(form);
+      fetch(urlSave, {
+        method: 'POST',
+        body: formData,
+        headers: {'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                  'X-Requested-With': 'XMLHttpRequest'},
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.success) {
+          forceClose = true;
+          bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
+          var toastEl = document.getElementById('annotate-toast');
+          if (toastEl) { new bootstrap.Toast(toastEl, {delay: 3000}).show(); }
+          refreshDisplayedDescriptions();
+        } else {
+          alert('Error saving annotations: ' + (data.error || 'Unknown error'));
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<i class="fa fa-save"></i> Save Annotations';
+        }
+      })
+      .catch(function (err) {
+        alert('Network error: ' + err);
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fa fa-save"></i> Save Annotations';
+      });
+    });
+  }
+
+  function hasDirtyFields() {
+    var form = document.getElementById('annotate-form');
+    if (!form) { return false; }
+    return Array.from(form.querySelectorAll('.annotate-textarea')).some(function (ta) {
+      return ta.value.trim() !== (ta.dataset.original || '').trim();
+    });
+  }
+
+  var forceClose = false;
+  offcanvasEl.addEventListener('hide.bs.offcanvas', function (e) {
+    if (forceClose) { forceClose = false; return; }
+    if (hasDirtyFields()) {
+      e.preventDefault();
+      if (confirm('You have unsaved annotations. Discard changes and close?')) {
+        forceClose = true;
+        bootstrap.Offcanvas.getInstance(offcanvasEl).hide();
+      }
+    }
+  });
+
+  offcanvasEl.addEventListener('hidden.bs.offcanvas', function () {
+    setTimeout(function () { document.getElementById('annotate-record-btn').blur(); }, 0);
+  });
+
+  window.refreshDisplayedDescriptions = function refreshDisplayedDescriptions() {
+    fetch(urlDescriptions, {
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      // datasets array is ordered by index, so data.datasets[i].description = index i
+      var datasets = data.datasets;
+
+      // Store descriptions globally so the draw.dt handler can apply them to
+      // paginated rows (which are removed from the DOM by DataTables).
+      window.__nxAnnotateDescriptions = {};
+      datasets.forEach(function(d) {
+        window.__nxAnnotateDescriptions[d.index] = d.description || '';
+      });
+
+      // Trigger a redraw on every aa-table DataTable.  The draw.dt handler in
+      // datatables.js calls applyStoredDescriptions(), which patches the
+      // currently-visible rows (and their modals).  Subsequent page navigations
+      // also fire draw.dt, so off-page rows are patched when they become visible.
+      document.querySelectorAll('.aa-table').forEach(function(tableEl) {
+        if (window.jQuery && jQuery.fn.dataTable && jQuery.fn.dataTable.isDataTable(tableEl)) {
+          jQuery(tableEl).DataTable().draw(false);
+        }
+      });
+
+      // Update gallery slides matched by data-dataset-index
+      document.querySelectorAll('#img_gallery .slide[data-dataset-index]').forEach(function (slide) {
+        var idx = parseInt(slide.dataset.datasetIndex, 10);
+        if (idx >= datasets.length) { return; }
+        slide.dataset.description = datasets[idx].description || '';
+      });
+
+      // Refresh currently visible gallery description
+      var descEl = document.getElementById('gallery-slide-description');
+      if (descEl) {
+        var slides = document.querySelectorAll('#img_gallery .slide');
+        for (var i = 0; i < slides.length; i++) {
+          var d = slides[i].style.display;
+          if (d && d !== 'none') {
+            descEl.textContent = slides[i].dataset.description || '';
+            break;
+          }
+        }
+      }
+    })
+    .catch(function (err) { console.warn('Failed to refresh descriptions:', err); });
+  }
+
+  offcanvasEl.addEventListener('show.bs.offcanvas', function () {
+    fetch(urlPanel, {
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+    })
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      document.getElementById('annotate-offcanvas-body').innerHTML = html;
+      bindSaveForm();
+    })
+    .catch(function (err) {
+      var p = document.createElement('p');
+      p.className = 'text-danger';
+      p.textContent = 'Failed to load annotator: ' + err;
+      var body = document.getElementById('annotate-offcanvas-body');
+      body.innerHTML = '';
+      body.appendChild(p);
+    });
+  });
+})();
+</script>
+
+{# Inline description edit icons and popup (only for users with write access) #}
+<div id="nx-inline-edit-popup">
+  <textarea id="nx-inline-edit-textarea" rows="3" placeholder="Enter dataset description…"></textarea>
+  <div class="nx-inline-edit-actions">
+    <button id="nx-inline-edit-cancel" class="btn btn-sm btn-outline-secondary">Cancel</button>
+    <button id="nx-inline-edit-save" class="btn btn-sm btn-primary">
+      <i class="fa fa-save"></i> Save
+    </button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var annotateBtn2 = document.getElementById('annotate-record-btn');
+  var urlSaveOne = annotateBtn2.dataset.urlSaveOne;
+  var popup   = document.getElementById('nx-inline-edit-popup');
+  var textarea = document.getElementById('nx-inline-edit-textarea');
+  var saveBtn  = document.getElementById('nx-inline-edit-save');
+  var cancelBtn = document.getElementById('nx-inline-edit-cancel');
+  var activeIdx = null;
+  var csrfToken = '{{ csrf_token }}';
+
+  function openPopup(iconEl) {
+    activeIdx = parseInt(iconEl.dataset.datasetIndex, 10);
+    var descDiv = iconEl.closest('td').querySelector('.nx-table-desc');
+    textarea.value = descDiv ? descDiv.textContent : '';
+
+    var r = iconEl.getBoundingClientRect();
+    popup.style.display = 'block';
+    // Read offsetWidth after layout so the clamp is accurate
+    requestAnimationFrame(function() {
+      var left = Math.min(r.left, window.innerWidth - popup.offsetWidth - 8);
+      popup.style.left = left + 'px';
+      popup.style.top  = (r.bottom + 4) + 'px';
+      textarea.focus();
+      textarea.select();
+    });
+  }
+
+  function closePopup() {
+    popup.style.display = 'none';
+    activeIdx = null;
+  }
+
+  // Event delegation — works for DataTables paginated rows
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('nx-desc-edit')) {
+      e.stopPropagation();
+      openPopup(e.target);
+      return;
+    }
+    // Close if clicking outside
+    if (!popup.contains(e.target)) { closePopup(); }
+  });
+
+  cancelBtn.addEventListener('click', closePopup);
+
+  saveBtn.addEventListener('click', function () {
+    if (activeIdx === null) { return; }
+    var desc = textarea.value.trim();
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+    var body = new URLSearchParams({
+      dataset_index: activeIdx,
+      description: desc,
+    });
+    fetch(urlSaveOne, {
+      method: 'POST',
+      body: body,
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.success) {
+        closePopup();
+        refreshDisplayedDescriptions();
+      } else {
+        alert('Error saving: ' + (data.error || 'Unknown error'));
+      }
+    })
+    .catch(function (err) { alert('Network error: ' + err); })
+    .finally(function () {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = '<i class="fa fa-save"></i> Save';
+    });
+  });
+
+  // Keyboard shortcuts while popup is open
+  textarea.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closePopup(); }
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      saveBtn.click();
+    }
+  });
+})();
+</script>
+
+{# Annotator help modal — styles live in annotate.css #}
+<div class="modal fade" id="annotate-help-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa fa-question-circle me-2"></i>How to Annotate</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="font-size:0.9rem;">
+        <p class="mb-3">
+            Annotating a record lets you attach plain-language descriptions to each dataset (file) captured during an experiment.
+            These descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators
+            to understand what was acquired and why without having to open every file. They are also attached to the structured record,
+            and will be included if you download the XML or JSON of the record.
+        </p>
+        <h6 class="fw-semibold">Side Panel</h6>
+        <ul class="mb-3">
+          <li>Type a description in any text box and click <strong>Save Annotations</strong> to save all at once.</li>
+          <li>Press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac) to save without using the button.</li>
+          <li>Click the <i class="fa fa-expand"></i> expand icon to open the full-page annotator.</li>
+        </ul>
+        <h6 class="fw-semibold">Inline Editing in Tables</h6>
+        <ul class="mb-3">
+          <li>Hover over any row in a dataset table to reveal the <i class="fa fa-pencil-alt" style="color:#adb5bd;font-size:0.8em;"></i> pencil icon next to the description.</li>
+          <li>Click the pencil to open a quick-edit popup for that dataset.</li>
+          <li>Press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd>) to save, or <kbd>Esc</kbd> to cancel.</li>
+        </ul>
+        <h6 class="fw-semibold">Color Coding</h6>
+        <div class="d-flex flex-column gap-1">
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#f0fff4;border:2px solid #198754;border-radius:2px;flex-shrink:0;"></div>
+            <span>Green &mdash; description saved</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#fff8e1;border:2px solid #e67e00;border-radius:2px;flex-shrink:0;"></div>
+            <span>Orange &mdash; unsaved change</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:14px;height:14px;background:#f8f9fa;border:2px solid #dee2e6;border-radius:2px;flex-shrink:0;"></div>
+            <span>Gray &mdash; no description yet</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 {% include 'core_main_app/common/data/detail_data.html' %}

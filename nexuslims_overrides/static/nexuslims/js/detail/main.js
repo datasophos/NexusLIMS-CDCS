@@ -60,10 +60,6 @@
         // Record Info
         // ====================================================================
 
-        var d = new Date($('span.list-record-date').text());
-        var ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
-        var mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(d);
-        var da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
         var record_title = $('span#xmlName').text();
         var zip_title = record_title.endsWith('.xml') ? record_title.replace('.xml', '.zip') : record_title + '.zip';
         var record_header = 'NexusLIMS Experiment: ' + $('span.list-record-title').text() + '\n' +

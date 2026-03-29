@@ -293,10 +293,48 @@ NX_CUSTOM_MENU_LINKS = [
 # Default: True
 NX_ENABLE_TUTORIALS = True
 
+# Enable the record annotator (adds "Annotate Record" button on detail pages)
+# Default: True
+NX_ENABLE_ANNOTATOR = True
 ```
 
 **When to Disable:**
 - **Tutorials**: If you have custom onboarding or the Shepherd.js library isn't installed
+- **Annotator**: If you want to prevent users from adding descriptions to datasets (e.g., read-only deployments)
+
+#### Record Annotator (`NX_ENABLE_ANNOTATOR`)
+
+When enabled, authenticated users with write access to a record can attach plain-language descriptions to each dataset (file) in that record. Descriptions are stored directly in the XML under each `<dataset>` element's `<description>` child (defined in `nexus-experiment.xsd`) and appear in the gallery, dataset activity tables, and dataset metadata modals.
+
+**Entry points:**
+
+- **Side panel** -- the **Annotate Record** button in the top action bar opens a slide-in offcanvas panel. All datasets are listed grouped by acquisition activity, each with a preview thumbnail and a text field. Click **Save Annotations** or press **Ctrl+Enter** / **Cmd+Enter** to save all at once.
+- **Inline editing** -- hovering over a row in a dataset activity table reveals a pencil icon next to the description. Clicking it opens a small floating popup for quick single-dataset edits. Press **Ctrl+Enter** / **Cmd+Enter** to save or **Escape** to cancel.
+- **Full-page editor** -- the expand icon (⤢) in the panel header opens `/annotate/<record_id>/` as a full-page form, useful for records with many datasets.
+
+**Color coding in the panel and full-page editor:**
+
+| Border / background | Meaning |
+|---|---|
+| Green | Description saved |
+| Orange | Unsaved change |
+| Gray | No description yet |
+
+**Help:** A `?` button in the panel header and on the full-page editor opens a modal summarizing the above.
+
+**Behavior:**
+- Only visible to authenticated users who have write access to the record
+- Saves directly to the XML record via `data_api.upsert()`
+- The panel reloads on each open to reflect the latest saved state
+- A Bootstrap toast notification confirms successful saves
+- Descriptions refresh live in the gallery and tables after saving without a full page reload
+
+**To disable for a specific deployment:**
+```python
+NX_ENABLE_ANNOTATOR = False
+```
+
+> **Note:** Like all Django settings, this requires a container restart to take effect (`docker compose restart cdcs`).
 
 #### Dataset Display Threshold
 
@@ -710,6 +748,33 @@ If your custom theme colors aren't appearing:
 **Valid keys:**
 - `primary`, `primary_dark`, `info_badge_dark`, `secondary`, `secondary_dark`
 - `success`, `danger`, `warning`, `info`, `light_gray`, `dark_gray`
+
+---
+
+## Terms of Use Page
+
+NexusLIMS ships a default Terms of Use page that is written to the database the
+first time `init_environment.py` runs (or `admin-init` in production). The page
+is visible to all users at `/terms/` and is linked from the site footer.
+
+### Updating the Terms
+
+The content is stored in the Django database, **not** in a file. To edit it:
+
+1. Log in as a superuser
+2. Navigate to **Admin > Website > Terms of Use**
+   (direct URL: `/admin/core-admin/core_website_app_terms`)
+3. Edit the HTML in the rich-text editor and save
+
+Changes take effect immediately -- no restart required.
+
+### Behaviour
+
+- `init_environment.py` only writes the default content when **no** Terms of Use
+  record exists. Once you save custom content via the admin UI, re-running
+  `init_environment.py` will not overwrite it.
+- If you need to reset to the default, delete the record in the admin UI and
+  re-run `init_environment.py` (or `docker exec <container> python /srv/scripts/init_environment.py`).
 
 ---
 

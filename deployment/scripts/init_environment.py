@@ -645,6 +645,105 @@ def setup_api_tokens(superuser):
     log_success(f"Created {token_name} API token for user '{superuser.username}'")
 
 
+def setup_terms_of_use():
+    """Insert a default Terms of Use page if none exists.
+
+    The content is stored as a WebPage record in the database and can be
+    updated at any time through the admin UI at:
+        /admin/core-admin/core_website_app_terms
+    """
+    log_info("Checking Terms of Use page...")
+
+    try:
+        from core_main_app.components.web_page.models import WebPage
+        from core_website_app.commons.enums import WEB_PAGE_TYPES
+
+        t = WEB_PAGE_TYPES["terms_of_use"]
+
+        # If any non-empty record exists, leave it alone so admins can customise freely
+        pages = WebPage.objects.filter(type=t)
+        if pages.filter(content__regex=r'\S').exists():
+            log_success("Terms of Use page already exists")
+            return
+
+        # Clean up any empty/blank records before inserting
+        pages.delete()
+
+    except Exception:
+        pass  # No record yet -- fall through to create one
+
+    default_content = """
+<p>
+  These Terms of Use govern your access to and use of this NexusLIMS instance.
+  By accessing this site you agree to the terms below. The system administrator
+  may update these terms at any time; continued use of the system after changes
+  are posted constitutes acceptance of the revised terms.
+</p>
+
+<h5>1. Authorised Use</h5>
+<p>Access to this system is granted solely for legitimate scientific research,
+data management, and analysis activities consistent with the mission of the
+operating institution. You must not use the system for any unlawful purpose
+or in any way that disrupts the availability of the service for other users.</p>
+
+<h5>2. User Accounts</h5>
+<p>You are responsible for maintaining the confidentiality of your login
+credentials and for all activity that occurs under your account. Notify the
+system administrator immediately if you suspect unauthorised access.
+Accounts that have been inactive for an extended period may be suspended
+at the discretion of the administrator.</p>
+
+<h5>3. Data and Intellectual Property</h5>
+<p>You retain ownership of any data you upload. By uploading data you grant
+the system the right to store, process, and display that data as necessary
+to provide the service. You are responsible for ensuring that you have the
+right to upload and share any data you submit, and that doing so does not
+violate applicable laws or third-party agreements.</p>
+
+<h5>4. Acceptable Data Standards</h5>
+<p>Uploaded records should conform to the NexusLIMS schema and represent
+genuine experimental data. Falsification, fabrication, or misrepresentation
+of research data is a serious violation and may result in account suspension
+and referral to institutional authorities.</p>
+
+<h5>5. Privacy</h5>
+<p>This system may collect information about your usage (such as login times
+and records accessed) for administrative and audit purposes. This information
+is not shared with third parties except as required by law or institutional
+policy.</p>
+
+<h5>6. Disclaimer of Warranties</h5>
+<p>This system is provided &ldquo;as is&rdquo; without warranty of any kind. The operating
+institution makes no guarantees regarding uptime, data integrity, or fitness
+for a particular purpose. Users are encouraged to maintain independent
+backups of critical data.</p>
+
+<h5>7. Limitation of Liability</h5>
+<p>To the fullest extent permitted by applicable law, the operating institution
+shall not be liable for any indirect, incidental, or consequential damages
+arising from your use of or inability to use this system.</p>
+
+<h5>8. Contact</h5>
+<p>Questions about these terms or your account should be directed to the
+system administrator via the <a href="/contact/">contact page</a>.</p>
+"""
+
+    try:
+        from core_main_app.components.web_page.models import WebPage
+        from core_website_app.commons.enums import WEB_PAGE_TYPES
+        from core_website_app.components.terms_of_use import api as terms_api
+
+        page = WebPage()
+        page.type = WEB_PAGE_TYPES["terms_of_use"]
+        page.content = default_content.strip()
+        terms_api.upsert(page)
+        log_success("Default Terms of Use page created")
+        log_info("  Update it any time at: /admin/core-admin/core_website_app_terms")
+
+    except Exception as e:
+        log_error(f"Failed to create Terms of Use page: {e}")
+
+
 def load_exporters():
     """Load the exporters into the database."""
     log_info("Loading exporters...")
@@ -755,6 +854,9 @@ def main():
 
         # Step 5: Load exporters
         load_exporters()
+
+        # Step 6: Set up default Terms of Use page
+        setup_terms_of_use()
 
         print("=" * 70)
         log_success("Initialization complete!")

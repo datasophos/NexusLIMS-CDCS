@@ -1,6 +1,6 @@
 /**
  * NexusLIMS Detail Page - Loading Screen
- * Loading spinner animation
+ * Inline SVG diffraction spinner with counter-rotating rings.
  */
 
 #loading {
@@ -15,32 +15,47 @@
     background: #f7f7f7 url(/static/img/bg01.png);
 }
 
-#loading img {
+#loading svg {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 400px;
+    height: 400px;
     margin-top: -200px;
     margin-left: -200px;
-    animation: spinner 1.5s ease infinite;
 }
 
 @media screen and (max-width: 992px) {  /* Bootstrap 5 lg breakpoint - tablet */
-    #loading img {
+    #loading svg {
         width: 300px;
+        height: 300px;
         margin-top: -150px;
         margin-left: -150px;
     }
 }
 
-@media screen and (max-width: 768px) {  /* Bootstrap 5 md breakpoint - mobile, was 680px */
-    #loading img {
+@media screen and (max-width: 768px) {  /* Bootstrap 5 md breakpoint - mobile */
+    #loading svg {
         width: 200px;
+        height: 200px;
         margin-top: -100px;
         margin-left: -100px;
     }
 }
 
-@keyframes spinner {
-    to {transform: rotate(360deg);}
+/* Inner ring (+ center dot) rotates clockwise */
+#nx-spin-inner {
+    animation: nx-cw 2.5s linear infinite;
+    transform-box: fill-box;
+    transform-origin: center;
 }
+
+/* Outer ring rotates counter-clockwise at a slightly different speed */
+#nx-spin-outer {
+    animation: nx-ccw 4s linear infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+@keyframes nx-cw  { to { transform: rotate(360deg);  } }
+@keyframes nx-ccw { to { transform: rotate(-360deg); } }

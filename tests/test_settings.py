@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "menu",
     # Local apps
     "core_main_app",
+    "nexuslims_annotate",
     "tests",
 ]
 
@@ -39,9 +40,9 @@ DATABASES = {
     },
 }
 MIDDLEWARE = (  # noqa
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
 )
 
 TEMPLATES = [
@@ -62,11 +63,12 @@ TEMPLATES = [
     },
 ]
 
+CUSTOM_NAME = ""
 LOGIN_URL = "/login"
 STATIC_URL = "/static/"
 ROOT_URLCONF = "tests.urls"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 MEDIA_ROOT = "tests_media"
-PASSWORD_HASHERS = ("django.contrib.auth.hashers.UnsaltedMD5PasswordHasher",)
+PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
 MONGODB_INDEXING = False

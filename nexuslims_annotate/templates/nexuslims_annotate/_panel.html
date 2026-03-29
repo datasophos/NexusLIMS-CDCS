@@ -1,0 +1,76 @@
+<div class="alert alert-light border d-flex align-items-start gap-2 py-2 px-3 mb-2 mx-3 nx-help-text">
+  <i class="fa fa-info-circle text-secondary mt-1 flex-shrink-0"></i>
+  <span>
+    Use this panel to <strong>add or edit descriptions</strong> for each dataset.
+    To <strong>reassign datasets to different activities</strong>, open the full-page annotator
+    by clicking <i class="fa fa-expand"></i> in the header above.
+  </span>
+</div>
+<form id="annotate-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
+  {% csrf_token %}
+
+  {% regroup datasets by activity_seqno as activity_groups %}
+  {% for group in activity_groups %}
+
+    {# Activity divider #}
+    <div class="d-flex align-items-center gap-2 {% if not forloop.first %}mt-3{% else %}mt-1{% endif %} mb-1">
+      {# seqno is always a zero-based integer string per the NexusLIMS schema #}
+      <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
+            style="font-size:0.7rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
+      <hr class="flex-grow-1 my-0">
+    </div>
+
+    {% for ds in group.list %}
+    {# Green border = saved annotation, gray = empty #}
+    <div class="card annotate-card mb-1"
+         style="border-left:3px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %}">
+      <div class="card-body p-2">
+        <div class="d-flex gap-2 align-items-start">
+          {% if ds.preview_url %}
+          <div class="flex-shrink-0 align-self-stretch">
+            <img src="{{ ds.preview_url }}"
+                 alt="preview"
+                 style="width:auto;max-width:80px;height:100%;object-fit:cover;border-radius:3px;"
+                 onerror="this.style.display='none'">
+          </div>
+          {% endif %}
+          <div class="flex-grow-1 min-w-0">
+            <div class="text-truncate mb-1 nx-dataset-name" title="{{ ds.name }}">
+              {{ ds.name }}
+            </div>
+            <textarea name="dataset_{{ ds.index }}_description"
+                      class="form-control form-control-sm annotate-textarea"
+                      rows="2"
+                      placeholder="Add a description…"
+                      data-original="{{ ds.description }}"
+                      >{{ ds.description }}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  {% empty %}
+    <p class="text-muted text-center py-4">No datasets found in this record.</p>
+  {% endfor %}
+
+</form>
+
+<div id="annotate-footer" class="d-flex gap-2 flex-shrink-0 bg-white border-top py-2 px-3">
+  <button type="submit" form="annotate-form" class="btn btn-primary btn-sm" id="annotate-save-btn">
+    <i class="fa fa-save"></i> Save Annotations
+  </button>
+  <button type="button" class="btn btn-outline-secondary btn-sm"
+          data-bs-dismiss="offcanvas">Cancel</button>
+</div>
+
+<div id="annotate-toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index:11000;">
+  <div id="annotate-toast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <i class="fa fa-check-circle me-1"></i> Annotations saved successfully.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>

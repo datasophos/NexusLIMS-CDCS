@@ -363,3 +363,23 @@ a.cdcs-menu-item > i.fa {
 #titleBar .toggle:hover {
 	color: #333;
 }
+
+/* ------------------------------------------------------------------ *
+ * Monaco editor — reset CDCS theme's global .button styles that bleed
+ * into the find/replace widget (wrong bg-color, bg-image, min-width). *
+ * ------------------------------------------------------------------ */
+.monaco-editor .button,
+.monaco-editor .monaco-custom-toggle {
+    background-color: transparent !important;
+    background-image: none !important;
+    min-width: unset !important;
+    width: unset !important;
+    color: inherit !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 3px !important;
+    box-shadow: none !important;
+    font-family: codicon !important;
+    font-size: 16px !important;
+    line-height: 16px !important;
+}

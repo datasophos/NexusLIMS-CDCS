@@ -180,6 +180,19 @@ sup.link-icon {
    }
 }
 
+/* Dataset description displayed below the gallery via JS (outside .slide so it
+   never affects the slide's fit-content width or the arrow row's height). */
+.nx-dataset-description {
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.4em;
+    text-align: center;
+    padding: 0.25rem 1rem 0;
+    opacity: 0.85;
+    overflow-wrap: break-word;
+    min-height: 1.4em; /* reserve space so the gallery doesn't shift when empty */
+}
+
 /* Activity images */
 /* .aa-img-col {
     padding-top: 10px;

@@ -105,6 +105,7 @@ INSTALLED_APPS = (
 
     # NexusLIMS customizations (must come before core apps)
     'nexuslims_overrides',
+    'nexuslims_annotate',
 
     # Core apps
     "core_main_app",

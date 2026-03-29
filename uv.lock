@@ -933,12 +933,6 @@ version = "3.20.0"
 source = { editable = "." }
 dependencies = [
     { name = "celery" },
-    { name = "django" },
-    { name = "django-redis" },
-]
-
-[package.optional-dependencies]
-core = [
     { name = "core-composer-app" },
     { name = "core-curate-app" },
     { name = "core-dashboard-app" },
@@ -960,44 +954,51 @@ core = [
     { name = "core-module-remote-blob-host-app" },
     { name = "core-module-text-area-app" },
     { name = "core-website-app" },
-]
-server = [
+    { name = "django" },
+    { name = "django-redis" },
     { name = "gunicorn" },
     { name = "psycopg2-binary" },
     { name = "uwsgi" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "python-dotenv" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "celery" },
-    { name = "core-composer-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-curate-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-dashboard-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-dashboard-common-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-explore-example-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-explore-federated-search-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-explore-keyword-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-exporters-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-federated-search-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-file-preview-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-linked-records-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-main-app", extras = ["auth"], marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-advanced-blob-host-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-blob-host-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-chemical-composition-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-chemical-composition-simple-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-excel-uploader-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-periodic-table-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-remote-blob-host-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-module-text-area-app", marker = "extra == 'core'", specifier = "==2.20.*" },
-    { name = "core-website-app", marker = "extra == 'core'", specifier = "==2.20.*" },
+    { name = "core-composer-app", specifier = "==2.20.*" },
+    { name = "core-curate-app", specifier = "==2.20.*" },
+    { name = "core-dashboard-app", specifier = "==2.20.*" },
+    { name = "core-dashboard-common-app", specifier = "==2.20.*" },
+    { name = "core-explore-example-app", specifier = "==2.20.*" },
+    { name = "core-explore-federated-search-app", specifier = "==2.20.*" },
+    { name = "core-explore-keyword-app", specifier = "==2.20.*" },
+    { name = "core-exporters-app", specifier = "==2.20.*" },
+    { name = "core-federated-search-app", specifier = "==2.20.*" },
+    { name = "core-file-preview-app", specifier = "==2.20.*" },
+    { name = "core-linked-records-app", specifier = "==2.20.*" },
+    { name = "core-main-app", extras = ["auth"], specifier = "==2.20.*" },
+    { name = "core-module-advanced-blob-host-app", specifier = "==2.20.*" },
+    { name = "core-module-blob-host-app", specifier = "==2.20.*" },
+    { name = "core-module-chemical-composition-app", specifier = "==2.20.*" },
+    { name = "core-module-chemical-composition-simple-app", specifier = "==2.20.*" },
+    { name = "core-module-excel-uploader-app", specifier = "==2.20.*" },
+    { name = "core-module-periodic-table-app", specifier = "==2.20.*" },
+    { name = "core-module-remote-blob-host-app", specifier = "==2.20.*" },
+    { name = "core-module-text-area-app", specifier = "==2.20.*" },
+    { name = "core-website-app", specifier = "==2.20.*" },
     { name = "django" },
     { name = "django-redis" },
-    { name = "gunicorn", extras = ["gthread"], marker = "extra == 'server'" },
-    { name = "psycopg2-binary", marker = "extra == 'server'" },
-    { name = "uwsgi", marker = "extra == 'server'" },
+    { name = "gunicorn", extras = ["gthread"] },
+    { name = "psycopg2-binary" },
+    { name = "uwsgi" },
 ]
-provides-extras = ["core", "server"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "python-dotenv" }]
 
 [[package]]
 name = "oauthlib"
@@ -1174,6 +1175,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/82/ed/0301aeeac3e5353ef3d94b6ec08bbcabd04a72018415dcb29e588514bba8/python_dotenv-1.2.2.tar.gz", hash = "sha256:2c371a91fbd7ba082c2c1dc1f8bf89ca22564a087c2c287cd9b662adde799cf3", size = 50135, upload-time = "2026-03-01T16:00:26.196Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0b/d7/1959b9648791274998a9c3526f6d0ec8fd2233e4d4acce81bbae76b44b2a/python_dotenv-1.2.2-py3-none-any.whl", hash = "sha256:1d8214789a24de455a8b8bd8ae6fe3c6b69a5e3d64aa8a8e5d68e694bbcb285a", size = 22101, upload-time = "2026-03-01T16:00:25.09Z" },
 ]
 
 [[package]]

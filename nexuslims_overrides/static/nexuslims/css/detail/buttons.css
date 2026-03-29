@@ -26,6 +26,34 @@ button {
     padding: 0.375rem 0.5rem;  /* Reduce horizontal padding at small sizes */
 }
 
+/* Download dropdown wrapper: stretch to match sibling button heights in the flex row */
+#btn-download-record-group {
+    display: block;
+    flex: 1 1 0%;
+    margin: 0;
+}
+
+#btn-download-record-group > .btn,
+#btn-download-record-group > .dropdown-toggle {
+    display: block;
+    width: 100%;
+    margin: 0.25em;
+    padding: 6px 16px;
+    height: auto;
+    text-align: center;
+}
+
+#btn-download-record-group > .dropdown-toggle::after {
+    margin-left: 0.5em;
+}
+
+#btn-download-record-group.btn-group {
+    display: block;
+    flex: 1 1 0%;
+}
+
+
+
 /* Gradually scale font-size from 14px down as window narrows */
 @media screen and (max-width: 1280px) {
     .btn-top-group {
@@ -59,17 +87,14 @@ button {
     #btn-filelisting i { font-size: 8pt; }
     #btn-filelisting::after { content: "Files"; font-size: 8pt; }
 
-    #btn-xml-dl { font-size: 0; }
-    #btn-xml-dl i { font-size: 8pt; }
-    #btn-xml-dl::after { content: "XML"; font-size: 8pt;  }
-
-    #btn-json-dl { font-size: 0; }
-    #btn-json-dl i { font-size: 8pt; }
-    #btn-json-dl::after { content: "JSON"; font-size: 8pt;  }
+    #btn-download-record-group .btn { font-size: 0; }
+    #btn-download-record-group .btn i { font-size: 8pt; }
+    #btn-download-record-group .btn::after { content: "Download"; font-size: 8pt; }
 
     #btn-edit-record { font-size: 0; }
     #btn-edit-record i { font-size: 8pt; }
     #btn-edit-record::after { content: "Edit"; font-size: 8pt; }
+
 }
 
 /* Parameter button */

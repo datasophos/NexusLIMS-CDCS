@@ -683,3 +683,31 @@ td.aa-meta-col {
         top: 48px !important; /* Smaller mobile navbar height */
     }
 }
+
+/* Container for description text + edit icon in activity table rows */
+.nx-desc-row {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+/* Truncated dataset description sub-line in activity tables */
+.nx-table-desc {
+    flex: 1;
+    min-width: 0; /* allow flex child to shrink below content size for ellipsis */
+    font-size: 0.7rem;
+    font-style: italic;
+    color: #6c757d;
+    line-height: 1.1em;
+    min-height: 1.1em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* styles when there's sno description present */
+.nx-no-description {
+    color: #cccccc; /* Light gray */
+    font-style: italic;
+    opacity: 0.7;
+}

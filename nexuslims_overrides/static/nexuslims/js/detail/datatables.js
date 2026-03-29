@@ -472,6 +472,79 @@
     }
 
     /**
+     * Initialize Bootstrap tooltips on .nx-table-desc elements only when their
+     * text is actually truncated (scrollWidth > clientWidth).  Hidden rows
+     * (display:none) return 0 for both, so their tooltips are disposed and
+     * re-evaluated on the next draw — ensuring paginated rows are handled.
+     */
+    function initDescTooltips(tableEl) {
+        tableEl.querySelectorAll('.nx-table-desc').forEach(function(el) {
+            var existing = bootstrap.Tooltip.getInstance(el);
+            if (el.scrollWidth > el.clientWidth) {
+                if (!existing) { new bootstrap.Tooltip(el, { placement: 'bottom', customClass: 'nx-desc-tooltip' }); }
+            } else {
+                if (existing) { existing.dispose(); }
+            }
+        });
+    }
+
+    /**
+     * Apply descriptions from window.__nxAnnotateDescriptions (set after an
+     * annotation save) to the rows currently in the DOM.  Called on every
+     * draw.dt so that paginated rows are patched when they become visible.
+     */
+    function applyStoredDescriptions(tableEl) {
+        var descMap = window.__nxAnnotateDescriptions;
+        if (!descMap) { return; }
+
+        tableEl.querySelectorAll('tbody tr[data-dataset-index]').forEach(function(row) {
+            var idx = parseInt(row.dataset.datasetIndex, 10);
+            if (!(idx in descMap)) { return; }
+            var desc = descMap[idx];
+
+            // Table row description sub-line
+            var descDiv = row.querySelector('.nx-table-desc');
+            if (desc) {
+                if (!descDiv) {
+                    descDiv = document.createElement('div');
+                    descDiv.className = 'nx-table-desc';
+                    var firstTd = row.querySelector('td:first-child');
+                    if (firstTd) { firstTd.appendChild(descDiv); }
+                }
+                if (descDiv) {
+                    descDiv.textContent = desc;
+                    descDiv.title = desc;
+                }
+            } else if (descDiv) {
+                var tip = bootstrap.Tooltip.getInstance(descDiv);
+                if (tip) { tip.dispose(); }
+                descDiv.remove();
+            }
+
+            // Dataset metadata modal (lives inside the same <tr>)
+            var modal = row.querySelector('.dataset-meta-modal');
+            if (!modal) { return; }
+            var descRow = modal.querySelector('.nx-modal-desc-row');
+            if (desc) {
+                if (descRow) {
+                    descRow.querySelector('.nx-modal-desc-text').textContent = desc;
+                } else {
+                    var newRow = document.createElement('div');
+                    newRow.className = 'row nx-modal-desc-row';
+                    newRow.innerHTML = '<div class="col-12"><div style="font-size:15px">Dataset description: ' +
+                        '<i class="nx-modal-desc-text">' +
+                        desc.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+                        '</i></div></div>';
+                    var titleRow = modal.querySelector('.d-flex.justify-content-between');
+                    if (titleRow) { titleRow.insertAdjacentElement('afterend', newRow); }
+                }
+            } else if (descRow) {
+                descRow.remove();
+            }
+        });
+    }
+
+    /**
      * Initialize activity tables with image preview
      */
     function initializeActivityTables() {
@@ -514,6 +587,15 @@
                     bottomStart: null,
                     bottomEnd: 'paging'
                 }
+            });
+
+            // Conditional description tooltips: only when text is truncated.
+            // Also apply any post-save descriptions to newly-visible paginated rows.
+            var tableEl = this;
+            initDescTooltips(tableEl);
+            $(this).on('draw.dt', function() {
+                initDescTooltips(tableEl);
+                applyStoredDescriptions(tableEl);
             });
 
             // Image preview on row hover
