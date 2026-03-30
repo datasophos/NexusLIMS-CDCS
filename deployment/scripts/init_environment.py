@@ -892,21 +892,21 @@ def main():
         # Step 2: Get or create superuser
         superuser = get_or_create_superuser()
 
-        # If no superuser was created (production, user skipped), try to get any existing user
-        if superuser is None:
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
-            # Try to get first superuser or first user
-            superuser = User.objects.filter(is_superuser=True).first() or User.objects.first()
-
-        # Create request object for API calls (may be None if no users exist)
-        request = get_request_for_user(superuser) if superuser else None
-
         # Step 2.5: Get or create regular user for testing (development only)
         regular_user = get_or_create_regular_user()
 
         # Step 2.6: Create demo accounts (demo mode only)
         get_or_create_demo_users()
+
+        # If no superuser was created yet, look for one now.
+        # Must be after get_or_create_demo_users() so the demo admin is available.
+        if superuser is None:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            superuser = User.objects.filter(is_superuser=True).first() or User.objects.first()
+
+        # Create request object for API calls (may be None if no users exist)
+        request = get_request_for_user(superuser) if superuser else None
 
         # Step 2.7: Setup API tokens based on environment settings
         setup_api_tokens(superuser)
