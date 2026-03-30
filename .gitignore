@@ -1,3 +1,7 @@
+### Runtime socket files
+gunicorn.ctl
+*.sock
+
 ### Demo fixture data (large binary files - managed via GitHub Releases)
 ### Use: deployment/scripts/manage-demo-fixtures.sh download
 deployment/fixtures/demo_data/
