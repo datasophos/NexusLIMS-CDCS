@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>EELS dataset used for machine learning in github.com/trygvrad/RNN-on-EELS-data</title>
+  <summary ref="https://zenodo.org/records/2580185">
+    <experimenter>Sarah Chen</experimenter>
+    <instrument pid="FEI-Titan-STEM">FEI Titan STEM</instrument>
+    <reservationStart>2026-03-27T06:19:08-06:00</reservationStart>
+    <reservationEnd>2026-03-27T06:19:08-06:00</reservationEnd>
+    <motivation>EELS dataset used for machine learning. The dataset shows a GaN substrate with an AlGaN film and SiNX top layer The data is courtesy of Andrew Lang and Mitra Taheri, and was uploaded by Trygve M.
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.2580185"&gt;https://doi.org/10.5281/zenodo.2580185&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>2580185</name>
+    <description>EELS dataset used for machine learning in github.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T06:19:08-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="GMS Version">3.21.1374.0</param>
+      <param name="Horizontal Field Width" unit="micrometer">0.22735075707425548</param>
+      <param name="Illumination Mode">STEM</param>
+      <param name="Imaging Mode">MAG</param>
+      <param name="Name">JEOL COM</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="STEM Camera Length" unit="millimeter">20.0</param>
+      <param name="Spectrum Imaging – Acquisition Duration" unit="second">1545</param>
+      <param name="Spectrum Imaging – Pixel time" unit="second">0.00246016</param>
+      <param name="Spectrum Imaging – Scan Mode">2D Array</param>
+      <param name="Spectrum Imaging – Spatial Sampling (Horizontal)">228</param>
+      <param name="Spectrum Imaging – Spatial Sampling (Vertical)">146</param>
+      <param name="Stage Position – Tilt Alpha" unit="degree">5.050000190734863</param>
+      <param name="Stage Position – Tilt Beta" unit="degree">0.25</param>
+      <param name="Stage Position – x" unit="micrometer">90.2841015625</param>
+      <param name="Stage Position – y" unit="micrometer">73.426296875</param>
+      <param name="Stage Position – z" unit="millimeter">3.0525</param>
+      <param name="magnification">2000000.0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>ADF Image.dm3</name>
+      <location>/2580185/ADF Image.dm3</location>
+      <format>DM3</format>
+      <description>ADF STEM image, 146×228 pixels, GaN/AlGaN sample</description>
+      <preview>/2580185/ADF Image.dm3.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(146, 228)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:29.427531-06:00</meta>
+      <meta name="Creation Time">2026-03-27T06:19:08-06:00</meta>
+    </dataset>
+    <dataset type="SpectrumImage" role="Experimental">
+      <name>EELS Spectrum Image.dm4</name>
+      <location>/2580185/EELS Spectrum Image.dm4</location>
+      <format>DM4</format>
+      <description>EELS spectrum image, 146×228 spatial pixels, GaN/AlGaN/SiNx stack</description>
+      <preview>/2580185/EELS Spectrum Image.dm4.thumb.png</preview>
+      <meta name="Acquisition Device">K2-0001</meta>
+      <meta name="Analytic Acquisition Mode">Parallel dispersive</meta>
+      <meta name="Analytic Format">Spectrum image</meta>
+      <meta name="Analytic Label">EELS</meta>
+      <meta name="Analytic Signal">EELS</meta>
+      <meta name="Binning (Horizontal)">1</meta>
+      <meta name="Binning (Vertical)">1</meta>
+      <meta name="Camera/Detector Processing">Dark Subtracted</meta>
+      <meta name="Data Dimensions">(146, 228, 3710)</meta>
+      <meta name="Data Type">EELS_Spectrum_Imaging</meta>
+      <meta name="EELS – Collection semi-angle" unit="milliradian">45.0</meta>
+      <meta name="EELS – Convergence semi-angle" unit="milliradian">8.0</meta>
+      <meta name="EELS – Exposure" unit="second">0.00246016</meta>
+      <meta name="EELS – Number of frames">1</meta>
+      <meta name="Exposure Time" unit="second">0.00246016</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:23.253726-06:00</meta>
+      <meta name="Creation Time">2026-03-27T06:19:08-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Gatan STEM Image.dm3</name>
+      <location>/2580185/Gatan STEM Image.dm3</location>
+      <format>DM3</format>
+      <description>STEM survey image, 146×228 pixels, GaN/AlGaN sample</description>
+      <preview>/2580185/Gatan STEM Image.dm3.thumb.png</preview>
+      <meta name="Analytic Label">Scan Signal</meta>
+      <meta name="Data Dimensions">(146, 228)</meta>
+      <meta name="Data Type">STEM_Imaging</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:18.779324-06:00</meta>
+      <meta name="Creation Time">2026-03-27T06:19:08-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Anisotropic Gold Nanomaterial Synthesis Using Peptide Facet Specificity and Timed Intervention: Experiment and simula...</title>
+  <summary ref="https://zenodo.org/records/8303993">
+    <experimenter>Sarah Chen</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2023-01-09T11:39:52-07:00</reservationStart>
+    <reservationEnd>2023-08-12T18:45:32-06:00</reservationEnd>
+    <motivation>/Data Contains all experimental and simulation data used to generate figures in the manuscript. Each folder is labelled with the relevant technique: atomic force microscopy (AFM), dynamic light scattering (DLS), molecular dynamics (MD), small-angle X-ray scattering (SAXS), scanning electron microscopy (SEM), transmission electron microscopy and selected area electron diffraction (TEM-SAED), and ultraviolet-visible light spectroscopy (UV-Vis).
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.8303993"&gt;https://doi.org/10.5281/zenodo.8303993&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>8303993</name>
+    <description>Anisotropic Gold Nanomaterial Synthesis Using Peptide Facet Specificity and Timed Intervention- Experiment and simulation data, figures, and notebooks for recreating figures.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2023-02-05T17:57:54-07:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Data Type">Unknown</param>
+      <param name="DatasetType">Unknown</param>
+      <param name="NexusLIMS Extraction – Date">2026-03-27T11:33:52.118606-06:00</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+    </setup>
+    <dataset type="Unknown" role="Experimental">
+      <name>t0_t5.png</name>
+      <location>/8303993/Images/t0_t5.png</location>
+      <format>PNG</format>
+      <description>Image comparing gold nanomaterial morphology at t0 and t5</description>
+      <preview>/8303993/Images/t0_t5.png.thumb.png</preview>
+      <meta name="Creation Time">2023-02-05T17:57:54-07:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2023-01-12T18:22:20+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Aperture Type">AVA</param>
+      <param name="Beam Mode">N-Beam</param>
+      <param name="Beam Name">EBeam</param>
+      <param name="Beam Shift X">0.0</param>
+      <param name="Beam Shift Y">0.0</param>
+      <param name="Chamber ID">xT-SSB</param>
+      <param name="Column Type">Nicole SEM</param>
+      <param name="Data Dimensions">(1536, 1024)</param>
+      <param name="Data Type">SEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Device Number">9950630</param>
+      <param name="Digital Brightness">0.0</param>
+      <param name="Digital Contrast">1.0</param>
+      <param name="Digital Gamma">1.0</param>
+      <param name="Drift Correction Applied">False</param>
+      <param name="Dynamic Focus Enabled">False</param>
+      <param name="Dynamic WD Enabled">False</param>
+      <param name="ESEM Setting">no</param>
+      <param name="Electron Source">FEG</param>
+      <param name="Eucentric WD" unit="meter">0.010</param>
+      <param name="Final Lens">Nicole</param>
+      <param name="Frame Average">0.0</param>
+      <param name="Image Mode">Normal</param>
+      <param name="Internal Scan">True</param>
+      <param name="Line Integration">1.0</param>
+      <param name="Magnification Canvas Real Width">0.127</param>
+      <param name="Magnification Mode">4.0</param>
+      <param name="Mainslock">Off</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operator">Supervisor</param>
+      <param name="Post Processing">None</param>
+      <param name="Scan Interlacing">1.0</param>
+      <param name="Screen Magnification Canvas Real Width">0.127</param>
+      <param name="Screen Magnification Mode">4.0</param>
+      <param name="Software Version">13.9.1.6395 (build 6395)</param>
+      <param name="Spot Size">3.0</param>
+      <param name="Stage Description">110 x 110</param>
+      <param name="Stage Position – β">0.0</param>
+      <param name="System Type">Apreo</param>
+      <param name="Tilt Correction Enabled">False</param>
+      <param name="User Text">University of Washington</param>
+      <param name="Vacuum Gas">Wet</param>
+      <param name="Vacuum Mode">High vacuum</param>
+      <param name="Vacuum Pump">TMP</param>
+      <param name="Zoom Factor">1.0</param>
+      <param name="Zoom Pan X">0.5</param>
+      <param name="Zoom Pan Y">0.5</param>
+      <param name="warnings">['Operator']</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_2_Control.tif</name>
+      <location>/8303993/SEM/Fig_2_Control.tif</location>
+      <format>TIF</format>
+      <description>SEM BSE image of control gold nanoparticle sample</description>
+      <preview>/8303993/SEM/Fig_2_Control.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">1000.0</meta>
+      <meta name="Acquisition Date">01/12/2023</meta>
+      <meta name="Acquisition Time">10:22:17 AM</meta>
+      <meta name="Beam Tilt X">0.0</meta>
+      <meta name="Beam Tilt Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">1.000</meta>
+      <meta name="Detector Brightness (DB)">28.4494</meta>
+      <meta name="Detector Brightness Setting">28.4494</meta>
+      <meta name="Detector Contrast (DB)">89.0685</meta>
+      <meta name="Detector Contrast Setting">74.2238</meta>
+      <meta name="Detector Name">T1</meta>
+      <meta name="Detector Signal">BSE</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Emission Current" unit="ampere">0.00009093520</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001953850</meta>
+      <meta name="Line Time" unit="second">0.015460</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:54.197828-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.272040E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.272040E-9</meta>
+      <meta name="Pre-Tilt">0.0</meta>
+      <meta name="Scan Rotation" unit="degree">177.08349</meta>
+      <meta name="Stage Position – R">6.79263e-05</meta>
+      <meta name="Stage Position – X">0.0122803</meta>
+      <meta name="Stage Position – Y">0.00654225</meta>
+      <meta name="Stage Position – Z">0.00303077</meta>
+      <meta name="Stage Position – α">-7.80505e-07</meta>
+      <meta name="Stigmator X Value">0.00016755</meta>
+      <meta name="Stigmator Y Value">0.000186021</meta>
+      <meta name="Total Frame Time" unit="second">15.84650</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000001302560</meta>
+      <meta name="Working Distance" unit="meter">0.002964120</meta>
+      <meta name="Creation Time">2023-01-12T18:22:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_9A.tif</name>
+      <location>/8303993/SEM/Fig_9A.tif</location>
+      <format>TIF</format>
+      <description>SEM BSE image of anisotropic gold nanoparticles</description>
+      <preview>/8303993/SEM/Fig_9A.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">1000.0</meta>
+      <meta name="Acquisition Date">01/12/2023</meta>
+      <meta name="Acquisition Time">10:54:56 AM</meta>
+      <meta name="Beam Tilt X">0.0</meta>
+      <meta name="Beam Tilt Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">1.000</meta>
+      <meta name="Detector Brightness (DB)">34.4494</meta>
+      <meta name="Detector Brightness Setting">34.4494</meta>
+      <meta name="Detector Contrast (DB)">88.161</meta>
+      <meta name="Detector Contrast Setting">73.4675</meta>
+      <meta name="Detector Name">T1</meta>
+      <meta name="Detector Signal">BSE</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Emission Current" unit="ampere">0.0000905720</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001058330</meta>
+      <meta name="Line Time" unit="second">0.015460</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:56.285068-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.890190E-10</meta>
+      <meta name="Pixel Width" unit="meter">6.890190E-10</meta>
+      <meta name="Pre-Tilt">0.0</meta>
+      <meta name="Scan Rotation" unit="degree">177.08349</meta>
+      <meta name="Stage Position – R">6.79263e-05</meta>
+      <meta name="Stage Position – X">-0.0122566</meta>
+      <meta name="Stage Position – Y">0.00727067</meta>
+      <meta name="Stage Position – Z">0.00303077</meta>
+      <meta name="Stage Position – α">-7.80505e-07</meta>
+      <meta name="Stigmator X Value">-0.000141646</meta>
+      <meta name="Stigmator Y Value">0.000602101</meta>
+      <meta name="Total Frame Time" unit="second">15.84650</meta>
+      <meta name="Vertical Field Width" unit="meter">7.055560E-7</meta>
+      <meta name="Working Distance" unit="meter">0.002925810</meta>
+      <meta name="Creation Time">2023-01-12T18:54:58+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_9B.tif</name>
+      <location>/8303993/SEM/Fig_9B.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/8303993/SEM/Fig_9B.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">1012.680</meta>
+      <meta name="Acquisition Date">01/20/2023</meta>
+      <meta name="Acquisition Time">05:42:42 PM</meta>
+      <meta name="Beam Tilt X">-0.00448575</meta>
+      <meta name="Beam Tilt Y">0.00201464</meta>
+      <meta name="Chamber Pressure" unit="millipascal">1.000</meta>
+      <meta name="Detector Brightness (DB)">32.291</meta>
+      <meta name="Detector Brightness Setting">32.291</meta>
+      <meta name="Detector Contrast (DB)">89.9</meta>
+      <meta name="Detector Contrast Setting">74.9167</meta>
+      <meta name="Detector Name">T2</meta>
+      <meta name="Detector Signal">SE</meta>
+      <meta name="Dwell Time" unit="second">0.000020</meta>
+      <meta name="Emission Current" unit="ampere">0.00009382530</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002540</meta>
+      <meta name="Line Time" unit="second">0.030880</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:58.263368-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.653650E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.653650E-9</meta>
+      <meta name="Pre-Tilt">1.22173</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">0.0301593</meta>
+      <meta name="Stage Position – X">-0.0125983</meta>
+      <meta name="Stage Position – Y">0.00854042</meta>
+      <meta name="Stage Position – Z">0.0028961</meta>
+      <meta name="Stage Position – α">0.0</meta>
+      <meta name="Stigmator X Value">0.000474504</meta>
+      <meta name="Stigmator Y Value">-0.000187027</meta>
+      <meta name="Total Frame Time" unit="second">31.6520</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000001693330</meta>
+      <meta name="Working Distance" unit="meter">0.00290290</meta>
+      <meta name="Creation Time">2023-01-21T01:42:50+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_9C.tif</name>
+      <location>/8303993/SEM/Fig_9C.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/8303993/SEM/Fig_9C.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">1012.680</meta>
+      <meta name="Acquisition Date">01/20/2023</meta>
+      <meta name="Acquisition Time">05:56:27 PM</meta>
+      <meta name="Beam Tilt X">-0.00448575</meta>
+      <meta name="Beam Tilt Y">0.00201464</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.707192000</meta>
+      <meta name="Detector Brightness (DB)">32.291</meta>
+      <meta name="Detector Brightness Setting">32.291</meta>
+      <meta name="Detector Contrast (DB)">89.9</meta>
+      <meta name="Detector Contrast Setting">74.9167</meta>
+      <meta name="Detector Name">T2</meta>
+      <meta name="Detector Signal">SE</meta>
+      <meta name="Dwell Time" unit="second">0.000020</meta>
+      <meta name="Emission Current" unit="ampere">0.00009390430</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002540</meta>
+      <meta name="Line Time" unit="second">0.030880</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:34:00.327892-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.653650E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.653650E-9</meta>
+      <meta name="Pre-Tilt">1.22173</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">0.0301593</meta>
+      <meta name="Stage Position – X">0.0251816</meta>
+      <meta name="Stage Position – Y">0.0117887</meta>
+      <meta name="Stage Position – Z">0.0028961</meta>
+      <meta name="Stage Position – α">0.0</meta>
+      <meta name="Stigmator X Value">0.000176239</meta>
+      <meta name="Stigmator Y Value">-0.000312229</meta>
+      <meta name="Total Frame Time" unit="second">31.6520</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000001693330</meta>
+      <meta name="Working Distance" unit="meter">0.003106590</meta>
+      <meta name="Creation Time">2023-01-21T01:56:32+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_9D.tif</name>
+      <location>/8303993/SEM/Fig_9D.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/8303993/SEM/Fig_9D.tif.thumb.png</preview>
+      <meta name="Acceleration Voltage" unit="volt">1012.680</meta>
+      <meta name="Acquisition Date">01/20/2023</meta>
+      <meta name="Acquisition Time">05:07:27 PM</meta>
+      <meta name="Beam Tilt X">-0.00448575</meta>
+      <meta name="Beam Tilt Y">0.00201464</meta>
+      <meta name="Chamber Pressure" unit="millipascal">1.000</meta>
+      <meta name="Detector Brightness (DB)">32.291</meta>
+      <meta name="Detector Brightness Setting">32.291</meta>
+      <meta name="Detector Contrast (DB)">87.9465</meta>
+      <meta name="Detector Contrast Setting">73.2888</meta>
+      <meta name="Detector Name">T2</meta>
+      <meta name="Detector Signal">SE</meta>
+      <meta name="Dwell Time" unit="second">0.000020</meta>
+      <meta name="Emission Current" unit="ampere">0.00009395160</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002540</meta>
+      <meta name="Line Time" unit="second">0.030880</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:34:02.562915-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.653650E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.653650E-9</meta>
+      <meta name="Pre-Tilt">1.22173</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">0.0301593</meta>
+      <meta name="Stage Position – X">-0.0130911</meta>
+      <meta name="Stage Position – Y">-0.0211917</meta>
+      <meta name="Stage Position – Z">0.00200422</meta>
+      <meta name="Stage Position – α">0.0</meta>
+      <meta name="Stigmator X Value">0.000218746</meta>
+      <meta name="Stigmator Y Value">-0.000397836</meta>
+      <meta name="Total Frame Time" unit="second">31.6520</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000001693330</meta>
+      <meta name="Working Distance" unit="meter">0.001916360</meta>
+      <meta name="Creation Time">2023-01-21T01:07:32+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="2">
+    <startTime>2023-01-09T11:39:52-07:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Data Type">Unknown</param>
+      <param name="DatasetType">Unknown</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+    </setup>
+    <dataset type="Unknown" role="Experimental">
+      <name>A6_8minDelay_28.png</name>
+      <location>/8303993/TEM_SAED/A6_8minDelay_28.png</location>
+      <format>PNG</format>
+      <description/>
+      <preview>/8303993/TEM_SAED/A6_8minDelay_28.png.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:50.138590-06:00</meta>
+      <meta name="Creation Time">2023-08-12T18:45:32-06:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>Control_A3_1.png</name>
+      <location>/8303993/TEM_SAED/Control_A3_1.png</location>
+      <format>PNG</format>
+      <description/>
+      <preview>/8303993/TEM_SAED/Control_A3_1.png.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:47.920779-06:00</meta>
+      <meta name="Creation Time">2023-01-09T13:01:30-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>Control_A3_9_crop.png</name>
+      <location>/8303993/TEM_SAED/Control_A3_9_crop.png</location>
+      <format>PNG</format>
+      <description/>
+      <preview>/8303993/TEM_SAED/Control_A3_9_crop.png.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:41.202718-06:00</meta>
+      <meta name="Creation Time">2023-01-09T11:41:24-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>FFT of Control_A3_9.png</name>
+      <location>/8303993/TEM_SAED/FFT of Control_A3_9.png</location>
+      <format>PNG</format>
+      <description/>
+      <preview>/8303993/TEM_SAED/FFT of Control_A3_9.png.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:45.562492-06:00</meta>
+      <meta name="Creation Time">2023-01-09T11:39:52-07:00</meta>
+    </dataset>
+    <dataset type="Unknown" role="Experimental">
+      <name>SAED_A3_9.png</name>
+      <location>/8303993/TEM_SAED/SAED_A3_9.png</location>
+      <format>PNG</format>
+      <description/>
+      <preview>/8303993/TEM_SAED/SAED_A3_9.png.thumb.png</preview>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:33:43.278441-06:00</meta>
+      <meta name="Creation Time">2023-01-09T16:06:44-07:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

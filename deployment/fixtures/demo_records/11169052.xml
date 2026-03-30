@@ -1,0 +1,1935 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Demo datasets used by the openECCI Python library</title>
+  <summary ref="https://zenodo.org/records/11169052">
+    <experimenter>Thomas Kirchner</experimenter>
+    <instrument pid="FEI-Quanta-SEM">FEI Quanta/Apreo SEM</instrument>
+    <reservationStart>2022-12-19T16:14:16+00:00</reservationStart>
+    <reservationEnd>2024-03-20T18:03:04+00:00</reservationEnd>
+    <motivation>Demo datasets used by the openECCI Python library for Electron Channelling Contrast Imaging (ECCI) analysis of crystal defects in scanning electron microscope (SEM). EBSD map File name ebsd_map/20kv_26nA_15mm WD_4x4 bin_fcc_Fe Map.ctf Description A set of experimental EBSD map from a polycrystalline fcc austenitic stainless steel sample of (664 x 499) acquired using an electron beam of 20kV, 26nA, working distance 15mm, binning 4x4 in a JEOL JSM-7001F FEGSEM equipped with Oxford Instruments N...
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.11169052"&gt;https://doi.org/10.5281/zenodo.11169052&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>11169052</name>
+    <description>Demo datasets used by the openECCI Python library.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2023-10-24T16:45:26+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">20000.0</param>
+      <param name="Acquisition Date">10/24/2023</param>
+      <param name="Aperture Type">AVA</param>
+      <param name="Beam Mode">N-Beam</param>
+      <param name="Beam Name">EBeam</param>
+      <param name="Beam Tilt X">0.0</param>
+      <param name="Beam Tilt Y">0.0</param>
+      <param name="Chamber ID">xT-SDB</param>
+      <param name="Column Type">Elstar SEM</param>
+      <param name="Data Type">SEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Detector Mix (%)">100.0</param>
+      <param name="Detector Name">CBS</param>
+      <param name="Detector Signal">BSE</param>
+      <param name="Device Number">9956487</param>
+      <param name="Digital Brightness">0.0</param>
+      <param name="Digital Contrast">1.0</param>
+      <param name="Digital Gamma">1.0</param>
+      <param name="Dynamic Focus Enabled">False</param>
+      <param name="Dynamic WD Enabled">False</param>
+      <param name="ESEM Setting">no</param>
+      <param name="Electron Source">FEG</param>
+      <param name="Eucentric WD" unit="meter">0.004028240</param>
+      <param name="Final Lens">Elstar</param>
+      <param name="Frame Average">0.0</param>
+      <param name="Image Mode">Normal</param>
+      <param name="Internal Scan">True</param>
+      <param name="Line Integration">1.0</param>
+      <param name="Magnification Mode">2.0</param>
+      <param name="Mainslock">Off</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operator">Supervisor</param>
+      <param name="Post Processing">None</param>
+      <param name="Pre-Tilt">0.0</param>
+      <param name="Scan Interlacing">1.0</param>
+      <param name="Scan Rotation" unit="degree">0.0</param>
+      <param name="Screen Magnification Mode">2.0</param>
+      <param name="Software Version">17.10.2.7203 (build 7203)</param>
+      <param name="Stage Description">6inch</param>
+      <param name="Stage Position – α">6.54498e-06</param>
+      <param name="Stage Position – β">0.0</param>
+      <param name="System Type">Verios 5 UC</param>
+      <param name="Tilt Correction Enabled">False</param>
+      <param name="User Text">MCEM Verios 5 UC</param>
+      <param name="Vacuum Mode">High vacuum</param>
+      <param name="Vacuum Pump">TMP</param>
+      <param name="Zoom Factor">1.0</param>
+      <param name="Zoom Pan X">0.5</param>
+      <param name="Zoom Pan Y">0.5</param>
+      <param name="warnings">['Operator']</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>01_Si_ref.tif</name>
+      <location>/11169052/fcc_fe/01_Si_ref.tif</location>
+      <format>TIF</format>
+      <description>SEM BSE reference image of Si for ECCI calibration</description>
+      <preview>/11169052/fcc_fe/01_Si_ref.tif.thumb.png</preview>
+      <meta name="Acquisition Time">11:40:35 AM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0699000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">19.5015</meta>
+      <meta name="Detector Brightness Setting">19.5015</meta>
+      <meta name="Detector Contrast (DB)">51.2119</meta>
+      <meta name="Detector Contrast Setting">51.4951</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000020</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009231810</meta>
+      <meta name="Line Time" unit="second">0.020740</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:49.230516-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.015440E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.015440E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-2.63862e-06</meta>
+      <meta name="Stage Position – X">-0.000264803</meta>
+      <meta name="Stage Position – Y">-0.00389326</meta>
+      <meta name="Stage Position – Z">0.00400002</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">18.33420</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00007969650</meta>
+      <meta name="Working Distance" unit="meter">0.0040</meta>
+      <meta name="Creation Time">2023-10-24T16:45:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>01_steel overview.tif</name>
+      <location>/11169052/fcc_fe/01_steel overview.tif</location>
+      <format>TIF</format>
+      <description>SEM overview image of austenitic stainless steel sample</description>
+      <preview>/11169052/fcc_fe/01_steel overview.tif.thumb.png</preview>
+      <meta name="Acquisition Time">11:58:05 AM</meta>
+      <meta name="Beam Shift X">1.72147e-05</meta>
+      <meta name="Beam Shift Y">-2.60073e-06</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0581000</meta>
+      <meta name="Data Dimensions">(3072, 2048)</meta>
+      <meta name="Detector Brightness (DB)">0.0</meta>
+      <meta name="Detector Brightness Setting">0.0</meta>
+      <meta name="Detector Contrast (DB)">73.7561</meta>
+      <meta name="Detector Contrast Setting">74.1641</meta>
+      <meta name="Drift Correction Applied">True</meta>
+      <meta name="Dwell Time" unit="second">0.0000030</meta>
+      <meta name="Frames Integrated">24</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.0011840</meta>
+      <meta name="Line Time" unit="second">0.0093630</meta>
+      <meta name="Magnification Canvas Real Width">0.4144</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:03.928360-06:00</meta>
+      <meta name="Pixel Height" unit="meter">3.854170E-7</meta>
+      <meta name="Pixel Width" unit="meter">3.854170E-7</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.4144</meta>
+      <meta name="Spot Size">0.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000250316</meta>
+      <meta name="Stage Position – Y">-0.00043047</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.000212658</meta>
+      <meta name="Stigmator Y Value">-0.00169982</meta>
+      <meta name="Total Frame Time" unit="second">19.17540</meta>
+      <meta name="Vertical Field Width" unit="meter">0.0007893330</meta>
+      <meta name="Working Distance" unit="meter">0.004046610</meta>
+      <meta name="Creation Time">2023-10-24T17:04:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_001.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_001.tif</location>
+      <format>TIF</format>
+      <description>Electron channelling pattern image of austenitic steel grain</description>
+      <preview>/11169052/fcc_fe/steel_ECP_001.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:03:46 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.0000060</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.006270</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:21.861896-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000432643</meta>
+      <meta name="Stage Position – Y">-0.000268476</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">5.542680</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:07:54+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_002.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_002.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_002.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:05:26 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:15.126197-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000374993</meta>
+      <meta name="Stage Position – Y">-0.000319763</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:09:54+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_003.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_003.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_003.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:08:07 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:17.149889-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000315382</meta>
+      <meta name="Stage Position – Y">-0.000347083</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:12:10+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_004.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_004.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_004.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:10:43 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:57.123094-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000205371</meta>
+      <meta name="Stage Position – Y">-0.000315481</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:14:48+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_005.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_005.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_005.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:12:19 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:02.982172-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000177042</meta>
+      <meta name="Stage Position – Y">-0.000319151</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:16:22+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_006.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_006.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_006.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:13:37 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:09.127202-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000132341</meta>
+      <meta name="Stage Position – Y">-0.00028115</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:17:42+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_007.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_007.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_007.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:14:43 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:07.042885-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000132885</meta>
+      <meta name="Stage Position – Y">-0.000278579</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:18:48+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_008.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_008.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_008.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:16:56 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:08.147635-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000135241</meta>
+      <meta name="Stage Position – Y">-0.000394411</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:20:58+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_009.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_009.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_009.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:18:28 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:10.100192-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000134132</meta>
+      <meta name="Stage Position – Y">-0.000488458</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2024-03-20T18:03:04+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_010.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_010.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_010.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:20:56 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:59.112961-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">1.49088e-05</meta>
+      <meta name="Stage Position – Y">-0.000532015</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:25:06+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_011.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_011.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_011.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:22:54 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:01.045817-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000271673</meta>
+      <meta name="Stage Position – Y">-0.0005176</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:26:52+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_012.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_012.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_012.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:24:11 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:11.106078-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000331452</meta>
+      <meta name="Stage Position – Y">-0.000496343</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:28:10+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_013.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_013.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_013.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:25:46 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:04.943875-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000369623</meta>
+      <meta name="Stage Position – Y">-0.000480072</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:29:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_014.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_014.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_014.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:27:05 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:26.050444-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000398593</meta>
+      <meta name="Stage Position – Y">-0.000372841</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:31:08+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_015.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_015.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_015.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:28:15 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:24.019601-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000409864</meta>
+      <meta name="Stage Position – Y">-0.00039128</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:32:28+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_016.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_016.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_016.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:29:16 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:13.084480-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.00042473</meta>
+      <meta name="Stage Position – Y">-0.000401836</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:33:22+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_017.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_017.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_017.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:31:11 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:51:19.809383-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000399832</meta>
+      <meta name="Stage Position – Y">-0.000417718</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:35:12+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_018.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_018.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_018.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:32:38 PM</meta>
+      <meta name="Beam Shift X">-3.27329e-06</meta>
+      <meta name="Beam Shift Y">-9.09246e-07</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:01.954123-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.00039968</meta>
+      <meta name="Stage Position – Y">-0.000468353</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:36:42+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_019.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_019.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_019.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:35:58 PM</meta>
+      <meta name="Beam Shift X">-2.54589e-06</meta>
+      <meta name="Beam Shift Y">-1.0911e-06</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:59.878510-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000417297</meta>
+      <meta name="Stage Position – Y">-0.00049291</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:40:00+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_ECP_020.tif</name>
+      <location>/11169052/fcc_fe/steel_ECP_020.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_ECP_020.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:37:30 PM</meta>
+      <meta name="Beam Shift X">-2.36404e-06</meta>
+      <meta name="Beam Shift Y">-2.18219e-06</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:06.172443-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000438397</meta>
+      <meta name="Stage Position – Y">-0.000472455</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:41:30+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_001.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_001.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_001.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:03:11 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1536, 1024)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.0000060</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.0001027740</meta>
+      <meta name="Line Time" unit="second">0.009360</meta>
+      <meta name="Magnification Canvas Real Width">0.4144</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:40.718527-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.691020E-8</meta>
+      <meta name="Pixel Width" unit="meter">6.691020E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.4144</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000432643</meta>
+      <meta name="Stage Position – Y">-0.000268476</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.584640</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00006851610</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:07:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_002.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_002.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_002.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:04:47 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00007893330</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:30.570091-06:00</meta>
+      <meta name="Pixel Height" unit="meter">7.708330E-8</meta>
+      <meta name="Pixel Width" unit="meter">7.708330E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000374993</meta>
+      <meta name="Stage Position – Y">-0.000319763</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00006814170</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:08:52+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_003.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_003.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_003.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:07:20 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00007893330</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:36.621146-06:00</meta>
+      <meta name="Pixel Height" unit="meter">7.708330E-8</meta>
+      <meta name="Pixel Width" unit="meter">7.708330E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000315382</meta>
+      <meta name="Stage Position – Y">-0.000347083</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00006814170</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:11:22+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_004.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_004.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_004.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:10:07 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:14.336064-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000205371</meta>
+      <meta name="Stage Position – Y">-0.000315481</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:14:12+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_005.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_005.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_005.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:11:52 PM</meta>
+      <meta name="Beam Shift X">0.0</meta>
+      <meta name="Beam Shift Y">0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0575000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:16.338640-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000177042</meta>
+      <meta name="Stage Position – Y">-0.000319151</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:15:58+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_006.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_006.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_006.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:13:07 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-0.0</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:28.264769-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000132341</meta>
+      <meta name="Stage Position – Y">-0.00028115</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:17:08+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_007.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_007.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_007.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:14:05 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:20.805642-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000132885</meta>
+      <meta name="Stage Position – Y">-0.000278579</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:18:04+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_008.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_008.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_008.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:16:37 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:53.206863-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000135241</meta>
+      <meta name="Stage Position – Y">-0.000394411</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:20:36+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_009.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_009.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_009.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:18:06 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:55.161575-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000134132</meta>
+      <meta name="Stage Position – Y">-0.000488458</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:22:08+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_010.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_010.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_010.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:19:32 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:12.100114-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">1.49088e-05</meta>
+      <meta name="Stage Position – Y">-0.000532015</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:23:34+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_011.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_011.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_011.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:22:23 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:18.585816-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000271673</meta>
+      <meta name="Stage Position – Y">-0.0005176</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:26:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_012.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_012.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_012.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:23:42 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:25.845790-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000331452</meta>
+      <meta name="Stage Position – Y">-0.000496343</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:27:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_013.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_013.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_013.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:25:11 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:22.952379-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000369623</meta>
+      <meta name="Stage Position – Y">-0.000480072</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:29:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_014.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_014.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_014.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:26:35 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0569000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:42.839525-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000398593</meta>
+      <meta name="Stage Position – Y">-0.000372841</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:30:34+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_015.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_015.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_015.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:27:37 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:38.664943-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000409864</meta>
+      <meta name="Stage Position – Y">-0.00039128</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:31:38+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_016.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_016.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_016.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:28:51 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:32.646919-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.00042473</meta>
+      <meta name="Stage Position – Y">-0.000401836</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:32:56+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_017.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_017.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_017.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:29:54 PM</meta>
+      <meta name="Beam Shift X">-3.81884e-06</meta>
+      <meta name="Beam Shift Y">-1.99402e-23</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:34.641787-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000399832</meta>
+      <meta name="Stage Position – Y">-0.000417718</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:34:52+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_018.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_018.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_018.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:32:17 PM</meta>
+      <meta name="Beam Shift X">-3.27329e-06</meta>
+      <meta name="Beam Shift Y">-9.09246e-07</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:47.139316-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.00039968</meta>
+      <meta name="Stage Position – Y">-0.000468353</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:36:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_019.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_019.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_019.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:35:41 PM</meta>
+      <meta name="Beam Shift X">-2.54589e-06</meta>
+      <meta name="Beam Shift Y">-1.0911e-06</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:44.916492-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000417297</meta>
+      <meta name="Stage Position – Y">-0.00049291</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:39:40+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>steel_SEM_020.tif</name>
+      <location>/11169052/fcc_fe/steel_SEM_020.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/fcc_fe/steel_SEM_020.tif.thumb.png</preview>
+      <meta name="Acquisition Time">12:36:58 PM</meta>
+      <meta name="Beam Shift X">-2.36404e-06</meta>
+      <meta name="Beam Shift Y">-2.18219e-06</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0563000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">11.6161</meta>
+      <meta name="Detector Brightness Setting">11.6161</meta>
+      <meta name="Detector Contrast (DB)">46.9775</meta>
+      <meta name="Detector Contrast Setting">47.2373</meta>
+      <meta name="Drift Correction Applied">False</meta>
+      <meta name="Dwell Time" unit="second">0.000010</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00009310680</meta>
+      <meta name="Line Time" unit="second">0.01040</meta>
+      <meta name="Magnification Canvas Real Width">0.27627</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:51.198280-06:00</meta>
+      <meta name="Pixel Height" unit="meter">9.092460E-8</meta>
+      <meta name="Pixel Width" unit="meter">9.092460E-8</meta>
+      <meta name="Screen Magnification Canvas Real Width">0.27627</meta>
+      <meta name="Spot Size">4.0</meta>
+      <meta name="Stage Position – R">-4.13669e-06</meta>
+      <meta name="Stage Position – X">-0.000438397</meta>
+      <meta name="Stage Position – Y">-0.000472455</meta>
+      <meta name="Stage Position – Z">0.00420639</meta>
+      <meta name="Stigmator X Value">0.0575647</meta>
+      <meta name="Stigmator Y Value">-0.159108</meta>
+      <meta name="Total Frame Time" unit="second">9.19360</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00008037740</meta>
+      <meta name="Working Distance" unit="meter">0.004033950</meta>
+      <meta name="Creation Time">2023-10-24T17:41:00+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2022-12-19T16:14:16+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">20000.0</param>
+      <param name="Acquisition Date">12/19/2022</param>
+      <param name="Aperture Type">AVA</param>
+      <param name="Beam Mode">N-Beam</param>
+      <param name="Beam Shift X">-4.01093e-07</param>
+      <param name="Beam Shift Y">1.66947e-06</param>
+      <param name="Beam Tilt X">0.0</param>
+      <param name="Beam Tilt Y">0.0</param>
+      <param name="Chamber ID">xT-SDB</param>
+      <param name="Column Type">Elstar SEM</param>
+      <param name="Data Type">SEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Detector Mix (%)">100.0</param>
+      <param name="Detector Signal">BSE</param>
+      <param name="Device Number">9956487</param>
+      <param name="Drift Correction Applied">False</param>
+      <param name="Dwell Time" unit="second">0.000020</param>
+      <param name="Dynamic Focus Enabled">False</param>
+      <param name="Dynamic WD Enabled">False</param>
+      <param name="ESEM Setting">no</param>
+      <param name="Electron Source">FEG</param>
+      <param name="Eucentric WD" unit="meter">0.004028240</param>
+      <param name="Final Lens">Elstar</param>
+      <param name="Frame Average">0.0</param>
+      <param name="Image Mode">Normal</param>
+      <param name="Internal Scan">True</param>
+      <param name="Line Integration">1.0</param>
+      <param name="Line Time" unit="second">0.020740</param>
+      <param name="Magnification Canvas Real Width">0.27627</param>
+      <param name="Magnification Mode">2.0</param>
+      <param name="Mainslock">Off</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operator">Supervisor</param>
+      <param name="Pixel Height" unit="meter">5.395830E-8</param>
+      <param name="Pixel Width" unit="meter">5.395830E-8</param>
+      <param name="Post Processing">None</param>
+      <param name="Pre-Tilt">0.0</param>
+      <param name="Scan Interlacing">1.0</param>
+      <param name="Screen Magnification Canvas Real Width">0.27627</param>
+      <param name="Screen Magnification Mode">2.0</param>
+      <param name="Software Version">17.10.2.7203 (build 7203)</param>
+      <param name="Spot Size">4.0</param>
+      <param name="Stage Description">6inch</param>
+      <param name="Stage Position – β">0.0</param>
+      <param name="Stigmator X Value">0.0513378</param>
+      <param name="Stigmator Y Value">-0.115639</param>
+      <param name="System Type">Verios 5 UC</param>
+      <param name="Tilt Correction Enabled">False</param>
+      <param name="Total Frame Time" unit="second">18.33420</param>
+      <param name="User Text">MCEM Verios 5 UC</param>
+      <param name="Vacuum Mode">High vacuum</param>
+      <param name="Vacuum Pump">TMP</param>
+      <param name="Working Distance" unit="meter">0.0040</param>
+      <param name="warnings">['Operator']</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Nav_cam_001.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Nav_cam_001.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Nav_cam_001.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:04:05 AM</meta>
+      <meta name="Beam Name">IRBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.25000</meta>
+      <meta name="Data Dimensions">(3072, 2048)</meta>
+      <meta name="Detector Name">Nav-Cam</meta>
+      <meta name="Digital Brightness">0.0</meta>
+      <meta name="Digital Contrast">1.0</meta>
+      <meta name="Digital Gamma">0.704292</meta>
+      <meta name="Frames Integrated">2</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.1534990</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:53.005870-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">29.846288</meta>
+      <meta name="Stage Position – R">2.61802</meta>
+      <meta name="Stage Position – X">0.000222553</meta>
+      <meta name="Stage Position – Y">-0.000462834</meta>
+      <meta name="Stage Position – Z">0.00120013</meta>
+      <meta name="Stage Position – α">6.54498e-06</meta>
+      <meta name="Vertical Field Width" unit="meter">0.1023330</meta>
+      <meta name="Zoom Factor">3.0</meta>
+      <meta name="Zoom Pan X">0.493917</meta>
+      <meta name="Zoom Pan Y">0.542393</meta>
+      <meta name="Creation Time">2022-12-19T16:14:38+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_-5tilt_-15rot_007.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_-5tilt_-15rot_007.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_-5tilt_-15rot_007.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:18:20 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0828000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">26.5204</meta>
+      <meta name="Detector Brightness Setting">26.5204</meta>
+      <meta name="Detector Contrast (DB)">49.4231</meta>
+      <meta name="Detector Contrast Setting">49.6964</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:42.685915-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">2.86531</meta>
+      <meta name="Stage Position – X">0.0020509</meta>
+      <meta name="Stage Position – Y">-0.00393552</meta>
+      <meta name="Stage Position – Z">0.00399994</meta>
+      <meta name="Stage Position – α">-0.0872577</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:20:34+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_-5tilt_0rot_005.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_-5tilt_0rot_005.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_-5tilt_0rot_005.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:16:29 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0846000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">26.5204</meta>
+      <meta name="Detector Brightness Setting">26.5204</meta>
+      <meta name="Detector Contrast (DB)">49.4231</meta>
+      <meta name="Detector Contrast Setting">49.6964</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:40.619757-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">3.12711</meta>
+      <meta name="Stage Position – X">0.000962446</meta>
+      <meta name="Stage Position – Y">-0.00433218</meta>
+      <meta name="Stage Position – Z">0.00399994</meta>
+      <meta name="Stage Position – α">-0.0872577</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:18:48+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_-5tilt_30rot_006.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_-5tilt_30rot_006.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_-5tilt_30rot_006.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:17:29 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0828000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">26.5204</meta>
+      <meta name="Detector Brightness Setting">26.5204</meta>
+      <meta name="Detector Contrast (DB)">49.4231</meta>
+      <meta name="Detector Contrast Setting">49.6964</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:44.840309-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">-2.63247</meta>
+      <meta name="Stage Position – X">-0.00133258</meta>
+      <meta name="Stage Position – Y">-0.00423309</meta>
+      <meta name="Stage Position – Z">0.00399994</meta>
+      <meta name="Stage Position – α">-0.0872577</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:19:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_0tilt_0rot_001.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_0tilt_0rot_001.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_0tilt_0rot_001.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:11:30 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.094000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">25.0306</meta>
+      <meta name="Detector Brightness Setting">25.0306</meta>
+      <meta name="Detector Contrast (DB)">49.691</meta>
+      <meta name="Detector Contrast Setting">49.9659</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:55.394182-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">3.12711</meta>
+      <meta name="Stage Position – X">0.000962455</meta>
+      <meta name="Stage Position – Y">-0.00433239</meta>
+      <meta name="Stage Position – Z">0.00400004</meta>
+      <meta name="Stage Position – α">-6.54498e-06</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:14:16+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_0tilt_0rot_008.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_0tilt_0rot_008.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_0tilt_0rot_008.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:19:15 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0816000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">26.5204</meta>
+      <meta name="Detector Brightness Setting">26.5204</meta>
+      <meta name="Detector Contrast (DB)">49.4231</meta>
+      <meta name="Detector Contrast Setting">49.6964</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:38.413194-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">3.12712</meta>
+      <meta name="Stage Position – X">0.000962485</meta>
+      <meta name="Stage Position – Y">-0.00433237</meta>
+      <meta name="Stage Position – Z">0.00400004</meta>
+      <meta name="Stage Position – α">-6.54498e-06</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:21:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_1tilt_0rot_002.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_1tilt_0rot_002.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_1tilt_0rot_002.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:13:48 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0882000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">25.0306</meta>
+      <meta name="Detector Brightness Setting">25.0306</meta>
+      <meta name="Detector Contrast (DB)">49.691</meta>
+      <meta name="Detector Contrast Setting">49.9659</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:48.928246-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">3.12711</meta>
+      <meta name="Stage Position – X">0.000962413</meta>
+      <meta name="Stage Position – Y">-0.00433242</meta>
+      <meta name="Stage Position – Z">0.00400004</meta>
+      <meta name="Stage Position – α">0.0174489</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:16:02+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_2tilt_0rot_003.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_2tilt_0rot_003.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_2tilt_0rot_003.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:14:30 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.0873000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">25.0306</meta>
+      <meta name="Detector Brightness Setting">25.0306</meta>
+      <meta name="Detector Contrast (DB)">49.691</meta>
+      <meta name="Detector Contrast Setting">49.9659</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:46.931173-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">3.12711</meta>
+      <meta name="Stage Position – X">0.000962466</meta>
+      <meta name="Stage Position – Y">-0.00433247</meta>
+      <meta name="Stage Position – Z">0.00400003</meta>
+      <meta name="Stage Position – α">0.0348979</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:16:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Si_5tilt_0rot_004.tif</name>
+      <location>/11169052/si_wafer/TFS_verios/Si_5tilt_0rot_004.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11169052/si_wafer/TFS_verios/Si_5tilt_0rot_004.tif.thumb.png</preview>
+      <meta name="Acquisition Time">10:15:45 AM</meta>
+      <meta name="Beam Name">EBeam</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.085000</meta>
+      <meta name="Data Dimensions">(1024, 884)</meta>
+      <meta name="Detector Brightness (DB)">26.5204</meta>
+      <meta name="Detector Brightness Setting">26.5204</meta>
+      <meta name="Detector Contrast (DB)">49.4231</meta>
+      <meta name="Detector Contrast Setting">49.6964</meta>
+      <meta name="Detector Name">CBS</meta>
+      <meta name="Digital Brightness">-0.22</meta>
+      <meta name="Digital Contrast">1.6</meta>
+      <meta name="Digital Gamma">1.0</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.00005525330</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:49:50.981332-06:00</meta>
+      <meta name="Scan Rotation" unit="degree">0.0</meta>
+      <meta name="Stage Position – R">3.12711</meta>
+      <meta name="Stage Position – X">0.000962505</meta>
+      <meta name="Stage Position – Y">-0.0043326</meta>
+      <meta name="Stage Position – Z">0.00399994</meta>
+      <meta name="Stage Position – α">0.0872577</meta>
+      <meta name="Vertical Field Width" unit="meter">0.00004769920</meta>
+      <meta name="Zoom Factor">1.0</meta>
+      <meta name="Zoom Pan X">0.432109</meta>
+      <meta name="Zoom Pan Y">0.692307</meta>
+      <meta name="Creation Time">2022-12-19T16:18:00+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

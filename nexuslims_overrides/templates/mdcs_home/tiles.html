@@ -3,6 +3,57 @@
 {# Customizations: Removed "Available Options" header, added tile IDs, hover effects, clickable tiles #}
 {# JavaScript: Hover effects and color changes are implemented in nexuslims_overrides/static/nexuslims/js/tiles.js #}
 
+{% if IS_PUBLIC_DEMO %}
+
+<p class="text-muted small mb-3">
+    <i class="fas fa-info-circle me-1 text-primary"></i>
+    <strong class="text-body">This is a live public demo.</strong>
+    Data resets every 2 hours and you are auto-logged in as <strong class="text-body">admin</strong>.
+</p>
+
+<section class="nx-demo-features mb-4">
+    <h6 class="text-uppercase text-muted fw-semibold mb-3 mt-2" style="letter-spacing: 0.08em;">NexusLIMS Features:</h6>
+    <div class="row g-3">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-th-list fa-2x text-primary mb-2"></i>
+                    <h5 class="card-title">Browse Records</h5>
+                    <p class="card-text text-muted small">Explore your facility's experiment records with full metadata and dataset previews.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-search fa-2x text-info mb-2"></i>
+                    <h5 class="card-title">Full-text Search</h5>
+                    <p class="card-text text-muted small">Search across all record metadata, sample names, researchers, and instrument types.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-download fa-2x text-warning mb-2"></i>
+                    <h5 class="card-title">Download Files</h5>
+                    <p class="card-text text-muted small">Access instrument data files directly from record detail pages.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center p-3">
+                <div class="card-body">
+                    <i class="fas fa-pencil-alt fa-2x text-success mb-2"></i>
+                    <h5 class="card-title">Annotate Data Records</h5>
+                    <p class="card-text text-muted small">Easily add descriptions and organize datasets within records using the inline annotator.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <!-- <h2 id="available-options">Available Options</h2> -->
 {% for tile in tiles %}
 <div class="tile" id="{{ tile.id }}">

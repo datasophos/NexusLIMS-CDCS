@@ -594,7 +594,7 @@ Use it like:
 
                                 <xsl:choose>
                                     <xsl:when test="nx:summary/nx:motivation/text()">
-                                        <span style="font-style:italic;">Motivation: </span><xsl:value-of select="nx:summary/nx:motivation"/>
+                                        <span style="font-style:italic;">Motivation: </span><xsl:value-of select="nx:summary/nx:motivation" disable-output-escaping="yes"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         No motivation provided
@@ -1223,20 +1223,9 @@ Use it like:
                                                         data-dataset-index="{count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)}">
                                                         <!-- Populate table values with the metadata name and value -->
                                                         <!-- generate a dataset id that matches preview image as an attribute on the first column for accessing later via JS -->
-                                                        <xsl:element name="td">
-                                                            <div><xsl:value-of select="nx:name"/></div>
-                                                            <div class="nx-desc-row">
-                                                            <div class="nx-table-desc">
-                                                                <xsl:if test="nx:description/text()">
-                                                                    <xsl:attribute name="title"><xsl:value-of select="nx:description"/></xsl:attribute>
-                                                                    <xsl:value-of select="nx:description"/>
-                                                                </xsl:if>
-                                                            </div>
-                                                                <i class="nx-desc-edit fas fa-pencil-alt"
-                                                                   data-dataset-index="{count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)}"
-                                                                   title="Edit description"></i>
-                                                            </div>
-                                                        </xsl:element>
+                                                        <xsl:call-template name="dataset-name-cell">
+                                                            <xsl:with-param name="dataset-index" select="count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)"/>
+                                                        </xsl:call-template>
                                                         <xsl:element name="td">
                                                             <xsl:choose>
                                                                 <xsl:when test="nx:meta[@name = 'Creation Time']">
@@ -1274,21 +1263,12 @@ Use it like:
                                                             title="Click to view this dataset's unique metadata">
                                                                 <i class='fa fa-tasks fa-border param-button' style='margin-left:0;'/>
                                                             </a>
-                                                            <xsl:variable name="json-location-raw">
+                                                            <xsl:variable name="json-location">
                                                                 <xsl:choose>
-                                                                    <xsl:when test="nx:preview">
-                                                                        <xsl:value-of select="$previewBaseUrl"/>
-                                                                        <xsl:value-of select="substring-before(nx:preview, '.thumb.png')"/>
-                                                                        <xsl:text>.json</xsl:text>
-                                                                    </xsl:when>
-                                                                    <xsl:otherwise>
-                                                                        <xsl:value-of select="$previewBaseUrl"/>
-                                                                        <xsl:value-of select="nx:location"/>
-                                                                        <xsl:text>.json</xsl:text>
-                                                                    </xsl:otherwise>
+                                                                    <xsl:when test="nx:preview"><xsl:value-of select="concat($previewBaseUrl, substring-before(nx:preview, '.thumb.png'), '.json')"/></xsl:when>
+                                                                    <xsl:otherwise><xsl:value-of select="concat($previewBaseUrl, nx:location, '.json')"/></xsl:otherwise>
                                                                 </xsl:choose>
                                                             </xsl:variable>
-                                                            <xsl:variable name="json-location" select="normalize-space($json-location-raw)"/>
                                                             <xsl:element name='a'>
                                                                 <xsl:attribute name="href"><xsl:value-of select="$json-location"/></xsl:attribute>
                                                                 <xsl:attribute name="onclick">
@@ -1688,21 +1668,12 @@ Use it like:
                                                           </xsl:when>
                                                       </xsl:choose>
                                                       <td class='text-center'>
-                                                          <xsl:variable name="json-location-raw">
+                                                          <xsl:variable name="json-location">
                                                               <xsl:choose>
-                                                                  <xsl:when test="nx:preview">
-                                                                      <xsl:value-of select="$previewBaseUrl"/>
-                                                                      <xsl:value-of select="substring-before(nx:preview, '.thumb.png')"/>
-                                                                      <xsl:text>.json</xsl:text>
-                                                                  </xsl:when>
-                                                                  <xsl:otherwise>
-                                                                      <xsl:value-of select="$previewBaseUrl"/>
-                                                                      <xsl:value-of select="nx:location"/>
-                                                                      <xsl:text>.json</xsl:text>
-                                                                  </xsl:otherwise>
+                                                                  <xsl:when test="nx:preview"><xsl:value-of select="concat($previewBaseUrl, substring-before(nx:preview, '.thumb.png'), '.json')"/></xsl:when>
+                                                                  <xsl:otherwise><xsl:value-of select="concat($previewBaseUrl, nx:location, '.json')"/></xsl:otherwise>
                                                               </xsl:choose>
                                                           </xsl:variable>
-                                                          <xsl:variable name="json-location" select="normalize-space($json-location-raw)"/>
                                                           <xsl:element name='a'>
                                                               <xsl:attribute name="href"><xsl:value-of select="$json-location"/></xsl:attribute>
                                                               <xsl:attribute name="onclick">
@@ -1747,6 +1718,29 @@ Use it like:
 
             <!-- Javascript which supports some capabilities on the generated page -->
         </div>
+    </xsl:template>
+
+    <!--
+      - Renders the dataset name + description cell (td) used in both the
+      - normal activity tables and the simple-filelist-table.
+      - @param dataset-index  the global 0-based dataset index (integer)
+      -->
+    <xsl:template name="dataset-name-cell">
+        <xsl:param name="dataset-index"/>
+        <xsl:element name="td">
+            <div><xsl:value-of select="nx:name"/></div>
+            <div class="nx-desc-row">
+                <div class="nx-table-desc">
+                    <xsl:if test="nx:description/text()">
+                        <xsl:attribute name="title"><xsl:value-of select="nx:description"/></xsl:attribute>
+                        <xsl:value-of select="nx:description"/>
+                    </xsl:if>
+                </div>
+                <i class="nx-desc-edit fas fa-pencil-alt"
+                   data-dataset-index="{$dataset-index}"
+                   title="Edit description"/>
+            </div>
+        </xsl:element>
     </xsl:template>
 
     <!--
@@ -2392,7 +2386,8 @@ Use it like:
             </thead>
             <tbody>
                 <xsl:for-each select="//nx:dataset">
-                    <tr>
+                    <xsl:variable name="ds-index" select="count(ancestor::nx:acquisitionActivity/preceding-sibling::nx:acquisitionActivity/nx:dataset) + count(preceding-sibling::nx:dataset)"/>
+                    <tr data-dataset-index="{$ds-index}">
                         <xsl:element name="td">
                             <xsl:element name="a">
                                 <xsl:attribute name="class">dataset_anchor</xsl:attribute>
@@ -2405,9 +2400,9 @@ Use it like:
                         <xsl:element name="td">
                             <xsl:value-of select="../@seqno + 1"/>
                         </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:value-of select="nx:name"/>
-                        </xsl:element>
+                        <xsl:call-template name="dataset-name-cell">
+                            <xsl:with-param name="dataset-index" select="$ds-index"/>
+                        </xsl:call-template>
                         <td class='filepath'>
                             <xsl:variable name="datasetLink">
                                 <xsl:call-template name="get-path-of-file">
@@ -2498,21 +2493,12 @@ Use it like:
                         </td>
                         <td>
                             <!-- metadata -->
-                            <xsl:variable name="json-location-raw">
+                            <xsl:variable name="json-location">
                                 <xsl:choose>
-                                    <xsl:when test="nx:preview">
-                                        <xsl:value-of select="$previewBaseUrl"/>
-                                        <xsl:value-of select="substring-before(nx:preview, '.thumb.png')"/>
-                                        <xsl:text>.json</xsl:text>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="$previewBaseUrl"/>
-                                        <xsl:value-of select="nx:location"/>
-                                        <xsl:text>.json</xsl:text>
-                                    </xsl:otherwise>
+                                    <xsl:when test="nx:preview"><xsl:value-of select="concat($previewBaseUrl, substring-before(nx:preview, '.thumb.png'), '.json')"/></xsl:when>
+                                    <xsl:otherwise><xsl:value-of select="concat($previewBaseUrl, nx:location, '.json')"/></xsl:otherwise>
                                 </xsl:choose>
                             </xsl:variable>
-                            <xsl:variable name="json-location" select="normalize-space($json-location-raw)"/>
                             <xsl:element name='a'>
                                 <xsl:attribute name="href"><xsl:value-of select="$json-location"/></xsl:attribute>
                                 <xsl:attribute name="onclick">
@@ -2543,12 +2529,6 @@ Use it like:
                             </xsl:element>
                         </td>
                     </tr>
-                    <!-- Description sub-row: shown only when this dataset has a description -->
-                    <xsl:if test="nx:description/text()">
-                        <tr class="nx-description-row">
-                            <td colspan="8" style="padding-left:2rem;font-style:italic;color:#555;border-top:none;padding-top:0;font-size:0.875rem;"><xsl:value-of select="nx:description"/></td>
-                        </tr>
-                    </xsl:if>
                 </xsl:for-each>
             </tbody>
         </table>

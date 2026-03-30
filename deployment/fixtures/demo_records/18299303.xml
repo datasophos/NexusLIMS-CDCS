@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Structure of metal-organic framework nanocrystals obtained from electron diffraction data by iterative phase retrieva...</title>
+  <summary ref="https://zenodo.org/records/18299303">
+    <experimenter>James Okafor</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2026-03-27T19:33:06-06:00</reservationStart>
+    <reservationEnd>2026-03-27T19:33:22-06:00</reservationEnd>
+    <motivation>Original TEM / ED data for the publication "Structure of metal-organic framework nanocrystals obtained from electron diffraction data by iterative phase retrieval" by Gorelik, Latychevskaia et al. 2026.
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.18299303"&gt;https://doi.org/10.5281/zenodo.18299303&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>18299303</name>
+    <description>Structure of metal-organic framework nanocrystals obtained from electron diffraction data by iterative phase retrieval - original data.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T19:33:06-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">300000.0</param>
+      <param name="Acquisition Device">BM-UltraScan</param>
+      <param name="Binning (Horizontal)">1</param>
+      <param name="Binning (Vertical)">1</param>
+      <param name="Camera/Detector Processing">Gain Normalized</param>
+      <param name="Cs" unit="millimeter">0.0</param>
+      <param name="Data Type">TEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Illumination Mode">TEM</param>
+      <param name="Name">FEI Tecnai</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="STEM Camera Length" unit="millimeter">0.0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_2a_Ni-DUT8_HR_27.dm3</name>
+      <location>/18299303/Fig_2a_Ni-DUT8_HR_27.dm3</location>
+      <format>DM3</format>
+      <description>High-resolution TEM image of Ni-DUT8 MOF nanocrystal</description>
+      <preview>/18299303/Fig_2a_Ni-DUT8_HR_27.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">88982.1</meta>
+      <meta name="Data Dimensions">(1024, 1024)</meta>
+      <meta name="Exposure Time" unit="second">0.5</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:50.808877-06:00</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="magnification">69000.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:18-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_3a_3c_Ni-DUT8_diff_1.2m_11.dm3</name>
+      <location>/18299303/Fig_3a_3c_Ni-DUT8_diff_1.2m_11.dm3</location>
+      <format>DM3</format>
+      <description>Electron diffraction pattern from Ni-DUT8 MOF nanocrystal</description>
+      <preview>/18299303/Fig_3a_3c_Ni-DUT8_diff_1.2m_11.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">1582.3346994964718</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">DIFFRACTION</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:56.550694-06:00</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="magnification">1200.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:16-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_3b_Ni-DUT8_img_diff_11.dm3</name>
+      <location>/18299303/Fig_3b_Ni-DUT8_img_diff_11.dm3</location>
+      <format>DM3</format>
+      <description>TEM image of Ni-DUT8 MOF nanocrystal at 27,000×</description>
+      <preview>/18299303/Fig_3b_Ni-DUT8_img_diff_11.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">35869.8</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:59.594742-06:00</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="magnification">27000.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:18-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_4a_Ni-DUT8_diff_1.2m_5.dm3</name>
+      <location>/18299303/Fig_4a_Ni-DUT8_diff_1.2m_5.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18299303/Fig_4a_Ni-DUT8_diff_1.2m_5.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">1582.3346994964718</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">DIFFRACTION</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:53.227263-06:00</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="magnification">1200.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:08-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_4b_Ni-DUT8_img_diff_5.dm3</name>
+      <location>/18299303/Fig_4b_Ni-DUT8_img_diff_5.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18299303/Fig_4b_Ni-DUT8_img_diff_5.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">35869.8</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:37.803411-06:00</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="magnification">27000.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:08-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_4d_Ni-DUT8_diff_1.2m_6.dm3</name>
+      <location>/18299303/Fig_4d_Ni-DUT8_diff_1.2m_6.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18299303/Fig_4d_Ni-DUT8_diff_1.2m_6.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">1582.3346994964718</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">DIFFRACTION</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:44.466851-06:00</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="magnification">1200.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:22-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_4e_Ni-DUT8_img_diff_6.dm3</name>
+      <location>/18299303/Fig_4e_Ni-DUT8_img_diff_6.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18299303/Fig_4e_Ni-DUT8_img_diff_6.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">35869.8</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:40.950084-06:00</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="magnification">27000.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:12-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_4g_Ni-DUT8_diff_1.2m_11.dm3</name>
+      <location>/18299303/Fig_4g_Ni-DUT8_diff_1.2m_11.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18299303/Fig_4g_Ni-DUT8_diff_1.2m_11.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">1582.3346994964718</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">DIFFRACTION</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:33:47.600649-06:00</meta>
+      <meta name="Operation Mode">DIFFRACTION</meta>
+      <meta name="magnification">1200.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:06-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>Fig_4h_Ni-DUT8_img_diff_11.dm3</name>
+      <location>/18299303/Fig_4h_Ni-DUT8_img_diff_11.dm3</location>
+      <format>DM3</format>
+      <description/>
+      <preview>/18299303/Fig_4h_Ni-DUT8_img_diff_11.dm3.thumb.png</preview>
+      <meta name="Actual Magnification">35869.8</meta>
+      <meta name="Data Dimensions">(2048, 2048)</meta>
+      <meta name="Exposure Time" unit="second">5.0</meta>
+      <meta name="Imaging Mode">IMAGING</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:34:02.927465-06:00</meta>
+      <meta name="Operation Mode">IMAGING</meta>
+      <meta name="magnification">27000.0</meta>
+      <meta name="Creation Time">2026-03-27T19:33:14-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

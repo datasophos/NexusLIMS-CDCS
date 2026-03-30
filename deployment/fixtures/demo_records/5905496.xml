@@ -1,0 +1,492 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>SEM images of PAAO samples (AJ series 1-to-5)</title>
+  <summary ref="https://zenodo.org/records/5905496">
+    <experimenter>Amara Diallo</experimenter>
+    <instrument pid="FEI-Quanta-SEM">FEI Quanta/Apreo SEM</instrument>
+    <reservationStart>2026-03-27T12:14:32+00:00</reservationStart>
+    <reservationEnd>2026-03-27T12:14:54+00:00</reservationEnd>
+    <motivation>Scanning electron microscopy (SEM) images of porous anodized aluminum oxide (PAAO) samples. The samples were made by anodization of aluminum monocrystal in 0.3 mol/L oxalic acid at 40 V for: 3 min 16 s (AJ-1), 3 min 37 s (AJ-2), 4 min 8 s (AJ-3), 4 min 30 s (AJ-4), 4 min 57 s (AJ-5).
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.5905496"&gt;https://doi.org/10.5281/zenodo.5905496&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>5905496</name>
+    <description>SEM images of PAAO samples (AJ series 1-to-5).</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T12:14:32+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">20000.0</param>
+      <param name="Acquisition Date">11/17/2021</param>
+      <param name="Aperture Type">manual</param>
+      <param name="Beam Mode">N-Beam</param>
+      <param name="Beam Name">EBeam</param>
+      <param name="Beam Shift X">0.0</param>
+      <param name="Beam Shift Y">0.0</param>
+      <param name="Beam Tilt X">0.0</param>
+      <param name="Beam Tilt Y">0.0</param>
+      <param name="Chamber ID">XL30SB</param>
+      <param name="Column Type">FEG SEM</param>
+      <param name="Data Dimensions">(2048, 1768)</param>
+      <param name="Data Type">SEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Detector Grid Voltage" unit="volt">250.0</param>
+      <param name="Detector Mix (%)">100.0</param>
+      <param name="Detector Name">ETD</param>
+      <param name="Detector Signal">SE</param>
+      <param name="Device Number">D8634</param>
+      <param name="Digital Brightness">0.0</param>
+      <param name="Digital Contrast">1.0</param>
+      <param name="Digital Gamma">1.0</param>
+      <param name="Dwell Time" unit="second">0.0000020</param>
+      <param name="Dynamic Focus Enabled">False</param>
+      <param name="ESEM Setting">yes</param>
+      <param name="Electron Source">FEG</param>
+      <param name="Eucentric WD" unit="meter">0.010</param>
+      <param name="Final Lens">S45</param>
+      <param name="Frame Average">0.0</param>
+      <param name="Image Mode">Normal</param>
+      <param name="Internal Scan">True</param>
+      <param name="Line Integration">4.0</param>
+      <param name="Line Time" unit="second">0.020</param>
+      <param name="Magnification Canvas Real Width">0.256</param>
+      <param name="Magnification Mode">2.0</param>
+      <param name="Mainslock">On</param>
+      <param name="Minimum Dwell Time" unit="second">1.0E-7</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.quanta_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operator">support</param>
+      <param name="Post Processing">None</param>
+      <param name="Pre-Tilt">0.0</param>
+      <param name="Scan Interlacing">1.0</param>
+      <param name="Scan Rotation" unit="degree">0.0</param>
+      <param name="Screen Magnification Canvas Real Width">0.256</param>
+      <param name="Screen Magnification Mode">2.0</param>
+      <param name="Software Version">4.1.4.2010 (build 2010)</param>
+      <param name="Spot Size">4.0</param>
+      <param name="Stage Description">50 x 50 manual tilt</param>
+      <param name="Stage Position – R">0.606479</param>
+      <param name="Stage Position – β">0.0</param>
+      <param name="System Type">Quanta FEG</param>
+      <param name="Tilt Correction Enabled">False</param>
+      <param name="Total Frame Time" unit="second">35.420</param>
+      <param name="User Text">Quanta 200 FEG</param>
+      <param name="Vacuum Gas">Wet</param>
+      <param name="Vacuum Mode">High vacuum</param>
+      <param name="Vacuum Pump">TMP</param>
+      <param name="Zoom Factor">1.0</param>
+      <param name="Zoom Pan X">0.5</param>
+      <param name="Zoom Pan Y">0.5</param>
+      <param name="warnings">['Operator']</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-1-04-20-100000x.tif</name>
+      <location>/5905496/AJ-1-04-20-100000x.tif</location>
+      <format>TIF</format>
+      <description>SEM image of porous anodized aluminum (AJ-1) at 100,000×</description>
+      <preview>/5905496/AJ-1-04-20-100000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:33:58 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">4.16157000</meta>
+      <meta name="Detector Brightness (DB)">-2.42723</meta>
+      <meta name="Detector Brightness Setting">39.8871</meta>
+      <meta name="Detector Contrast (DB)">52.9645</meta>
+      <meta name="Detector Contrast Setting">87.4376</meta>
+      <meta name="Emission Current" unit="ampere">0.000120</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002560</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:53.135905-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.250E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.250E-9</meta>
+      <meta name="Stage Position – X">0.000457437</meta>
+      <meta name="Stage Position – Y">0.000289805</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000439372</meta>
+      <meta name="Stigmator Y Value">-9.85494e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000002210</meta>
+      <meta name="Working Distance" unit="meter">0.008159830</meta>
+      <meta name="Creation Time">2026-03-27T12:14:52+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-1-04-20-200000x.tif</name>
+      <location>/5905496/AJ-1-04-20-200000x.tif</location>
+      <format>TIF</format>
+      <description>SEM image of porous anodized aluminum (AJ-1) at 200,000×</description>
+      <preview>/5905496/AJ-1-04-20-200000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:37:23 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">2.53632000</meta>
+      <meta name="Detector Brightness (DB)">-6.55723</meta>
+      <meta name="Detector Brightness Setting">22.6785</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001120</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001280</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:03.755670-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.250E-10</meta>
+      <meta name="Pixel Width" unit="meter">6.250E-10</meta>
+      <meta name="Stage Position – X">0.000484812</meta>
+      <meta name="Stage Position – Y">0.000292459</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00285525</meta>
+      <meta name="Stigmator X Value">0.000439372</meta>
+      <meta name="Stigmator Y Value">-9.85494e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.0000011050</meta>
+      <meta name="Working Distance" unit="meter">0.008162010</meta>
+      <meta name="Creation Time">2026-03-27T12:14:50+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-1-04-20-50000x.tif</name>
+      <location>/5905496/AJ-1-04-20-50000x.tif</location>
+      <format>TIF</format>
+      <description>SEM image of porous anodized aluminum (AJ-1) at 50,000×</description>
+      <preview>/5905496/AJ-1-04-20-50000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:35:57 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">3.03672000</meta>
+      <meta name="Detector Brightness (DB)">-6.55723</meta>
+      <meta name="Detector Brightness Setting">22.6785</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001120</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000005120</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:05.685544-06:00</meta>
+      <meta name="Pixel Height" unit="meter">2.50E-9</meta>
+      <meta name="Pixel Width" unit="meter">2.50E-9</meta>
+      <meta name="Stage Position – X">0.000478187</meta>
+      <meta name="Stage Position – Y">0.000289805</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000439372</meta>
+      <meta name="Stigmator Y Value">-9.85494e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000004420</meta>
+      <meta name="Working Distance" unit="meter">0.008159830</meta>
+      <meta name="Creation Time">2026-03-27T12:14:48+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-2-04-20-100000x.tif</name>
+      <location>/5905496/AJ-2-04-20-100000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-2-04-20-100000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:39:50 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">2.02512000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001160</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002560</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:46.713841-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.250E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.250E-9</meta>
+      <meta name="Stage Position – X">0.0188409</meta>
+      <meta name="Stage Position – Y">0.00312697</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000439372</meta>
+      <meta name="Stigmator Y Value">-9.85494e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000002210</meta>
+      <meta name="Working Distance" unit="meter">0.008306350</meta>
+      <meta name="Creation Time">2026-03-27T12:14:54+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-2-04-20-200000x.tif</name>
+      <location>/5905496/AJ-2-04-20-200000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-2-04-20-200000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:48:51 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">1.03085000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001260</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001280</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:14.180606-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.250E-10</meta>
+      <meta name="Pixel Width" unit="meter">6.250E-10</meta>
+      <meta name="Stage Position – X">0.0188484</meta>
+      <meta name="Stage Position – Y">0.00313384</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00285525</meta>
+      <meta name="Stigmator X Value">0.000439372</meta>
+      <meta name="Stigmator Y Value">-9.85494e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.0000011050</meta>
+      <meta name="Working Distance" unit="meter">0.008306910</meta>
+      <meta name="Creation Time">2026-03-27T12:14:46+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-2-04-20-50000x.tif</name>
+      <location>/5905496/AJ-2-04-20-50000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-2-04-20-50000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:42:01 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">1.61696000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001140</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000005120</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:57.380119-06:00</meta>
+      <meta name="Pixel Height" unit="meter">2.50E-9</meta>
+      <meta name="Pixel Width" unit="meter">2.50E-9</meta>
+      <meta name="Stage Position – X">0.0188491</meta>
+      <meta name="Stage Position – Y">0.00313344</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000439372</meta>
+      <meta name="Stigmator Y Value">-9.85494e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000004420</meta>
+      <meta name="Working Distance" unit="meter">0.008306350</meta>
+      <meta name="Creation Time">2026-03-27T12:14:32+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-3-04-20-100000x.tif</name>
+      <location>/5905496/AJ-3-04-20-100000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-3-04-20-100000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:54:39 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.860984000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001180</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002560</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:42.567415-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.250E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.250E-9</meta>
+      <meta name="Stage Position – X">0.00774231</meta>
+      <meta name="Stage Position – Y">0.015709</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000509688</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000002210</meta>
+      <meta name="Working Distance" unit="meter">0.008268750</meta>
+      <meta name="Creation Time">2026-03-27T12:14:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-3-04-20-200000x.tif</name>
+      <location>/5905496/AJ-3-04-20-200000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-3-04-20-200000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:53:10 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.900628000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001260</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001280</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:09.996106-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.250E-10</meta>
+      <meta name="Pixel Width" unit="meter">6.250E-10</meta>
+      <meta name="Stage Position – X">0.00773819</meta>
+      <meta name="Stage Position – Y">0.0157068</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00369383</meta>
+      <meta name="Stigmator X Value">0.000509688</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.0000011050</meta>
+      <meta name="Working Distance" unit="meter">0.008268750</meta>
+      <meta name="Creation Time">2026-03-27T12:14:44+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-3-04-20-50000x.tif</name>
+      <location>/5905496/AJ-3-04-20-50000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-3-04-20-50000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:55:57 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.786854000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001140</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000005120</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:48.753345-06:00</meta>
+      <meta name="Pixel Height" unit="meter">2.50E-9</meta>
+      <meta name="Pixel Width" unit="meter">2.50E-9</meta>
+      <meta name="Stage Position – X">0.00773856</meta>
+      <meta name="Stage Position – Y">0.015721</meta>
+      <meta name="Stage Position – Z">0.00559602</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000509688</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000004420</meta>
+      <meta name="Working Distance" unit="meter">0.008268750</meta>
+      <meta name="Creation Time">2026-03-27T12:14:42+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-4-04-20-100000x.tif</name>
+      <location>/5905496/AJ-4-04-20-100000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-4-04-20-100000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">04:00:33 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.687454000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001140</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002560</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:50.917014-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.250E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.250E-9</meta>
+      <meta name="Stage Position – X">-0.00697806</meta>
+      <meta name="Stage Position – Y">0.0161805</meta>
+      <meta name="Stage Position – Z">0.00559597</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000342741</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000002210</meta>
+      <meta name="Working Distance" unit="meter">0.008292330</meta>
+      <meta name="Creation Time">2026-03-27T12:14:40+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-4-04-20-200000x.tif</name>
+      <location>/5905496/AJ-4-04-20-200000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-4-04-20-200000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">03:59:01 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.719107000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.000120</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001280</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:59.484414-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.250E-10</meta>
+      <meta name="Pixel Width" unit="meter">6.250E-10</meta>
+      <meta name="Stage Position – X">-0.00698794</meta>
+      <meta name="Stage Position – Y">0.0161783</meta>
+      <meta name="Stage Position – Z">0.00559597</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000342741</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.0000011050</meta>
+      <meta name="Working Distance" unit="meter">0.008292330</meta>
+      <meta name="Creation Time">2026-03-27T12:14:38+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-4-04-20-50000x.tif</name>
+      <location>/5905496/AJ-4-04-20-50000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-4-04-20-50000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">04:01:58 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.657193000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.000110</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000005120</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:07.806083-06:00</meta>
+      <meta name="Pixel Height" unit="meter">2.50E-9</meta>
+      <meta name="Pixel Width" unit="meter">2.50E-9</meta>
+      <meta name="Stage Position – X">-0.00696206</meta>
+      <meta name="Stage Position – Y">0.0161943</meta>
+      <meta name="Stage Position – Z">0.00559597</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000342741</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000004420</meta>
+      <meta name="Working Distance" unit="meter">0.008292330</meta>
+      <meta name="Creation Time">2026-03-27T12:14:36+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-5-04-27-100000x.tif</name>
+      <location>/5905496/AJ-5-04-27-100000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-5-04-27-100000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">04:06:16 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.574172000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001080</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000002560</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:01.704111-06:00</meta>
+      <meta name="Pixel Height" unit="meter">1.250E-9</meta>
+      <meta name="Pixel Width" unit="meter">1.250E-9</meta>
+      <meta name="Stage Position – X">-0.0173213</meta>
+      <meta name="Stage Position – Y">0.00104406</meta>
+      <meta name="Stage Position – Z">0.00559597</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000342741</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000002210</meta>
+      <meta name="Working Distance" unit="meter">0.008169030</meta>
+      <meta name="Creation Time">2026-03-27T12:14:34+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-5-04-27-200000x.tif</name>
+      <location>/5905496/AJ-5-04-27-200000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-5-04-27-200000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">04:05:20 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.60061000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.0001080</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000001280</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:30:55.174460-06:00</meta>
+      <meta name="Pixel Height" unit="meter">6.250E-10</meta>
+      <meta name="Pixel Width" unit="meter">6.250E-10</meta>
+      <meta name="Stage Position – X">-0.0173288</meta>
+      <meta name="Stage Position – Y">0.00104406</meta>
+      <meta name="Stage Position – Z">0.00559597</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000342741</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.0000011050</meta>
+      <meta name="Working Distance" unit="meter">0.008169030</meta>
+      <meta name="Creation Time">2026-03-27T12:14:32+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>AJ-5-04-27-50000x.tif</name>
+      <location>/5905496/AJ-5-04-27-50000x.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/5905496/AJ-5-04-27-50000x.tif.thumb.png</preview>
+      <meta name="Acquisition Time">04:07:07 PM</meta>
+      <meta name="Chamber Pressure" unit="millipascal">0.574172000</meta>
+      <meta name="Detector Brightness (DB)">-8.87723</meta>
+      <meta name="Detector Brightness Setting">13.0117</meta>
+      <meta name="Detector Contrast (DB)">65.0702</meta>
+      <meta name="Detector Contrast Setting">98.1656</meta>
+      <meta name="Emission Current" unit="ampere">0.000110</meta>
+      <meta name="Horizontal Field Width" unit="meter">0.000005120</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-26T23:31:12.123086-06:00</meta>
+      <meta name="Pixel Height" unit="meter">2.50E-9</meta>
+      <meta name="Pixel Width" unit="meter">2.50E-9</meta>
+      <meta name="Stage Position – X">-0.0173168</meta>
+      <meta name="Stage Position – Y">0.0010479</meta>
+      <meta name="Stage Position – Z">0.00559597</meta>
+      <meta name="Stage Position – α">-0.00327454</meta>
+      <meta name="Stigmator X Value">0.000342741</meta>
+      <meta name="Stigmator Y Value">-9.26854e-05</meta>
+      <meta name="Vertical Field Width" unit="meter">0.000004420</meta>
+      <meta name="Working Distance" unit="meter">0.008169030</meta>
+      <meta name="Creation Time">2026-03-27T12:14:32+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

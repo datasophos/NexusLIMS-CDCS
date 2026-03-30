@@ -1,0 +1,776 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Data and scripts associated with "Quantification of STEM-in-SEM Energy Dispersive X-ray Spectra using Bulk Standards"</title>
+  <summary ref="https://data.nist.gov/od/id/mds2-2975">
+    <experimenter>David Osei</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2022-12-13T19:36:50+00:00</reservationStart>
+    <reservationEnd>2023-04-04T17:28:00-06:00</reservationEnd>
+    <motivation>Spectra measured from SRM-2063a and standards at 20 keV, 25 keV and 30 keV. Scripts for processing this data.
+
+Data source: &lt;a href="https://doi.org/10.18434/mds2-2975"&gt;https://doi.org/10.18434/mds2-2975&lt;/a&gt;
+
+U.S. Government work (public domain).</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>mds2-2975</name>
+    <description>PDR- Data and scripts associated with "Quantification of STEM-in-SEM Energy Dispersive X-ray Spectra using Bulk Standards".</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2023-04-04T17:28:00-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="volt">200000.0</param>
+      <param name="Acquisition Device">US1000FT 1</param>
+      <param name="Analytic Acquisition Mode">Parallel dispersive</param>
+      <param name="Analytic Format">Spectrum</param>
+      <param name="Analytic Signal">EELS</param>
+      <param name="Binning (Horizontal)">2</param>
+      <param name="Binning (Vertical)">2</param>
+      <param name="Camera/Detector Processing">Gain Normalized</param>
+      <param name="Cs" unit="millimeter">1.0</param>
+      <param name="Data Dimensions">(1024,)</param>
+      <param name="Data Type">STEM_EELS</param>
+      <param name="DatasetType">Spectrum</param>
+      <param name="Detector">GIF CCD</param>
+      <param name="EELS – Collection semi-angle" unit="milliradian">16.66699981689453</param>
+      <param name="EELS – Convergence semi-angle" unit="milliradian">13.699999809265137</param>
+      <param name="EELS – Exposure" unit="second">0.13051692</param>
+      <param name="EELS – Integration time" unit="second">1.3051692000000001</param>
+      <param name="EELS – Number of frames">10</param>
+      <param name="Exposure Time" unit="second">0.13051692</param>
+      <param name="GMS Version">2.32.888.0</param>
+      <param name="Illumination Mode">STEM NANOPROBE</param>
+      <param name="Imaging Mode">DIFFRACTION</param>
+      <param name="Indicated Magnification">40000.0</param>
+      <param name="Microscope">Titan80-300_D3094</param>
+      <param name="Name">FEI Tecnai Remote</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Operation Mode">SCANNING</param>
+      <param name="Operator">DMR</param>
+      <param name="STEM Camera Length" unit="millimeter">48.0</param>
+      <param name="Specimen">Pt-Sb</param>
+      <param name="Stage Position – Tilt Alpha" unit="degree">0.0</param>
+      <param name="Stage Position – Tilt Beta" unit="degree">0.0</param>
+      <param name="Stage Position – z" unit="millimeter">-0.02796</param>
+    </setup>
+    <dataset type="Spectrum" role="Experimental">
+      <name>LL_EELS_001.dm3</name>
+      <location>/mds2-2975/EELS Data Processing/LL_EELS_001.dm3</location>
+      <format>DM3</format>
+      <description>Low-loss EELS spectrum for thickness measurement, Pt-Sb sample</description>
+      <preview>/mds2-2975/EELS Data Processing/LL_EELS_001.dm3.thumb.png</preview>
+      <meta name="EELS – Processing Steps">Calibrated Post-acquisition, Compute Thickness</meta>
+      <meta name="EELS – Thickness (absolute) [nm]">85.35244750976562</meta>
+      <meta name="EELS – Thickness (absolute) mean free path">140.54660034179688</meta>
+      <meta name="EELS – Thickness (relative) [t/λ]">0.6072893142700195</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:39.847848-06:00</meta>
+      <meta name="Stage Position – x" unit="micrometer">-0.039</meta>
+      <meta name="Stage Position – y" unit="micrometer">5.554399999999999</meta>
+      <meta name="Creation Time">2023-04-04T17:28:00-06:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>LL_EELS_002.dm3</name>
+      <location>/mds2-2975/EELS Data Processing/LL_EELS_002.dm3</location>
+      <format>DM3</format>
+      <description>Low-loss EELS spectrum for thickness measurement, Pt-Sb sample</description>
+      <preview>/mds2-2975/EELS Data Processing/LL_EELS_002.dm3.thumb.png</preview>
+      <meta name="EELS – Processing Steps">Compute Thickness</meta>
+      <meta name="EELS – Thickness (absolute) [nm]">61.16630935668945</meta>
+      <meta name="EELS – Thickness (absolute) mean free path">100.35478973388672</meta>
+      <meta name="EELS – Thickness (relative) [t/λ]">0.6095006465911865</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:39.831500-06:00</meta>
+      <meta name="Stage Position – x" unit="micrometer">2.3985</meta>
+      <meta name="Stage Position – y" unit="micrometer">5.5806000000000004</meta>
+      <meta name="Creation Time">2023-04-04T17:28:00-06:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>LL_EELS_003.dm3</name>
+      <location>/mds2-2975/EELS Data Processing/LL_EELS_003.dm3</location>
+      <format>DM3</format>
+      <description>Low-loss EELS spectrum for thickness measurement, Pt-Sb sample</description>
+      <preview>/mds2-2975/EELS Data Processing/LL_EELS_003.dm3.thumb.png</preview>
+      <meta name="EELS – Processing Steps">Compute Thickness</meta>
+      <meta name="EELS – Thickness (absolute) [nm]">61.52022171020508</meta>
+      <meta name="EELS – Thickness (absolute) mean free path">100.35478973388672</meta>
+      <meta name="EELS – Thickness (relative) [t/λ]">0.6130272746086121</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:39.889350-06:00</meta>
+      <meta name="Stage Position – x" unit="micrometer">5.186999999999999</meta>
+      <meta name="Stage Position – y" unit="micrometer">3.4584</meta>
+      <meta name="Creation Time">2023-04-04T17:28:00-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2022-12-13T19:36:50+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Channel Offset">0.0</param>
+      <param name="Data Format">Y</param>
+      <param name="Data Type">EDS_Spectrum</param>
+      <param name="DatasetType">Spectrum</param>
+      <param name="EDAX Owner">Unknown</param>
+      <param name="File Format">EMSA/MAS Spectral Data File</param>
+      <param name="MSA Format Version">1.0</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.msa_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Number of Data Columns">1.0</param>
+      <param name="Number of Data Points">4096.0</param>
+      <param name="Offset">1.69135</param>
+      <param name="Signal Type">EDS</param>
+      <param name="X Column Label">Energy (eV)</param>
+      <param name="X Column Units">eV</param>
+      <param name="X Units Per Channel">9.99778</param>
+      <param name="Y Column Label">Counts</param>
+      <param name="Y Column Units">counts</param>
+    </setup>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Al2O3 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Al2O3 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Al2O3 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:53</meta>
+      <meta name="EDAX Title">Al2O3 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:48.781674-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:05:22+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>C std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/C std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/C std.msa.thumb.png</preview>
+      <meta name="EDAX Date">14-DEC-2022</meta>
+      <meta name="EDAX Time">09:52</meta>
+      <meta name="EDAX Title">C std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:48.970731-06:00</meta>
+      <meta name="Creation Time">2022-12-14T18:00:40+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>CaF2 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/CaF2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/CaF2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">03:16</meta>
+      <meta name="EDAX Title">CaF2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:53.528118-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:04:06+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Cu std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Cu std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Cu std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">03:04</meta>
+      <meta name="EDAX Title">Cu std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:47.688077-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:04:48+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Fe std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Fe std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Fe std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">03:11</meta>
+      <meta name="EDAX Title">Fe std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:48.056502-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:04:22+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>MgO std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/MgO std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/MgO std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">03:23</meta>
+      <meta name="EDAX Title">MgO std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:39.671145-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:03:38+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[0][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[0][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[0][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:49</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[0][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.234473-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:50:36+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[1][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[1][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[1][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:50</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[1][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.587847-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:51:38+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[2][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[2][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[2][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:51</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[2][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.144077-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:52:42+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[3][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[3][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[3][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:52</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[3][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.242397-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:53:44+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[4][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[4][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[4][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:53</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[4][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.173385-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:54:46+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[5][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[5][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[5][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:54</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[5][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.266874-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:55:52+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[6][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[6][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[6][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:55</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[6][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.133461-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:56:54+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[7][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[7][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[7][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:56</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[7][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.346242-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:57:56+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[8][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[8][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[8][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:57</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[8][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.256355-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:58:58+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[9][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[9][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SRM-2063a SRM-2063a[9][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:58</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[9][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:35.132996-06:00</meta>
+      <meta name="Creation Time">2022-12-13T21:00:00+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SiO2 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SiO2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/SiO2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:59</meta>
+      <meta name="EDAX Title">SiO2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:47.864717-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:05:02+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Ti std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Ti std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/20 keV/Ti std.msa.thumb.png</preview>
+      <meta name="EDAX Date">14-DEC-2022</meta>
+      <meta name="EDAX Time">09:58</meta>
+      <meta name="EDAX Title">Ti std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:40.101480-06:00</meta>
+      <meta name="Creation Time">2022-12-14T18:00:22+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Al2O3 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Al2O3 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Al2O3 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:08</meta>
+      <meta name="EDAX Title">Al2O3 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:03.256312-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:07:20+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>C std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/C std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/C std.msa.thumb.png</preview>
+      <meta name="EDAX Date">14-DEC-2022</meta>
+      <meta name="EDAX Time">09:38</meta>
+      <meta name="EDAX Title">C std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:04.414258-06:00</meta>
+      <meta name="Creation Time">2022-12-14T18:03:04+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>CaF2 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/CaF2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/CaF2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:32</meta>
+      <meta name="EDAX Title">CaF2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:04.024999-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:06:20+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Cu std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Cu std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Cu std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:20</meta>
+      <meta name="EDAX Title">Cu std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:02.769465-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:06:52+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Fe std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Fe std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Fe std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:26</meta>
+      <meta name="EDAX Title">Fe std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:03.012515-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:06:36+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>MgO std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/MgO std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/MgO std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:38</meta>
+      <meta name="EDAX Title">MgO std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:55.051422-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:06:00+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[0][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[0][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[0][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:32</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[0][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.349710-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:33:34+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[1][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[1][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[1][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:33</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[1][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.340988-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:34:36+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[2][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[2][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[2][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:34</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[2][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.347523-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:35:38+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[3][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[3][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[3][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:35</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[3][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.380948-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:36:42+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[4][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[4][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[4][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:36</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[4][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:46.187759-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:37:44+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[5][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[5][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[5][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:37</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[5][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.549258-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:38:48+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[6][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[6][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[6][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:38</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[6][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.412033-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:39:50+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[7][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[7][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[7][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:39</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[7][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.387595-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:40:54+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[8][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[8][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[8][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:40</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[8][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.407672-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:41:56+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[9][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[9][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SRM-2063a SRM-2063a[9][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">00:41</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[9][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:45.344933-06:00</meta>
+      <meta name="Creation Time">2022-12-13T20:42:58+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SiO2 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SiO2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/SiO2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">02:14</meta>
+      <meta name="EDAX Title">SiO2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:55.445533-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:07:06+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Ti std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Ti std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/25 keV/Ti std.msa.thumb.png</preview>
+      <meta name="EDAX Date">14-DEC-2022</meta>
+      <meta name="EDAX Time">09:44</meta>
+      <meta name="EDAX Title">Ti std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:53:53.528369-06:00</meta>
+      <meta name="Creation Time">2022-12-14T18:00:56+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Al2O3 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Al2O3 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Al2O3 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">01:24</meta>
+      <meta name="EDAX Title">Al2O3 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:18.029381-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:09:02+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>C std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/C std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/C std.msa.thumb.png</preview>
+      <meta name="EDAX Date">14-DEC-2022</meta>
+      <meta name="EDAX Time">09:25</meta>
+      <meta name="EDAX Title">C std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:18.194678-06:00</meta>
+      <meta name="Creation Time">2022-12-14T18:03:36+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>CaF2 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/CaF2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/CaF2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">01:49</meta>
+      <meta name="EDAX Title">CaF2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:18.298547-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:08:06+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Cu std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Cu std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Cu std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">01:37</meta>
+      <meta name="EDAX Title">Cu std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:13.971850-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:08:36+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Fe std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Fe std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Fe std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">01:43</meta>
+      <meta name="EDAX Title">Fe std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:17.842179-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:08:20+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>MgO std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/MgO std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/MgO std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">01:55</meta>
+      <meta name="EDAX Title">MgO std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:12.328100-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:07:44+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[0][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[0][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[0][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:35</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[0][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:55.313529-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:36:50+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[1][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[1][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[1][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:36</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[1][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:55.330612-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:37:52+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[2][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[2][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[2][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:37</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[2][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:55.799202-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:38:54+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[3][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[3][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[3][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:38</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[3][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:19:20.472721-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:39:56+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[4][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[4][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[4][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:39</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[4][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:56.188841-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:40:58+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[5][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[5][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[5][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:41</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[5][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:56.121807-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:42:04+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[6][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[6][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[6][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:42</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[6][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:56.025904-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:43:06+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[7][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[7][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[7][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:43</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[7][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:56.133986-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:44:08+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[8][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[8][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[8][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:44</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[8][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:55.344316-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:45:12+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SRM-2063a SRM-2063a[9][4].msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[9][4].msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SRM-2063a SRM-2063a[9][4].msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">11:45</meta>
+      <meta name="EDAX Title">SRM-2063a SRM-2063a[9][all]</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T18:23:55.263809-06:00</meta>
+      <meta name="Creation Time">2022-12-13T19:46:14+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>SiO2 std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SiO2 std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/SiO2 std.msa.thumb.png</preview>
+      <meta name="EDAX Date">13-DEC-2022</meta>
+      <meta name="EDAX Time">01:30</meta>
+      <meta name="EDAX Title">SiO2 std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:12.447489-06:00</meta>
+      <meta name="Creation Time">2022-12-14T17:08:50+00:00</meta>
+    </dataset>
+    <dataset type="Spectrum" role="Experimental">
+      <name>Ti std.msa</name>
+      <location>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Ti std.msa</location>
+      <format>MSA</format>
+      <description/>
+      <preview>/mds2-2975/SRM-2063a/SRM-2063a/30 keV/Ti std.msa.thumb.png</preview>
+      <meta name="EDAX Date">14-DEC-2022</meta>
+      <meta name="EDAX Time">09:31</meta>
+      <meta name="EDAX Title">Ti std</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:54:09.915947-06:00</meta>
+      <meta name="Creation Time">2022-12-14T18:03:18+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

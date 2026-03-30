@@ -1,0 +1,1152 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>Virus – calcium carbonate composites: Possible mechanisms of bacteriophage-induced vaterite formation - Dataset</title>
+  <summary ref="https://zenodo.org/records/11159734">
+    <experimenter>Yuki Tanaka</experimenter>
+    <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+    <reservationStart>2024-01-31T19:43:14+00:00</reservationStart>
+    <reservationEnd>2024-01-31T19:43:38+00:00</reservationEnd>
+    <motivation>Raw data (optical microscopy, electron microscopy, X-ray diffraction) from carbonate precipitation experiments in the presence of bacterial viruses.
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.11159734"&gt;https://doi.org/10.5281/zenodo.11159734&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>11159734 1</name>
+    <description>Virus – calcium carbonate composites- Possible mechanisms of bacteriophage-induced vaterite formation - Dataset.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-31T19:43:14+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="kilovolt">200.0</param>
+      <param name="Emission" unit="uA">41.0</param>
+      <param name="Extraction voltage" unit="V">4500</param>
+      <param name="Filter mode"></param>
+      <param name="Gun lens">3</param>
+      <param name="Gun type">FEG</param>
+      <param name="Image shift X" unit="um">0.000</param>
+      <param name="Image shift Y" unit="um">0.000</param>
+      <param name="Microscope">Microscope Tecnai 200 kV D2211 XTwin</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.fei_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Spot size">2</param>
+      <param name="Stage Position – Tilt Beta" unit="degree">0.0</param>
+      <param name="User">SUPERVISOR</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_1.tif</location>
+      <format>TIF</format>
+      <description>Bright-field TEM image of calcium carbonate/virus composite, 6,300×</description>
+      <preview>/11159734_1/T0/P1_initial/BF_1.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-11.402</meta>
+      <meta name="Diffraction lens" unit="%">41.122</meta>
+      <meta name="Intensity" unit="%">57.988</meta>
+      <meta name="Magnification" unit="x">6300</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:18.881780-06:00</meta>
+      <meta name="Objective lens" unit="%">96.781</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">307.693</meta>
+      <meta name="Stage Position – y" unit="micrometer">-151.271</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1a.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_1a.tif</location>
+      <format>TIF</format>
+      <description>Bright-field TEM image of calcium carbonate/virus composite, 13,500×</description>
+      <preview>/11159734_1/T0/P1_initial/BF_1a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-11.254</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">53.551</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:16.800178-06:00</meta>
+      <meta name="Objective lens" unit="%">96.788</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">307.442</meta>
+      <meta name="Stage Position – y" unit="micrometer">-151.542</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2.tif</location>
+      <format>TIF</format>
+      <description>Bright-field TEM image of calcium carbonate/virus composite, 6,300×</description>
+      <preview>/11159734_1/T0/P1_initial/BF_2.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-10.989</meta>
+      <meta name="Diffraction lens" unit="%">41.122</meta>
+      <meta name="Intensity" unit="%">57.431</meta>
+      <meta name="Magnification" unit="x">6300</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:12.540796-06:00</meta>
+      <meta name="Objective lens" unit="%">96.801</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">312.605</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.189</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2a.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-10.488</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">53.492</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:50.946316-06:00</meta>
+      <meta name="Objective lens" unit="%">96.825</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">313.665</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.284</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2b.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.978</meta>
+      <meta name="Diffraction lens" unit="%">66.144</meta>
+      <meta name="Intensity" unit="%">50.902</meta>
+      <meta name="Magnification" unit="x">64000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:48.862359-06:00</meta>
+      <meta name="Objective lens" unit="%">97.528</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">315.203</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.574</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2c+saed.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2c+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2c+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">4.157</meta>
+      <meta name="Diffraction lens" unit="%">62.124</meta>
+      <meta name="Intensity" unit="%">51.049</meta>
+      <meta name="Magnification" unit="x">39000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:27.462246-06:00</meta>
+      <meta name="Objective lens" unit="%">97.537</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">313.839</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.587</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:16+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2c.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2c.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2c.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">4.157</meta>
+      <meta name="Diffraction lens" unit="%">62.124</meta>
+      <meta name="Intensity" unit="%">51.049</meta>
+      <meta name="Magnification" unit="x">39000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:42.393915-06:00</meta>
+      <meta name="Objective lens" unit="%">97.537</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">313.839</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.587</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:16+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2d.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2d.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2d.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.083</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">51.723</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:36.071268-06:00</meta>
+      <meta name="Objective lens" unit="%">97.484</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">311.949</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.682</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:16+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2e.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2e.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2e.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.577</meta>
+      <meta name="Diffraction lens" unit="%">66.078</meta>
+      <meta name="Intensity" unit="%">50.472</meta>
+      <meta name="Magnification" unit="x">88000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:33.857146-06:00</meta>
+      <meta name="Objective lens" unit="%">97.508</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">312.295</meta>
+      <meta name="Stage Position – y" unit="micrometer">-191.165</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:16+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2f+saed.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2f+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2f+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.774</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.691</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:44.506596-06:00</meta>
+      <meta name="Objective lens" unit="%">97.518</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">311.782</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.496</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:16+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2f.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_2f.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_2f.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.774</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.691</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:38.184827-06:00</meta>
+      <meta name="Objective lens" unit="%">97.518</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">311.782</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.496</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_3.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_3.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_3.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.399</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.847</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:14.604532-06:00</meta>
+      <meta name="Objective lens" unit="%">97.500</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">510.884</meta>
+      <meta name="Stage Position – y" unit="micrometer">512.426</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_4.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_4.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_4.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-9.728</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">53.756</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:23.090375-06:00</meta>
+      <meta name="Objective lens" unit="%">97.027</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">596.706</meta>
+      <meta name="Stage Position – y" unit="micrometer">733.497</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_4a.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_4a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_4a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">0.554</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">51.743</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:59.767669-06:00</meta>
+      <meta name="Objective lens" unit="%">97.527</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">597.681</meta>
+      <meta name="Stage Position – y" unit="micrometer">733.191</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_5.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_5.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_5.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-5.692</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">53.062</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:25.179843-06:00</meta>
+      <meta name="Objective lens" unit="%">97.223</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">592.309</meta>
+      <meta name="Stage Position – y" unit="micrometer">737.393</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_6.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_6.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-5.692</meta>
+      <meta name="Diffraction lens" unit="%">35.039</meta>
+      <meta name="Intensity" unit="%">60.392</meta>
+      <meta name="Magnification" unit="x">4500</meta>
+      <meta name="Mode">TEM uP Mi Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:31.798531-06:00</meta>
+      <meta name="Objective lens" unit="%">97.109</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">634.811</meta>
+      <meta name="Stage Position – y" unit="micrometer">876.048</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:18+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6a.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_6a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_6a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-4.690</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.671</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:06.225671-06:00</meta>
+      <meta name="Objective lens" unit="%">97.272</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">636.836</meta>
+      <meta name="Stage Position – y" unit="micrometer">875.995</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6b+saed.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_6b+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_6b+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-4.690</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.671</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:55.298772-06:00</meta>
+      <meta name="Objective lens" unit="%">97.272</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">634.156</meta>
+      <meta name="Stage Position – y" unit="micrometer">876.372</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6b.tif</name>
+      <location>/11159734_1/T0/P1_initial/BF_6b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/BF_6b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-4.690</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.671</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:10.400920-06:00</meta>
+      <meta name="Objective lens" unit="%">97.272</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">634.156</meta>
+      <meta name="Stage Position – y" unit="micrometer">876.372</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>FFT_HR2_bf2b.tif</name>
+      <location>/11159734_1/T0/P1_initial/FFT_HR2_bf2b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/FFT_HR2_bf2b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">4.145</meta>
+      <meta name="Diffraction lens" unit="%">92.762</meta>
+      <meta name="Intensity" unit="%">49.642</meta>
+      <meta name="Magnification" unit="x">530000</meta>
+      <meta name="Mode">TEM uP Mh Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:08.328775-06:00</meta>
+      <meta name="Objective lens" unit="%">97.348</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">314.874</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.917</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>HR1_bf2b.tif</name>
+      <location>/11159734_1/T0/P1_initial/HR1_bf2b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/HR1_bf2b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">3.904</meta>
+      <meta name="Diffraction lens" unit="%">65.910</meta>
+      <meta name="Intensity" unit="%">49.993</meta>
+      <meta name="Magnification" unit="x">360000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:29.671822-06:00</meta>
+      <meta name="Objective lens" unit="%">97.524</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">314.922</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.89</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:20+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>HR2_bf2b.tif</name>
+      <location>/11159734_1/T0/P1_initial/HR2_bf2b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/HR2_bf2b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">4.145</meta>
+      <meta name="Diffraction lens" unit="%">92.762</meta>
+      <meta name="Intensity" unit="%">49.642</meta>
+      <meta name="Magnification" unit="x">530000</meta>
+      <meta name="Mode">TEM uP Mh Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:53.122882-06:00</meta>
+      <meta name="Objective lens" unit="%">97.348</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">314.874</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.917</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:22+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED1_bf6b.tif</name>
+      <location>/11159734_1/T0/P1_initial/SAED1_bf6b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/SAED1_bf6b.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.776</meta>
+      <meta name="Intensity" unit="%">54.147</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:57.637797-06:00</meta>
+      <meta name="Objective lens" unit="%">97.272</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">633.553</meta>
+      <meta name="Stage Position – y" unit="micrometer">875.343</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:22+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED2_bf6b.tif</name>
+      <location>/11159734_1/T0/P1_initial/SAED2_bf6b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/SAED2_bf6b.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.776</meta>
+      <meta name="Intensity" unit="%">50.648</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:20.981055-06:00</meta>
+      <meta name="Objective lens" unit="%">97.272</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">634.519</meta>
+      <meta name="Stage Position – y" unit="micrometer">875.821</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:22+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED_bf2c.tif</name>
+      <location>/11159734_1/T0/P1_initial/SAED_bf2c.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/SAED_bf2c.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.776</meta>
+      <meta name="Intensity" unit="%">51.733</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:46.770465-06:00</meta>
+      <meta name="Objective lens" unit="%">97.537</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">313.699</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.762</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:22+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED_bf2f.tif</name>
+      <location>/11159734_1/T0/P1_initial/SAED_bf2f.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/P1_initial/SAED_bf2f.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.776</meta>
+      <meta name="Intensity" unit="%">61.956</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:40.225210-06:00</meta>
+      <meta name="Objective lens" unit="%">97.518</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">-2.35</meta>
+      <meta name="Stage Position – x" unit="micrometer">311.763</meta>
+      <meta name="Stage Position – y" unit="micrometer">-190.985</meta>
+      <meta name="Stage Position – z" unit="micrometer">37.466</meta>
+      <meta name="Creation Time">2024-01-31T19:43:22+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">4.524</meta>
+      <meta name="Diffraction lens" unit="%">48.107</meta>
+      <meta name="Intensity" unit="%">55.291</meta>
+      <meta name="Magnification" unit="x">8900</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:21.238449-06:00</meta>
+      <meta name="Objective lens" unit="%">97.720</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-309.434</meta>
+      <meta name="Stage Position – y" unit="micrometer">-308.598</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:22+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1a+saed.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1a+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1a+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">39.637</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">51.645</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:02.027610-06:00</meta>
+      <meta name="Objective lens" unit="%">99.425</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-309.535</meta>
+      <meta name="Stage Position – y" unit="micrometer">-309.609</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1a.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">39.637</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">51.645</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:17.110525-06:00</meta>
+      <meta name="Objective lens" unit="%">99.425</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-309.535</meta>
+      <meta name="Stage Position – y" unit="micrometer">-309.609</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1b+saed.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1b+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1b+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">41.464</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">47.413</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:40.725564-06:00</meta>
+      <meta name="Objective lens" unit="%">99.514</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-311.197</meta>
+      <meta name="Stage Position – y" unit="micrometer">-307.702</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1b.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">41.464</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">47.413</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:23.394966-06:00</meta>
+      <meta name="Objective lens" unit="%">99.514</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-311.197</meta>
+      <meta name="Stage Position – y" unit="micrometer">-307.702</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1c+saed.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1c+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1c+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">43.349</meta>
+      <meta name="Diffraction lens" unit="%">66.078</meta>
+      <meta name="Intensity" unit="%">50.130</meta>
+      <meta name="Magnification" unit="x">88000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:42.935463-06:00</meta>
+      <meta name="Objective lens" unit="%">99.606</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-314.296</meta>
+      <meta name="Stage Position – y" unit="micrometer">-309.306</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:24+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1c.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_1c.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_1c.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">43.349</meta>
+      <meta name="Diffraction lens" unit="%">66.078</meta>
+      <meta name="Intensity" unit="%">50.130</meta>
+      <meta name="Magnification" unit="x">88000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:19.189044-06:00</meta>
+      <meta name="Objective lens" unit="%">99.606</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-314.296</meta>
+      <meta name="Stage Position – y" unit="micrometer">-309.306</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_2.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_2.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">24.066</meta>
+      <meta name="Diffraction lens" unit="%">60.026</meta>
+      <meta name="Intensity" unit="%">51.479</meta>
+      <meta name="Magnification" unit="x">26500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:12.963217-06:00</meta>
+      <meta name="Objective lens" unit="%">98.669</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">100.035</meta>
+      <meta name="Stage Position – y" unit="micrometer">694.184</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_3.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_3.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_3.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">23.182</meta>
+      <meta name="Diffraction lens" unit="%">48.107</meta>
+      <meta name="Intensity" unit="%">54.147</meta>
+      <meta name="Magnification" unit="x">8900</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:15.037040-06:00</meta>
+      <meta name="Objective lens" unit="%">98.626</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">377.589</meta>
+      <meta name="Stage Position – y" unit="micrometer">682.538</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_4.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_4.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_4.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">16.258</meta>
+      <meta name="Diffraction lens" unit="%">61.481</meta>
+      <meta name="Intensity" unit="%">51.098</meta>
+      <meta name="Magnification" unit="x">35000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:25.392409-06:00</meta>
+      <meta name="Objective lens" unit="%">98.290</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">711.371</meta>
+      <meta name="Stage Position – y" unit="micrometer">416.595</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_5.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_5.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_5.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">11.132</meta>
+      <meta name="Diffraction lens" unit="%">41.122</meta>
+      <meta name="Intensity" unit="%">58.144</meta>
+      <meta name="Magnification" unit="x">6300</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:27.504209-06:00</meta>
+      <meta name="Objective lens" unit="%">98.041</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">387.997</meta>
+      <meta name="Stage Position – y" unit="micrometer">-293.218</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_6.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_6.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">11.190</meta>
+      <meta name="Diffraction lens" unit="%">41.122</meta>
+      <meta name="Intensity" unit="%">58.144</meta>
+      <meta name="Magnification" unit="x">6300</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:29.910611-06:00</meta>
+      <meta name="Objective lens" unit="%">98.043</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">839.427</meta>
+      <meta name="Stage Position – y" unit="micrometer">79.401</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:26+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6a.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_6a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_6a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">11.190</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">55.515</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:04.393875-06:00</meta>
+      <meta name="Objective lens" unit="%">98.043</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">840.381</meta>
+      <meta name="Stage Position – y" unit="micrometer">81.028</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:28+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6b.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_6b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_6b.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">14.343</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.877</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:06.574572-06:00</meta>
+      <meta name="Objective lens" unit="%">98.197</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">839.851</meta>
+      <meta name="Stage Position – y" unit="micrometer">81.009</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:28+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_6c.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/BF_6c.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/BF_6c.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">23.477</meta>
+      <meta name="Diffraction lens" unit="%">61.481</meta>
+      <meta name="Intensity" unit="%">47.814</meta>
+      <meta name="Magnification" unit="x">35000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:10.652407-06:00</meta>
+      <meta name="Objective lens" unit="%">98.640</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">839.817</meta>
+      <meta name="Stage Position – y" unit="micrometer">81.542</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:28+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>HR1_bf1a.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/HR1_bf1a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/HR1_bf1a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">43.474</meta>
+      <meta name="Diffraction lens" unit="%">92.804</meta>
+      <meta name="Intensity" unit="%">49.300</meta>
+      <meta name="Magnification" unit="x">440000</meta>
+      <meta name="Mode">TEM uP Mh Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:36.451916-06:00</meta>
+      <meta name="Objective lens" unit="%">99.427</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-309.754</meta>
+      <meta name="Stage Position – y" unit="micrometer">-310.186</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:28+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED1_bf1a.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/SAED1_bf1a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/SAED1_bf1a.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.776</meta>
+      <meta name="Intensity" unit="%">52.798</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:38.589048-06:00</meta>
+      <meta name="Objective lens" unit="%">99.425</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-309.537</meta>
+      <meta name="Stage Position – y" unit="micrometer">-309.7</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:28+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED1_bf1b.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/SAED1_bf1b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/SAED1_bf1b.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.808</meta>
+      <meta name="Diffraction lens" unit="%">35.814</meta>
+      <meta name="Intensity" unit="%">46.211</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:34.314807-06:00</meta>
+      <meta name="Objective lens" unit="%">99.514</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-310.995</meta>
+      <meta name="Stage Position – y" unit="micrometer">-307.532</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:30+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED1_bf1c.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/SAED1_bf1c.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/SAED1_bf1c.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.808</meta>
+      <meta name="Diffraction lens" unit="%">35.814</meta>
+      <meta name="Intensity" unit="%">51.205</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:32.199869-06:00</meta>
+      <meta name="Objective lens" unit="%">99.489</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-315.6</meta>
+      <meta name="Stage Position – y" unit="micrometer">-306.925</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:30+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED1a_bf1a.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/SAED1a_bf1a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/SAED1a_bf1a.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.330</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.596</meta>
+      <meta name="Intensity" unit="%">51.841</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:44.983166-06:00</meta>
+      <meta name="Objective lens" unit="%">99.589</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-309.819</meta>
+      <meta name="Stage Position – y" unit="micrometer">-309.855</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:30+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED2_bf1b.tif</name>
+      <location>/11159734_1/T0/Phi6_initial/SAED2_bf1b.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T0/Phi6_initial/SAED2_bf1b.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.808</meta>
+      <meta name="Diffraction lens" unit="%">35.814</meta>
+      <meta name="Intensity" unit="%">51.616</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:22:08.606600-06:00</meta>
+      <meta name="Objective lens" unit="%">99.489</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.0</meta>
+      <meta name="Stage Position – x" unit="micrometer">-311.186</meta>
+      <meta name="Stage Position – y" unit="micrometer">-307.061</meta>
+      <meta name="Stage Position – z" unit="micrometer">-8.765</meta>
+      <meta name="Creation Time">2024-01-31T19:43:32+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2024-01-31T19:43:32+00:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Acceleration Voltage" unit="kilovolt">200.0</param>
+      <param name="Emission" unit="uA">41.0</param>
+      <param name="Extraction voltage" unit="V">4500</param>
+      <param name="Filter mode"></param>
+      <param name="Gun lens">3</param>
+      <param name="Gun type">FEG</param>
+      <param name="Image shift X" unit="um">0.000</param>
+      <param name="Image shift Y" unit="um">0.000</param>
+      <param name="Microscope">Microscope Tecnai 200 kV D2211 XTwin</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.fei_tif_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+      <param name="Spot size">2</param>
+      <param name="Stage Position – Tilt Beta" unit="degree">0.0</param>
+      <param name="Stage Position – z" unit="micrometer">44.533</param>
+      <param name="User">SUPERVISOR</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>BF_1.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_1.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_1.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">0.311</meta>
+      <meta name="Diffraction lens" unit="%">48.107</meta>
+      <meta name="Intensity" unit="%">54.245</meta>
+      <meta name="Magnification" unit="x">8900</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:50.768131-06:00</meta>
+      <meta name="Objective lens" unit="%">97.350</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.01</meta>
+      <meta name="Stage Position – x" unit="micrometer">-22.129</meta>
+      <meta name="Stage Position – y" unit="micrometer">10.442</meta>
+      <meta name="Creation Time">2024-01-31T19:43:32+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_2.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_2.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_2.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-13.405</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">46.710</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:46.245132-06:00</meta>
+      <meta name="Objective lens" unit="%">96.683</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">0.43</meta>
+      <meta name="Stage Position – x" unit="micrometer">-279.844</meta>
+      <meta name="Stage Position – y" unit="micrometer">-7.764</meta>
+      <meta name="Creation Time">2024-01-31T19:43:34+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_3.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_3.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_3.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-17.736</meta>
+      <meta name="Diffraction lens" unit="%">54.145</meta>
+      <meta name="Intensity" unit="%">53.541</meta>
+      <meta name="Magnification" unit="x">13500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:48.393793-06:00</meta>
+      <meta name="Objective lens" unit="%">96.473</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">14.61</meta>
+      <meta name="Stage Position – x" unit="micrometer">-256.486</meta>
+      <meta name="Stage Position – y" unit="micrometer">137.231</meta>
+      <meta name="Creation Time">2024-01-31T19:43:34+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_4.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_4.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_4.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-16.322</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.241</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:53.284463-06:00</meta>
+      <meta name="Objective lens" unit="%">96.542</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">14.61</meta>
+      <meta name="Stage Position – x" unit="micrometer">-258.408</meta>
+      <meta name="Stage Position – y" unit="micrometer">137.806</meta>
+      <meta name="Creation Time">2024-01-31T19:43:36+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_5.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_5.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_5.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-9.133</meta>
+      <meta name="Diffraction lens" unit="%">57.056</meta>
+      <meta name="Intensity" unit="%">52.525</meta>
+      <meta name="Magnification" unit="x">17500</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:55.510071-06:00</meta>
+      <meta name="Objective lens" unit="%">96.891</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">14.61</meta>
+      <meta name="Stage Position – x" unit="micrometer">-250.653</meta>
+      <meta name="Stage Position – y" unit="micrometer">133.546</meta>
+      <meta name="Creation Time">2024-01-31T19:43:36+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_5a+saed.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_5a+saed.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_5a+saed.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-8.662</meta>
+      <meta name="Diffraction lens" unit="%">61.481</meta>
+      <meta name="Intensity" unit="%">48.352</meta>
+      <meta name="Magnification" unit="x">35000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:57.671532-06:00</meta>
+      <meta name="Objective lens" unit="%">96.914</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">14.61</meta>
+      <meta name="Stage Position – x" unit="micrometer">-250.353</meta>
+      <meta name="Stage Position – y" unit="micrometer">132.936</meta>
+      <meta name="Creation Time">2024-01-31T19:43:36+00:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>BF_5a.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/BF_5a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/BF_5a.tif.thumb.png</preview>
+      <meta name="Data Type">TEM_Imaging</meta>
+      <meta name="Defocus" unit="um">-8.662</meta>
+      <meta name="Diffraction lens" unit="%">61.481</meta>
+      <meta name="Intensity" unit="%">48.352</meta>
+      <meta name="Magnification" unit="x">35000</meta>
+      <meta name="Mode">TEM uP SA Zoom Image</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:20:59.870715-06:00</meta>
+      <meta name="Objective lens" unit="%">96.914</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">14.61</meta>
+      <meta name="Stage Position – x" unit="micrometer">-250.353</meta>
+      <meta name="Stage Position – y" unit="micrometer">132.936</meta>
+      <meta name="Creation Time">2024-01-31T19:43:38+00:00</meta>
+    </dataset>
+    <dataset type="Diffraction" role="Experimental">
+      <name>SAED_bf5a.tif</name>
+      <location>/11159734_1/T2/P1_48h_wet cond/SAED_bf5a.tif</location>
+      <format>TIF</format>
+      <description/>
+      <preview>/11159734_1/T2/P1_48h_wet cond/SAED_bf5a.tif.thumb.png</preview>
+      <meta name="Camera length" unit="m">0.550</meta>
+      <meta name="Data Type">TEM_Diffraction</meta>
+      <meta name="Defocus">27.417</meta>
+      <meta name="Diffraction lens" unit="%">35.776</meta>
+      <meta name="Intensity" unit="%">54.685</meta>
+      <meta name="Mode">TEM uP SA Zoom Diffraction</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T12:21:02.172092-06:00</meta>
+      <meta name="Objective lens" unit="%">96.914</meta>
+      <meta name="Stage Position – Tilt Alpha" unit="degree">14.61</meta>
+      <meta name="Stage Position – x" unit="micrometer">-250.322</meta>
+      <meta name="Stage Position – y" unit="micrometer">132.934</meta>
+      <meta name="Creation Time">2024-01-31T19:43:38+00:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

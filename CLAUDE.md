@@ -120,7 +120,7 @@ This project uses [UV](https://github.com/astral-sh/uv) for Python dependency ma
 
 - **`pyproject.toml`** - Single source of truth for all dependencies
   - Main dependencies: Core application packages (celery, Django, django-redis)
-  - `[project.optional-dependencies.core]`: CDCS/MDCS packages pinned to `2.18.*`
+  - `[project.optional-dependencies.core]`: CDCS/MDCS packages pinned to `2.20.*`
   - `[project.optional-dependencies.server]`: Production servers (psycopg2-binary, uwsgi, gunicorn)
 - **`uv.lock`** - Lockfile with exact versions (MUST be committed)
 - **`.python-version`** - Required Python version (3.13)
@@ -178,14 +178,14 @@ uv lock --upgrade-package package-name
 
 #### Upgrading CDCS Core Packages
 
-CDCS core packages are strictly pinned to `2.18.*` for stability. To upgrade to a new CDCS version:
+CDCS core packages are strictly pinned to `2.20.*` for stability. To upgrade to a new CDCS version:
 
 1. **Edit `pyproject.toml`** - Update all `core_*_app` packages to new version:
    ```toml
    [project.optional-dependencies]
    core = [
-       "core_main_app[auth]==2.19.*",  # Changed from 2.18.*
-       "core_composer_app==2.19.*",     # Changed from 2.18.*
+       "core_main_app[auth]==2.21.*",  # Changed from 2.20.*
+       "core_composer_app==2.21.*",     # Changed from 2.20.*
        # ... update all 21 core packages
    ]
    ```

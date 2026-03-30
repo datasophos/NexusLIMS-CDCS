@@ -195,7 +195,7 @@
       // datatables.js calls applyStoredDescriptions(), which patches the
       // currently-visible rows (and their modals).  Subsequent page navigations
       // also fire draw.dt, so off-page rows are patched when they become visible.
-      document.querySelectorAll('.aa-table').forEach(function(tableEl) {
+      document.querySelectorAll('.aa-table, #simple-filelist-table').forEach(function(tableEl) {
         if (window.jQuery && jQuery.fn.dataTable && jQuery.fn.dataTable.isDataTable(tableEl)) {
           jQuery(tableEl).DataTable().draw(false);
         }
@@ -396,6 +396,26 @@
       </div>
     </div>
   </div>
+</div>
+{% endif %}
+
+{% if IS_PUBLIC_DEMO %}
+<div id="demo-banner" class="alert alert-warning alert-dismissible d-flex align-items-start py-2 mb-3" role="alert">
+    <i class="fas fa-exclamation-triangle me-2 mt-1 flex-shrink-0" style="font-size: 0.6em"></i>
+    <div class="small" style="font-size: 0.6em; line-height: 1.4em;">
+        <p class="mb-1"><strong>Demo mode:</strong></p>
+        <p class="mb-1">
+        This record was built from publicly available data (see the DOI link below). The datasets
+        attached to this record are just placeholders and do not contain actual data, but the metadata
+        and preview images were extracted/generated from the real data for demonstration purposes.
+        The experimenter names have been changed to fictitious individuals for this demo.
+        </p>
+        <p class="mb-0">
+            For an interactive tour of the features of this page, please click the "Tutorial" button
+            in the top navigation bar.
+        </p>
+    </div>
+    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
 

@@ -259,7 +259,7 @@ Use it like:
       <xsl:choose>
         <xsl:when test="nx:summary/nx:motivation/text()">
           <div class="motivation-text">
-            <span style="font-style:italic;">Motivation: </span><xsl:value-of select="nx:summary/nx:motivation"/>
+            <span style="font-style:italic;">Motivation: </span><xsl:value-of select="nx:summary/nx:motivation" disable-output-escaping="yes"/>
           </div>
         </xsl:when>
       </xsl:choose>

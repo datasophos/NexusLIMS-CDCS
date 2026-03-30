@@ -91,6 +91,12 @@ def is_development():
     return settings.DEBUG
 
 
+def is_demo():
+    """Check if running in public demo mode."""
+    from django.conf import settings
+    return getattr(settings, 'IS_PUBLIC_DEMO', False)
+
+
 def check_migrations():
     """Check if database migrations have been run."""
     log_info("Checking database migrations...")
@@ -203,6 +209,72 @@ def get_or_create_regular_user():
     except Exception as e:
         log_error(f"Failed to create regular user: {e}")
         raise
+
+
+def get_or_create_demo_users():
+    """Create demo accounts for the public demo (idempotent).
+
+    Creates three accounts:
+      - admin / admin          (superuser, all permissions)
+      - readonly_user / readonly  (view only - anonymous-level perms)
+      - project_lead / lead    (can create/edit records)
+    """
+    if not is_demo():
+        return
+
+    log_info("Setting up demo user accounts...")
+
+    from django.contrib.auth import get_user_model
+    from django.contrib.auth.models import Permission
+
+    User = get_user_model()
+
+    # --- admin (superuser) ---
+    admin = User.objects.filter(username="admin").first()
+    if admin:
+        log_success("Demo user already exists: admin")
+    else:
+        admin = User.objects.create_superuser(
+            username="admin",
+            email="admin@demo.nexuslims",
+            password="admin",
+        )
+        log_success("Demo user created: admin (superuser)")
+
+    # --- readonly_user ---
+    readonly = User.objects.filter(username="readonly_user").first()
+    if readonly:
+        log_success("Demo user already exists: readonly_user")
+    else:
+        readonly = User.objects.create_user(
+            username="readonly_user",
+            email="readonly@demo.nexuslims",
+            password="readonly",
+        )
+        log_success("Demo user created: readonly_user (view-only)")
+
+    # --- project_lead (can add/change records) ---
+    lead = User.objects.filter(username="project_lead").first()
+    if lead:
+        log_success("Demo user already exists: project_lead")
+    else:
+        lead = User.objects.create_user(
+            username="project_lead",
+            email="lead@demo.nexuslims",
+            password="lead",
+        )
+        log_success("Demo user created: project_lead")
+
+    # Grant project_lead add/change data permissions
+    data_perms = Permission.objects.filter(
+        codename__in=["add_data", "change_data"],
+        content_type__app_label="core_main_app",
+    )
+    if data_perms.exists():
+        lead.user_permissions.set(data_perms)
+        log_success(f"Granted project_lead permissions: {', '.join(p.codename for p in data_perms)}")
+    else:
+        log_warning("core_main_app data permissions not found yet - project_lead will have default perms")
 
 
 def get_request_for_user(user):
@@ -820,20 +892,23 @@ def main():
         # Step 2: Get or create superuser
         superuser = get_or_create_superuser()
 
-        # If no superuser was created (production, user skipped), try to get any existing user
+        # Step 2.5: Get or create regular user for testing (development only)
+        regular_user = get_or_create_regular_user()
+
+        # Step 2.6: Create demo accounts (demo mode only)
+        get_or_create_demo_users()
+
+        # If no superuser was created yet, look for one now.
+        # Must be after get_or_create_demo_users() so the demo admin is available.
         if superuser is None:
             from django.contrib.auth import get_user_model
             User = get_user_model()
-            # Try to get first superuser or first user
             superuser = User.objects.filter(is_superuser=True).first() or User.objects.first()
 
         # Create request object for API calls (may be None if no users exist)
         request = get_request_for_user(superuser) if superuser else None
 
-        # Step 2.5: Get or create regular user for testing (development only)
-        regular_user = get_or_create_regular_user()
-
-        # Step 2.6: Setup API tokens based on environment settings
+        # Step 2.7: Setup API tokens based on environment settings
         setup_api_tokens(superuser)
 
         # Step 3: Configure anonymous group permissions

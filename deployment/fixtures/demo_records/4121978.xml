@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <title>MicroED datasets from two proteinase K lamellae using a 20 micrometre C2 condenser aperture</title>
+  <summary ref="https://zenodo.org/records/4121978">
+    <experimenter>Luca Ferretti</experimenter>
+    <instrument pid="FEI-Tecnai-TEM">FEI Tecnai TEM</instrument>
+    <reservationStart>2026-03-27T11:36:11-06:00</reservationStart>
+    <reservationEnd>2026-03-27T11:38:30-06:00</reservationEnd>
+    <motivation>These four diffraction data sets were used to determine the proteinase K structure from two crystalline lamellae by electron diffraction, as deposited in the PDB with id 6ZEV and published in https://doi.org/10.3389/fmolb.2020.00179 A script is provided that allows indexing of the diffraction spots using DIALS 3.1. This is adapted from the commands used to process the data for the publication, which used DIALS 1.10.
+
+Data source: &lt;a href="https://doi.org/10.5281/zenodo.4121978"&gt;https://doi.org/10.5281/zenodo.4121978&lt;/a&gt;
+
+CC BY 4.0.</motivation>
+  </summary>
+  <sample id="sample-1">
+    <name>4121978</name>
+    <description>MicroED datasets from two proteinase K lamellae using a 20 micrometre C2 condenser aperture.</description>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2026-03-27T11:36:11-06:00</startTime>
+    <sampleID>sample-1</sampleID>
+    <setup>
+      <param name="Data Type">TEM_Imaging</param>
+      <param name="DatasetType">Image</param>
+      <param name="Extractor Warning">NexusLIMS could not find a corresponding .emi metadata file for this .ser file. Metadata extraction will be limited.</param>
+      <param name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.ser_emi_extractor</param>
+      <param name="NexusLIMS Extraction – Version">2.6.1.dev0</param>
+    </setup>
+    <dataset type="Image" role="Experimental">
+      <name>05_20um_1.35m_0.85s_90deg_-40-50_1.ser</name>
+      <location>/4121978/05_20um_1.35m_0.85s_90deg_-40-50_1.ser</location>
+      <format>SER</format>
+      <description>MicroED diffraction tilt series, 178 frames, proteinase K</description>
+      <preview>/4121978/05_20um_1.35m_0.85s_90deg_-40-50_1.ser.thumb.png</preview>
+      <meta name="Data Dimensions">(178, 2048, 2048)</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:39:11.526093-06:00</meta>
+      <meta name="Creation Time">2026-03-27T11:38:30.402141-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>collection1_1.35m_0.85s_nogain_c2_20_num2_1.ser</name>
+      <location>/4121978/collection1_1.35m_0.85s_nogain_c2_20_num2_1.ser</location>
+      <format>SER</format>
+      <description>MicroED diffraction tilt series, 80 frames, proteinase K lamella 1</description>
+      <preview>/4121978/collection1_1.35m_0.85s_nogain_c2_20_num2_1.ser.thumb.png</preview>
+      <meta name="Data Dimensions">(80, 2048, 2048)</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:38:56.738330-06:00</meta>
+      <meta name="Creation Time">2026-03-27T11:38:07.817652-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>collection1_1.35m_0.85s_nogain_c2_20_num6_1.ser</name>
+      <location>/4121978/collection1_1.35m_0.85s_nogain_c2_20_num6_1.ser</location>
+      <format>SER</format>
+      <description>MicroED diffraction tilt series, 80 frames, proteinase K lamella 1</description>
+      <preview>/4121978/collection1_1.35m_0.85s_nogain_c2_20_num6_1.ser.thumb.png</preview>
+      <meta name="Data Dimensions">(80, 2048, 2048)</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:38:21.652705-06:00</meta>
+      <meta name="Creation Time">2026-03-27T11:38:06.841141-06:00</meta>
+    </dataset>
+    <dataset type="Image" role="Experimental">
+      <name>collection1_1.35m_0.85s_nogain_c2_20_num7_1.ser</name>
+      <location>/4121978/collection1_1.35m_0.85s_nogain_c2_20_num7_1.ser</location>
+      <format>SER</format>
+      <description/>
+      <preview>/4121978/collection1_1.35m_0.85s_nogain_c2_20_num7_1.ser.thumb.png</preview>
+      <meta name="Data Dimensions">(77, 2048, 2048)</meta>
+      <meta name="NexusLIMS Extraction – Date">2026-03-27T11:36:34.762924-06:00</meta>
+      <meta name="Creation Time">2026-03-27T11:36:11.072333-06:00</meta>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>

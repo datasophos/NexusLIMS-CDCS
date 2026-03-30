@@ -6,6 +6,16 @@ set -e
 
 STYLESHEET_TYPE="${1:-all}"
 
+# Load .env from the deployment directory (one level up from scripts/)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="${SCRIPT_DIR}/../.env"
+if [ -f "$ENV_FILE" ]; then
+    set -a
+    # shellcheck source=/dev/null
+    source "$ENV_FILE"
+    set +a
+fi
+
 # Get environment variables or use defaults
 DATASET_BASE_URL="${XSLT_DATASET_BASE_URL:-https://files.nexuslims-dev.localhost/instrument-data}"
 PREVIEW_BASE_URL="${XSLT_PREVIEW_BASE_URL:-https://files.nexuslims-dev.localhost/data}"

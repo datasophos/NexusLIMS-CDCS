@@ -211,4 +211,5 @@ body.nx-has-selection .nx-select-cb-label {
 #annotate-help-modal .modal-body li { margin-bottom:0.2rem; }
 
 /* Inline description edit icon: show on table row hover */
-.aa-table tbody tr:hover .nx-desc-edit { display: inline; }
+.aa-table tbody tr:hover .nx-desc-edit,
+#simple-filelist-table tbody tr:hover .nx-desc-edit { display: inline; }

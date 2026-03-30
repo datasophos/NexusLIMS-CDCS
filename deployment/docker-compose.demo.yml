@@ -1,0 +1,37 @@
+# Docker Compose override for public demo deployment
+# Usage: docker compose -f docker-compose.base.yml -f docker-compose.demo.yml up -d
+
+services:
+  caddy:
+    restart: unless-stopped
+    volumes:
+      # Local CA certificates for .localhost HTTPS (same as dev)
+      - ./caddy/certs:/etc/caddy/certs:ro
+      # Demo preview images and instrument data stubs served by Caddy file server
+      - ../deployment/fixtures/demo_data/nx-data:${NX_DATA_PATH}:ro
+      - ../deployment/fixtures/demo_data/nx-instrument-data:${NX_INSTRUMENT_DATA_PATH}:ro
+
+  postgres:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped
+
+  cdcs:
+    entrypoint: ["/docker-entrypoint.demo.sh"]
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.demo_settings
+      # CA bundle for outbound HTTPS requests from within the container.
+      # Local dev: /etc/ssl/certs/caddy-root-ca.crt (trusts the local Caddy CA)
+      # OCI / Let's Encrypt: /etc/ssl/certs/ca-certificates.crt (system bundle)
+      - REQUESTS_CA_BUNDLE=${REQUESTS_CA_BUNDLE:-/etc/ssl/certs/caddy-root-ca.crt}
+      - CURL_CA_BUNDLE=${CURL_CA_BUNDLE:-/etc/ssl/certs/caddy-root-ca.crt}
+    volumes:
+      - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
+      - ./fixtures/demo_records:/srv/nexuslims/deployment/fixtures/demo_records:ro
+      # Bind-mount source for local development (avoids rebuilds for template/code changes)
+      - ..:/srv/nexuslims:delegated
+      - cdcs_media:/srv/nexuslims/media
+      - cdcs_socket:/tmp/nexuslims/
+      - cdcs_static:/srv/nexuslims/static.prod
+    restart: unless-stopped

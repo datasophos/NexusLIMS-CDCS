@@ -98,3 +98,6 @@ NX_ENABLE_TUTORIALS = True
 
 # Enable/disable the record annotator (adds "Annotate Record" button on detail pages)
 NX_ENABLE_ANNOTATOR = True
+
+# Enable/disable public demo mode (auto-login, demo homepage, stub file warning)
+IS_PUBLIC_DEMO = False
