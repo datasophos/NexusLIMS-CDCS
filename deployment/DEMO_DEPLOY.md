@@ -171,7 +171,7 @@ Edit `.env` and fill in the required values:
 The remaining `.env` defaults (`DOMAIN`, `FILES_DOMAIN`, `CADDYFILE`, `REQUESTS_CA_BUNDLE`, etc.)
 are already set correctly for OCI production deployment.
 
-### 8. Download fixture data
+### 9. Download fixture data
 
 ```bash
 ./scripts/manage-demo-fixtures.sh download
@@ -184,7 +184,44 @@ repo directory (not a Docker volume), so it persists across demo resets.
 After the initial setup, the GitHub Actions deploy workflow checks for fixture data
 automatically and downloads it if absent -- no manual re-run needed after re-provisioning.
 
-### 9. Build and deploy the stack
+### 10. Set up the GitHub Actions self-hosted runner
+
+The deploy workflow (`.github/workflows/deploy-demo.yml`) runs directly on the OCI
+instance via a self-hosted runner. This avoids the need to allow inbound SSH from
+GitHub's IP ranges (which number in the thousands and change over time).
+
+The runner makes only **outbound HTTPS (port 443)** connections to GitHub -- no
+additional firewall rules are needed.
+
+Get a registration token (run locally, requires `gh` authenticated to the repo):
+
+```bash
+gh api repos/datasophos/NexusLIMS-CDCS/actions/runners/registration-token \
+  --method POST --jq '.token'
+```
+
+On the OCI instance:
+
+```bash
+mkdir -p /opt/actions-runner && cd /opt/actions-runner
+
+# Download the ARM64 runner binary
+curl -o actions-runner-linux-arm64.tar.gz -L \
+  https://github.com/actions/runner/releases/download/v2.323.0/actions-runner-linux-arm64-2.323.0.tar.gz
+tar xzf actions-runner-linux-arm64.tar.gz
+
+# Register with the repo (accept all defaults)
+./config.sh --url https://github.com/datasophos/NexusLIMS-CDCS --token <TOKEN>
+
+# Install and start as a systemd service (auto-starts on reboot)
+sudo ./svc.sh install
+sudo ./svc.sh start
+```
+
+Verify the runner is online at **GitHub repo > Settings > Actions > Runners** -- it
+should appear as `Idle`.
+
+### 11. Build and deploy the stack
 
 ```bash
 source demo-commands.sh
@@ -338,8 +375,9 @@ when fixture content is updated.
 ## Updating the Deployment
 
 Deploys are automated via GitHub Actions (`.github/workflows/deploy-demo.yml`). Every
-push to `main` SSHes into the OCI server, pulls the latest code, rebuilds the CDCS
-container, restarts the stack, and downloads fixture data if absent.
+push to `main` triggers the self-hosted runner on the OCI instance, which pulls the
+latest code, rebuilds the CDCS container, restarts the stack, and downloads fixture
+data if absent.
 
 To trigger a deploy manually, push to `main` or re-run the workflow in the GitHub
 Actions UI.
