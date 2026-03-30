@@ -1,9 +1,7 @@
 services:
   caddy:
-    build:
-      context: caddy
-    pull_policy: build
     image: caddy:${CADDY_VERSION:-2}-alpine
+    entrypoint: ["/docker-entrypoint.sh"]
     container_name: ${COMPOSE_PROJECT_NAME}_cdcs_caddy
     ports:
       - "80:80"
@@ -11,6 +9,7 @@ services:
     depends_on:
       - cdcs
     volumes:
+      - ./caddy/docker-entrypoint.sh:/docker-entrypoint.sh:ro
       - cdcs_socket:/tmp/nexuslims/
       - cdcs_static:/srv/nexuslims_static
       - ./caddy/${CADDYFILE}:/etc/caddy/Caddyfile
