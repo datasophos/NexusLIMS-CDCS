@@ -12,9 +12,11 @@ Gather the following before proceeding:
 
 1. **Current version:** Read `pyproject.toml` and extract the `version = "..."` line.
 2. **Current branch:** Run `git branch --show-current`.
-3. **Last tag:** Run `git describe --tags --abbrev=0`.
-4. **Commits since last tag:** Run `git log <last-tag>..HEAD --oneline`.
-5. **Files changed since last tag:** Run `git diff <last-tag>..HEAD --name-only | sort`.
+3. **Last NexusLIMS-CDCS tag:** Run `git tag --sort=-version:refname | grep -E '\-nx[0-9]+$' | head -1`.
+   **IMPORTANT:** Only use tags with a `-nx{N}` suffix (e.g. `3.18.0-nx1`). Never use bare upstream
+   CDCS version tags like `3.20.0` -- those mark upstream releases, not NexusLIMS-CDCS releases.
+4. **Commits since last tag:** Run `git log <last-nx-tag>..HEAD --oneline`.
+5. **Files changed since last tag:** Run `git diff <last-nx-tag>..HEAD --name-only | sort`.
 
 Gather all five before proceeding.
 
@@ -25,7 +27,7 @@ Gather all five before proceeding.
 ### Step 1: Analyse Changed Files for Upgrade Impact
 
 Scan the changed file list and categorise each into the buckets below. For any bucket
-that has matches, read the actual diff (`git diff <last-tag>..HEAD -- <file>`) to
+that has matches, read the actual diff (`git diff <last-nx-tag>..HEAD -- <file>`) to
 understand *what* changed so you can write concrete upgrade instructions.
 
 | Bucket | Patterns | Deployment impact |
@@ -208,24 +210,31 @@ Once approved, and unless `--dry-run` was passed:
 1. **Update `pyproject.toml`**: Set `version = "<VERSION>"` using the PEP 440 local
    form (e.g. `3.20.0+nx1` for tag `v3.20.0-nx1`).
 
-2. **Write `RELEASE_NOTES.md`** to the project root with the approved release notes.
-
-3. **Commit both files:**
+2. **Commit only `pyproject.toml`** -- do NOT write or commit a `RELEASE_NOTES.md` file:
    ```bash
-   git add pyproject.toml RELEASE_NOTES.md
+   git add pyproject.toml
    git commit -m "chore: release vVERSION"
    ```
 
-4. **Tag the release** (hyphen form):
+3. **Tag the release** (lightweight tag at the release commit):
    ```bash
-   git tag -a vVERSION -m "Release vVERSION"
+   git tag vVERSION
    ```
 
-5. **Push** (unless `--no-push` was passed):
+4. **Push** (unless `--no-push` was passed):
    ```bash
    git push origin main
    git push origin vVERSION
    ```
+
+5. **Create a draft GitHub Release** with the full release notes as the body:
+   ```bash
+   gh release create vVERSION --draft --title "NexusLIMS-CDCS vVERSION" --notes "$(cat <<'EOF'
+   <full release notes here>
+   EOF
+   )"
+   ```
+   The release remains draft until published manually on GitHub.
 
 ### Step 7: Post-Release Checklist
 
