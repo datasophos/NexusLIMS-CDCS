@@ -3,9 +3,10 @@
 
 export COMPOSE_FILE="docker-compose.base.yml:docker-compose.demo.yml"
 
-# Read COMPOSE_PROJECT_NAME and DOMAIN from .env if present
+# Read COMPOSE_PROJECT_NAME, DOMAIN, and COMPOSE_FILE from .env if present.
+# COMPOSE_FILE in .env overrides the default above.
 if [ -f .env ]; then
-    export $(grep -v '^#' .env | grep -E '^(COMPOSE_PROJECT_NAME|DOMAIN)=' | xargs)
+    export $(grep -v '^#' .env | grep -E '^(COMPOSE_PROJECT_NAME|DOMAIN|COMPOSE_FILE)=' | xargs)
 fi
 COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_demo}
 DOMAIN=${DOMAIN:-nexuslims-demo.datasophos.co}

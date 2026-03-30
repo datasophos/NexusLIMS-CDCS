@@ -1,0 +1,44 @@
+name: Deploy Demo
+
+on:
+  push:
+    branches: ["main", "public_demo"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: demo
+
+    steps:
+      - name: Deploy to OCI demo server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ vars.DEMO_SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEMO_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/nexuslims-cdcs
+
+            echo "=== Pulling latest code (branch: ${{ github.ref_name }}) ==="
+            git fetch origin
+            git checkout ${{ github.ref_name }}
+            git pull origin ${{ github.ref_name }}
+
+            echo "=== Downloading fixtures (if absent) ==="
+            cd deployment
+            if [ ! -d "fixtures/demo_data/nx-data" ]; then
+              ./scripts/manage-demo-fixtures.sh download
+            else
+              echo "  Fixtures already present, skipping download"
+            fi
+
+            echo "=== Building CDCS container ==="
+            export COMPOSE_FILE="docker-compose.base.yml:docker-compose.demo.yml"
+            COMPOSE_BAKE=true docker compose build cdcs
+
+            echo "=== Restarting stack ==="
+            docker compose down
+            docker compose up -d
+
+            echo "=== Deploy complete ==="
