@@ -1,6 +1,6 @@
 [project]
 name = "nexuslims-cdcs"
-version = "3.20.0+nx0"
+version = "3.20.0+nx0.dev0"
 description = "NexusLIMS-CDCS: An automated laboratory information management system for microscopy data management"
 readme = "README.md"
 requires-python = ">=3.13"

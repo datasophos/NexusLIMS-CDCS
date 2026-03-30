@@ -5,15 +5,21 @@
 
 
 [![Documentation](https://img.shields.io/badge/📖%20docs-stable-blue?style=flat-square)](https://datasophos.github.io/NexusLIMS/stable/frontend_guide.html)
-[![Django 4.2](https://img.shields.io/badge/django-4.2-green?style=flat-square&logo=django
-)](https://docs.djangoproject.com/en/6.0/releases/4.2/)
+[![Django 5.2](https://img.shields.io/badge/django-5.2-green?style=flat-square&logo=django)](https://docs.djangoproject.com/en/5.2/releases/5.2/)
 [![Maintained by Datasophos](https://img.shields.io/badge/🏢%20maintained%20by-datasophos%20LLC-blue?style=flat-square)](https://datasophos.co)
+[![Live Demo](https://img.shields.io/badge/🚀%20live%20demo-nexuslims--demo.datasophos.co-brightgreen?style=flat-square)](https://nexuslims-demo.datasophos.co)
 </p>
 
 
 NexusLIMS-CDCS is a customized deployment of the NIST Materials Data Curation System (MDCS) designed for managing and sharing microscopy and materials characterization data. It provides a web-based platform for capturing, organizing, searching, and visualizing experimental data using structured XML schemas.
 
 > **⚠️ Notice**: This is a fork of the original NexusLIMS project, created after the lead developer (@jat255) left NIST and founded [Datasophos](https://datasophos.co). This fork is maintained by Datasophos and is **not affiliated with NIST** in any way. For the official NIST version, please visit the [original repository](https://github.com/usnistgov/NexusLIMS-CDCS).
+
+## Live Demo
+
+**[Try it now at https://nexuslims-demo.datasophos.co](https://nexuslims-demo.datasophos.co)**
+
+The demo is pre-loaded with real microscopy records built from public datasets, and lets you explore the features of the NexusLIMS web application, including browsing, searching, editing, and annotating records.
 
 ## Overview
 

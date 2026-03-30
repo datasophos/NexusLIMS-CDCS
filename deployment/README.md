@@ -292,7 +292,7 @@ This project uses **[UV](https://github.com/astral-sh/uv)** for fast, reliable P
 Dependencies are organized into optional groups in `pyproject.toml`:
 
 - **Main dependencies**: `celery`, `Django`, `django-redis` (core application)
-- **`[core]` group**: 21 CDCS/MDCS packages pinned to `2.18.*`
+- **`[core]` group**: 21 CDCS/MDCS packages pinned to `2.20.*`
 - **`[server]` group**: Production servers (`psycopg2-binary`, `uwsgi`, `gunicorn`)
 
 ### Docker Build Process
@@ -349,14 +349,14 @@ uv lock --upgrade-package django
 
 ### Upgrading CDCS Core Packages
 
-CDCS core packages are pinned to `2.18.*` for stability. To upgrade to a new CDCS version:
+CDCS core packages are pinned to `2.20.*` for stability. To upgrade to a new CDCS version:
 
 1. **Edit `pyproject.toml`**:
    ```toml
    [project.optional-dependencies]
    core = [
-       "core_main_app[auth]==2.19.*",  # Change version
-       "core_composer_app==2.19.*",     # Change version
+       "core_main_app[auth]==2.21.*",  # Change version
+       "core_composer_app==2.21.*",     # Change version
        # ... update all core packages
    ]
    ```
