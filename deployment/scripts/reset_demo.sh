@@ -35,9 +35,9 @@ export COMPOSE_FILE
 echo "=== NexusLIMS Demo Reset - $(date) ==="
 echo "    Project: ${COMPOSE_PROJECT_NAME}"
 
-# 1. Stop all containers
+# 1. Stop and remove containers (volumes are removed separately below)
 echo "Stopping containers..."
-docker compose stop
+docker compose down
 
 # 2. Remove data volumes (caddy_data and caddy_config are intentionally excluded)
 echo "Removing data volumes..."
