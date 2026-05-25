@@ -251,7 +251,7 @@ def _apply_activity_mutations(xml_content, deleted_seqnos, new_activities, activ
             continue
         for sid_el in activity.findall(f'{{{NS}}}sampleID'):
             activity.remove(sid_el)
-        if sample_id:
+        if sample_id is not None:
             sid_el = ET.Element(f'{{{NS}}}sampleID')
             sid_el.text = str(sample_id)
             children = list(activity)
