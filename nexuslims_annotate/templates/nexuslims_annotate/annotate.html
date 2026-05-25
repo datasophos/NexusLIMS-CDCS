@@ -30,16 +30,58 @@ var NX_ELEMENT_SYMBOLS = [
   'Rg','Cn','Nh','Fl','Mc','Lv','Ts','Og'
 ];
 
-// Populate the datalist once on load
-(function() {
+// Populate the datalist, wire up inputs, and initialise state once the DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // ── Populate elements datalist ───────────────────────────────────────────
   var dl = document.getElementById('nx-elements-datalist');
-  if (!dl) return;
-  NX_ELEMENT_SYMBOLS.forEach(function(sym) {
-    var opt = document.createElement('option');
-    opt.value = sym;
-    dl.appendChild(opt);
+  if (dl) {
+    NX_ELEMENT_SYMBOLS.forEach(function(sym) {
+      var opt = document.createElement('option');
+      opt.value = sym;
+      dl.appendChild(opt);
+    });
+  }
+
+  // ── Wire elements input listeners ───────────────────────────────────────
+  var inp = document.getElementById('nx-elements-input');
+  if (inp) {
+    function tryAdd() {
+      var v = inp.value.trim().replace(/,$/, '');
+      if (v) { nxAddElement(v); inp.value = ''; }
+    }
+    inp.addEventListener('change', tryAdd);
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); tryAdd(); }
+    });
+  }
+
+  // ── Wire Add Sample button, modal save button, and init state ────────────
+  var addBtn = document.getElementById('nx-add-sample-btn');
+  if (addBtn) addBtn.addEventListener('click', function() { nxOpenSampleModal(null); });
+
+  var saveBtn = document.getElementById('nx-sample-modal-save');
+  if (saveBtn) saveBtn.addEventListener('click', nxSaveSampleFromModal);
+
+  // Initialize sample state from server
+  window.__nxActivitySampleIds = {};
+  if (window.__nxActivities) {
+    window.__nxActivities.forEach(function(act) {
+      if (act.sample_id) {
+        window.__nxActivitySampleIds[String(act.seqno)] = act.sample_id;
+      }
+    });
+  }
+
+  // Initialize sample dropdowns with server-side selections
+  document.querySelectorAll('.nx-activity-sample').forEach(function(sel) {
+    var seqno = sel.dataset.seqno;
+    var assigned = window.__nxActivitySampleIds[seqno];
+    if (assigned) sel.value = assigned;
   });
-})();
+
+  // Initial render of samples list
+  nxRenderSamples();
+});
 
 function nxGenerateSampleId(name) {
   var base = (name || 'sample').toLowerCase()
@@ -91,19 +133,6 @@ function nxRemoveElement(sym) {
   _nxModalElements = _nxModalElements.filter(function(s) { return s !== sym; });
   nxRenderElementTags();
 }
-
-(function() {
-  var inp = document.getElementById('nx-elements-input');
-  if (!inp) return;
-  function tryAdd() {
-    var v = inp.value.trim().replace(/,$/, '');
-    if (v) { nxAddElement(v); inp.value = ''; }
-  }
-  inp.addEventListener('change', tryAdd);
-  inp.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); tryAdd(); }
-  });
-})();
 
 // ── Sample list rendering ────────────────────────────────────────────────
 function nxRenderSamples() {
@@ -270,34 +299,6 @@ function nxUpdateActivitySampleDropdowns() {
   });
 }
 
-// Wire up Add Sample button and modal save button
-(function() {
-  var addBtn = document.getElementById('nx-add-sample-btn');
-  if (addBtn) addBtn.addEventListener('click', function() { nxOpenSampleModal(null); });
-
-  var saveBtn = document.getElementById('nx-sample-modal-save');
-  if (saveBtn) saveBtn.addEventListener('click', nxSaveSampleFromModal);
-
-  // Initialize sample state from server
-  window.__nxActivitySampleIds = {};
-  if (window.__nxActivities) {
-    window.__nxActivities.forEach(function(act) {
-      if (act.sample_id) {
-        window.__nxActivitySampleIds[String(act.seqno)] = act.sample_id;
-      }
-    });
-  }
-
-  // Initialize sample dropdowns with server-side selections
-  document.querySelectorAll('.nx-activity-sample').forEach(function(sel) {
-    var seqno = sel.dataset.seqno;
-    var assigned = window.__nxActivitySampleIds[seqno];
-    if (assigned) sel.value = assigned;
-  });
-
-  // Initial render of samples list
-  nxRenderSamples();
-})();
 </script>
 
 <div class="container-fluid px-4 pt-3 pb-3">
