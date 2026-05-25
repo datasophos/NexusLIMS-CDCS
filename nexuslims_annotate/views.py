@@ -21,6 +21,21 @@ logger = logging.getLogger(__name__)
 NS = 'https://data.nist.gov/od/dm/nexus/experiment/v1.0'
 NS_MAP = {'nx': NS}
 
+_VALID_ELEMENT_SYMBOLS = frozenset([
+    'H','He','Li','Be','B','C','N','O','F','Ne',
+    'Na','Mg','Al','Si','P','S','Cl','Ar','K','Ca',
+    'Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn',
+    'Ga','Ge','As','Se','Br','Kr','Rb','Sr','Y','Zr',
+    'Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd','In','Sn',
+    'Sb','Te','I','Xe','Cs','Ba','La','Ce','Pr','Nd',
+    'Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb',
+    'Lu','Hf','Ta','W','Re','Os','Ir','Pt','Au','Hg',
+    'Tl','Pb','Bi','Po','At','Rn','Fr','Ra','Ac','Th',
+    'Pa','U','Np','Pu','Am','Cm','Bk','Cf','Es','Fm',
+    'Md','No','Lr','Rf','Db','Sg','Bh','Hs','Mt','Ds',
+    'Rg','Cn','Nh','Fl','Mc','Lv','Ts','Og',
+])
+
 
 def _get_title(xml_content):
     """Extract the experiment title from XML content."""
@@ -154,7 +169,7 @@ def _apply_samples(xml_content, samples_data):
             entry_el = ET.SubElement(notes_el, f'{{{NS}}}entry')
             entry_el.text = notes
 
-        elements = sample_data.get('elements') or []
+        elements = [s for s in (sample_data.get('elements') or []) if s in _VALID_ELEMENT_SYMBOLS]
         if elements:
             elements_el = ET.SubElement(sample_el, f'{{{NS}}}elements')
             for symbol in elements:
@@ -638,14 +653,15 @@ def annotate_save(request, record_id):
 
         # Parse structural fields (new); fall back to empty defaults if absent
         try:
-            samples = json.loads(request.POST.get('samples', '[]'))
+            samples_raw = request.POST.get('samples')
+            samples = json.loads(samples_raw) if samples_raw is not None else None
             deleted_seqnos = json.loads(request.POST.get('deleted_seqnos', '[]'))
             new_activities = json.loads(request.POST.get('new_activities', '[]'))
             activity_sample_ids = json.loads(request.POST.get('activity_sample_ids', '{}'))
         except (json.JSONDecodeError, ValueError) as e:
             return JsonResponse({'error': f'Malformed JSON in structural fields: {e}'}, status=400)
 
-        if not isinstance(samples, list):
+        if samples is not None and not isinstance(samples, list):
             return JsonResponse({'error': 'samples must be a JSON array'}, status=400)
         if not isinstance(deleted_seqnos, list):
             return JsonResponse({'error': 'deleted_seqnos must be a JSON array'}, status=400)
@@ -664,8 +680,9 @@ def annotate_save(request, record_id):
         except ValueError as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-        # Replace sample elements
-        updated_xml = _apply_samples(updated_xml, samples)
+        # Replace sample elements (only if the field was present in the POST)
+        if samples is not None:
+            updated_xml = _apply_samples(updated_xml, samples)
 
         # Apply descriptions (flat indices valid: deleted activities had 0 datasets)
         updated_xml = _apply_descriptions(updated_xml, request.POST)

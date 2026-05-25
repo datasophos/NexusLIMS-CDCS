@@ -457,6 +457,18 @@ class ApplySamplesTests(SimpleTestCase):
         result = _apply_samples(_WITH_SAMPLES_XML, [])
         ET.fromstring(result)
 
+    def test_invalid_element_symbols_are_filtered(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': ['Fe', 'NotAnElement', '1bad']}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        elements_el = s.find(f'{{{NS}}}elements')
+        self.assertIsNotNone(elements_el)
+        syms = [c.tag.split('}')[-1] for c in elements_el]
+        self.assertEqual(syms, ['Fe'])  # only valid symbol retained
+
 
 # ===========================================================================
 # _renumber_activities
@@ -1782,6 +1794,24 @@ class AnnotateSaveStructuralTests(TestCase):
         last_act = acts[-1]
         ds_names = [ds.find(f'{{{NS}}}name').text for ds in last_act.findall(f'{{{NS}}}dataset')]
         self.assertIn('only.dm3', ds_names)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_missing_samples_field_preserves_existing_samples(self, mock_upsert, mock_get):
+        """If 'samples' is absent from POST, existing samples must not be removed."""
+        data_obj = _make_mock_data(_WITH_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {'dataset_0_description': 'A description'},  # no 'samples' field
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        samples = root.findall(f'{{{NS_STR}}}sample')
+        self.assertEqual(len(samples), 2)  # _WITH_SAMPLES_XML has 2 samples
 
     @patch('nexuslims_annotate.views.data_api.get_by_id')
     @patch('nexuslims_annotate.views.data_api.upsert')
