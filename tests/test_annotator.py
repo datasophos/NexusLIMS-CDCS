@@ -11,6 +11,7 @@ from django.test import SimpleTestCase, TestCase
 from nexuslims_annotate.views import (
     _apply_descriptions,
     _apply_moves,
+    _apply_samples,
     _dataset_creation_time,
     _inject_setup_into_dataset,
     _parse_activities,
@@ -366,6 +367,93 @@ class ParseSamplesTests(SimpleTestCase):
         xml = f'<Experiment xmlns="{NS}"><sample id="x"><name>X</name></sample></Experiment>'
         samples = _parse_samples(xml)
         self.assertEqual(samples[0]['elements'], [])
+
+
+# ===========================================================================
+# _apply_samples
+# ===========================================================================
+
+class ApplySamplesTests(SimpleTestCase):
+    def _get_samples(self, xml_str):
+        return _parse_samples(xml_str)
+
+    def test_replaces_existing_samples_with_new_list(self):
+        new_samples = [
+            {'id': 'new-s', 'name': 'New Sample', 'description': 'desc', 'notes': '', 'elements': ['Au']},
+        ]
+        result = _apply_samples(_WITH_SAMPLES_XML, new_samples)
+        samples = self._get_samples(result)
+        self.assertEqual(len(samples), 1)
+        self.assertEqual(samples[0]['name'], 'New Sample')
+
+    def test_empty_list_removes_all_samples(self):
+        result = _apply_samples(_WITH_SAMPLES_XML, [])
+        self.assertEqual(self._get_samples(result), [])
+
+    def test_adds_samples_when_none_existed(self):
+        new_samples = [
+            {'id': 'added', 'name': 'Added', 'description': '', 'notes': '', 'elements': []},
+        ]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        samples = self._get_samples(result)
+        self.assertEqual(len(samples), 1)
+        self.assertEqual(samples[0]['id'], 'added')
+
+    def test_id_attribute_set(self):
+        new_samples = [{'id': 'my-id', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        self.assertEqual(s.get('id'), 'my-id')
+
+    def test_elements_written_as_child_tags(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': ['Fe', 'Ni']}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        elements_el = s.find(f'{{{NS}}}elements')
+        self.assertIsNotNone(elements_el)
+        syms = [c.tag.split('}')[-1] for c in elements_el]
+        self.assertEqual(syms, ['Fe', 'Ni'])
+
+    def test_notes_written_as_entry_child(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': 'My notes', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        notes_el = s.find(f'{{{NS}}}notes')
+        self.assertIsNotNone(notes_el)
+        entry = notes_el.find(f'{{{NS}}}entry')
+        self.assertIsNotNone(entry)
+        self.assertEqual(entry.text, 'My notes')
+
+    def test_empty_notes_omits_notes_element(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        self.assertIsNone(s.find(f'{{{NS}}}notes'))
+
+    def test_samples_inserted_before_acquisition_activities(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        children_tags = [c.tag.split('}')[-1] for c in root]
+        sample_pos = children_tags.index('sample')
+        act_pos = children_tags.index('acquisitionActivity')
+        self.assertLess(sample_pos, act_pos)
+
+    def test_result_is_valid_xml(self):
+        result = _apply_samples(_WITH_SAMPLES_XML, [])
+        ET.fromstring(result)
 
 
 # ===========================================================================

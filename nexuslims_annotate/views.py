@@ -117,6 +117,54 @@ def _parse_samples(xml_content):
     return samples
 
 
+def _apply_samples(xml_content, samples_data):
+    """Replace all <sample> elements with the provided ordered list."""
+    ET.register_namespace('', NS)
+    root = ET.fromstring(xml_content)
+
+    for sample_el in root.findall('nx:sample', NS_MAP):
+        root.remove(sample_el)
+
+    # Find insertion point: after title/id/summary, before project/acquisitionActivity/notes
+    insert_pos = 0
+    for i, child in enumerate(root):
+        local = child.tag.split('}')[-1] if '}' in child.tag else child.tag
+        if local in ('title', 'id', 'summary'):
+            insert_pos = i + 1
+
+    for offset, sample_data in enumerate(samples_data):
+        sample_el = ET.Element(f'{{{NS}}}sample')
+        sid = (sample_data.get('id') or '').strip()
+        if sid:
+            sample_el.set('id', sid)
+
+        name = (sample_data.get('name') or '').strip()
+        if name:
+            name_el = ET.SubElement(sample_el, f'{{{NS}}}name')
+            name_el.text = name
+
+        description = (sample_data.get('description') or '').strip()
+        if description:
+            desc_el = ET.SubElement(sample_el, f'{{{NS}}}description')
+            desc_el.text = description
+
+        notes = (sample_data.get('notes') or '').strip()
+        if notes:
+            notes_el = ET.SubElement(sample_el, f'{{{NS}}}notes')
+            entry_el = ET.SubElement(notes_el, f'{{{NS}}}entry')
+            entry_el.text = notes
+
+        elements = sample_data.get('elements') or []
+        if elements:
+            elements_el = ET.SubElement(sample_el, f'{{{NS}}}elements')
+            for symbol in elements:
+                ET.SubElement(elements_el, f'{{{NS}}}{symbol}')
+
+        root.insert(insert_pos + offset, sample_el)
+
+    return ET.tostring(root, encoding='unicode', xml_declaration=False)
+
+
 def _inject_setup_into_dataset(dataset_el, activity_el):
     """Copy source activity setup params into a dataset's meta elements (non-destructively)."""
     setup_el = activity_el.find(f'{{{NS}}}setup')
