@@ -10,6 +10,8 @@
 {% block app_data %}
 {{ activities|json_script:"nx-activities-data" }}
 <script>window.__nxActivities = JSON.parse(document.getElementById('nx-activities-data').textContent);</script>
+{{ samples|json_script:"nx-samples-data" }}
+<script>window.__nxPendingSamples = JSON.parse(document.getElementById('nx-samples-data').textContent);</script>
 
 <div class="container-fluid px-4 pt-3 pb-3">
 
@@ -48,19 +50,65 @@
   <form id="annotate-page-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
     {% csrf_token %}
     <input type="hidden" id="annotate-moves-input" name="moves" value="[]">
+    <input type="hidden" id="annotate-samples-input" name="samples" value="[]">
+    <input type="hidden" id="annotate-deleted-seqnos-input" name="deleted_seqnos" value="[]">
+    <input type="hidden" id="annotate-new-activities-input" name="new_activities" value="[]">
+    <input type="hidden" id="annotate-activity-sample-ids-input" name="activity_sample_ids" value="{}">
+
+    {# Samples section #}
+    <div class="border rounded p-2 mb-3" id="nx-samples-section" style="background:#fafafa;">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="text-uppercase text-muted fw-semibold"
+              style="font-size:0.72rem;letter-spacing:0.08em;">Samples</span>
+        <button type="button" class="btn btn-outline-primary btn-sm"
+                id="nx-add-sample-btn" style="font-size:0.72rem;padding:2px 8px;">
+          <i class="fas fa-plus fa-xs me-1"></i>Add Sample
+        </button>
+      </div>
+      <div id="nx-samples-list">
+        {# rendered by renderSamples() JS #}
+      </div>
+      <p id="nx-no-samples-msg" class="text-muted mb-0"
+         style="font-size:0.8rem;font-style:italic;{% if samples %}display:none;{% endif %}">
+        No samples yet. Click "Add Sample" to add one.
+      </p>
+    </div>
 
     {% regroup datasets by activity_seqno as activity_groups %}
     {% for group in activity_groups %}
 
       {# Activity divider #}
-      <div class="d-flex align-items-center gap-2 mt-3 mb-1">
+      <div class="d-flex align-items-center gap-2 mt-3 mb-1" id="nx-activity-header-{{ group.grouper }}">
         {# seqno is always a zero-based integer string per the NexusLIMS schema #}
-        <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
+        <span class="text-uppercase text-muted fw-semibold flex-shrink-0 nx-activity-label"
               style="font-size:0.75rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
         <span class="nx-activity-count badge bg-light text-secondary border"
               data-seqno="{{ group.grouper }}"
               style="font-size:0.7rem;font-weight:500;">{{ group.list|length }}</span>
+        <select class="form-select form-select-sm nx-activity-sample flex-shrink-0"
+                data-seqno="{{ group.grouper }}"
+                style="max-width:160px;font-size:0.72rem;"
+                title="Assign sample to this activity">
+          <option value="">-- No sample --</option>
+          {% for sample in samples %}
+          <option value="{{ sample.id }}">{{ sample.name }}</option>
+          {% endfor %}
+        </select>
         <hr class="flex-grow-1 my-0">
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary flex-shrink-0 nx-insert-activity-below"
+                data-seqno="{{ group.grouper }}"
+                style="font-size:0.7rem;padding:1px 7px;"
+                title="Insert new activity below this one">+ below</button>
+        <button type="button"
+                class="btn btn-sm flex-shrink-0 nx-delete-activity"
+                data-seqno="{{ group.grouper }}"
+                data-dataset-count="{{ group.list|length }}"
+                style="font-size:0.7rem;padding:1px 7px;"
+                title="{% if group.list %}Move all datasets to another activity first{% else %}Delete this activity{% endif %}"
+                {% if group.list %}disabled{% endif %}>
+          <i class="fas fa-trash-alt" style="font-size:0.65rem;"></i>
+        </button>
       </div>
 
       <div class="row gx-2 gy-0 nx-sortable-activity" data-seqno="{{ group.grouper }}">
@@ -111,6 +159,9 @@
         <i class="fa fa-save"></i> Save Annotations
       </button>
       <a href="{% url 'core_main_app_data_detail' %}?id={{ record_id }}" class="btn btn-outline-secondary">Cancel</a>
+      <button type="button" class="btn btn-outline-secondary" id="nx-add-activity-btn">
+        <i class="fas fa-plus fa-xs me-1"></i> Add Activity
+      </button>
     </div>
   </form>
 </div>
@@ -572,6 +623,67 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Sample editor modal #}
+<div class="modal fade" id="nx-sample-modal" tabindex="-1" aria-labelledby="nx-sample-modal-label">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title" id="nx-sample-modal-label">
+          <i class="fas fa-flask me-2"></i><span id="nx-sample-modal-title">Add Sample</span>
+        </h6>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body py-3">
+        <input type="hidden" id="nx-sample-editing-id" value="">
+
+        <div class="mb-2">
+          <label for="nx-sample-name" class="form-label form-label-sm fw-semibold mb-1">
+            Name <span class="text-danger">*</span>
+          </label>
+          <input type="text" class="form-control form-control-sm" id="nx-sample-name"
+                 placeholder="e.g. Steel Alloy A">
+        </div>
+
+        <div class="mb-2">
+          <label for="nx-sample-description" class="form-label form-label-sm fw-semibold mb-1">
+            Description
+          </label>
+          <textarea class="form-control form-control-sm" id="nx-sample-description"
+                    rows="2" placeholder="Brief description of the sample"></textarea>
+        </div>
+
+        <div class="mb-2">
+          <label for="nx-sample-notes" class="form-label form-label-sm fw-semibold mb-1">
+            Notes
+          </label>
+          <textarea class="form-control form-control-sm" id="nx-sample-notes"
+                    rows="2" placeholder="Preparation notes, observations, etc."></textarea>
+        </div>
+
+        <div class="mb-1">
+          <label class="form-label form-label-sm fw-semibold mb-1">
+            Elements
+          </label>
+          <div id="nx-elements-tags" class="d-flex flex-wrap gap-1 mb-1 min-height-1"></div>
+          <input type="text" class="form-control form-control-sm" id="nx-elements-input"
+                 placeholder="Type symbol (e.g. Fe) and press Enter or comma"
+                 autocomplete="off" list="nx-elements-datalist">
+          <datalist id="nx-elements-datalist"></datalist>
+          <div class="form-text" style="font-size:0.72rem;">
+            Press Enter or comma to add. Click a tag to remove it.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="nx-sample-modal-save">
+          <i class="fas fa-save fa-xs me-1"></i>Save Sample
+        </button>
       </div>
     </div>
   </div>
