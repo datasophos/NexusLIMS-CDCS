@@ -1656,6 +1656,134 @@ class AnnotateSaveViewTest(TestCase):
         self.assertTrue(body.get("success"))
 
 
+class AnnotateSaveStructuralTests(TestCase):
+    """Tests for structural mutations via annotate_save."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser_struct', password='pass')
+        self.client.force_login(self.user)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_delete_non_empty_activity_returns_400(self, mock_upsert, mock_get):
+        mock_get.return_value = _make_mock_data(_NO_SAMPLES_XML)
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': json.dumps(['0']),  # seqno 0 has 1 dataset
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 400)
+        body = json.loads(response.content)
+        self.assertIn('error', body)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_delete_empty_activity_succeeds(self, mock_upsert, mock_get):
+        data_obj = _make_mock_data(_NO_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': json.dumps(['1']),  # seqno 1 is empty
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json.loads(response.content).get('success'))
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_malformed_json_returns_400(self, mock_upsert, mock_get):
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': 'not json',
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 400)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_samples_saved_in_xml(self, mock_upsert, mock_get):
+        data_obj = _make_mock_data(_NO_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        samples = [{'id': 'test-s', 'name': 'Test Sample', 'description': 'desc', 'notes': '', 'elements': ['Fe']}]
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': '[]',
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': json.dumps(samples),
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        s = root.find(f'{{{NS}}}sample')
+        self.assertIsNotNone(s)
+        self.assertEqual(s.get('id'), 'test-s')
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_existing_save_still_works_without_new_fields(self, mock_upsert, mock_get):
+        """Existing callers that omit the new fields should not break."""
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {'dataset_0_description': 'A description'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json.loads(response.content).get('success'))
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_move_to_new_activity_is_translated(self, mock_upsert, mock_get):
+        """A move targeting a temp_id is correctly translated to the final seqno."""
+        data_obj = _make_mock_data(_NO_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': '[]',
+                'new_activities': json.dumps([{'temp_id': 'new-x', 'at_end': True}]),
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': json.dumps([{'datasetIndex': 0, 'targetActivitySeqno': 'new-x'}]),
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        acts = root.findall(f'{{{NS}}}acquisitionActivity')
+        # 3 activities total (0, 1, new-x now renumbered to 2)
+        self.assertEqual(len(acts), 3)
+        # dataset 0 (only.dm3) moved to the last activity
+        last_act = acts[-1]
+        ds_names = [ds.find(f'{{{NS}}}name').text for ds in last_act.findall(f'{{{NS}}}dataset')]
+        self.assertIn('only.dm3', ds_names)
+
+
 class AnnotateSaveOneDoesNotExistTest(TestCase):
     """DoesNotExist handling in annotate_save_one."""
 

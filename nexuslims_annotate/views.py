@@ -526,6 +526,7 @@ def annotate_record(request, record_id):
     try:
         datasets = _parse_datasets(data.content)
         activities = _parse_activities(data.content)
+        samples = _parse_samples(data.content)
         record_title = _get_title(data.content)
     except ET.ParseError:
         return render(request, 'nexuslims_annotate/annotate.html', {
@@ -534,6 +535,7 @@ def annotate_record(request, record_id):
             'datasets': [],
             'record_id': record_id,
             'activities': [],
+            'samples': [],
             'xml_error': True,
         }, status=500)
     return render(request, 'nexuslims_annotate/annotate.html', {
@@ -542,6 +544,7 @@ def annotate_record(request, record_id):
         'datasets': datasets,
         'record_id': record_id,
         'activities': activities,
+        'samples': samples,
     })
 
 
@@ -628,13 +631,46 @@ def annotate_save_one(request, record_id):
 @login_required
 @require_POST
 def annotate_save(request, record_id):
-    """AJAX POST: update <description> elements and save the record."""
+    """AJAX POST: update <description> elements, apply structural mutations, and save the record."""
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     try:
         data = data_api.get_by_id(record_id, request.user)
-        # Apply descriptions first (uses pre-move indices)
-        updated_xml = _apply_descriptions(data.content, request.POST)
-        # Apply moves if present
+
+        # Parse structural fields (new); fall back to empty defaults if absent
+        try:
+            samples = json.loads(request.POST.get('samples', '[]'))
+            deleted_seqnos = json.loads(request.POST.get('deleted_seqnos', '[]'))
+            new_activities = json.loads(request.POST.get('new_activities', '[]'))
+            activity_sample_ids = json.loads(request.POST.get('activity_sample_ids', '{}'))
+        except (json.JSONDecodeError, ValueError) as e:
+            return JsonResponse({'error': f'Malformed JSON in structural fields: {e}'}, status=400)
+
+        if not isinstance(samples, list):
+            return JsonResponse({'error': 'samples must be a JSON array'}, status=400)
+        if not isinstance(deleted_seqnos, list):
+            return JsonResponse({'error': 'deleted_seqnos must be a JSON array'}, status=400)
+        if not isinstance(new_activities, list):
+            return JsonResponse({'error': 'new_activities must be a JSON array'}, status=400)
+        if not isinstance(activity_sample_ids, dict):
+            return JsonResponse({'error': 'activity_sample_ids must be a JSON object'}, status=400)
+
+        updated_xml = data.content
+
+        # Apply structural mutations (validate, delete, insert, sampleID)
+        try:
+            updated_xml, seqno_mapping = _apply_activity_mutations(
+                updated_xml, deleted_seqnos, new_activities, activity_sample_ids
+            )
+        except ValueError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+        # Replace sample elements
+        updated_xml = _apply_samples(updated_xml, samples)
+
+        # Apply descriptions (flat indices valid: deleted activities had 0 datasets)
+        updated_xml = _apply_descriptions(updated_xml, request.POST)
+
+        # Parse and translate moves
         moves_json = request.POST.get('moves', '[]')
         try:
             moves = json.loads(moves_json)
@@ -644,20 +680,43 @@ def annotate_save(request, record_id):
         if not isinstance(moves, list):
             logger.warning('moves is not a list for record %s, ignoring', record_id)
             moves = []
+
+        # Translate targetActivitySeqno: map old numeric seqnos that were shifted by
+        # deletions to their new provisional positions.  Temp_ids (non-numeric strings
+        # such as 'new-x') are already valid provisional seqnos in the XML and must
+        # NOT be translated -- they will be renumbered by _renumber_activities after
+        # the moves are applied.
+        if moves and seqno_mapping:
+            # Build an inverse mapping for provisional-seqno -> provisional-seqno
+            # (identity) so we only remap old seqnos that actually changed position.
+            # A seqno changed if its mapped value differs from itself.
+            shifted = {k: v for k, v in seqno_mapping.items() if k != v and k.lstrip('-').isdigit()}
+            if shifted:
+                translated = []
+                for m in moves:
+                    if isinstance(m, dict) and 'targetActivitySeqno' in m:
+                        m = dict(m)
+                        key = str(m['targetActivitySeqno'])
+                        m['targetActivitySeqno'] = shifted.get(key, key)
+                    translated.append(m)
+                moves = translated
+
         if moves:
             updated_xml = _apply_moves(updated_xml, moves)
+
+        # Renumber all activities to consecutive 0-based seqnos
+        updated_xml = _renumber_activities(updated_xml)
+
         data.content = updated_xml
-        # Write permission is enforced by upsert (raises AccessControlError on failure).
-        # Read-path views also call check_can_write explicitly to deny reads to write-only
-        # users; write-path views rely on upsert instead.
         data_api.upsert(data, request)
         if is_ajax:
             return JsonResponse({'success': True})
         return redirect(reverse('core_main_app_data_detail') + f'?id={record_id}')
+
     except (DoesNotExist, ModelError):
         if is_ajax:
             return JsonResponse({'error': 'Record not found'}, status=404)
-        raise Http404(f"Record {record_id} not found.")
+        raise Http404(f'Record {record_id} not found.')
     except AccessControlError as e:
         if is_ajax:
             return JsonResponse({'error': str(e)}, status=403)
