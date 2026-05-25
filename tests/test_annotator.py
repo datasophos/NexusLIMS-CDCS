@@ -15,6 +15,7 @@ from nexuslims_annotate.views import (
     _inject_setup_into_dataset,
     _parse_activities,
     _parse_datasets,
+    _parse_samples,
     _recompute_activity_setup,
     _sort_datasets_by_creation_time,
 )
@@ -316,6 +317,54 @@ class ParseActivitiesTests(SimpleTestCase):
         acts = _parse_activities(_NO_SAMPLES_XML)
         self.assertEqual(acts[0]['sample_id'], '')
         self.assertEqual(acts[1]['sample_id'], '')
+
+
+# ===========================================================================
+# _parse_samples
+# ===========================================================================
+
+class ParseSamplesTests(SimpleTestCase):
+    def test_returns_correct_count(self):
+        self.assertEqual(len(_parse_samples(_WITH_SAMPLES_XML)), 2)
+
+    def test_empty_when_no_samples(self):
+        self.assertEqual(_parse_samples(_NO_SAMPLES_XML), [])
+
+    def test_id_attribute_captured(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['id'], 'steel-alloy-a')
+        self.assertEqual(samples[1]['id'], 'brass-ref')
+
+    def test_name_captured(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['name'], 'Steel Alloy A')
+
+    def test_description_captured(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['description'], 'High-carbon steel reference')
+
+    def test_description_empty_string_when_absent(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        # brass-ref has description
+        self.assertEqual(samples[1]['description'], 'Cu-Zn alloy')
+
+    def test_notes_text_joined_from_entries(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['notes'], 'Prepared 2024-01-10.')
+
+    def test_notes_empty_string_when_absent(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[1]['notes'], '')
+
+    def test_elements_list_returned(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['elements'], ['Fe', 'C', 'Cr', 'Ni'])
+
+    def test_elements_empty_list_when_absent(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><sample id="x"><name>X</name></sample></Experiment>'
+        samples = _parse_samples(xml)
+        self.assertEqual(samples[0]['elements'], [])
 
 
 # ===========================================================================

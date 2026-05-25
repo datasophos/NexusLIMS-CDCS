@@ -82,6 +82,41 @@ def _parse_activities(xml_content):
     return activities
 
 
+def _parse_samples(xml_content):
+    """Parse XML and return a list of sample dicts."""
+    root = ET.fromstring(xml_content)
+    samples = []
+    for sample_el in root.findall('nx:sample', NS_MAP):
+        name_el = sample_el.find('nx:name', NS_MAP)
+        desc_el = sample_el.find('nx:description', NS_MAP)
+        notes_el = sample_el.find('nx:notes', NS_MAP)
+        elements_el = sample_el.find('nx:elements', NS_MAP)
+
+        elements = []
+        if elements_el is not None:
+            elements = [
+                child.tag.split('}')[-1] if '}' in child.tag else child.tag
+                for child in elements_el
+            ]
+
+        notes = ''
+        if notes_el is not None:
+            entries = [
+                (e.text or '').strip()
+                for e in notes_el.findall('nx:entry', NS_MAP)
+            ]
+            notes = '\n'.join(e for e in entries if e)
+
+        samples.append({
+            'id': sample_el.get('id', ''),
+            'name': name_el.text if name_el is not None else '',
+            'description': desc_el.text if desc_el is not None else '',
+            'notes': notes,
+            'elements': elements,
+        })
+    return samples
+
+
 def _inject_setup_into_dataset(dataset_el, activity_el):
     """Copy source activity setup params into a dataset's meta elements (non-destructively)."""
     setup_el = activity_el.find(f'{{{NS}}}setup')
