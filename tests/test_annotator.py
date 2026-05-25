@@ -313,7 +313,8 @@ class ParseActivitiesTests(SimpleTestCase):
         self.assertEqual(acts[0]['sample_id'], 'steel-alloy-a')
 
     def test_sample_id_empty_string_when_absent(self):
-        acts = _parse_activities(_WITH_SAMPLES_XML)
+        acts = _parse_activities(_NO_SAMPLES_XML)
+        self.assertEqual(acts[0]['sample_id'], '')
         self.assertEqual(acts[1]['sample_id'], '')
 
 
