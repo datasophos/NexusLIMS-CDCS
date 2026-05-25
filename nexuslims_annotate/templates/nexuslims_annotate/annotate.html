@@ -1085,6 +1085,10 @@ function nxDeleteActivity(seqno) {
   // ── Save: inject moves JSON before submission ─────────────────────────────
   form.addEventListener('submit', function () {
     document.getElementById('annotate-moves-input').value = JSON.stringify(window.__nxPendingMoves);
+    document.getElementById('annotate-samples-input').value = JSON.stringify(window.__nxPendingSamples);
+    document.getElementById('annotate-deleted-seqnos-input').value = JSON.stringify(window.__nxDeletedSeqnos);
+    document.getElementById('annotate-new-activities-input').value = JSON.stringify(window.__nxNewActivities);
+    document.getElementById('annotate-activity-sample-ids-input').value = JSON.stringify(window.__nxActivitySampleIds);
     saving = true;
   });
 
@@ -1093,7 +1097,22 @@ function nxDeleteActivity(seqno) {
     var dirtyText = Array.from(form.querySelectorAll('.annotate-textarea')).some(function (ta) {
       return ta.value.trim() !== (ta.dataset.original || '').trim();
     });
-    return dirtyText || window.__nxPendingMoves.length > 0;
+    if (dirtyText || window.__nxPendingMoves.length > 0) return true;
+    if (window.__nxDeletedSeqnos.length > 0) return true;
+    if (window.__nxNewActivities.length > 0) return true;
+    // Check if any sample assignment changed from server state
+    var initialIds = {};
+    if (window.__nxActivities) {
+      window.__nxActivities.forEach(function(a) {
+        if (a.sample_id) initialIds[String(a.seqno)] = a.sample_id;
+      });
+    }
+    var currentIds = window.__nxActivitySampleIds || {};
+    if (JSON.stringify(initialIds) !== JSON.stringify(currentIds)) return true;
+    // Check if samples list changed
+    var initialSamples = JSON.parse(document.getElementById('nx-samples-data').textContent || '[]');
+    if (JSON.stringify(initialSamples) !== JSON.stringify(window.__nxPendingSamples)) return true;
+    return false;
   }
 
   window.addEventListener('beforeunload', function (e) {
@@ -1122,11 +1141,24 @@ function nxDeleteActivity(seqno) {
       </div>
       <div class="modal-body" style="font-size:0.9rem;">
         <p class="mb-3">
-            Annotating a record lets you attach plain-language descriptions to each dataset (file) captured during an experiment.
-            These descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators
-            to understand what was acquired and why without having to open every file. They are also attached to the structured record,
-            and will be included if you download the XML or JSON of the record.
+          Annotating a record lets you attach plain-language descriptions to each dataset,
+          reassign datasets to different acquisition activities, manage samples examined during
+          the experiment, and add or remove acquisition activities. All changes save together
+          when you click <strong>Save Annotations</strong>.
         </p>
+        <h6 class="fw-semibold">Managing Samples</h6>
+        <ul class="mb-3">
+          <li>The <strong>Samples</strong> panel at the top shows all samples for this record.</li>
+          <li>Click <strong>Add Sample</strong> or <strong>Edit</strong> to open the sample editor (name, description, notes, elements).</li>
+          <li>Use the dropdown in each activity header to assign a sample to that activity.</li>
+          <li>Deleting a sample that is assigned to activities will prompt for confirmation.</li>
+        </ul>
+        <h6 class="fw-semibold">Managing Activities</h6>
+        <ul class="mb-3">
+          <li>Click <strong>+ below</strong> in an activity header to insert a new activity below it.</li>
+          <li>Click <strong>+ Add Activity</strong> in the save row to append a new activity at the end.</li>
+          <li>The trash icon button in an activity header deletes it (only enabled when the activity has no datasets).</li>
+        </ul>
         <h6 class="fw-semibold">Adding Descriptions</h6>
         <ul class="mb-3">
           <li>Type a description in any text box and click <strong>Save Annotations</strong> to save all at once.</li>
