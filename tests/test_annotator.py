@@ -1783,6 +1783,50 @@ class AnnotateSaveStructuralTests(TestCase):
         ds_names = [ds.find(f'{{{NS}}}name').text for ds in last_act.findall(f'{{{NS}}}dataset')]
         self.assertIn('only.dm3', ds_names)
 
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_move_after_deletion_uses_original_seqno(self, mock_upsert, mock_get):
+        """Moving a dataset to an activity whose seqno did not change still works after a deletion."""
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        # XML: seqno 0 has 'only.dm3', seqno 1 is empty (to be deleted), seqno 2 is also empty
+        xml = f"""<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS_STR}">
+  <title>T</title>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-15T10:00:00-05:00</startTime>
+    <dataset type="Image">
+      <name>only.dm3</name>
+      <location>/data/only.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1"/>
+  <acquisitionActivity seqno="2"/>
+</Experiment>"""
+        data_obj = _make_mock_data(xml)
+        mock_get.return_value = data_obj
+        # Delete seqno 1, move dataset from seqno 0 to seqno 2
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': json.dumps(['1']),
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': json.dumps([{'datasetIndex': 0, 'targetActivitySeqno': '2'}]),
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        acts = root.findall(f'{{{NS_STR}}}acquisitionActivity')
+        # After deletion + renumber, 2 activities remain
+        self.assertEqual(len(acts), 2)
+        # The last activity should now have 'only.dm3'
+        last_act = acts[-1]
+        ds_names = [ds.find(f'{{{NS_STR}}}name').text for ds in last_act.findall(f'{{{NS_STR}}}dataset')]
+        self.assertIn('only.dm3', ds_names)
+
 
 class AnnotateSaveOneDoesNotExistTest(TestCase):
     """DoesNotExist handling in annotate_save_one."""

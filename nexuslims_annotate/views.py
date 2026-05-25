@@ -681,26 +681,6 @@ def annotate_save(request, record_id):
             logger.warning('moves is not a list for record %s, ignoring', record_id)
             moves = []
 
-        # Translate targetActivitySeqno: map old numeric seqnos that were shifted by
-        # deletions to their new provisional positions.  Temp_ids (non-numeric strings
-        # such as 'new-x') are already valid provisional seqnos in the XML and must
-        # NOT be translated -- they will be renumbered by _renumber_activities after
-        # the moves are applied.
-        if moves and seqno_mapping:
-            # Build an inverse mapping for provisional-seqno -> provisional-seqno
-            # (identity) so we only remap old seqnos that actually changed position.
-            # A seqno changed if its mapped value differs from itself.
-            shifted = {k: v for k, v in seqno_mapping.items() if k != v and k.lstrip('-').isdigit()}
-            if shifted:
-                translated = []
-                for m in moves:
-                    if isinstance(m, dict) and 'targetActivitySeqno' in m:
-                        m = dict(m)
-                        key = str(m['targetActivitySeqno'])
-                        m['targetActivitySeqno'] = shifted.get(key, key)
-                    translated.append(m)
-                moves = translated
-
         if moves:
             updated_xml = _apply_moves(updated_xml, moves)
 
