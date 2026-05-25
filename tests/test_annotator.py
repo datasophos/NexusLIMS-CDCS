@@ -18,6 +18,7 @@ from nexuslims_annotate.views import (
     _parse_datasets,
     _parse_samples,
     _recompute_activity_setup,
+    _renumber_activities,
     _sort_datasets_by_creation_time,
 )
 
@@ -454,6 +455,45 @@ class ApplySamplesTests(SimpleTestCase):
     def test_result_is_valid_xml(self):
         result = _apply_samples(_WITH_SAMPLES_XML, [])
         ET.fromstring(result)
+
+
+# ===========================================================================
+# _renumber_activities
+# ===========================================================================
+
+class RenumberActivitiesTests(SimpleTestCase):
+    def _seqnos(self, xml_str):
+        root = ET.fromstring(xml_str)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        return [a.get('seqno') for a in root.findall('nx:acquisitionActivity', NS_MAP)]
+
+    def test_already_consecutive_unchanged(self):
+        result = _renumber_activities(_WITH_SAMPLES_XML)
+        self.assertEqual(self._seqnos(result), ['0', '1'])
+
+    def test_gaps_are_filled(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f"""<Experiment xmlns="{NS}">
+          <acquisitionActivity seqno="0"/>
+          <acquisitionActivity seqno="2"/>
+          <acquisitionActivity seqno="5"/>
+        </Experiment>"""
+        result = _renumber_activities(xml)
+        self.assertEqual(self._seqnos(result), ['0', '1', '2'])
+
+    def test_single_activity_stays_zero(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><acquisitionActivity seqno="3"/></Experiment>'
+        result = _renumber_activities(xml)
+        self.assertEqual(self._seqnos(result), ['0'])
+
+    def test_no_activities_returns_valid_xml(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><title>X</title></Experiment>'
+        result = _renumber_activities(xml)
+        ET.fromstring(result)
+        self.assertEqual(self._seqnos(result), [])
 
 
 # ===========================================================================

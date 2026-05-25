@@ -165,6 +165,15 @@ def _apply_samples(xml_content, samples_data):
     return ET.tostring(root, encoding='unicode', xml_declaration=False)
 
 
+def _renumber_activities(xml_content):
+    """Rewrite all seqno attributes to consecutive 0-based integers in XML order."""
+    ET.register_namespace('', NS)
+    root = ET.fromstring(xml_content)
+    for i, activity in enumerate(root.findall('nx:acquisitionActivity', NS_MAP)):
+        activity.set('seqno', str(i))
+    return ET.tostring(root, encoding='unicode', xml_declaration=False)
+
+
 def _inject_setup_into_dataset(dataset_el, activity_el):
     """Copy source activity setup params into a dataset's meta elements (non-destructively)."""
     setup_el = activity_el.find(f'{{{NS}}}setup')
