@@ -184,6 +184,55 @@ _TWO_ACTIVITY_XML = f"""\
   </acquisitionActivity>
 </Experiment>"""
 
+_WITH_SAMPLES_XML = f"""\
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS}">
+  <title>Test Experiment</title>
+  <summary><experimenter>Test User</experimenter></summary>
+  <sample id="steel-alloy-a">
+    <name>Steel Alloy A</name>
+    <description>High-carbon steel reference</description>
+    <notes><entry>Prepared 2024-01-10.</entry></notes>
+    <elements><Fe/><C/><Cr/><Ni/></elements>
+  </sample>
+  <sample id="brass-ref">
+    <name>Brass Reference</name>
+    <description>Cu-Zn alloy</description>
+    <elements><Cu/><Zn/></elements>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-15T10:00:00-05:00</startTime>
+    <sampleID>steel-alloy-a</sampleID>
+    <dataset type="Image">
+      <name>image_001.dm3</name>
+      <location>/data/image_001.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2024-01-15T11:00:00-05:00</startTime>
+    <dataset type="Image">
+      <name>image_002.dm3</name>
+      <location>/data/image_002.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>"""
+
+_NO_SAMPLES_XML = f"""\
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS}">
+  <title>No Samples</title>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-15T10:00:00-05:00</startTime>
+    <dataset type="Image">
+      <name>only.dm3</name>
+      <location>/data/only.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2024-01-15T11:00:00-05:00</startTime>
+  </acquisitionActivity>
+</Experiment>"""
+
 
 # ===========================================================================
 # _parse_datasets
@@ -258,6 +307,14 @@ class ParseActivitiesTests(SimpleTestCase):
     def test_empty_xml_returns_empty_list(self):
         xml = f'<Experiment xmlns="{NS}"><title>Empty</title></Experiment>'
         self.assertEqual(_parse_activities(xml), [])
+
+    def test_sample_id_returned_when_present(self):
+        acts = _parse_activities(_WITH_SAMPLES_XML)
+        self.assertEqual(acts[0]['sample_id'], 'steel-alloy-a')
+
+    def test_sample_id_empty_string_when_absent(self):
+        acts = _parse_activities(_WITH_SAMPLES_XML)
+        self.assertEqual(acts[1]['sample_id'], '')
 
 
 # ===========================================================================

@@ -70,8 +70,15 @@ def _parse_activities(xml_content):
         seqno = activity.get('seqno', '')
         start_el = activity.find('nx:startTime', NS_MAP)
         start_time = start_el.text if start_el is not None else ''
+        sample_id_el = activity.find('nx:sampleID', NS_MAP)
+        sample_id = sample_id_el.text if sample_id_el is not None else ''
         dataset_count = len(activity.findall('nx:dataset', NS_MAP))
-        activities.append({'seqno': seqno, 'start_time': start_time, 'dataset_count': dataset_count})
+        activities.append({
+            'seqno': seqno,
+            'start_time': start_time,
+            'dataset_count': dataset_count,
+            'sample_id': sample_id,
+        })
     return activities
 
 
