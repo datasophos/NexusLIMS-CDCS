@@ -344,9 +344,10 @@ class ParseSamplesTests(SimpleTestCase):
         self.assertEqual(samples[0]['description'], 'High-carbon steel reference')
 
     def test_description_empty_string_when_absent(self):
-        samples = _parse_samples(_WITH_SAMPLES_XML)
-        # brass-ref has description
-        self.assertEqual(samples[1]['description'], 'Cu-Zn alloy')
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><sample id="x"><name>X</name></sample></Experiment>'
+        samples = _parse_samples(xml)
+        self.assertEqual(samples[0]['description'], '')
 
     def test_notes_text_joined_from_entries(self):
         samples = _parse_samples(_WITH_SAMPLES_XML)
