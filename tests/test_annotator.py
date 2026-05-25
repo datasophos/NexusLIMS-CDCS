@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase, TestCase
 
 from nexuslims_annotate.views import (
+    _apply_activity_mutations,
     _apply_descriptions,
     _apply_moves,
     _apply_samples,
@@ -494,6 +495,159 @@ class RenumberActivitiesTests(SimpleTestCase):
         result = _renumber_activities(xml)
         ET.fromstring(result)
         self.assertEqual(self._seqnos(result), [])
+
+
+# ===========================================================================
+# _apply_activity_mutations
+# ===========================================================================
+
+class ApplyActivityMutationsTests(SimpleTestCase):
+    NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+    NS_MAP_LOC = {'nx': "https://data.nist.gov/od/dm/nexus/experiment/v1.0"}
+
+    def _seqnos(self, xml_str):
+        root = ET.fromstring(xml_str)
+        return [a.get('seqno') for a in root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)]
+
+    def _sample_id(self, xml_str, seqno):
+        root = ET.fromstring(xml_str)
+        for a in root.findall('nx:acquisitionActivity', self.NS_MAP_LOC):
+            if a.get('seqno') == str(seqno):
+                el = a.find(f'{{{self.NS_STR}}}sampleID')
+                return el.text if el is not None else None
+        return None
+
+    # --- delete ---
+
+    def test_delete_empty_activity(self):
+        # seqno 1 is empty in _NO_SAMPLES_XML
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML, deleted_seqnos=['1'], new_activities=[], activity_sample_ids={}
+        )
+        root = ET.fromstring(result)
+        seqnos = [a.get('seqno') for a in root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)]
+        self.assertNotIn('1', seqnos)
+
+    def test_delete_non_empty_activity_raises_value_error(self):
+        # seqno 0 in _NO_SAMPLES_XML has 1 dataset
+        with self.assertRaises(ValueError):
+            _apply_activity_mutations(
+                _NO_SAMPLES_XML, deleted_seqnos=['0'], new_activities=[], activity_sample_ids={}
+            )
+
+    def test_delete_nonexistent_seqno_silently_skipped(self):
+        result, _ = _apply_activity_mutations(
+            _NO_SAMPLES_XML, deleted_seqnos=['99'], new_activities=[], activity_sample_ids={}
+        )
+        self.assertEqual(self._seqnos(result), ['0', '1'])
+
+    # --- insert ---
+
+    def test_insert_at_end(self):
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[{'temp_id': 'new-x', 'at_end': True}],
+            activity_sample_ids={},
+        )
+        root = ET.fromstring(result)
+        acts = root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)
+        self.assertEqual(len(acts), 3)
+
+    def test_insert_after_seqno(self):
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[{'temp_id': 'new-x', 'after_seqno': '0'}],
+            activity_sample_ids={},
+        )
+        root = ET.fromstring(result)
+        acts = root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)
+        # should be seqno 0, new-x, 1 in that order
+        self.assertEqual(acts[0].get('seqno'), '0')
+        self.assertEqual(acts[1].get('seqno'), 'new-x')
+        self.assertEqual(acts[2].get('seqno'), '1')
+
+    def test_insert_after_nonexistent_seqno_raises(self):
+        with self.assertRaises(ValueError):
+            _apply_activity_mutations(
+                _NO_SAMPLES_XML,
+                deleted_seqnos=[],
+                new_activities=[{'temp_id': 'new-x', 'after_seqno': '99'}],
+                activity_sample_ids={},
+            )
+
+    # --- seqno mapping ---
+
+    def test_mapping_original_seqno_to_final(self):
+        # delete seqno 1, so seqno 0 stays at 0
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML, deleted_seqnos=['1'], new_activities=[], activity_sample_ids={}
+        )
+        self.assertEqual(mapping['0'], '0')
+
+    def test_mapping_temp_id_to_final(self):
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[{'temp_id': 'new-x', 'at_end': True}],
+            activity_sample_ids={},
+        )
+        self.assertIn('new-x', mapping)
+
+    def test_mapping_shifts_after_deletion(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f"""<Experiment xmlns="{NS}">
+          <acquisitionActivity seqno="0">
+            <dataset><name>a.dm3</name><location>/a</location></dataset>
+          </acquisitionActivity>
+          <acquisitionActivity seqno="1"/>
+          <acquisitionActivity seqno="2">
+            <dataset><name>b.dm3</name><location>/b</location></dataset>
+          </acquisitionActivity>
+        </Experiment>"""
+        result, mapping = _apply_activity_mutations(
+            xml, deleted_seqnos=['1'], new_activities=[], activity_sample_ids={}
+        )
+        # old seqno 2 now maps to final seqno 1 (before renumber step)
+        self.assertEqual(mapping['2'], '1')
+
+    # --- sampleID ---
+
+    def test_sample_id_set_on_activity(self):
+        result, _ = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[],
+            activity_sample_ids={'0': 'steel-alloy-a'},
+        )
+        self.assertEqual(self._sample_id(result, '0'), 'steel-alloy-a')
+
+    def test_sample_id_cleared_when_null(self):
+        result, _ = _apply_activity_mutations(
+            _WITH_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[],
+            activity_sample_ids={'0': None},
+        )
+        self.assertIsNone(self._sample_id(result, '0'))
+
+    def test_sample_id_inserted_after_start_time(self):
+        result, _ = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[],
+            activity_sample_ids={'0': 'my-sample'},
+        )
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP_L = {'nx': NS}
+        for act in root.findall('nx:acquisitionActivity', NS_MAP_L):
+            if act.get('seqno') == '0':
+                tags = [c.tag.split('}')[-1] for c in act]
+                start_pos = tags.index('startTime')
+                sid_pos = tags.index('sampleID')
+                self.assertGreater(sid_pos, start_pos)
 
 
 # ===========================================================================

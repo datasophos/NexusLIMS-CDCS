@@ -174,6 +174,98 @@ def _renumber_activities(xml_content):
     return ET.tostring(root, encoding='unicode', xml_declaration=False)
 
 
+def _apply_activity_mutations(xml_content, deleted_seqnos, new_activities, activity_sample_ids):
+    """Delete/insert activities and set sampleID assignments.
+
+    deleted_seqnos: list of seqno strings to delete (must all have 0 datasets)
+    new_activities: list of dicts with keys: temp_id, and either after_seqno or at_end=True
+    activity_sample_ids: dict mapping seqno/temp_id -> sample_id str (or None to clear)
+
+    Returns (updated_xml, seqno_mapping) where seqno_mapping maps
+    original seqno strings and temp_ids to final provisional seqno strings
+    (based on XML order after all structural changes, before renumber).
+
+    Raises ValueError if a deleted activity has datasets, or after_seqno is not found.
+    """
+    ET.register_namespace('', NS)
+    root = ET.fromstring(xml_content)
+    deleted_seqnos = [str(s) for s in deleted_seqnos]
+
+    # Phase 1: validate and delete
+    activities_by_seqno = {
+        a.get('seqno', ''): a
+        for a in root.findall('nx:acquisitionActivity', NS_MAP)
+    }
+    for seqno in deleted_seqnos:
+        activity = activities_by_seqno.get(seqno)
+        if activity is None:
+            continue
+        dataset_count = len(activity.findall(f'{{{NS}}}dataset'))
+        if dataset_count > 0:
+            raise ValueError(
+                f'Activity {seqno} has {dataset_count} dataset(s) and cannot be deleted'
+            )
+        root.remove(activity)
+
+    # Rebuild index after deletions
+    activities_by_seqno = {
+        a.get('seqno', ''): a
+        for a in root.findall('nx:acquisitionActivity', NS_MAP)
+    }
+
+    # Phase 2: insert new activities
+    for spec in new_activities:
+        temp_id = spec.get('temp_id', '')
+        after_seqno = spec.get('after_seqno')
+        new_el = ET.Element(f'{{{NS}}}acquisitionActivity')
+        new_el.set('seqno', temp_id)
+
+        if after_seqno is not None:
+            ref = activities_by_seqno.get(str(after_seqno))
+            if ref is None:
+                raise ValueError(f'after_seqno {after_seqno!r} not found')
+            all_children = list(root)
+            pos = all_children.index(ref)
+            root.insert(pos + 1, new_el)
+        else:
+            # at_end: append after the last existing activity
+            all_acts = root.findall('nx:acquisitionActivity', NS_MAP)
+            if all_acts:
+                all_children = list(root)
+                pos = all_children.index(all_acts[-1])
+                root.insert(pos + 1, new_el)
+            else:
+                root.append(new_el)
+
+        activities_by_seqno[temp_id] = new_el
+
+    # Phase 3: build seqno mapping (provisional seqno -> 0-based final position)
+    final_activities = root.findall('nx:acquisitionActivity', NS_MAP)
+    seqno_mapping = {a.get('seqno', ''): str(i) for i, a in enumerate(final_activities)}
+
+    # Phase 4: apply sampleID assignments
+    provisional_by_seqno = {a.get('seqno', ''): a for a in final_activities}
+    for seqno_or_temp, sample_id in activity_sample_ids.items():
+        activity = provisional_by_seqno.get(str(seqno_or_temp))
+        if activity is None:
+            continue
+        for sid_el in activity.findall(f'{{{NS}}}sampleID'):
+            activity.remove(sid_el)
+        if sample_id:
+            sid_el = ET.Element(f'{{{NS}}}sampleID')
+            sid_el.text = str(sample_id)
+            children = list(activity)
+            insert_pos = 0
+            for j, child in enumerate(children):
+                local = child.tag.split('}')[-1] if '}' in child.tag else child.tag
+                if local == 'startTime':
+                    insert_pos = j + 1
+                    break
+            activity.insert(insert_pos, sid_el)
+
+    return ET.tostring(root, encoding='unicode', xml_declaration=False), seqno_mapping
+
+
 def _inject_setup_into_dataset(dataset_el, activity_el):
     """Copy source activity setup params into a dataset's meta elements (non-destructively)."""
     setup_el = activity_el.find(f'{{{NS}}}setup')
