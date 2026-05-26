@@ -83,6 +83,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (assigned) sel.value = assigned;
   });
 
+  // Ensure every sample has a non-empty id (samples from existing records may lack one).
+  // Loop so each generated id is visible to nxGenerateSampleId's collision check for the next sample.
+  for (var _i = 0; _i < window.__nxPendingSamples.length; _i++) {
+    if (!window.__nxPendingSamples[_i].id) {
+      window.__nxPendingSamples[_i] = Object.assign({}, window.__nxPendingSamples[_i],
+        {id: nxGenerateSampleId(window.__nxPendingSamples[_i].name || 'sample')});
+    }
+  }
+
   // Initial render of samples list
   nxRenderSamples();
 });
