@@ -1,25 +1,27 @@
 #!/bin/bash
 # Quick reference commands for NexusLIMS-CDCS local development
 
-export COMPOSE_FILE="docker-compose.base.yml:docker-compose.dev.yml"
+_DEV_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+
+export COMPOSE_FILE="$_DEV_DIR/docker-compose.base.yml:$_DEV_DIR/docker-compose.dev.yml"
 
 # Get COMPOSE_PROJECT_NAME from .env or use default
-if [ -f .env ]; then
-    export $(grep -v '^#' .env | grep COMPOSE_PROJECT_NAME | xargs)
+if [ -f "$_DEV_DIR/.env" ]; then
+    export $(grep -v '^#' "$_DEV_DIR/.env" | grep COMPOSE_PROJECT_NAME | xargs)
 fi
-COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_dev}
+export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_dev}
 
 # Build the CDCS container
 alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
 alias dev-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs'
 
 # Start in development mode (with local code mounting)
-alias dev-up='bash scripts/setup-test-data.sh && docker compose up -d'
-alias dev-up-logs='bash scripts/setup-test-data.sh && docker compose up -d && docker compose logs -f'
+alias dev-up='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d'
+alias dev-up-logs='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d && docker compose logs -f'
 
 # Stop development environment
 alias dev-down='docker compose down'
-alias dev-clean='docker compose down -v && rm -rf test-data/nx-data test-data/nx-instrument-data test-data/example_record.xml'
+alias dev-clean='docker compose down -v && rm -rf "$_DEV_DIR/test-data/nx-data" "$_DEV_DIR/test-data/nx-instrument-data" "$_DEV_DIR/test-data/example_record.xml"'
 
 # View logs
 alias dev-logs='docker compose logs -f'
@@ -49,16 +51,16 @@ alias dev-collectstatic='docker exec nexuslims_dev_cdcs python manage.py collect
 alias dev-djshell='docker exec -it nexuslims_dev_cdcs python manage.py shell'
 
 # XSLT stylesheet updates
-alias dev-update-xslt='bash scripts/update-xslt.sh'
-alias dev-update-xslt-detail='bash scripts/update-xslt.sh detail'
-alias dev-update-xslt-list='bash scripts/update-xslt.sh list'
+alias dev-update-xslt='bash "$_DEV_DIR/scripts/update-xslt.sh"'
+alias dev-update-xslt-detail='bash "$_DEV_DIR/scripts/update-xslt.sh" detail'
+alias dev-update-xslt-list='bash "$_DEV_DIR/scripts/update-xslt.sh" list'
 
 # UV dependency management
 # Note: --no-install-project skips building the project itself (Django app, not a package)
-alias dev-uv-lock='cd .. && uv lock && cd deployment'
-alias dev-uv-upgrade='cd .. && uv lock --upgrade && cd deployment'
-alias dev-uv-sync='cd .. && uv sync && cd deployment'
-alias dev-uv-add='echo "Usage: cd .. && uv add package-name && cd deployment && dev-build-clean"'
+alias dev-uv-lock='(cd "$_DEV_DIR/.." && uv lock)'
+alias dev-uv-upgrade='(cd "$_DEV_DIR/.." && uv lock --upgrade)'
+alias dev-uv-sync='(cd "$_DEV_DIR/.." && uv sync)'
+alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev-build-clean"'
 
 echo "NexusLIMS-CDCS Development aliases loaded! Available commands:"
 echo ""

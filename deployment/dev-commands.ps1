@@ -1,11 +1,13 @@
 # Quick reference commands for NexusLIMS-CDCS local development (PowerShell)
 
-$env:COMPOSE_FILE = "docker-compose.base.yml:docker-compose.dev.yml"
+$_devDir = $PSScriptRoot
+$_pathSep = if ($IsWindows) { ';' } else { ':' }
+$env:COMPOSE_FILE = "$_devDir/docker-compose.base.yml${_pathSep}$_devDir/docker-compose.dev.yml"
 
 # Parse .env file to get configuration
 $envVars = @{}
-if (Test-Path .env) {
-    Get-Content .env | Where-Object { $_ -notmatch '^\s*#' -and $_ -match '=' } | ForEach-Object {
+if (Test-Path "$_devDir/.env") {
+    Get-Content "$_devDir/.env" | Where-Object { $_ -notmatch '^\s*#' -and $_ -match '=' } | ForEach-Object {
         $key, $value = $_ -split '=', 2
         $envVars[$key.Trim()] = $value.Trim()
     }
@@ -26,12 +28,12 @@ function dev-build-clean {
 
 # Start in development mode (with local code mounting)
 function dev-up {
-    bash scripts/setup-test-data.sh
+    bash "$_devDir/scripts/setup-test-data.sh"
     docker compose up -d
 }
 
 function dev-up-logs {
-    bash scripts/setup-test-data.sh
+    bash "$_devDir/scripts/setup-test-data.sh"
     docker compose up -d
     docker compose logs -f
 }
@@ -43,9 +45,9 @@ function dev-down {
 
 function dev-clean {
     docker compose down -v
-    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue test-data/nx-data
-    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue test-data/nx-instrument-data
-    Remove-Item -Force -ErrorAction SilentlyContinue test-data/example_record.xml
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$_devDir/test-data/nx-data"
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$_devDir/test-data/nx-instrument-data"
+    Remove-Item -Force -ErrorAction SilentlyContinue "$_devDir/test-data/example_record.xml"
 }
 
 # View logs
@@ -111,39 +113,39 @@ function dev-djshell {
 
 # XSLT stylesheet updates
 function dev-update-xslt {
-    bash scripts/update-xslt.sh
+    bash "$_devDir/scripts/update-xslt.sh"
 }
 
 function dev-update-xslt-detail {
-    bash scripts/update-xslt.sh detail
+    bash "$_devDir/scripts/update-xslt.sh" detail
 }
 
 function dev-update-xslt-list {
-    bash scripts/update-xslt.sh list
+    bash "$_devDir/scripts/update-xslt.sh" list
 }
 
 # UV dependency management
 # Note: --no-install-project skips building the project itself (Django app, not a package)
 function dev-uv-lock {
-    Push-Location ..
+    Push-Location (Split-Path $_devDir -Parent)
     uv lock
     Pop-Location
 }
 
 function dev-uv-upgrade {
-    Push-Location ..
+    Push-Location (Split-Path $_devDir -Parent)
     uv lock --upgrade
     Pop-Location
 }
 
 function dev-uv-sync {
-    Push-Location ..
+    Push-Location (Split-Path $_devDir -Parent)
     uv sync
     Pop-Location
 }
 
 function dev-uv-add {
-    Write-Host "Usage: cd .. && uv add package-name && cd deployment && dev-build-clean"
+    Write-Host "Usage: cd `"$(Split-Path $_devDir -Parent)`" && uv add package-name && dev-build-clean"
 }
 
 # Display help message
