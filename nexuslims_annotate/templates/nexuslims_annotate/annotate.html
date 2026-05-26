@@ -314,7 +314,8 @@ function nxDeleteSample(sampleId) {
 
 function nxUpdateActivitySampleDropdowns() {
   document.querySelectorAll('.nx-activity-sample').forEach(function(sel) {
-    var currentVal = sel.value;
+    var seqno = sel.dataset.seqno;
+    var assignedId = (window.__nxActivitySampleIds || {})[seqno] || '';
     // Rebuild options
     sel.innerHTML = '<option value="">-- No sample --</option>';
     window.__nxPendingSamples.forEach(function(s) {
@@ -323,9 +324,9 @@ function nxUpdateActivitySampleDropdowns() {
       opt.textContent = s.name;
       sel.appendChild(opt);
     });
-    // Restore selection if still valid
-    if (window.__nxPendingSamples.some(function(s) { return s.id === currentVal; })) {
-      sel.value = currentVal;
+    // Restore selection from authoritative state
+    if (assignedId && window.__nxPendingSamples.some(function(s) { return s.id === assignedId; })) {
+      sel.value = assignedId;
     }
   });
 }
