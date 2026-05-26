@@ -160,6 +160,22 @@ function nxRenderSamples() {
     nameSpan.style.fontSize = '0.85rem';
     nameSpan.textContent = sample.name || '(unnamed)';
     nameCol.appendChild(nameSpan);
+    if (sample.ref) {
+      var pidEl;
+      if (/^https?:\/\//i.test(sample.ref)) {
+        pidEl = document.createElement('a');
+        pidEl.href = sample.ref;
+        pidEl.target = '_blank';
+        pidEl.rel = 'noopener noreferrer';
+      } else {
+        pidEl = document.createElement('span');
+      }
+      pidEl.textContent = sample.ref;
+      pidEl.className = 'text-muted d-block text-truncate';
+      pidEl.style.fontSize = '0.7rem';
+      pidEl.title = sample.ref;
+      nameCol.appendChild(pidEl);
+    }
 
     var descCol = document.createElement('div');
     descCol.className = 'flex-grow-1 text-muted text-truncate';
@@ -213,6 +229,7 @@ function nxOpenSampleModal(sampleId) {
   document.getElementById('nx-sample-modal-title').textContent = sample ? 'Edit Sample' : 'Add Sample';
   document.getElementById('nx-sample-editing-id').value = sampleId || '';
   document.getElementById('nx-sample-name').value = sample ? sample.name : '';
+  document.getElementById('nx-sample-pid').value = sample ? (sample.ref || '') : '';
   document.getElementById('nx-sample-description').value = sample ? (sample.description || '') : '';
   document.getElementById('nx-sample-notes').value = sample ? (sample.notes || '') : '';
 
@@ -237,6 +254,7 @@ function nxSaveSampleFromModal() {
 
   var updated = {
     id: newId,
+    ref: (document.getElementById('nx-sample-pid').value || '').trim(),
     name: name,
     description: (document.getElementById('nx-sample-description').value || '').trim(),
     notes: (document.getElementById('nx-sample-notes').value || '').trim(),
@@ -1218,6 +1236,14 @@ function nxDeleteActivity(seqno) {
           </label>
           <input type="text" class="form-control form-control-sm" id="nx-sample-name"
                  placeholder="e.g. Steel Alloy A">
+        </div>
+
+        <div class="mb-2">
+          <label for="nx-sample-pid" class="form-label form-label-sm fw-semibold mb-1">
+            Persistent Identifier (PID)
+          </label>
+          <input type="text" class="form-control form-control-sm" id="nx-sample-pid"
+                 placeholder="e.g. https://doi.org/10.1234/sample">
         </div>
 
         <div class="mb-2">

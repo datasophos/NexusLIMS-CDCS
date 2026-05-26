@@ -124,6 +124,7 @@ def _parse_samples(xml_content):
 
         samples.append({
             'id': sample_el.get('id', ''),
+            'ref': sample_el.get('ref', ''),
             'name': name_el.text if name_el is not None else '',
             'description': desc_el.text if desc_el is not None else '',
             'notes': notes,
@@ -152,6 +153,9 @@ def _apply_samples(xml_content, samples_data):
         sid = (sample_data.get('id') or '').strip()
         if sid:
             sample_el.set('id', sid)
+        ref = (sample_data.get('ref') or '').strip()
+        if ref:
+            sample_el.set('ref', ref)
 
         name = (sample_data.get('name') or '').strip()
         if name:

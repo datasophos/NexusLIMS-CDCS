@@ -370,6 +370,16 @@ class ParseSamplesTests(SimpleTestCase):
         samples = _parse_samples(xml)
         self.assertEqual(samples[0]['elements'], [])
 
+    def test_ref_attribute_captured(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><sample id="x" ref="https://doi.org/10.1/abc"><name>X</name></sample></Experiment>'
+        samples = _parse_samples(xml)
+        self.assertEqual(samples[0]['ref'], 'https://doi.org/10.1/abc')
+
+    def test_ref_empty_string_when_absent(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['ref'], '')
+
 
 # ===========================================================================
 # _apply_samples
@@ -456,6 +466,22 @@ class ApplySamplesTests(SimpleTestCase):
     def test_result_is_valid_xml(self):
         result = _apply_samples(_WITH_SAMPLES_XML, [])
         ET.fromstring(result)
+
+    def test_ref_attribute_written(self):
+        new_samples = [{'id': 's', 'ref': 'https://doi.org/10.1/x', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        s = root.find(f'{{{NS_STR}}}sample')
+        self.assertEqual(s.get('ref'), 'https://doi.org/10.1/x')
+
+    def test_ref_attribute_omitted_when_empty(self):
+        new_samples = [{'id': 's', 'ref': '', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        s = root.find(f'{{{NS_STR}}}sample')
+        self.assertIsNone(s.get('ref'))
 
     def test_invalid_element_symbols_are_filtered(self):
         new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': ['Fe', 'NotAnElement', '1bad']}]
