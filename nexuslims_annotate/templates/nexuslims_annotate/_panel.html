@@ -2,28 +2,28 @@
   <i class="fa fa-info-circle text-secondary mt-1 flex-shrink-0"></i>
   <span>
     Use this panel to <strong>add or edit descriptions</strong> for each dataset.
-    To <strong>reassign datasets to different activities</strong>, open the full-page annotator
-    by clicking <i class="fa fa-expand"></i> in the header above.
+    You can also click <i class="fa fa-edit"></i> above (or <strong>Edit Record</strong> in the
+    top bar) to open the full editor where you can <em>add/edit samples</em>,
+    <em>create/delete activities</em>, reassign datasets, and more.
   </span>
 </div>
 <form id="annotate-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
   {% csrf_token %}
 
-  {% regroup datasets by activity_seqno as activity_groups %}
   {% for group in activity_groups %}
 
     {# Activity divider #}
     <div class="d-flex align-items-center gap-2 {% if not forloop.first %}mt-3{% else %}mt-1{% endif %} mb-1">
       {# seqno is always a zero-based integer string per the NexusLIMS schema #}
       <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
-            style="font-size:0.7rem;letter-spacing:0.08em;">Activity {{ group.grouper|add:1 }}</span>
+            style="font-size:0.7rem;letter-spacing:0.08em;">Activity {{ group.seqno|add:1 }}</span>
       <hr class="flex-grow-1 my-0">
     </div>
 
-    {% for ds in group.list %}
-    {# Green border = saved annotation, gray = empty #}
+    {% for ds in group.datasets %}
     <div class="card annotate-card mb-1"
-         style="border-left:3px solid {% if ds.description %}#198754{% else %}#dee2e6{% endif %};background:{% if ds.description %}#f0fff4{% else %}#f8f9fa{% endif %}">
+         data-status="{% if ds.description %}annotated{% else %}empty{% endif %}">
+      <span class="nx-status-dot"></span>
       <div class="card-body p-2">
         <div class="d-flex gap-2 align-items-start">
           {% if ds.preview_url %}

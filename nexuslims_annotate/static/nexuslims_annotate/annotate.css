@@ -12,6 +12,19 @@
     color: #333;
 }
 
+/* Visible focus ring for modal footer buttons when keyboard-navigating.
+   outline: none !important in the theme's buttons.css requires the counter-override. */
+#nx-sample-modal .modal-footer .btn:focus-visible {
+    outline: 3px solid #0d6efd !important;
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* Remove bottom divider from the last sample row. */
+#nx-samples-list > div:last-child {
+    border-bottom: none !important;
+}
+
 /* Offset offcanvas and its backdrop below the fixed navbar (60px). */
 #annotate-offcanvas,
 .offcanvas-backdrop {
@@ -32,17 +45,38 @@
     padding: 0.25rem 1rem 0.5rem;
 }
 
-/* Dataset cards: suppress Bootstrap's default card border on all sides except
-   left, so our left-border accent (set via inline style) is the only one shown.
+/* Dataset cards: suppress all borders; background tint and dot color are
+   driven entirely by data-status attribute selectors below.
    Shared by both the offcanvas panel and the full-page annotator. */
 .annotate-card {
     border-top: none !important;
     border-right: none !important;
     border-bottom: none !important;
+    border-left: none !important;
     border-radius: 0.5rem !important;
+    background: #f8f9fa;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-    transition: box-shadow 0.15s;
+    transition: box-shadow 0.15s, background 0.15s;
 }
+.annotate-card[data-status="annotated"] { background: #f0fff4; }
+.annotate-card[data-status="unsaved"]   { background: #fff8e1; }
+.annotate-card[data-status="moved"]     { background: #f0f4ff; }
+
+/* Status dot in top-right corner; color driven by data-status on the card. */
+.nx-status-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #dee2e6;
+    pointer-events: none;
+    z-index: 5;
+}
+.annotate-card[data-status="annotated"] .nx-status-dot { background: #198754; }
+.annotate-card[data-status="unsaved"]   .nx-status-dot { background: #e67e00; }
+.annotate-card[data-status="moved"]     .nx-status-dot { background: #6366f1; }
 
 /* The CDCS theme applies padding-top: 40px and margin-top: -40px to direct children
    of certain containers. Zero both so spacing is controlled via Bootstrap margin
@@ -78,8 +112,14 @@
 }
 .annotate-textarea:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+    box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.25);
     background: rgba(0, 0, 0, 0.06);
+}
+.annotate-card[data-status="annotated"] .annotate-textarea:focus {
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.25);
+}
+.annotate-card[data-status="unsaved"] .annotate-textarea:focus {
+    box-shadow: 0 0 0 2px rgba(230, 126, 0, 0.25);
 }
 
 /* ── Dataset move feature ─────────────────────────────────────────────────── */
@@ -113,11 +153,6 @@ body.nx-has-selection .nx-select-cb-label {
     cursor: pointer;
 }
 
-/* Pending-move card state (indigo) */
-.annotate-card.nx-pending-move {
-    background: #f0f4ff !important;
-    border-left-color: #6366f1 !important;
-}
 
 /* "Moved" badge inside the card name line */
 .nx-moved-badge {

@@ -26,9 +26,10 @@
           data-url-save="{% url 'nexuslims_annotate_save' data.data.id %}"
           data-url-descriptions="{% url 'nexuslims_annotate_descriptions' data.data.id %}"
           data-url-save-one="{% url 'nexuslims_annotate_save_one' data.data.id %}"
+          data-url-full="{% url 'nexuslims_annotate_record' data.data.id %}"
           data-bs-toggle="offcanvas"
           data-bs-target="#annotate-offcanvas"
-          title="Annotate dataset descriptions or reassign datasets to activities">
+          title="Annotate dataset descriptions for this record">
     <i class="fa fa-pencil"></i> Annotate Record
   </button>
 </div>
@@ -49,7 +50,7 @@
        id="annotate-expand-btn"
        class="btn btn-outline-secondary btn-sm me-2"
        title="Open full-page annotator">
-      <i class="fa fa-expand"></i>
+      <i class="fa fa-edit"></i>
     </a>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   </div>
@@ -97,23 +98,10 @@
         }
       });
       ta.addEventListener('input', function () {
-        var card = ta.closest('.card');
+        var card = ta.closest('.annotate-card');
         var current = ta.value.trim();
         var original = (ta.dataset.original || '').trim();
-        if (current === original) {
-          // Unchanged — restore saved state
-          if (current) {
-            card.style.background = '#f0fff4';
-            card.style.borderLeft = '3px solid #198754';
-          } else {
-            card.style.background = '#f8f9fa';
-            card.style.borderLeft = '3px solid #dee2e6';
-          }
-        } else {
-          // Dirty — unsaved change
-          card.style.background = '#fff8e1';
-          card.style.borderLeft = '3px solid #e67e00';
-        }
+        card.dataset.status = (current !== original) ? 'unsaved' : current ? 'annotated' : 'empty';
       });
     });
     form.addEventListener('submit', function (e) {
@@ -367,7 +355,7 @@
         <ul class="mb-3">
           <li>Type a description in any text box and click <strong>Save Annotations</strong> to save all at once.</li>
           <li>Press <kbd>Ctrl+Enter</kbd> (or <kbd>Cmd+Enter</kbd> on Mac) to save without using the button.</li>
-          <li>Click the <i class="fa fa-expand"></i> expand icon to open the full-page annotator.</li>
+          <li>Click <strong>Edit Record</strong> in the top bar (or the <i class="fa fa-expand"></i> icon in this panel's header) to open the full editor for managing samples, activities, and dataset assignments.</li>
         </ul>
         <h6 class="fw-semibold">Inline Editing in Tables</h6>
         <ul class="mb-3">

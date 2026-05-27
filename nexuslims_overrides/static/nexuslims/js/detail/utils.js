@@ -124,9 +124,13 @@
             dataType: 'json',
             success: function(data) {
                 if (data && data[dataId] === true) {
-                    // User has edit permissions, show the button and set edit URL
+                    // User has edit permissions, show the button and set edit URL.
+                    // When the annotator is enabled, "Edit Record" opens the full-page annotator;
+                    // the XML editor is then accessible from within it.
+                    var annotateBtn = document.getElementById('annotate-record-btn');
+                    var fullAnnotateUrl = annotateBtn ? annotateBtn.dataset.urlFull : null;
                     $('#btn-edit-record').show().on('click', function() {
-                            window.location.href = '/xml-editor/data?id=' + dataId;
+                            window.location.href = fullAnnotateUrl || '/xml-editor/data?id=' + dataId;
                         });
                 } else {
                     // User does not have edit permissions, hide the button

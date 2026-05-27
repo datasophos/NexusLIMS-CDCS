@@ -196,7 +196,6 @@ _WITH_SAMPLES_XML = f"""\
   <sample id="steel-alloy-a">
     <name>Steel Alloy A</name>
     <description>High-carbon steel reference</description>
-    <notes><entry>Prepared 2024-01-10.</entry></notes>
     <elements><Fe/><C/><Cr/><Ni/></elements>
   </sample>
   <sample id="brass-ref">
@@ -352,14 +351,6 @@ class ParseSamplesTests(SimpleTestCase):
         samples = _parse_samples(xml)
         self.assertEqual(samples[0]['description'], '')
 
-    def test_notes_text_joined_from_entries(self):
-        samples = _parse_samples(_WITH_SAMPLES_XML)
-        self.assertEqual(samples[0]['notes'], 'Prepared 2024-01-10.')
-
-    def test_notes_empty_string_when_absent(self):
-        samples = _parse_samples(_WITH_SAMPLES_XML)
-        self.assertEqual(samples[1]['notes'], '')
-
     def test_elements_list_returned(self):
         samples = _parse_samples(_WITH_SAMPLES_XML)
         self.assertEqual(samples[0]['elements'], ['Fe', 'C', 'Cr', 'Ni'])
@@ -431,19 +422,6 @@ class ApplySamplesTests(SimpleTestCase):
         self.assertIsNotNone(elements_el)
         syms = [c.tag.split('}')[-1] for c in elements_el]
         self.assertEqual(syms, ['Fe', 'Ni'])
-
-    def test_notes_written_as_entry_child(self):
-        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': 'My notes', 'elements': []}]
-        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
-        root = ET.fromstring(result)
-        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
-        NS_MAP = {'nx': NS}
-        s = root.find('nx:sample', NS_MAP)
-        notes_el = s.find(f'{{{NS}}}notes')
-        self.assertIsNotNone(notes_el)
-        entry = notes_el.find(f'{{{NS}}}entry')
-        self.assertIsNotNone(entry)
-        self.assertEqual(entry.text, 'My notes')
 
     def test_empty_notes_omits_notes_element(self):
         new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]

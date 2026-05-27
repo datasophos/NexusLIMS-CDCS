@@ -97,6 +97,22 @@ def _parse_activities(xml_content):
     return activities
 
 
+def _build_activity_groups(activities, datasets):
+    """Build a list of activity group dicts that preserves empty activities.
+
+    Django's ``{% regroup %}`` tag only emits groups for seqno values that appear
+    in the dataset list, so empty activities vanish. This helper zips the full
+    activity list with the datasets to guarantee every activity appears -- even
+    those with zero datasets -- making it possible to show and delete them.
+
+    Returns a list of dicts: [{'seqno': str, 'datasets': [...]}, ...]
+    """
+    by_seqno = {}
+    for ds in datasets:
+        by_seqno.setdefault(ds['activity_seqno'], []).append(ds)
+    return [{'seqno': a['seqno'], 'datasets': by_seqno.get(a['seqno'], [])} for a in activities]
+
+
 def _parse_samples(xml_content):
     """Parse XML and return a list of sample dicts."""
     root = ET.fromstring(xml_content)
@@ -104,7 +120,6 @@ def _parse_samples(xml_content):
     for sample_el in root.findall('nx:sample', NS_MAP):
         name_el = sample_el.find('nx:name', NS_MAP)
         desc_el = sample_el.find('nx:description', NS_MAP)
-        notes_el = sample_el.find('nx:notes', NS_MAP)
         elements_el = sample_el.find('nx:elements', NS_MAP)
 
         elements = []
@@ -114,20 +129,11 @@ def _parse_samples(xml_content):
                 for child in elements_el
             ]
 
-        notes = ''
-        if notes_el is not None:
-            entries = [
-                (e.text or '').strip()
-                for e in notes_el.findall('nx:entry', NS_MAP)
-            ]
-            notes = '\n'.join(e for e in entries if e)
-
         samples.append({
             'id': sample_el.get('id', ''),
             'ref': sample_el.get('ref', ''),
             'name': name_el.text if name_el is not None else '',
             'description': desc_el.text if desc_el is not None else '',
-            'notes': notes,
             'elements': elements,
         })
     return samples
@@ -167,12 +173,6 @@ def _apply_samples(xml_content, samples_data):
             desc_el = ET.SubElement(sample_el, f'{{{NS}}}description')
             desc_el.text = description
 
-        notes = (sample_data.get('notes') or '').strip()
-        if notes:
-            notes_el = ET.SubElement(sample_el, f'{{{NS}}}notes')
-            entry_el = ET.SubElement(notes_el, f'{{{NS}}}entry')
-            entry_el.text = notes
-
         elements = [s for s in (sample_data.get('elements') or []) if s in _VALID_ELEMENT_SYMBOLS]
         if elements:
             elements_el = ET.SubElement(sample_el, f'{{{NS}}}elements')
@@ -193,12 +193,16 @@ def _renumber_activities(xml_content):
     return ET.tostring(root, encoding='unicode', xml_declaration=False)
 
 
-def _apply_activity_mutations(xml_content, deleted_seqnos, new_activities, activity_sample_ids):
-    """Delete/insert activities and set sampleID assignments.
+def _apply_activity_mutations(xml_content, deleted_seqnos, new_activities, activity_sample_ids,
+                              moves=None):
+    """Delete/insert activities, apply dataset moves, and set sampleID assignments.
 
-    deleted_seqnos: list of seqno strings to delete (must all have 0 datasets)
+    deleted_seqnos: list of seqno strings to delete (must have 0 datasets after moves)
     new_activities: list of dicts with keys: temp_id, and either after_seqno or at_end=True
     activity_sample_ids: dict mapping seqno/temp_id -> sample_id str (or None to clear)
+    moves: optional list of move dicts passed to _apply_moves; applied after new-activity
+           insertion so new-* seqno targets are valid, and before deletion validation so
+           activities emptied by moves can be deleted in the same save.
 
     Returns (updated_xml, seqno_mapping) where seqno_mapping maps
     original seqno strings and temp_ids to final provisional seqno strings
@@ -210,23 +214,7 @@ def _apply_activity_mutations(xml_content, deleted_seqnos, new_activities, activ
     root = ET.fromstring(xml_content)
     deleted_seqnos = [str(s) for s in deleted_seqnos]
 
-    # Phase 1: validate and delete
-    activities_by_seqno = {
-        a.get('seqno', ''): a
-        for a in root.findall('nx:acquisitionActivity', NS_MAP)
-    }
-    for seqno in deleted_seqnos:
-        activity = activities_by_seqno.get(seqno)
-        if activity is None:
-            continue
-        dataset_count = len(activity.findall(f'{{{NS}}}dataset'))
-        if dataset_count > 0:
-            raise ValueError(
-                f'Activity {seqno} has {dataset_count} dataset(s) and cannot be deleted'
-            )
-        root.remove(activity)
-
-    # Rebuild index after deletions
+    # Phase 1: insert new activities (before moves so new-* seqnos are valid move targets)
     activities_by_seqno = {
         a.get('seqno', ''): a
         for a in root.findall('nx:acquisitionActivity', NS_MAP)
@@ -258,11 +246,33 @@ def _apply_activity_mutations(xml_content, deleted_seqnos, new_activities, activ
 
         activities_by_seqno[temp_id] = new_el
 
-    # Phase 3: build seqno mapping (provisional seqno -> 0-based final position)
+    # Phase 2b: apply moves so datasets reach their final activities before deletion check
+    if moves:
+        xml_intermediate = ET.tostring(root, encoding='unicode', xml_declaration=False)
+        xml_intermediate = _apply_moves(xml_intermediate, moves)
+        root = ET.fromstring(xml_intermediate)
+
+    # Phase 3: validate and delete (activities must be empty after moves)
+    activities_by_seqno = {
+        a.get('seqno', ''): a
+        for a in root.findall('nx:acquisitionActivity', NS_MAP)
+    }
+    for seqno in deleted_seqnos:
+        activity = activities_by_seqno.get(seqno)
+        if activity is None:
+            continue
+        dataset_count = len(activity.findall(f'{{{NS}}}dataset'))
+        if dataset_count > 0:
+            raise ValueError(
+                f'Activity {seqno} has {dataset_count} dataset(s) and cannot be deleted'
+            )
+        root.remove(activity)
+
+    # Phase 4: build seqno mapping (provisional seqno -> 0-based final position)
     final_activities = root.findall('nx:acquisitionActivity', NS_MAP)
     seqno_mapping = {a.get('seqno', ''): str(i) for i, a in enumerate(final_activities)}
 
-    # Phase 4: apply sampleID assignments
+    # Phase 5: apply sampleID assignments
     provisional_by_seqno = {a.get('seqno', ''): a for a in final_activities}
     for seqno_or_temp, sample_id in activity_sample_ids.items():
         activity = provisional_by_seqno.get(str(seqno_or_temp))
@@ -547,11 +557,13 @@ def annotate_record(request, record_id):
         activities = _parse_activities(data.content)
         samples = _parse_samples(data.content)
         record_title = _get_title(data.content)
+        activity_groups = _build_activity_groups(activities, datasets)
     except ET.ParseError:
         return render(request, 'nexuslims_annotate/annotate.html', {
             'data': data,
             'record_title': '',
             'datasets': [],
+            'activity_groups': [],
             'record_id': record_id,
             'activities': [],
             'samples': [],
@@ -561,6 +573,7 @@ def annotate_record(request, record_id):
         'data': data,
         'record_title': record_title,
         'datasets': datasets,
+        'activity_groups': activity_groups,
         'record_id': record_id,
         'activities': activities,
         'samples': samples,
@@ -581,11 +594,14 @@ def annotate_panel(request, record_id):
         return JsonResponse({'error': 'You do not have permission to annotate this record.'}, status=403)
     try:
         datasets = _parse_datasets(data.content)
+        activities = _parse_activities(data.content)
+        activity_groups = _build_activity_groups(activities, datasets)
     except ET.ParseError:
         return JsonResponse({'error': 'Record XML is malformed'}, status=500)
     return render(request, 'nexuslims_annotate/_panel.html', {
         'data': data,
         'datasets': datasets,
+        'activity_groups': activity_groups,
         'record_id': record_id,
     })
 
@@ -676,22 +692,7 @@ def annotate_save(request, record_id):
 
         updated_xml = data.content
 
-        # Apply structural mutations (validate, delete, insert, sampleID)
-        try:
-            updated_xml, seqno_mapping = _apply_activity_mutations(
-                updated_xml, deleted_seqnos, new_activities, activity_sample_ids
-            )
-        except ValueError as e:
-            return JsonResponse({'error': str(e)}, status=400)
-
-        # Replace sample elements (only if the field was present in the POST)
-        if samples is not None:
-            updated_xml = _apply_samples(updated_xml, samples)
-
-        # Apply descriptions (flat indices valid: deleted activities had 0 datasets)
-        updated_xml = _apply_descriptions(updated_xml, request.POST)
-
-        # Parse and translate moves
+        # Parse moves before structural mutations so they can be passed in
         moves_json = request.POST.get('moves', '[]')
         try:
             moves = json.loads(moves_json)
@@ -702,8 +703,22 @@ def annotate_save(request, record_id):
             logger.warning('moves is not a list for record %s, ignoring', record_id)
             moves = []
 
-        if moves:
-            updated_xml = _apply_moves(updated_xml, moves)
+        # Apply descriptions first: uses flat dataset indices from the original XML,
+        # which are stable before any moves re-sort datasets within activities.
+        updated_xml = _apply_descriptions(updated_xml, request.POST)
+
+        # Apply structural mutations: insert new activities → apply moves → validate/delete
+        # Passing moves here ensures activities emptied by moves can be deleted in the same save.
+        try:
+            updated_xml, seqno_mapping = _apply_activity_mutations(
+                updated_xml, deleted_seqnos, new_activities, activity_sample_ids, moves=moves
+            )
+        except ValueError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+        # Replace sample elements (only if the field was present in the POST)
+        if samples is not None:
+            updated_xml = _apply_samples(updated_xml, samples)
 
         # Renumber all activities to consecutive 0-based seqnos
         updated_xml = _renumber_activities(updated_xml)

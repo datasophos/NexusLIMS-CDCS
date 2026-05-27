@@ -1023,7 +1023,7 @@
             tour.addStep({
                 id: 'tut-edit-record',
                 title: 'Record editor',
-                text: "The <i class='fa fa-file-text menu-fa'></i> <em>Edit this record</em> button will allow you (if logged in and you have ownership of this record) to edit the metadata information contained within. Currently, this process is a bit cumbersome, but an improvement to the interface is on the NexusLIMS team's roadmap.",
+                text: "The <i class='fa fa-file-alt menu-fa'></i> <em>Edit Record</em> button opens the full-page editor where you can manage samples and activities, reassign datasets, and add annotations. From there you can also open the raw XML editor if you need to make lower-level changes.",
                 attachTo: { element: '#btn-edit-record', on: 'bottom' },
                 scrollTo: false,
                 buttons: [buttons.back(true), annotateRecordVisible ? buttons.next : buttons.end],
@@ -1039,7 +1039,7 @@
             tour.addStep({
                 id: 'tut-annotate-record',
                 title: 'Annotate Record',
-                text: "The <i class='fa fa-pencil menu-fa'></i> <em>Annotate Record</em> button opens a side panel where you can attach plain-language descriptions to each dataset captured during the experiment. Descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators to understand what was acquired. From this panel, you can also open the full-page annotator, or edit descriptions inline by hovering over a row in any dataset table.",
+                text: "The <i class='fa fa-pencil menu-fa'></i> <em>Annotate</em> button opens a side panel where you can attach plain-language descriptions to each dataset captured during the experiment. Descriptions appear alongside the data in the gallery and activity tables, making it easier for collaborators to understand what was acquired. You can also edit descriptions inline by hovering over any row in a dataset table.",
                 attachTo: { element: '#annotate-record-btn', on: 'bottom' },
                 scrollTo: true,
                 buttons: [buttons.back(true), buttons.next],

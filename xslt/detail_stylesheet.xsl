@@ -383,8 +383,8 @@ Use it like:
             <div class="main d-flex" style="padding: 0; position: relative; z-index: 100;" id="top-button-div">
                   <button id="btn-edit-record" type="button" class="btn btn-outline-dark btn-top-group"
                           data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="Manually edit the contents of this record (login required)">
-                      <i class="fas fa-file-alt menu-fa"></i> Edit this record
+                          title="Edit this record's activities, samples, and annotations (login required)">
+                      <i class="fas fa-file-alt menu-fa"></i> Edit Record
                   </button>
 
                   <div class="dropdown" id="btn-download-record-group">
@@ -726,15 +726,15 @@ Use it like:
                         </table>
 
                         <xsl:if test="nx:sample/*/text() | nx:sample/@ref">
-                            <h3 id="sample-info-header">Sample Information
+                            <h3 id="sample-info-header" style="scroll-margin-top:80px;">Sample Information
                                 <xsl:call-template name="help-tip">
                                     <xsl:with-param name="tip-text">Sample information is extracted from the calendar reservation associated with this record</xsl:with-param>
                                 </xsl:call-template>
                             </h3>
-                            <table class="table upper-table" id="sample-table"
-                                style="border-collapse:collapse;">
-                                <xsl:choose>
+                            <xsl:choose>
                                     <xsl:when test="count(nx:sample) = 1">
+                                        <table class="table upper-table" id="sample-table"
+                                            style="border-collapse:collapse;">
                                         <xsl:if test="nx:sample/nx:name/text()">
                                             <tr>
                                                 <th scope="row">Name:
@@ -788,132 +788,90 @@ Use it like:
                                                 </td>
                                             </tr>
                                         </xsl:if>
-                                    </xsl:when>
-                                    <xsl:when test="count(nx:sample) > 1">
-                                        <table class="table table-sm table-hover sample-table compact wrap" border="1"
-                                               style="width:90%; border-collapse:collapse; text-align: center;">
-                                            <thead>
-                                                <tr>
-                                                    <th style='padding-left: 1.0em; padding-right: 1.0em;'>#</th>
-                                                    <th>
-                                                        Name
-                                                        <xsl:call-template name="help-tip">
-                                                            <xsl:with-param name="tip-text">The name given to this sample (as entered at the time of reservation)</xsl:with-param>
-                                                        </xsl:call-template>
-                                                    </th>
-                                                    <th>
-                                                        PID
-                                                        <xsl:call-template name="help-tip">
-                                                            <xsl:with-param name="tip-text">A persistent identifier for this sample (if a URL, you can click to view more sample details)</xsl:with-param>
-                                                        </xsl:call-template>
-                                                    </th>
-                                                    <th>
-                                                        Description
-                                                        <xsl:call-template name="help-tip">
-                                                            <xsl:with-param name="tip-text">The description given to this sample (as entered at the time of reservation)</xsl:with-param>
-                                                        </xsl:call-template>
-                                                    </th>
-                                                    <th>
-                                                        Elements
-                                                        <xsl:call-template name="help-tip">
-                                                            <xsl:with-param name="tip-text">The physical elements (as chosen by the user) that are expected to be in this sample</xsl:with-param>
-                                                        </xsl:call-template>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                        <xsl:for-each select="nx:sample">
-                                            <xsl:variable name="i" select="position()" />
-
-                                            <tr>
-                                                <td style='padding-left: 1.0em; padding-right: 1.0em;'><xsl:value-of select="$i"/></td>
-                                                <xsl:choose>
-                                                    <xsl:when test="./nx:name/text()">
-                                                        <td><xsl:value-of select="./nx:name"/></td>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <td>
-                                                            <xsl:element name="span">
-                                                            <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
-                                                            <xsl:attribute name="data-bs-placement">right</xsl:attribute>
-                                                            <xsl:attribute name="title">No value entered</xsl:attribute>
-                                                                —
-                                                            </xsl:element>
-                                                        </td>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                                <xsl:choose>
-                                                    <xsl:when test="normalize-space(./@ref) != ''">
-                                                        <td>
-                                                            <xsl:call-template name="link-or-text">
-                                                                <xsl:with-param name="val">
-                                                                    <xsl:value-of select="./@ref"/>
-                                                                </xsl:with-param>
-                                                            </xsl:call-template>
-                                                        </td>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <td>
-                                                            <xsl:element name="span">
-                                                                <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
-                                                                <xsl:attribute name="data-bs-placement">right</xsl:attribute>
-                                                                <xsl:attribute name="title">No value entered</xsl:attribute>
-                                                                —
-                                                            </xsl:element>
-                                                        </td>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                                <xsl:choose>
-                                                    <xsl:when test="./nx:description/text()">
-                                                        <td>
-                                                            <xsl:for-each select="./nx:description">
-                                                                <p><xsl:value-of select="."/></p>
-                                                            </xsl:for-each>
-                                                        </td>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <td>
-                                                            <xsl:element name="span">
-                                                                <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
-                                                                <xsl:attribute name="data-bs-placement">right</xsl:attribute>
-                                                                <xsl:attribute name="title">No value entered</xsl:attribute>
-                                                                —
-                                                            </xsl:element>
-                                                        </td>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                                <xsl:choose>
-                                                    <xsl:when test="./nx:elements/*">
-                                                        <td>
-                                                            <xsl:call-template name="elements-to-list">
-                                                                <xsl:with-param name="elements">
-                                                                    <xsl:copy-of select="./nx:elements/*"/>
-                                                                </xsl:with-param>
-                                                            </xsl:call-template>
-                                                        </td>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <td>
-                                                            <xsl:element name="span">
-                                                                <xsl:attribute name="data-bs-toggle">tooltip</xsl:attribute>
-                                                                <xsl:attribute name="data-bs-placement">right</xsl:attribute>
-                                                                <xsl:attribute name="title">No value entered</xsl:attribute>
-                                                                —
-                                                            </xsl:element>
-                                                        </td>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                            </tr>
-                                        </xsl:for-each>
-                                            </tbody>
                                         </table>
                                     </xsl:when>
+                                    <xsl:when test="count(nx:sample) > 1">
+                                        <style>#nx-sample-cards{margin-top:0 !important;padding-top:0 !important;}#nx-sample-cards>.col{padding-top:0 !important;margin-top:0 !important;scroll-margin-top:80px;}#nx-sample-cards .card-header{line-height:1.4 !important;}</style>
+                                        <div id="nx-sample-cards" class="row row-cols-1" style="row-gap:0.75rem;">
+                                        <xsl:for-each select="nx:sample">
+                                            <xsl:variable name="i" select="position()"/>
+                                            <div class="col" id="sample-row-{@id}">
+                                                <div class="card h-100">
+                                                    <div class="card-header py-2 d-flex align-items-start gap-2" style="background:#eef2ff;font-size:1rem;">
+                                                        <span class="badge flex-shrink-0" style="background:#1565c0;color:#fff;margin-top:3px;"><xsl:value-of select="$i"/></span>
+                                                        <strong>
+                                                            <xsl:choose>
+                                                                <xsl:when test="./nx:name/text()"><xsl:value-of select="./nx:name"/></xsl:when>
+                                                                <xsl:otherwise><span class="text-muted" style="font-style:italic;">Unnamed sample</span></xsl:otherwise>
+                                                            </xsl:choose>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="card-body py-2 px-3">
+                                                        <table class="table table-sm table-borderless mb-0" style="font-size:0.875rem;line-height:1.4;">
+                                                            <xsl:if test="normalize-space(./@ref) != ''">
+                                                                <tr>
+                                                                    <th scope="row" style="width:7em;color:#555;font-weight:600;white-space:nowrap;">
+                                                                        PID
+                                                                        <xsl:call-template name="help-tip">
+                                                                            <xsl:with-param name="tip-text">A persistent identifier for this sample (if a URL, you can click to view more sample details)</xsl:with-param>
+                                                                        </xsl:call-template>
+                                                                    </th>
+                                                                    <td>
+                                                                        <xsl:call-template name="link-or-text">
+                                                                            <xsl:with-param name="val"><xsl:value-of select="./@ref"/></xsl:with-param>
+                                                                        </xsl:call-template>
+                                                                    </td>
+                                                                </tr>
+                                                            </xsl:if>
+                                                            <xsl:if test="./nx:description/text()">
+                                                                <tr>
+                                                                    <th scope="row" style="width:7em;color:#555;font-weight:600;vertical-align:top;white-space:nowrap;">
+                                                                        Description
+                                                                        <xsl:call-template name="help-tip">
+                                                                            <xsl:with-param name="tip-text">The description given to this sample (as entered at the time of reservation)</xsl:with-param>
+                                                                        </xsl:call-template>
+                                                                    </th>
+                                                                    <td>
+                                                                        <div class="nx-sample-desc"
+                                                                             style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4;">
+                                                                            <xsl:value-of select="./nx:description"/>
+                                                                        </div>
+                                                                        <a href="javascript:void(0)"
+                                                                           style="font-size:0.8em;color:#1565c0;display:none;"
+                                                                           onclick="(function(btn){{var el=btn.previousElementSibling,ex=btn.dataset.expanded==='1';el.style.cssText=ex?'display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4':'line-height:1.4';btn.textContent=ex?'Show more':'Show less';btn.dataset.expanded=ex?'0':'1';}})(this)">Show more</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </xsl:if>
+                                                            <xsl:if test="./nx:elements/*">
+                                                                <tr>
+                                                                    <th scope="row" style="width:7em;color:#555;font-weight:600;vertical-align:top;white-space:nowrap;">
+                                                                        Elements
+                                                                        <xsl:call-template name="help-tip">
+                                                                            <xsl:with-param name="tip-text">The physical elements (as chosen by the user) that are expected to be in this sample</xsl:with-param>
+                                                                        </xsl:call-template>
+                                                                    </th>
+                                                                    <td>
+                                                                        <xsl:call-template name="elements-to-list">
+                                                                            <xsl:with-param name="elements">
+                                                                                <xsl:copy-of select="./nx:elements/*"/>
+                                                                            </xsl:with-param>
+                                                                        </xsl:call-template>
+                                                                    </td>
+                                                                </tr>
+                                                            </xsl:if>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </xsl:for-each>
+                                        </div>
+                                        <script>(function(){var els=document.querySelectorAll('.nx-sample-desc');Array.prototype.forEach.call(els,function(el){if(el.scrollHeight!==el.clientHeight){el.nextElementSibling.style.display='inline';}});})();</script>
+                                    </xsl:when>
                                 </xsl:choose>
-                            </table>
                         </xsl:if>
 
                         <xsl:if test="nx:project/*/text()">
-                          <h3 id="proj-info-header">Project Information
+                          <h3 id="proj-info-header" class="mt-4">Project Information
                               <xsl:call-template name="help-tip">
                                   <xsl:with-param name="tip-text">Project information is extracted from the user's division and group, as well as the calendar reservation associated with this record</xsl:with-param>
                               </xsl:call-template>
@@ -1119,6 +1077,41 @@ Use it like:
                                                 <xsl:call-template name="parse-activity-contents"></xsl:call-template>
                                             </i>
                                         </div>
+                                        <xsl:variable name="sample-id" select="nx:sampleID"/>
+                                        <xsl:if test="$sample-id and ../nx:sample[@id=$sample-id]">
+
+                                            <xsl:variable name="sample-name">
+                                                <xsl:choose>
+                                                    <xsl:when test="../nx:sample[@id=$sample-id]/nx:name/text()">
+                                                        <xsl:value-of select="../nx:sample[@id=$sample-id]/nx:name"/>
+                                                    </xsl:when>
+                                                    <xsl:otherwise><xsl:value-of select="$sample-id"/></xsl:otherwise>
+                                                </xsl:choose>
+                                            </xsl:variable>
+                                            <xsl:variable name="sample-num" select="count(../nx:sample[@id=$sample-id]/preceding-sibling::nx:sample) + 1"/>
+                                            <xsl:choose>
+                                                <xsl:when test="count(../nx:sample) > 1">
+                                                    <a href="#sample-row-{$sample-id}"
+                                                       title="{$sample-name}"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top"
+                                                       class="badge list-record-badge"
+                                                       style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#fff;margin-right:0.4rem;vertical-align:middle;background:#8ca0b3;">
+                                                        <i class="fas fa-flask" style="font-size:0.75em;"/>
+                                                        <xsl:value-of select="$sample-num"/>
+                                                    </a>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <a href="#sample-info-header"
+                                                       title="{$sample-name}"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top"
+                                                       class="badge list-record-badge"
+                                                       style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#fff;margin-right:0.4rem;vertical-align:middle;background:#8ca0b3;">
+                                                        <i class="fas fa-flask" style="font-size:0.75em;"/>
+                                                        <xsl:value-of select="$sample-num"/>
+                                                    </a>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:if>
                                         <span class="badge list-record-badge">
                                             <xsl:value-of select="count(nx:dataset)"/> data file<xsl:if test="count(nx:dataset) > 1">s</xsl:if>
                                         </span>
