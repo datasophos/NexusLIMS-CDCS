@@ -11,6 +11,8 @@ services:
       # File server test data
       - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
       - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
+    environment:
+      - SSO_DOMAIN=${SSO_DOMAIN}
 
   cdcs:
     # Mount local NexusLIMS-CDCS source code for live reload
@@ -32,5 +34,29 @@ services:
       - REQUESTS_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
       - CURL_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
 
+    env_file:
+      # Dev SSO overlay -- only loaded when dev-sso-enable has been run.
+      # Overrides saml2/.env without touching it.
+      - path: ./saml2/.env.sso-dev
+        required: false
+
+    extra_hosts:
+      # Allows pysaml2 to resolve the SSO domain to Caddy when fetching IdP metadata
+      - "${SSO_DOMAIN:-sso.nexuslims-dev.localhost}:host-gateway"
+
     # Override entrypoint and command to use Django runserver for auto-reload
     entrypoint: ["/docker-entrypoint.dev.sh"]
+
+  simplesamlphp:
+    image: druidfi/saml-idp:2.4.4
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs_sso
+    environment:
+      - SIMPLESAMLPHP_IDP_BASEURLPATH=https://${SSO_DOMAIN}/simplesaml/
+      - SIMPLESAMLPHP_SP_ENTITY_ID=https://${DOMAIN}/saml2/metadata/
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://${DOMAIN}/saml2/acs/
+      - SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://${DOMAIN}/saml2/ls/
+    volumes:
+      # Override auth sources with dev test users
+      - ./dev-sso/authsources.php:/app/simplesamlphp/config/authsources.php:ro
+      # Register CDCS as a known SP (with attribute release policy)
+      - ./dev-sso/saml20-sp-remote.php:/app/simplesamlphp/metadata/saml20-sp-remote.php:ro

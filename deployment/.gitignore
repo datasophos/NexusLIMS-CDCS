@@ -3,6 +3,7 @@
 
 # Local overrides
 .env.local
+saml2/.env.sso-dev
 docker-compose.override.yml
 
 # Logs

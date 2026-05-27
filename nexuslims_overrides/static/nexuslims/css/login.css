@@ -32,7 +32,7 @@
 .form-login input[type="password"],
 .form-login input[type="email"] {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1rem !important;
     margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -57,12 +57,44 @@
     font-size: 0.95rem;
 }
 
+/* SSO / provider sign-in button */
+.form-login a.btn-primary,
+.form-login .btn.btn-primary {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--nx-primary-color) !important;
+    color: white !important;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.form-login a.btn-primary:hover,
+.form-login .btn.btn-primary:hover {
+    background-color: var(--nx-warning-color) !important;
+    color: #333 !important;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+.form-login a.btn-primary:active,
+.form-login .btn.btn-primary:active {
+    transform: translateY(0);
+}
+
 /* Submit button */
 .form-login button[type="submit"],
 .form-login input[type="submit"] {
     width: 100%;
     padding: 0.875rem 1.5rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     background-color: var(--nx-primary-color) !important;
     color: white;
     border: none;
@@ -168,13 +200,28 @@
     order: 1;
 }
 
+/* Section headings ("Sign in with:", "Or:") */
+.form-login h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.form-login h3 div {
+    margin: 0 !important;
+}
+
 /* Reduce spacing on "No account" text */
 .form-login .text-center[style*="margin-top"] {
-    margin-top: 2.5rem !important;
+    margin-top: 1.5rem !important;
 }
 
 .form-login form > .text-center:last-child {
-    margin-top: 2.5rem !important;
+    margin-top: 1.5rem !important;
 }
 
 /* Checkbox styling */

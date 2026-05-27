@@ -7,7 +7,7 @@ FROM astral/uv:python3.13-alpine3.23
 # Create application directory
 WORKDIR /srv/nexuslims
 
-RUN apk add python3-dev build-base linux-headers gettext bash curl \
+RUN apk add python3-dev build-base linux-headers gettext bash curl xmlsec \
     && rm -rf /var/cache/apk/*
 
 # Copy dependency files for layer caching

@@ -62,6 +62,12 @@ alias dev-uv-upgrade='(cd "$_DEV_DIR/.." && uv lock --upgrade)'
 alias dev-uv-sync='(cd "$_DEV_DIR/.." && uv sync)'
 alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev-build-clean"'
 
+# SSO / SimpleSAMLphp helpers
+alias dev-sso-enable='cp "$_DEV_DIR/saml2/.env.sso-dev.example" "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO enabled. Run dev-up to apply."'
+alias dev-sso-disable='rm -f "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO disabled. Run dev-up to apply."'
+alias dev-sso-logs='docker logs -f ${COMPOSE_PROJECT_NAME}_cdcs_sso'
+alias dev-sso-shell='docker exec -it ${COMPOSE_PROJECT_NAME}_cdcs_sso bash'
+
 echo "NexusLIMS-CDCS Development aliases loaded! Available commands:"
 echo ""
 echo "  🏗️  Build:"
@@ -108,6 +114,13 @@ echo "    dev-uv-upgrade         - Upgrade all dependencies (respecting version 
 echo "    dev-uv-sync            - Sync local environment with lockfile (for local dev outside Docker)"
 echo "    dev-uv-add             - Show usage for adding new dependencies"
 echo "                             (After adding deps, run dev-build-clean to rebuild Docker)"
+echo ""
+echo "  🔐 SSO (SimpleSAMLphp):"
+echo "    dev-sso-enable      - Copy sso-dev example to saml2/.env (enables SAML SSO)"
+echo "    dev-sso-disable     - Reset saml2/.env to disable SAML SSO"
+echo "    dev-sso-logs        - View SimpleSAMLphp container logs"
+echo "    dev-sso-shell       - Open shell in SimpleSAMLphp container"
+echo "    Admin UI: https://sso.nexuslims-dev.localhost/simplesaml/ (password: admin)"
 echo ""
 echo "To use these aliases, run: source dev-commands.sh"
 echo ""
