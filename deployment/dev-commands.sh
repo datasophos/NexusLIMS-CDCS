@@ -63,8 +63,8 @@ alias dev-uv-sync='(cd "$_DEV_DIR/.." && uv sync)'
 alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev-build-clean"'
 
 # SSO / SimpleSAMLphp helpers
-alias dev-sso-enable='cp "$_DEV_DIR/saml2/.env.sso-dev.example" "$_DEV_DIR/saml2/.env" && echo "SAML SSO enabled. Run dev-restart-all to apply."'
-alias dev-sso-disable='printf "ENABLE_ALLAUTH=False\nENABLE_ALLAUTH_LOCAL_MFA=False\nENABLE_SAML2_SSO_AUTH=False\n" > "$_DEV_DIR/saml2/.env" && echo "SAML SSO disabled. Run dev-restart-all to apply."'
+alias dev-sso-enable='cp "$_DEV_DIR/saml2/.env.sso-dev.example" "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO enabled. Run dev-up to apply."'
+alias dev-sso-disable='rm -f "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO disabled. Run dev-up to apply."'
 alias dev-sso-logs='docker logs -f ${COMPOSE_PROJECT_NAME}_cdcs_sso'
 alias dev-sso-shell='docker exec -it ${COMPOSE_PROJECT_NAME}_cdcs_sso bash'
 
