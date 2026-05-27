@@ -5,19 +5,21 @@
 # Works with both dev and production deployments by using COMPOSE_PROJECT_NAME
 # from your .env file (e.g., nexuslims_dev or nexuslims_prod)
 
+_ADMIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+
 # Get COMPOSE_PROJECT_NAME from .env or use default
-if [ -f .env ]; then
-    export $(grep -v '^#' .env | grep COMPOSE_PROJECT_NAME | xargs)
-    export $(grep -v '^#' .env | grep NX_CDCS_BACKUPS_HOST_PATH | xargs)
+if [ -f "$_ADMIN_DIR/.env" ]; then
+    export $(grep -v '^#' "$_ADMIN_DIR/.env" | grep COMPOSE_PROJECT_NAME | xargs)
+    export $(grep -v '^#' "$_ADMIN_DIR/.env" | grep NX_CDCS_BACKUPS_HOST_PATH | xargs)
 fi
-COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_prod}
-NX_CDCS_BACKUPS_HOST_PATH=${NX_CDCS_BACKUPS_HOST_PATH:-./backups}
+export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_prod}
+NX_CDCS_BACKUPS_HOST_PATH=${NX_CDCS_BACKUPS_HOST_PATH:-$_ADMIN_DIR/backups}
 
 # hide docker feature advertisements
 export DOCKER_CLI_HINTS=false
 
 # Docker Compose alias for production
-alias dc-prod="COMPOSE_BAKE=true docker compose -f docker-compose.base.yml -f docker-compose.prod.yml"
+alias dc-prod="COMPOSE_BAKE=true docker compose -f \"$_ADMIN_DIR/docker-compose.base.yml\" -f \"$_ADMIN_DIR/docker-compose.prod.yml\""
 
 # Backup and Restore
 alias admin-backup="docker exec ${COMPOSE_PROJECT_NAME}_cdcs python /srv/scripts/backup_cdcs.py 2>&1 | grep -v 'SSL_CERTIFICATES_DIR\|Registered signals'"

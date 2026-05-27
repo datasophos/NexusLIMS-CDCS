@@ -24,6 +24,7 @@ services:
       # Test data for development initialization
       - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
       - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
+      - ./test-data/example_record_multisample.xml:/srv/test-data/example_record_multisample.xml:ro
 
     environment:
       # Use Caddy's root CA certificate for development

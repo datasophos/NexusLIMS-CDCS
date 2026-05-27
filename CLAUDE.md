@@ -2,6 +2,20 @@
 
 Important information for working with this codebase.
 
+## Static Files (CSS/JS) -- CRITICAL
+
+**Editing a `.css` or `.js` file in `nexuslims_annotate/static/` is NOT enough.** Django serves static files from `static.prod/` (populated by `collectstatic`), not directly from the app's `static/` directory.
+
+After any change to a static file, run:
+
+```bash
+cd deployment
+source dev-commands.sh
+dev-collectstatic
+```
+
+Without this step, the browser will continue serving the old file regardless of what is in the source tree. Symptoms: CSS/JS edits appear to have no effect even after hard-refreshing the browser.
+
 ## XSLT Stylesheet Updates
 
 **CRITICAL**: XSLT stylesheets are stored in the Django database, not just as files on disk.

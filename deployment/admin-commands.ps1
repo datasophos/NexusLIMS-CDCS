@@ -4,17 +4,19 @@
 # Works with both dev and production deployments by using COMPOSE_PROJECT_NAME
 # from your .env file (e.g., nexuslims_dev or nexuslims_prod)
 
+$_adminDir = $PSScriptRoot
+
 # Parse .env file to get configuration
 $envVars = @{}
-if (Test-Path .env) {
-    Get-Content .env | Where-Object { $_ -notmatch '^\s*#' -and $_ -match '=' } | ForEach-Object {
+if (Test-Path "$_adminDir/.env") {
+    Get-Content "$_adminDir/.env" | Where-Object { $_ -notmatch '^\s*#' -and $_ -match '=' } | ForEach-Object {
         $key, $value = $_ -split '=', 2
         $envVars[$key.Trim()] = $value.Trim()
     }
 }
 
 $script:COMPOSE_PROJECT_NAME = if ($envVars['COMPOSE_PROJECT_NAME']) { $envVars['COMPOSE_PROJECT_NAME'] } else { 'nexuslims_prod' }
-$script:NX_CDCS_BACKUPS_HOST_PATH = if ($envVars['NX_CDCS_BACKUPS_HOST_PATH']) { $envVars['NX_CDCS_BACKUPS_HOST_PATH'] } else { '.\backups' }
+$script:NX_CDCS_BACKUPS_HOST_PATH = if ($envVars['NX_CDCS_BACKUPS_HOST_PATH']) { $envVars['NX_CDCS_BACKUPS_HOST_PATH'] } else { "$_adminDir/backups" }
 $script:POSTGRES_USER = if ($envVars['POSTGRES_USER']) { $envVars['POSTGRES_USER'] } else { 'nexuslims' }
 $script:POSTGRES_DB = if ($envVars['POSTGRES_DB']) { $envVars['POSTGRES_DB'] } else { 'nexuslims' }
 
@@ -24,7 +26,7 @@ $env:DOCKER_CLI_HINTS = "false"
 # Docker Compose function for production
 function dc-prod {
     $env:COMPOSE_BAKE = "true"
-    docker compose -f docker-compose.base.yml -f docker-compose.prod.yml @args
+    docker compose -f "$_adminDir/docker-compose.base.yml" -f "$_adminDir/docker-compose.prod.yml" @args
 }
 
 # Backup and Restore

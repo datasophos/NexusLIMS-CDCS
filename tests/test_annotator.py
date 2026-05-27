@@ -9,13 +9,17 @@ from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase, TestCase
 
 from nexuslims_annotate.views import (
+    _apply_activity_mutations,
     _apply_descriptions,
     _apply_moves,
+    _apply_samples,
     _dataset_creation_time,
     _inject_setup_into_dataset,
     _parse_activities,
     _parse_datasets,
+    _parse_samples,
     _recompute_activity_setup,
+    _renumber_activities,
     _sort_datasets_by_creation_time,
 )
 
@@ -184,6 +188,54 @@ _TWO_ACTIVITY_XML = f"""\
   </acquisitionActivity>
 </Experiment>"""
 
+_WITH_SAMPLES_XML = f"""\
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS}">
+  <title>Test Experiment</title>
+  <summary><experimenter>Test User</experimenter></summary>
+  <sample id="steel-alloy-a">
+    <name>Steel Alloy A</name>
+    <description>High-carbon steel reference</description>
+    <elements><Fe/><C/><Cr/><Ni/></elements>
+  </sample>
+  <sample id="brass-ref">
+    <name>Brass Reference</name>
+    <description>Cu-Zn alloy</description>
+    <elements><Cu/><Zn/></elements>
+  </sample>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-15T10:00:00-05:00</startTime>
+    <sampleID>steel-alloy-a</sampleID>
+    <dataset type="Image">
+      <name>image_001.dm3</name>
+      <location>/data/image_001.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2024-01-15T11:00:00-05:00</startTime>
+    <dataset type="Image">
+      <name>image_002.dm3</name>
+      <location>/data/image_002.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>"""
+
+_NO_SAMPLES_XML = f"""\
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS}">
+  <title>No Samples</title>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-15T10:00:00-05:00</startTime>
+    <dataset type="Image">
+      <name>only.dm3</name>
+      <location>/data/only.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1">
+    <startTime>2024-01-15T11:00:00-05:00</startTime>
+  </acquisitionActivity>
+</Experiment>"""
+
 
 # ===========================================================================
 # _parse_datasets
@@ -258,6 +310,360 @@ class ParseActivitiesTests(SimpleTestCase):
     def test_empty_xml_returns_empty_list(self):
         xml = f'<Experiment xmlns="{NS}"><title>Empty</title></Experiment>'
         self.assertEqual(_parse_activities(xml), [])
+
+    def test_sample_id_returned_when_present(self):
+        acts = _parse_activities(_WITH_SAMPLES_XML)
+        self.assertEqual(acts[0]['sample_id'], 'steel-alloy-a')
+
+    def test_sample_id_empty_string_when_absent(self):
+        acts = _parse_activities(_NO_SAMPLES_XML)
+        self.assertEqual(acts[0]['sample_id'], '')
+        self.assertEqual(acts[1]['sample_id'], '')
+
+
+# ===========================================================================
+# _parse_samples
+# ===========================================================================
+
+class ParseSamplesTests(SimpleTestCase):
+    def test_returns_correct_count(self):
+        self.assertEqual(len(_parse_samples(_WITH_SAMPLES_XML)), 2)
+
+    def test_empty_when_no_samples(self):
+        self.assertEqual(_parse_samples(_NO_SAMPLES_XML), [])
+
+    def test_id_attribute_captured(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['id'], 'steel-alloy-a')
+        self.assertEqual(samples[1]['id'], 'brass-ref')
+
+    def test_name_captured(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['name'], 'Steel Alloy A')
+
+    def test_description_captured(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['description'], 'High-carbon steel reference')
+
+    def test_description_empty_string_when_absent(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><sample id="x"><name>X</name></sample></Experiment>'
+        samples = _parse_samples(xml)
+        self.assertEqual(samples[0]['description'], '')
+
+    def test_elements_list_returned(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['elements'], ['Fe', 'C', 'Cr', 'Ni'])
+
+    def test_elements_empty_list_when_absent(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><sample id="x"><name>X</name></sample></Experiment>'
+        samples = _parse_samples(xml)
+        self.assertEqual(samples[0]['elements'], [])
+
+    def test_ref_attribute_captured(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><sample id="x" ref="https://doi.org/10.1/abc"><name>X</name></sample></Experiment>'
+        samples = _parse_samples(xml)
+        self.assertEqual(samples[0]['ref'], 'https://doi.org/10.1/abc')
+
+    def test_ref_empty_string_when_absent(self):
+        samples = _parse_samples(_WITH_SAMPLES_XML)
+        self.assertEqual(samples[0]['ref'], '')
+
+
+# ===========================================================================
+# _apply_samples
+# ===========================================================================
+
+class ApplySamplesTests(SimpleTestCase):
+    def _get_samples(self, xml_str):
+        return _parse_samples(xml_str)
+
+    def test_replaces_existing_samples_with_new_list(self):
+        new_samples = [
+            {'id': 'new-s', 'name': 'New Sample', 'description': 'desc', 'notes': '', 'elements': ['Au']},
+        ]
+        result = _apply_samples(_WITH_SAMPLES_XML, new_samples)
+        samples = self._get_samples(result)
+        self.assertEqual(len(samples), 1)
+        self.assertEqual(samples[0]['name'], 'New Sample')
+
+    def test_empty_list_removes_all_samples(self):
+        result = _apply_samples(_WITH_SAMPLES_XML, [])
+        self.assertEqual(self._get_samples(result), [])
+
+    def test_adds_samples_when_none_existed(self):
+        new_samples = [
+            {'id': 'added', 'name': 'Added', 'description': '', 'notes': '', 'elements': []},
+        ]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        samples = self._get_samples(result)
+        self.assertEqual(len(samples), 1)
+        self.assertEqual(samples[0]['id'], 'added')
+
+    def test_id_attribute_set(self):
+        new_samples = [{'id': 'my-id', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        self.assertEqual(s.get('id'), 'my-id')
+
+    def test_elements_written_as_child_tags(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': ['Fe', 'Ni']}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        elements_el = s.find(f'{{{NS}}}elements')
+        self.assertIsNotNone(elements_el)
+        syms = [c.tag.split('}')[-1] for c in elements_el]
+        self.assertEqual(syms, ['Fe', 'Ni'])
+
+    def test_empty_notes_omits_notes_element(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        self.assertIsNone(s.find(f'{{{NS}}}notes'))
+
+    def test_samples_inserted_before_acquisition_activities(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        children_tags = [c.tag.split('}')[-1] for c in root]
+        sample_pos = children_tags.index('sample')
+        act_pos = children_tags.index('acquisitionActivity')
+        self.assertLess(sample_pos, act_pos)
+
+    def test_result_is_valid_xml(self):
+        result = _apply_samples(_WITH_SAMPLES_XML, [])
+        ET.fromstring(result)
+
+    def test_ref_attribute_written(self):
+        new_samples = [{'id': 's', 'ref': 'https://doi.org/10.1/x', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        s = root.find(f'{{{NS_STR}}}sample')
+        self.assertEqual(s.get('ref'), 'https://doi.org/10.1/x')
+
+    def test_ref_attribute_omitted_when_empty(self):
+        new_samples = [{'id': 's', 'ref': '', 'name': 'S', 'description': '', 'notes': '', 'elements': []}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        s = root.find(f'{{{NS_STR}}}sample')
+        self.assertIsNone(s.get('ref'))
+
+    def test_invalid_element_symbols_are_filtered(self):
+        new_samples = [{'id': 's', 'name': 'S', 'description': '', 'notes': '', 'elements': ['Fe', 'NotAnElement', '1bad']}]
+        result = _apply_samples(_NO_SAMPLES_XML, new_samples)
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        s = root.find('nx:sample', NS_MAP)
+        elements_el = s.find(f'{{{NS}}}elements')
+        self.assertIsNotNone(elements_el)
+        syms = [c.tag.split('}')[-1] for c in elements_el]
+        self.assertEqual(syms, ['Fe'])  # only valid symbol retained
+
+
+# ===========================================================================
+# _renumber_activities
+# ===========================================================================
+
+class RenumberActivitiesTests(SimpleTestCase):
+    def _seqnos(self, xml_str):
+        root = ET.fromstring(xml_str)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP = {'nx': NS}
+        return [a.get('seqno') for a in root.findall('nx:acquisitionActivity', NS_MAP)]
+
+    def test_already_consecutive_unchanged(self):
+        result = _renumber_activities(_WITH_SAMPLES_XML)
+        self.assertEqual(self._seqnos(result), ['0', '1'])
+
+    def test_gaps_are_filled(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f"""<Experiment xmlns="{NS}">
+          <acquisitionActivity seqno="0"/>
+          <acquisitionActivity seqno="2"/>
+          <acquisitionActivity seqno="5"/>
+        </Experiment>"""
+        result = _renumber_activities(xml)
+        self.assertEqual(self._seqnos(result), ['0', '1', '2'])
+
+    def test_single_activity_stays_zero(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><acquisitionActivity seqno="3"/></Experiment>'
+        result = _renumber_activities(xml)
+        self.assertEqual(self._seqnos(result), ['0'])
+
+    def test_no_activities_returns_valid_xml(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f'<Experiment xmlns="{NS}"><title>X</title></Experiment>'
+        result = _renumber_activities(xml)
+        ET.fromstring(result)
+        self.assertEqual(self._seqnos(result), [])
+
+
+# ===========================================================================
+# _apply_activity_mutations
+# ===========================================================================
+
+class ApplyActivityMutationsTests(SimpleTestCase):
+    NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+    NS_MAP_LOC = {'nx': "https://data.nist.gov/od/dm/nexus/experiment/v1.0"}
+
+    def _seqnos(self, xml_str):
+        root = ET.fromstring(xml_str)
+        return [a.get('seqno') for a in root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)]
+
+    def _sample_id(self, xml_str, seqno):
+        root = ET.fromstring(xml_str)
+        for a in root.findall('nx:acquisitionActivity', self.NS_MAP_LOC):
+            if a.get('seqno') == str(seqno):
+                el = a.find(f'{{{self.NS_STR}}}sampleID')
+                return el.text if el is not None else None
+        return None
+
+    # --- delete ---
+
+    def test_delete_empty_activity(self):
+        # seqno 1 is empty in _NO_SAMPLES_XML
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML, deleted_seqnos=['1'], new_activities=[], activity_sample_ids={}
+        )
+        root = ET.fromstring(result)
+        seqnos = [a.get('seqno') for a in root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)]
+        self.assertNotIn('1', seqnos)
+
+    def test_delete_non_empty_activity_raises_value_error(self):
+        # seqno 0 in _NO_SAMPLES_XML has 1 dataset
+        with self.assertRaises(ValueError):
+            _apply_activity_mutations(
+                _NO_SAMPLES_XML, deleted_seqnos=['0'], new_activities=[], activity_sample_ids={}
+            )
+
+    def test_delete_nonexistent_seqno_silently_skipped(self):
+        result, _ = _apply_activity_mutations(
+            _NO_SAMPLES_XML, deleted_seqnos=['99'], new_activities=[], activity_sample_ids={}
+        )
+        self.assertEqual(self._seqnos(result), ['0', '1'])
+
+    # --- insert ---
+
+    def test_insert_at_end(self):
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[{'temp_id': 'new-x', 'at_end': True}],
+            activity_sample_ids={},
+        )
+        root = ET.fromstring(result)
+        acts = root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)
+        self.assertEqual(len(acts), 3)
+
+    def test_insert_after_seqno(self):
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[{'temp_id': 'new-x', 'after_seqno': '0'}],
+            activity_sample_ids={},
+        )
+        root = ET.fromstring(result)
+        acts = root.findall('nx:acquisitionActivity', self.NS_MAP_LOC)
+        # should be seqno 0, new-x, 1 in that order
+        self.assertEqual(acts[0].get('seqno'), '0')
+        self.assertEqual(acts[1].get('seqno'), 'new-x')
+        self.assertEqual(acts[2].get('seqno'), '1')
+
+    def test_insert_after_nonexistent_seqno_raises(self):
+        with self.assertRaises(ValueError):
+            _apply_activity_mutations(
+                _NO_SAMPLES_XML,
+                deleted_seqnos=[],
+                new_activities=[{'temp_id': 'new-x', 'after_seqno': '99'}],
+                activity_sample_ids={},
+            )
+
+    # --- seqno mapping ---
+
+    def test_mapping_original_seqno_to_final(self):
+        # delete seqno 1, so seqno 0 stays at 0
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML, deleted_seqnos=['1'], new_activities=[], activity_sample_ids={}
+        )
+        self.assertEqual(mapping['0'], '0')
+
+    def test_mapping_temp_id_to_final(self):
+        result, mapping = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[{'temp_id': 'new-x', 'at_end': True}],
+            activity_sample_ids={},
+        )
+        self.assertIn('new-x', mapping)
+
+    def test_mapping_shifts_after_deletion(self):
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        xml = f"""<Experiment xmlns="{NS}">
+          <acquisitionActivity seqno="0">
+            <dataset><name>a.dm3</name><location>/a</location></dataset>
+          </acquisitionActivity>
+          <acquisitionActivity seqno="1"/>
+          <acquisitionActivity seqno="2">
+            <dataset><name>b.dm3</name><location>/b</location></dataset>
+          </acquisitionActivity>
+        </Experiment>"""
+        result, mapping = _apply_activity_mutations(
+            xml, deleted_seqnos=['1'], new_activities=[], activity_sample_ids={}
+        )
+        # old seqno 2 now maps to final seqno 1 (before renumber step)
+        self.assertEqual(mapping['2'], '1')
+
+    # --- sampleID ---
+
+    def test_sample_id_set_on_activity(self):
+        result, _ = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[],
+            activity_sample_ids={'0': 'steel-alloy-a'},
+        )
+        self.assertEqual(self._sample_id(result, '0'), 'steel-alloy-a')
+
+    def test_sample_id_cleared_when_null(self):
+        result, _ = _apply_activity_mutations(
+            _WITH_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[],
+            activity_sample_ids={'0': None},
+        )
+        self.assertIsNone(self._sample_id(result, '0'))
+
+    def test_sample_id_inserted_after_start_time(self):
+        result, _ = _apply_activity_mutations(
+            _NO_SAMPLES_XML,
+            deleted_seqnos=[],
+            new_activities=[],
+            activity_sample_ids={'0': 'my-sample'},
+        )
+        root = ET.fromstring(result)
+        NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        NS_MAP_L = {'nx': NS}
+        for act in root.findall('nx:acquisitionActivity', NS_MAP_L):
+            if act.get('seqno') == '0':
+                tags = [c.tag.split('}')[-1] for c in act]
+                start_pos = tags.index('startTime')
+                sid_pos = tags.index('sampleID')
+                self.assertGreater(sid_pos, start_pos)
 
 
 # ===========================================================================
@@ -1264,6 +1670,196 @@ class AnnotateSaveViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         body = json.loads(response.content)
         self.assertTrue(body.get("success"))
+
+
+class AnnotateSaveStructuralTests(TestCase):
+    """Tests for structural mutations via annotate_save."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser_struct', password='pass')
+        self.client.force_login(self.user)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_delete_non_empty_activity_returns_400(self, mock_upsert, mock_get):
+        mock_get.return_value = _make_mock_data(_NO_SAMPLES_XML)
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': json.dumps(['0']),  # seqno 0 has 1 dataset
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 400)
+        body = json.loads(response.content)
+        self.assertIn('error', body)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_delete_empty_activity_succeeds(self, mock_upsert, mock_get):
+        data_obj = _make_mock_data(_NO_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': json.dumps(['1']),  # seqno 1 is empty
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json.loads(response.content).get('success'))
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_malformed_json_returns_400(self, mock_upsert, mock_get):
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': 'not json',
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 400)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_samples_saved_in_xml(self, mock_upsert, mock_get):
+        data_obj = _make_mock_data(_NO_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        samples = [{'id': 'test-s', 'name': 'Test Sample', 'description': 'desc', 'notes': '', 'elements': ['Fe']}]
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': '[]',
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': json.dumps(samples),
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        s = root.find(f'{{{NS}}}sample')
+        self.assertIsNotNone(s)
+        self.assertEqual(s.get('id'), 'test-s')
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_existing_save_still_works_without_new_fields(self, mock_upsert, mock_get):
+        """Existing callers that omit the new fields should not break."""
+        mock_get.return_value = _make_mock_data()
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {'dataset_0_description': 'A description'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json.loads(response.content).get('success'))
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_move_to_new_activity_is_translated(self, mock_upsert, mock_get):
+        """A move targeting a temp_id is correctly translated to the final seqno."""
+        data_obj = _make_mock_data(_NO_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': '[]',
+                'new_activities': json.dumps([{'temp_id': 'new-x', 'at_end': True}]),
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': json.dumps([{'datasetIndex': 0, 'targetActivitySeqno': 'new-x'}]),
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        acts = root.findall(f'{{{NS}}}acquisitionActivity')
+        # 3 activities total (0, 1, new-x now renumbered to 2)
+        self.assertEqual(len(acts), 3)
+        # dataset 0 (only.dm3) moved to the last activity
+        last_act = acts[-1]
+        ds_names = [ds.find(f'{{{NS}}}name').text for ds in last_act.findall(f'{{{NS}}}dataset')]
+        self.assertIn('only.dm3', ds_names)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_missing_samples_field_preserves_existing_samples(self, mock_upsert, mock_get):
+        """If 'samples' is absent from POST, existing samples must not be removed."""
+        data_obj = _make_mock_data(_WITH_SAMPLES_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {'dataset_0_description': 'A description'},  # no 'samples' field
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        samples = root.findall(f'{{{NS_STR}}}sample')
+        self.assertEqual(len(samples), 2)  # _WITH_SAMPLES_XML has 2 samples
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_move_after_deletion_uses_original_seqno(self, mock_upsert, mock_get):
+        """Moving a dataset to an activity whose seqno did not change still works after a deletion."""
+        NS_STR = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+        # XML: seqno 0 has 'only.dm3', seqno 1 is empty (to be deleted), seqno 2 is also empty
+        xml = f"""<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS_STR}">
+  <title>T</title>
+  <acquisitionActivity seqno="0">
+    <startTime>2024-01-15T10:00:00-05:00</startTime>
+    <dataset type="Image">
+      <name>only.dm3</name>
+      <location>/data/only.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+  <acquisitionActivity seqno="1"/>
+  <acquisitionActivity seqno="2"/>
+</Experiment>"""
+        data_obj = _make_mock_data(xml)
+        mock_get.return_value = data_obj
+        # Delete seqno 1, move dataset from seqno 0 to seqno 2
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'deleted_seqnos': json.dumps(['1']),
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': json.dumps([{'datasetIndex': 0, 'targetActivitySeqno': '2'}]),
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        acts = root.findall(f'{{{NS_STR}}}acquisitionActivity')
+        # After deletion + renumber, 2 activities remain
+        self.assertEqual(len(acts), 2)
+        # The last activity should now have 'only.dm3'
+        last_act = acts[-1]
+        ds_names = [ds.find(f'{{{NS_STR}}}name').text for ds in last_act.findall(f'{{{NS_STR}}}dataset')]
+        self.assertIn('only.dm3', ds_names)
 
 
 class AnnotateSaveOneDoesNotExistTest(TestCase):
