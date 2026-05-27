@@ -109,3 +109,29 @@ https://{$FILES_DOMAIN} {
         }
     }
 }
+
+# SimpleSAMLphp dev IdP
+https://{$SSO_DOMAIN} {
+    # Auto-generate short-lived certificates from custom CA
+    tls {
+        issuer internal {
+            ca local
+        }
+    }
+
+    # Reverse proxy to SimpleSAMLphp container
+    # X-Forwarded-Proto and X-Forwarded-Host let SimpleSAMLphp auto-detect
+    # its public URL so it generates correct https:// URLs in SAML messages.
+    reverse_proxy simplesamlphp:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+    }
+
+    log {
+        output stdout
+        format console
+    }
+}
