@@ -298,9 +298,11 @@ python runtests.py
 
 ## Planning Documents
 
-All planning and analysis documents should be stored in this repository, not in the user's home directory:
+All planning, specification, and analysis documents should be stored in this repository, not in the user's home directory:
 
 - **Plans**: Store in `.claude/plans/` folder
+- **Specs**: Store in `.claude/specs/` folder
 - **Progress tracking**: Each plan should have a corresponding progress document in `.claude/plan-progress/`
 
-This ensures plans and progress are version-controlled with the codebase and accessible to all developers. Format progress documents as `{plan-name}-progress.md` to establish a clear relationship with their corresponding plans.
+This ensures plans and progress are version-controlled with the codebase and accessible to all developers. Format progress documents as `{plan-name}-progress.md` to establish a clear relationship with their corresponding plans. This instruction
+includes plans and specs created by the "Superpowers" plugin.

@@ -219,7 +219,7 @@ body.nx-has-selection .nx-select-cb-label {
     align-items: center;
     gap: 10px;
     font-size: 0.875rem;
-    min-width: 380px;
+    white-space: nowrap;
 }
 
 /* At narrow widths, collapse the Annotate Record button to icon-only.
@@ -248,3 +248,8 @@ body.nx-has-selection .nx-select-cb-label {
 /* Inline description edit icon: show on table row hover */
 .aa-table tbody tr:hover .nx-desc-edit,
 #simple-filelist-table tbody tr:hover .nx-desc-edit { display: inline; }
+
+/* Title bar turns orange when the title has been edited but not yet saved. */
+#nx-title-bar.nx-title-dirty {
+    background: #fff3cd !important;
+}

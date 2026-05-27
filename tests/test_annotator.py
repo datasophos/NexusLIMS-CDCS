@@ -13,6 +13,7 @@ from nexuslims_annotate.views import (
     _apply_descriptions,
     _apply_moves,
     _apply_samples,
+    _apply_title,
     _dataset_creation_time,
     _inject_setup_into_dataset,
     _parse_activities,
@@ -1066,6 +1067,32 @@ class ApplyDescriptionsTests(SimpleTestCase):
 
 
 # ===========================================================================
+# _apply_title
+# ===========================================================================
+
+class ApplyTitleTests(SimpleTestCase):
+    _XML = f'<Experiment xmlns="{NS}"><title>Old Title</title><id>rec-1</id></Experiment>'
+
+    def test_updates_title_text(self):
+        result = _apply_title(self._XML, 'New Title')
+        root = ET.fromstring(result)
+        self.assertEqual(root.find(_t('title')).text, 'New Title')
+
+    def test_preserves_other_elements(self):
+        result = _apply_title(self._XML, 'New Title')
+        root = ET.fromstring(result)
+        id_el = root.find(_t('id'))
+        self.assertIsNotNone(id_el)
+        self.assertEqual(id_el.text, 'rec-1')
+
+    def test_no_title_element_leaves_structure_intact(self):
+        xml = f'<Experiment xmlns="{NS}"><id>rec-1</id></Experiment>'
+        result = _apply_title(xml, 'New Title')
+        root = ET.fromstring(result)
+        self.assertIsNone(root.find(_t('title')))
+
+
+# ===========================================================================
 # _dataset_creation_time
 # ===========================================================================
 
@@ -1860,6 +1887,50 @@ class AnnotateSaveStructuralTests(TestCase):
         last_act = acts[-1]
         ds_names = [ds.find(f'{{{NS_STR}}}name').text for ds in last_act.findall(f'{{{NS_STR}}}dataset')]
         self.assertIn('only.dm3', ds_names)
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_title_updated_in_saved_xml(self, mock_upsert, mock_get):
+        data_obj = _make_mock_data(_TWO_ACTIVITY_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'title': 'Updated Experiment Title',
+                'deleted_seqnos': '[]',
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        self.assertEqual(root.find(f'{{{NS}}}title').text, 'Updated Experiment Title')
+
+    @patch('nexuslims_annotate.views.data_api.get_by_id')
+    @patch('nexuslims_annotate.views.data_api.upsert')
+    def test_empty_title_not_applied(self, mock_upsert, mock_get):
+        data_obj = _make_mock_data(_TWO_ACTIVITY_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post(
+            '/annotate/test-id/save/',
+            {
+                'title': '',
+                'deleted_seqnos': '[]',
+                'new_activities': '[]',
+                'activity_sample_ids': '{}',
+                'samples': '[]',
+                'moves': '[]',
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, 200)
+        saved_xml = mock_upsert.call_args[0][0].content
+        root = ET.fromstring(saved_xml)
+        self.assertEqual(root.find(f'{{{NS}}}title').text, 'Test Experiment')
 
 
 class AnnotateSaveOneDoesNotExistTest(TestCase):

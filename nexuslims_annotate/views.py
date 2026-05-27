@@ -44,6 +44,16 @@ def _get_title(xml_content):
     return title_el.text if title_el is not None else ''
 
 
+def _apply_title(xml_content, new_title):
+    """Apply a new title to the experiment XML content."""
+    ET.register_namespace('', NS)
+    root = ET.fromstring(xml_content)
+    title_el = root.find('nx:title', NS_MAP)
+    if title_el is not None:
+        title_el.text = new_title
+    return ET.tostring(root, encoding='unicode', xml_declaration=False)
+
+
 def _parse_datasets(xml_content):
     """Parse XML content and return a list of dataset dicts."""
     ET.register_namespace('', NS)
@@ -691,6 +701,11 @@ def annotate_save(request, record_id):
             return JsonResponse({'error': 'activity_sample_ids must be a JSON object'}, status=400)
 
         updated_xml = data.content
+
+        # Apply title update if provided (empty string leaves the existing title)
+        new_title = request.POST.get('title', '').strip()
+        if new_title:
+            updated_xml = _apply_title(updated_xml, new_title)
 
         # Parse moves before structural mutations so they can be passed in
         moves_json = request.POST.get('moves', '[]')
