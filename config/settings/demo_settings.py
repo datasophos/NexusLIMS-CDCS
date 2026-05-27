@@ -17,10 +17,10 @@ IS_PUBLIC_DEMO = True
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
 # No email sending in the demo
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
 
 # Whitelist of usernames that can be selected via ?demo_as=<username>
-DEMO_USERNAMES = ['admin', 'readonly_user', 'project_lead']
+DEMO_USERNAMES = ["admin", "readonly_user", "project_lead"]
 
 # Additional instrument color mappings for demo datasets
 NX_INSTRUMENT_COLOR_MAPPINGS = {
@@ -36,22 +36,24 @@ NX_INSTRUMENT_COLOR_MAPPINGS = {
 if DEBUG:
     TEMPLATES[0] = {  # noqa: F821
         **TEMPLATES[0],  # noqa: F821
-        'APP_DIRS': False,  # must be False when 'loaders' is explicitly set
-        'OPTIONS': {
-            **TEMPLATES[0]['OPTIONS'],  # noqa: F821
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
+        "APP_DIRS": False,  # must be False when 'loaders' is explicitly set
+        "OPTIONS": {
+            **TEMPLATES[0]["OPTIONS"],  # noqa: F821
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
         },
     }
 
 # Auto-login middleware - insert after AuthenticationMiddleware
-_demo_middleware = 'nexuslims_overrides.middleware.DemoAutoLoginMiddleware'
+_demo_middleware = "nexuslims_overrides.middleware.DemoAutoLoginMiddleware"
 MIDDLEWARE = list(MIDDLEWARE)  # noqa: F821 - may be a tuple from base settings
 if _demo_middleware not in MIDDLEWARE:
     try:
-        _auth_idx = MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware')
+        _auth_idx = MIDDLEWARE.index(
+            "django.contrib.auth.middleware.AuthenticationMiddleware"
+        )
         MIDDLEWARE.insert(_auth_idx + 1, _demo_middleware)
     except ValueError:
         MIDDLEWARE.append(_demo_middleware)
@@ -62,12 +64,12 @@ NX_CUSTOM_MENU_LINKS = [
         "title": "Datasophos",
         "url": "https://datasophos.co/",
         "icon": "globe",
-        "iconClass": "fas"
+        "iconClass": "fas",
     },
     {
         "title": "Github Repository",
         "url": "https://github.com/datasophos/NexusLIMS-CDCS",
         "icon": "github",
-        "iconClass": "fab"
-    }
+        "iconClass": "fab",
+    },
 ]

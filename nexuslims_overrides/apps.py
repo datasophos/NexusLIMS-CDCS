@@ -1,16 +1,17 @@
 """
 NexusLIMS Overrides App Configuration
 """
+
 from django.apps import AppConfig
 
 
 class NexusLIMSOverridesConfig(AppConfig):
     """Configuration for NexusLIMS customization app."""
-    
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'nexuslims_overrides'
-    verbose_name = 'NexusLIMS Customizations'
-    
+
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "nexuslims_overrides"
+    verbose_name = "NexusLIMS Customizations"
+
     def ready(self):
         """
         Called when Django starts.

@@ -6,6 +6,7 @@ These views override or extend the default MDCS views.
 File overrides:
 - tiles() -> overrides mdcs_home/views.py::tiles()
 """
+
 import logging
 
 from django.conf import settings
@@ -39,7 +40,7 @@ def tiles(request):
             "link": reverse("core_explore_keyword_app_search"),
             "title": "Browse and Search Records",
             "text": "Click here to explore the NexusLIMS record repository",
-            "id": "app_search"
+            "id": "app_search",
         }
         context["tiles"].append(explore_keywords_tile)
 
@@ -50,7 +51,7 @@ def tiles(request):
             "link": reverse("core_curate_index"),
             "title": "Create a new record",
             "text": "Click here to upload a record manually or build a record from scratch",
-            "id": "curator"
+            "id": "curator",
         }
         # Disabled for NexusLIMS - records are auto-generated
         # Uncomment to enable manual record creation:

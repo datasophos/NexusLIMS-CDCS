@@ -21,7 +21,7 @@ import shutil
 import sys
 import xml.etree.ElementTree as ET
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 try:
@@ -629,7 +629,9 @@ def build_xml(
                 }.get(ext, "Unknown")
 
             # Build relative path for location
-            rel = f.relative_to(f.parents[len(f.parts) - f.parts.index(folder_name) - 1])
+            rel = f.relative_to(
+                f.parents[len(f.parts) - f.parts.index(folder_name) - 1]
+            )
             location = "/" + str(rel).replace(os.sep, "/")
 
             ds = _el(act, "dataset")
@@ -644,16 +646,22 @@ def build_xml(
             # Thumbnail (must come after description per XSD)
             # Try both naming conventions: stem.thumb.png and full-name.thumb.png
             thumb = next(
-                (p for p in [
-                    f.parent / (f.stem + ".thumb.png"),
-                    f.parent / (f.name + ".thumb.png"),
-                ] if p.exists()),
+                (
+                    p
+                    for p in [
+                        f.parent / (f.stem + ".thumb.png"),
+                        f.parent / (f.name + ".thumb.png"),
+                    ]
+                    if p.exists()
+                ),
                 None,
             )
             if thumb is not None:
                 thumb_rel = "/" + str(
                     thumb.relative_to(
-                        thumb.parents[len(thumb.parts) - thumb.parts.index(folder_name) - 1]
+                        thumb.parents[
+                            len(thumb.parts) - thumb.parts.index(folder_name) - 1
+                        ]
                     )
                 ).replace(os.sep, "/")
                 _el(ds, "preview", thumb_rel)
@@ -705,10 +713,14 @@ def populate_demo_data(
         # nx-data: JSON + thumbnail
         json_src = data_file.parent / (data_file.name + ".json")
         thumb_src = next(
-            (p for p in [
-                data_file.parent / (data_file.stem + ".thumb.png"),
-                data_file.parent / (data_file.name + ".thumb.png"),
-            ] if p.exists()),
+            (
+                p
+                for p in [
+                    data_file.parent / (data_file.stem + ".thumb.png"),
+                    data_file.parent / (data_file.name + ".thumb.png"),
+                ]
+                if p.exists()
+            ),
             None,
         )
 
@@ -741,7 +753,7 @@ def process_folder(
     schema: etree.XMLSchema | None,
 ) -> bool:
     folder_name = folder.name
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Processing: {folder_name}")
 
     # Find .webloc file
@@ -939,7 +951,7 @@ def main():
             traceback.print_exc()
             failed += 1
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Done: {success} succeeded, {failed} failed/skipped")
     print(f"XML records: {args.output_records}")
     print(f"Demo data:   {args.output_demo_data}")

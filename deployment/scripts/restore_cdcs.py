@@ -16,36 +16,40 @@ import json
 import argparse
 import logging
 from pathlib import Path
-from datetime import datetime
+
 
 # Filter specific noisy log messages
 class MessageFilter(logging.Filter):
     def filter(self, record):
         noisy_messages = [
-            'SSL_CERTIFICATES_DIR',
-            'Registered signals',
-            'No request or session id is None',
+            "SSL_CERTIFICATES_DIR",
+            "Registered signals",
+            "No request or session id is None",
         ]
         return not any(msg in record.getMessage() for msg in noisy_messages)
 
+
 # Apply filter to root logger and common CDCS loggers
-for logger_name in ['', 'core_main_app', 'django']:
+for logger_name in ["", "core_main_app", "django"]:
     logger = logging.getLogger(logger_name)
     logger.addFilter(MessageFilter())
+
 
 # Also filter stdout/stderr for print statements
 class FilteredWriter:
     def __init__(self, stream):
         self.stream = stream
         self.noisy_patterns = [
-            'SSL_CERTIFICATES_DIR',
-            'Registered signals',
-            'No request or session id is None',
+            "SSL_CERTIFICATES_DIR",
+            "Registered signals",
+            "No request or session id is None",
         ]
 
     def write(self, text):
         # Allow empty strings (newlines) to pass through, filter only lines with noisy patterns
-        if not text.strip() or not any(pattern in text for pattern in self.noisy_patterns):
+        if not text.strip() or not any(
+            pattern in text for pattern in self.noisy_patterns
+        ):
             self.stream.write(text)
 
     def flush(self):
@@ -54,23 +58,32 @@ class FilteredWriter:
     def __getattr__(self, name):
         return getattr(self.stream, name)
 
+
 # Wrap stdout and stderr
 sys.stdout = FilteredWriter(sys.stdout)
 sys.stderr = FilteredWriter(sys.stderr)
 
 # Django setup
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"))
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"),
+)
 sys.path.insert(0, "/srv/nexuslims")
 import django
+
 django.setup()
 
 from django.contrib.auth import get_user_model
 from django.test import RequestFactory
 from django.core.management import call_command
 from core_main_app.components.template import api as template_api
-from core_main_app.components.template_version_manager import api as template_version_manager_api
+from core_main_app.components.template_version_manager import (
+    api as template_version_manager_api,
+)
 from core_main_app.components.xsl_transformation import api as xsl_transformation_api
-from core_main_app.components.template_xsl_rendering import api as template_xsl_rendering_api
+from core_main_app.components.template_xsl_rendering import (
+    api as template_xsl_rendering_api,
+)
 from core_main_app.components.data import api as data_api
 from core_main_app.components.workspace.models import Workspace
 
@@ -185,7 +198,9 @@ def restore_xslt(xslt_dir):
                 log_success(f"Updated stylesheet: {stylesheet_name}")
             except Exception:
                 # Create new stylesheet
-                from core_main_app.components.xsl_transformation.models import XslTransformation
+                from core_main_app.components.xsl_transformation.models import (
+                    XslTransformation,
+                )
 
                 xslt = XslTransformation()
                 xslt.name = stylesheet_name
@@ -212,7 +227,9 @@ def restore_template_xslt_association(template_dir, template_id, request):
 
     if not association_file.exists():
         # No XSLT association file - try to auto-link standard XSLTs
-        log_info("  No xslt_association.json found - attempting auto-link with standard XSLTs")
+        log_info(
+            "  No xslt_association.json found - attempting auto-link with standard XSLTs"
+        )
         list_xslt_name = "list_stylesheet.xsl"
         detail_xslt_name = "detail_stylesheet.xsl"
     else:
@@ -276,7 +293,7 @@ def restore_template_xslt_association(template_dir, template_id, request):
             template,  # Pass template, not rendering object
             list_xslt=list_xslt,
             default_detail_xslt=detail_xslt,
-            list_detail_xslt=[list_xslt] if list_xslt else []
+            list_detail_xslt=[list_xslt] if list_xslt else [],
         )
 
         log_success(f"  Linked XSLTs to template (Rendering ID: {rendering.id})")
@@ -284,6 +301,7 @@ def restore_template_xslt_association(template_dir, template_id, request):
     except Exception as e:
         log_error(f"  Failed to restore XSLT associations: {e}")
         import traceback
+
         traceback.print_exc()
 
 
@@ -304,7 +322,9 @@ def restore_data(schemas_dir):
         log_error("Could not retrieve global workspace! Records will not be visible.")
         log_info("You may need to create the global workspace first.")
     else:
-        log_info(f"Using global workspace: {global_workspace.title} (ID: {global_workspace.id})")
+        log_info(
+            f"Using global workspace: {global_workspace.title} (ID: {global_workspace.id})"
+        )
 
     # Find all template directories
     template_dirs = [d for d in schemas_path.iterdir() if d.is_dir()]
@@ -344,7 +364,9 @@ def restore_data(schemas_dir):
             except Exception:
                 # Create new template
                 from core_main_app.components.template.models import Template
-                from core_main_app.components.template_version_manager.models import TemplateVersionManager
+                from core_main_app.components.template_version_manager.models import (
+                    TemplateVersionManager,
+                )
                 import hashlib
 
                 # Create template
@@ -365,7 +387,9 @@ def restore_data(schemas_dir):
                 # 2. Call template_api.upsert(template)
                 # 3. Set template_vm.current
                 # 4. Save everything
-                template_vm = template_version_manager_api.insert(template_vm, template, request=request)
+                template_vm = template_version_manager_api.insert(
+                    template_vm, template, request=request
+                )
 
                 # Get template ID from the inserted template_vm
                 template_id = template_vm.current
@@ -386,7 +410,7 @@ def restore_data(schemas_dir):
                             xml_content = f.read()
 
                         # Read record metadata if exists
-                        metadata_file = xml_file.with_suffix('.xml.metadata.json')
+                        metadata_file = xml_file.with_suffix(".xml.metadata.json")
                         metadata = {}
                         if metadata_file.exists():
                             with metadata_file.open(encoding="utf-8") as f:
@@ -411,7 +435,9 @@ def restore_data(schemas_dir):
                                 original_user = User.objects.get(id=original_user_id)
                                 owner_id = str(original_user.id)
                             except User.DoesNotExist:
-                                log_warning(f"  Original user (ID: {original_user_id}) not found, using admin")
+                                log_warning(
+                                    f"  Original user (ID: {original_user_id}) not found, using admin"
+                                )
 
                         # Create Data object
                         record = Data()
@@ -427,7 +453,11 @@ def restore_data(schemas_dir):
                         record = data_api.upsert(record, request=request)
 
                         # Determine workspace and assign if needed
-                        workspace = global_workspace if metadata.get("is_global_workspace", True) else None
+                        workspace = (
+                            global_workspace
+                            if metadata.get("is_global_workspace", True)
+                            else None
+                        )
                         if workspace:
                             record.workspace = workspace
                             record = data_api.upsert(record, request=request)
@@ -440,11 +470,17 @@ def restore_data(schemas_dir):
                             owner_display = f"ID:{owner_id}"
 
                         # Format workspace info
-                        workspace_display = f"{workspace.title} (ID: {workspace.id})" if workspace else "None"
+                        workspace_display = (
+                            f"{workspace.title} (ID: {workspace.id})"
+                            if workspace
+                            else "None"
+                        )
 
                         restored_count += 1
                         # Fixed-width columns for easy comparison
-                        log_info(f"  Restored record: {title:<40} | Owner: {owner_display:<15} | Workspace: {workspace_display}")
+                        log_info(
+                            f"  Restored record: {title:<40} | Owner: {owner_display:<15} | Workspace: {workspace_display}"
+                        )
 
                     except Exception as e:
                         log_error(f"  Failed to restore record {xml_file.name}: {e}")
@@ -452,13 +488,18 @@ def restore_data(schemas_dir):
                 if xml_files:
                     skipped_count = len(xml_files) - restored_count
                     if skipped_count > 0:
-                        log_success(f"Restored {restored_count}/{len(xml_files)} records for template '{template_title}' ({skipped_count} skipped)")
+                        log_success(
+                            f"Restored {restored_count}/{len(xml_files)} records for template '{template_title}' ({skipped_count} skipped)"
+                        )
                     else:
-                        log_success(f"Restored {restored_count} records for template '{template_title}'")
+                        log_success(
+                            f"Restored {restored_count} records for template '{template_title}'"
+                        )
 
         except Exception as e:
             log_error(f"Failed to restore template from {template_dir.name}: {e}")
             import traceback
+
             traceback.print_exc()
 
     return True
@@ -475,10 +516,10 @@ def restore_queries(queries_dir):
 
     try:
         from core_explore_keyword_app.components.persistent_query_keyword import (
-            api as persistent_query_api
+            api as persistent_query_api,
         )
         from core_explore_keyword_app.components.persistent_query_keyword.models import (
-            PersistentQueryKeyword
+            PersistentQueryKeyword,
         )
     except ImportError:
         log_warning("core_explore_keyword_app not available, skipping queries")

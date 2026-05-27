@@ -22,13 +22,19 @@ class DemoAutoLoginMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if getattr(settings, 'IS_PUBLIC_DEMO', False) and not request.user.is_authenticated:
+        if (
+            getattr(settings, "IS_PUBLIC_DEMO", False)
+            and not request.user.is_authenticated
+        ):
             if request.path not in EXCLUDED_PATHS:
                 from django.contrib.auth import get_user_model
+
                 User = get_user_model()
 
                 username = request.GET.get(DEMO_USER_PARAM, DEMO_DEFAULT_USER)
-                demo_usernames = getattr(settings, 'DEMO_USERNAMES', [DEMO_DEFAULT_USER])
+                demo_usernames = getattr(
+                    settings, "DEMO_USERNAMES", [DEMO_DEFAULT_USER]
+                )
                 if username not in demo_usernames:
                     username = DEMO_DEFAULT_USER
 
@@ -37,7 +43,7 @@ class DemoAutoLoginMiddleware:
                     login(
                         request,
                         user,
-                        backend='django.contrib.auth.backends.ModelBackend',
+                        backend="django.contrib.auth.backends.ModelBackend",
                     )
 
         return self.get_response(request)

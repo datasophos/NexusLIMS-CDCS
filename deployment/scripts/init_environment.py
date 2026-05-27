@@ -39,7 +39,10 @@ from pathlib import Path
 
 # Set up Django environment
 # Use DJANGO_SETTINGS_MODULE from environment, or fall back to config.settings.dev_settings
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"))
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"),
+)
 sys.path.insert(0, "/srv/nexuslims")
 
 import django
@@ -48,6 +51,7 @@ django.setup()
 
 # Suppress verbose logging from core_main_app
 import logging
+
 logging.getLogger("core_main_app").setLevel(logging.ERROR)
 
 
@@ -78,6 +82,7 @@ def is_production():
     Production = DEBUG is False.
     """
     from django.conf import settings
+
     return not settings.DEBUG
 
 
@@ -88,13 +93,15 @@ def is_development():
     Development = DEBUG is True.
     """
     from django.conf import settings
+
     return settings.DEBUG
 
 
 def is_demo():
     """Check if running in public demo mode."""
     from django.conf import settings
-    return getattr(settings, 'IS_PUBLIC_DEMO', False)
+
+    return getattr(settings, "IS_PUBLIC_DEMO", False)
 
 
 def check_migrations():
@@ -146,9 +153,11 @@ def get_or_create_superuser():
 
     # Production: Use Django's createsuperuser command (interactive)
     if is_production():
-        log_info("No superuser found. Creating superuser (you will be prompted for credentials)...")
+        log_info(
+            "No superuser found. Creating superuser (you will be prompted for credentials)..."
+        )
         try:
-            call_command('createsuperuser')
+            call_command("createsuperuser")
             # Fetch the newly created superuser
             superuser = User.objects.filter(is_superuser=True).first()
             if superuser:
@@ -166,9 +175,7 @@ def get_or_create_superuser():
     log_info("Creating default superuser (username: admin, password: admin)...")
     try:
         superuser = User.objects.create_superuser(
-            username="admin",
-            email="admin@localhost",
-            password="admin"
+            username="admin", email="admin@localhost", password="admin"
         )
         log_success(f"Superuser created: {superuser.username}")
         return superuser
@@ -200,9 +207,7 @@ def get_or_create_regular_user():
     log_info("Creating default regular user (username: user, password: user)...")
     try:
         regular_user = User.objects.create_user(
-            username="user",
-            email="user@localhost",
-            password="user"
+            username="user", email="user@localhost", password="user"
         )
         log_success(f"Regular user created: {regular_user.username}")
         return regular_user
@@ -272,9 +277,13 @@ def get_or_create_demo_users():
     )
     if data_perms.exists():
         lead.user_permissions.set(data_perms)
-        log_success(f"Granted project_lead permissions: {', '.join(p.codename for p in data_perms)}")
+        log_success(
+            f"Granted project_lead permissions: {', '.join(p.codename for p in data_perms)}"
+        )
     else:
-        log_warning("core_main_app data permissions not found yet - project_lead will have default perms")
+        log_warning(
+            "core_main_app data permissions not found yet - project_lead will have default perms"
+        )
 
 
 def get_request_for_user(user):
@@ -303,18 +312,24 @@ def grant_anonymous_explore_permission():
 
     try:
         # Check if permission is already granted
-        anonymous_group = Group.objects.filter(name='anonymous').first()
+        anonymous_group = Group.objects.filter(name="anonymous").first()
         if not anonymous_group:
             log_info("Anonymous group not found - will be created by migration")
             return
 
-        permission = Permission.objects.filter(codename='access_explore_keyword').first()
+        permission = Permission.objects.filter(
+            codename="access_explore_keyword"
+        ).first()
         if not permission:
             log_info("Explore permission not found yet - will be handled by migration")
             return
 
-        if anonymous_group.permissions.filter(codename='access_explore_keyword').exists():
-            log_success("Anonymous group already has explore permission (from migration)")
+        if anonymous_group.permissions.filter(
+            codename="access_explore_keyword"
+        ).exists():
+            log_success(
+                "Anonymous group already has explore permission (from migration)"
+            )
         else:
             # Grant it if not already there (fallback for pre-migration deployments)
             anonymous_group.permissions.add(permission)
@@ -366,8 +381,10 @@ def upload_schema(request, schema_path=None):
 
     # Check if template already exists
     try:
-        existing_tvm = template_version_manager_api.get_active_global_version_manager_by_title(
-            template_title
+        existing_tvm = (
+            template_version_manager_api.get_active_global_version_manager_by_title(
+                template_title
+            )
         )
         log_success(f"Template '{template_title}' already exists")
         return existing_tvm
@@ -394,9 +411,7 @@ def upload_schema(request, schema_path=None):
 
         # Insert requires (template_version_manager, template, request)
         template_vm = template_version_manager_api.insert(
-            template_vm,
-            template=template,
-            request=request
+            template_vm, template=template, request=request
         )
 
         # Link template back to version manager and save
@@ -406,12 +421,14 @@ def upload_schema(request, schema_path=None):
         log_success(f"Template '{template_title}' created (ID: {template.id})")
         return template_vm
 
-    except IntegrityError as e:
+    except IntegrityError:
         # Template already exists (race condition or duplicate)
         log_info("Template already exists, fetching existing template...")
         try:
-            existing_tvm = template_version_manager_api.get_active_global_version_manager_by_title(
-                template_title, request=request
+            existing_tvm = (
+                template_version_manager_api.get_active_global_version_manager_by_title(
+                    template_title, request=request
+                )
             )
             log_success(f"Template '{template_title}' found")
             return existing_tvm
@@ -436,6 +453,7 @@ def upload_schema(request, schema_path=None):
             # Unexpected error - show details
             log_error(f"Failed to create template: {e}")
             import traceback
+
             traceback.print_exc()
             # Don't raise - let the script continue
             return None
@@ -456,7 +474,7 @@ def upload_example_records(request, template_vm):
     record_paths = [
         Path("/srv/test-data/example_record.xml"),
         Path("/srv/test-data/example_record_large.xml"),
-        Path("/srv/test-data/example_record_multisample.xml")
+        Path("/srv/test-data/example_record_multisample.xml"),
     ]
     uploaded = []
     for record_path in record_paths:
@@ -471,7 +489,9 @@ def upload_example_records(request, template_vm):
             # Check if this record already exists
             existing_record = Data.objects.filter(title=title).first()
             if existing_record:
-                log_success(f"Example record '{title}' already exists (ID: {existing_record.id})")
+                log_success(
+                    f"Example record '{title}' already exists (ID: {existing_record.id})"
+                )
                 uploaded.append(existing_record)
                 continue
 
@@ -481,13 +501,11 @@ def upload_example_records(request, template_vm):
 
             # Get the current template
             from core_main_app.components.template import api as template_api
+
             template = template_api.get_by_id(template_vm.current, request=request)
 
             # Create the data record
-            data_record = Data(
-                template=template,
-                title=title
-            )
+            data_record = Data(template=template, title=title)
 
             # Set the content and user
             # NOTE: Use 'content' not 'xml_content' so convert_to_dict() works
@@ -497,7 +515,9 @@ def upload_example_records(request, template_vm):
             # Save the data record (this will populate dict_content via convert_to_dict())
             data_record = data_api.upsert(data_record, request=request)
 
-            log_success(f"Example record uploaded (ID: {data_record.id}, title: {data_record.title})")
+            log_success(
+                f"Example record uploaded (ID: {data_record.id}, title: {data_record.title})"
+            )
 
             # Get or create the global public workspace
             try:
@@ -515,11 +535,12 @@ def upload_example_records(request, template_vm):
             data_record.workspace = public_workspace
             data_record = data_api.upsert(data_record, request=request)
             uploaded.append(data_record)
-            log_success(f"Example record assigned to global public workspace")
+            log_success("Example record assigned to global public workspace")
 
         except Exception as e:
             log_error(f"Failed to upload example record: {e}")
             import traceback
+
             traceback.print_exc()
             # Don't raise - let the script continue
             return None
@@ -540,9 +561,6 @@ def upload_xslt_stylesheets(request, template_vm):
     )
     from core_main_app.components.template_xsl_rendering import (
         api as template_xsl_rendering_api,
-    )
-    from core_main_app.components.template_xsl_rendering.models import (
-        TemplateXslRendering,
     )
 
     # Get the current template
@@ -580,11 +598,10 @@ def upload_xslt_stylesheets(request, template_vm):
         # Get URLs from environment variables
         dataset_base_url = os.getenv(
             "XSLT_DATASET_BASE_URL",
-            "https://files.nexuslims-dev.localhost/instrument-data"
+            "https://files.nexuslims-dev.localhost/instrument-data",
         )
         preview_base_url = os.getenv(
-            "XSLT_PREVIEW_BASE_URL",
-            "https://files.nexuslims-dev.localhost/data"
+            "XSLT_PREVIEW_BASE_URL", "https://files.nexuslims-dev.localhost/data"
         )
 
         log_info(f"Patching URLs in {stylesheet_name}...")
@@ -594,11 +611,11 @@ def upload_xslt_stylesheets(request, template_vm):
         # Perform replacements
         stylesheet_content = stylesheet_content.replace(
             '<xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-            f'<xsl:variable name="datasetBaseUrl">{dataset_base_url}</xsl:variable>'
+            f'<xsl:variable name="datasetBaseUrl">{dataset_base_url}</xsl:variable>',
         )
         stylesheet_content = stylesheet_content.replace(
             '<xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
-            f'<xsl:variable name="previewBaseUrl">{preview_base_url}</xsl:variable>'
+            f'<xsl:variable name="previewBaseUrl">{preview_base_url}</xsl:variable>',
         )
 
         # Verify replacements
@@ -634,13 +651,15 @@ def upload_xslt_stylesheets(request, template_vm):
                 log_success("XSLT rendering already configured")
             except Exception:
                 # Create new rendering configuration using the API
-                list_detail_xslt_ids = [xslt_map["list"].id] if "list" in xslt_map else []
+                list_detail_xslt_ids = (
+                    [xslt_map["list"].id] if "list" in xslt_map else []
+                )
 
                 rendering = template_xsl_rendering_api.upsert(
                     template=template,
                     list_xslt=xslt_map.get("list"),
                     default_detail_xslt=xslt_map.get("detail"),
-                    list_detail_xslt=list_detail_xslt_ids
+                    list_detail_xslt=list_detail_xslt_ids,
                 )
                 log_success(f"XSLT rendering configured (ID: {rendering.id})")
         except Exception as e:
@@ -655,7 +674,8 @@ def compile_translations():
 
     try:
         from django.core.management import call_command
-        call_command('compilemessages', verbosity=0)
+
+        call_command("compilemessages", verbosity=0)
         log_success("Translations compiled successfully")
     except Exception as e:
         log_error(f"Failed to compile translations: {e}")
@@ -683,18 +703,22 @@ def setup_api_tokens(superuser):
 
     # Determine which token setting to use based on environment
     if is_development():
-        token_value = getattr(settings, 'NX_DEV_API_TOKEN', None)
+        token_value = getattr(settings, "NX_DEV_API_TOKEN", None)
         token_name = "development"
     else:
-        token_value = getattr(settings, 'NX_ADMIN_API_TOKEN', None)
+        token_value = getattr(settings, "NX_ADMIN_API_TOKEN", None)
         token_name = "production admin"
 
     if not token_value:
         log_info(f"No {token_name} API token configured - skipping token setup")
         if is_development():
-            log_info("To configure: Set NX_DEV_API_TOKEN in config/settings/dev_settings.py")
+            log_info(
+                "To configure: Set NX_DEV_API_TOKEN in config/settings/dev_settings.py"
+            )
         else:
-            log_info("To configure: Set NX_ADMIN_API_TOKEN environment variable in .env")
+            log_info(
+                "To configure: Set NX_ADMIN_API_TOKEN environment variable in .env"
+            )
         return
 
     # Check if token already exists for this user
@@ -703,12 +727,16 @@ def setup_api_tokens(superuser):
 
         # If token key matches, we're done
         if existing_token.key == token_value:
-            log_success(f"{token_name.capitalize()} API token already exists for user '{superuser.username}'")
+            log_success(
+                f"{token_name.capitalize()} API token already exists for user '{superuser.username}'"
+            )
             return
 
         # Token exists but key is different - delete and recreate
         existing_token.delete()
-        log_info(f"Removed existing token with different key for user '{superuser.username}'")
+        log_info(
+            f"Removed existing token with different key for user '{superuser.username}'"
+        )
     except Token.DoesNotExist:
         # No existing token, will create new one
         pass
@@ -735,7 +763,7 @@ def setup_terms_of_use():
 
         # If any non-empty record exists, leave it alone so admins can customise freely
         pages = WebPage.objects.filter(type=t)
-        if pages.filter(content__regex=r'\S').exists():
+        if pages.filter(content__regex=r"\S").exists():
             log_success("Terms of Use page already exists")
             return
 
@@ -830,25 +858,32 @@ def load_exporters():
             log_info(f"Exporters already loaded ({len(existing_exporters)} found)")
 
             # Remove BLOB exporter if it exists (NexusLIMS doesn't use blobs)
-            blob_exporters = [exp for exp in existing_exporters if exp.name.upper() == 'BLOB']
+            blob_exporters = [
+                exp for exp in existing_exporters if exp.name.upper() == "BLOB"
+            ]
             if blob_exporters:
                 for blob_exp in blob_exporters:
                     blob_exp.delete()
                     log_info(f"Removed BLOB exporter (ID: {blob_exp.id})")
 
                 remaining = exporter_api.get_all()
-                log_success(f"Exporters configured: {', '.join(exp.name for exp in remaining)}")
+                log_success(
+                    f"Exporters configured: {', '.join(exp.name for exp in remaining)}"
+                )
             else:
-                log_success(f"Exporters configured: {', '.join(exp.name for exp in existing_exporters)}")
+                log_success(
+                    f"Exporters configured: {', '.join(exp.name for exp in existing_exporters)}"
+                )
             return
 
         # Load exporters using Django management command
         from django.core.management import call_command
-        call_command('loadexporters')
+
+        call_command("loadexporters")
 
         # Remove BLOB exporter (NexusLIMS doesn't use blobs)
         all_exporters = exporter_api.get_all()
-        blob_exporters = [exp for exp in all_exporters if exp.name.upper() == 'BLOB']
+        blob_exporters = [exp for exp in all_exporters if exp.name.upper() == "BLOB"]
         if blob_exporters:
             for blob_exp in blob_exporters:
                 blob_exp.delete()
@@ -856,7 +891,9 @@ def load_exporters():
 
         # Verify final state
         exporters = exporter_api.get_all()
-        log_success(f"Loaded {len(exporters)} exporters: {', '.join(exp.name for exp in exporters)}")
+        log_success(
+            f"Loaded {len(exporters)} exporters: {', '.join(exp.name for exp in exporters)}"
+        )
 
     except Exception as e:
         log_error(f"Failed to load exporters: {e}")
@@ -868,11 +905,13 @@ def main():
     import argparse
 
     # Parse command line arguments for schema path (production use)
-    parser = argparse.ArgumentParser(description="Initialize NexusLIMS-CDCS environment")
+    parser = argparse.ArgumentParser(
+        description="Initialize NexusLIMS-CDCS environment"
+    )
     parser.add_argument(
         "--schema",
         help="Path to schema file (e.g., /tmp/nexus-experiment.xsd)",
-        default=None
+        default=None,
     )
     args = parser.parse_args()
 
@@ -903,8 +942,11 @@ def main():
         # Must be after get_or_create_demo_users() so the demo admin is available.
         if superuser is None:
             from django.contrib.auth import get_user_model
+
             User = get_user_model()
-            superuser = User.objects.filter(is_superuser=True).first() or User.objects.first()
+            superuser = (
+                User.objects.filter(is_superuser=True).first() or User.objects.first()
+            )
 
         # Create request object for API calls (may be None if no users exist)
         request = get_request_for_user(superuser) if superuser else None
@@ -945,12 +987,18 @@ def main():
                 print(f"  Schema: {template_vm.title}")
             print()
             print("Next steps:")
-            print(f"  1. Access the site: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}")
+            print(
+                f"  1. Access the site: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}"
+            )
             if superuser:
-                print(f"  2. Login with your superuser credentials")
-            print(f"  3. Begin uploading data records via the NexusLIMS backend")
-            print(f"  4. Explore data: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/explore/keyword/")
-            print(f"  5. As an admin, you can manually add records at {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/curate/")
+                print("  2. Login with your superuser credentials")
+            print("  3. Begin uploading data records via the NexusLIMS backend")
+            print(
+                f"  4. Explore data: {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/explore/keyword/"
+            )
+            print(
+                f"  5. As an admin, you can manually add records at {os.getenv('SERVER_URI', 'https://nexuslims.example.com')}/curate/"
+            )
         else:
             if superuser:
                 print(f"  Superuser: {superuser.username}")
@@ -966,13 +1014,16 @@ def main():
                 print("  - Login with: user / user (regular user for testing)")
             print("  - View example record: https://nexuslims-dev.localhost/data?id=1")
             print("  - Explore data: https://nexuslims-dev.localhost/explore/keyword/")
-            print("  - Start uploading data using the Nexus Experiment Schema or at https://nexuslims-dev.localhost/curate")
+            print(
+                "  - Start uploading data using the Nexus Experiment Schema or at https://nexuslims-dev.localhost/curate"
+            )
 
         print("=" * 70)
 
     except Exception as e:
         log_error(f"Initialization failed: {e}")
         import traceback
+
         traceback.print_exc()
         log_warning("Continuing despite errors...")
 

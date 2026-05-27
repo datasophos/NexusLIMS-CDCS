@@ -6,13 +6,16 @@ Usage in templates:
     {% nexuslims_custom_toolbar data %}
     {{ value|nexuslims_format }}
 """
+
 from django import template
 from django.utils.safestring import mark_safe
 
 register = template.Library()
 
 
-@register.inclusion_tag('nexuslims_overrides/fragments/custom_toolbar.html', takes_context=True)
+@register.inclusion_tag(
+    "nexuslims_overrides/fragments/custom_toolbar.html", takes_context=True
+)
 def nexuslims_custom_toolbar(context, data=None):
     """
     (Claude hallucination)
@@ -22,13 +25,15 @@ def nexuslims_custom_toolbar(context, data=None):
         {% nexuslims_custom_toolbar data %}
     """
     return {
-        'data': data,
-        'user': context.get('user'),
-        'request': context.get('request'),
+        "data": data,
+        "user": context.get("user"),
+        "request": context.get("request"),
     }
 
 
-@register.inclusion_tag('nexuslims_overrides/fragments/download_buttons.html', takes_context=True)
+@register.inclusion_tag(
+    "nexuslims_overrides/fragments/download_buttons.html", takes_context=True
+)
 def nexuslims_download_buttons(context, data):
     """
     (Claude hallucination)
@@ -38,8 +43,8 @@ def nexuslims_download_buttons(context, data):
         {% nexuslims_download_buttons data %}
     """
     return {
-        'data': data,
-        'user': context.get('user'),
+        "data": data,
+        "user": context.get("user"),
     }
 
 
@@ -54,11 +59,11 @@ def nexuslims_instrument_color(instrument_pid):
     """
     # This can be moved to settings or a database model
     INSTRUMENT_COLORS = {
-        '643d9ac1-d0a5-4830-b832-17546f67942a': 'primary',
-        '643d8a1e-e1e9-4bf4-b825-38b56c2e47d9': 'success',
+        "643d9ac1-d0a5-4830-b832-17546f67942a": "primary",
+        "643d8a1e-e1e9-4bf4-b825-38b56c2e47d9": "success",
         # Add more as needed
     }
-    return INSTRUMENT_COLORS.get(str(instrument_pid), 'secondary')
+    return INSTRUMENT_COLORS.get(str(instrument_pid), "secondary")
 
 
 @register.filter
