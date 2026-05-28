@@ -1,0 +1,108 @@
+name: Playwright E2E Tests
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  playwright:
+    name: Run E2E tests
+    runs-on: ubuntu-latest
+    environment: e2e-tests
+    defaults:
+      run:
+        working-directory: deployment
+
+    env:
+      COMPOSE_FILE: docker-compose.base.yml:docker-compose.ci.yml
+      CADDYFILE: Caddyfile.ci
+      COMPOSE_PROJECT_NAME: nexuslims_ci
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+        working-directory: ${{ github.workspace }}
+
+      - name: Install Python dependencies
+        run: uv sync --dev
+        working-directory: ${{ github.workspace }}
+
+      - name: Install Playwright browsers
+        run: uv run playwright install --with-deps chromium
+        working-directory: ${{ github.workspace }}
+
+      - name: Extract test data archive
+        run: bash scripts/setup-test-data.sh
+
+      - name: Build Docker image
+        run: COMPOSE_BAKE=true docker compose build cdcs
+
+      - name: Start Caddy (phase 1 -- generate internal CA)
+        run: |
+          docker compose up -d caddy
+          # Wait until Caddy's CA cert exists
+          for _ in $(seq 1 30); do
+            docker exec nexuslims_ci_cdcs_caddy \
+              test -f /data/caddy/pki/authorities/local/root.crt && break
+            sleep 2
+          done
+          docker exec nexuslims_ci_cdcs_caddy \
+            cat /data/caddy/pki/authorities/local/root.crt > caddy/ci-ca.crt
+          echo "Caddy CA extracted to deployment/caddy/ci-ca.crt"
+
+      - name: Start remaining services (phase 2)
+        run: |
+          docker compose up -d
+          # Wait for the CDCS app to respond
+          for _ in $(seq 1 30); do
+            curl --silent --insecure \
+              --output /dev/null --write-out "%{http_code}" \
+              https://nexuslims-dev.localhost/ | grep -qE "^[23]" && break
+            echo "Waiting for CDCS... attempt $i"
+            sleep 10
+          done
+
+      - name: Run init_environment.py (loads schema, XSLT, test records)
+        run: |
+          docker exec nexuslims_ci_cdcs \
+            python /srv/scripts/init_environment.py
+
+      - name: Create E2E test superuser
+        run: |
+          docker exec \
+            -e DJANGO_SUPERUSER_PASSWORD=${{ secrets.E2E_PASSWORD }} \
+            nexuslims_ci_cdcs \
+            python manage.py createsuperuser --noinput \
+            --username e2eadmin --email e2e@test.local
+        continue-on-error: true  # User may already exist on re-runs
+
+      - name: Run Playwright tests
+        run: |
+          CADDY_CA_CERT=${{ github.workspace }}/deployment/caddy/ci-ca.crt \
+          E2E_USERNAME=e2eadmin \
+          E2E_PASSWORD=${{ secrets.E2E_PASSWORD }} \
+          uv run pytest tests/e2e/ \
+            --screenshot=only-on-failure \
+            --output=deployment/test-results/ \
+            -v
+        working-directory: ${{ github.workspace }}
+
+      - name: Upload test artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: deployment/test-results/
+          retention-days: 7
+
+      - name: Tear down stack
+        if: always()
+        run: docker compose down -v
