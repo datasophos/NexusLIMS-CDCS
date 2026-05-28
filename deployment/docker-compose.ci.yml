@@ -23,11 +23,6 @@ services:
       - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
       - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
       - ./test-data/example_record_multisample.xml:/srv/test-data/example_record_multisample.xml:ro
-      # Caddy CA cert is copied here by the CI workflow after Caddy starts
-      - ./caddy/ci-ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
-    environment:
-      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
-      - CURL_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
     env_file:
       - path: ./saml2/.env.sso-dev.example
         required: true

@@ -66,7 +66,7 @@ alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev
 _dev_e2e_run() {
     cd "$_DEV_DIR/.." || return 1
     uv run playwright install chromium
-    CADDY_CA_CERT="$_DEV_DIR/caddy/certs/ca.crt" uv run pytest tests/e2e/ -v "$@"
+    uv run pytest tests/e2e/ -v "$@"
 }
 alias dev-e2e='_dev_e2e_run'
 alias dev-e2e-headed='_dev_e2e_run --headed --slowmo=500'

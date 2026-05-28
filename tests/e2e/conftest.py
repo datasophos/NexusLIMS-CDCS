@@ -1,11 +1,9 @@
-import os
 import pytest
 import requests
 
-_CA_CERT = os.environ.get("CADDY_CA_CERT", "")
 _USERNAME = "admin"
 _PASSWORD = "admin"
-_BASE_URL = os.environ.get("PLAYWRIGHT_BASE_URL", "https://nexuslims-dev.localhost")
+_BASE_URL = "https://nexuslims-dev.localhost"
 
 
 @pytest.fixture(scope="session")
@@ -15,9 +13,7 @@ def base_url():
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
-    if _CA_CERT:
-        return {**browser_context_args, "extra_ca_certs": [_CA_CERT]}
-    return browser_context_args
+    return {**browser_context_args, "ignore_https_errors": True}
 
 
 @pytest.fixture(scope="session")
@@ -48,11 +44,10 @@ def authenticated_page(browser, browser_context_args, auth_state):
 def test_record_id(auth_state, base_url):
     """Return the ID of the first record in CDCS via the REST API."""
     cookies = {c["name"]: c["value"] for c in auth_state["cookies"]}
-    verify = _CA_CERT if _CA_CERT else True
     resp = requests.get(
         f"{base_url}/rest/data/",
         cookies=cookies,
-        verify=verify,
+        verify=False,
         headers={"Accept": "application/json"},
     )
     resp.raise_for_status()
