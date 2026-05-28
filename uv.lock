@@ -1024,13 +1024,13 @@ dependencies = [
     { name = "django-redis" },
     { name = "gunicorn" },
     { name = "psycopg2-binary" },
+    { name = "python-dotenv" },
     { name = "uwsgi" },
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "pytest-playwright" },
-    { name = "python-dotenv" },
 ]
 
 [package.metadata]
@@ -1061,14 +1061,12 @@ requires-dist = [
     { name = "django-redis" },
     { name = "gunicorn", extras = ["gthread"] },
     { name = "psycopg2-binary" },
+    { name = "python-dotenv" },
     { name = "uwsgi" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "pytest-playwright" },
-    { name = "python-dotenv" },
-]
+dev = [{ name = "pytest-playwright" }]
 
 [[package]]
 name = "oauthlib"
