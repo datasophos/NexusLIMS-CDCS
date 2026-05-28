@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import argparse
 import sys
-from urllib.parse import urljoin, urlparse
 
 import requests
 import urllib3
@@ -26,6 +25,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # ---------------------------------------------------------------------------
 # Link extraction via Playwright
 # ---------------------------------------------------------------------------
+
 
 def get_page_links(url: str, timeout_ms: int = 30000) -> dict[str, list[str]]:
     """Render the page with Playwright and extract resource URLs by category."""
@@ -85,6 +85,7 @@ def get_page_links(url: str, timeout_ms: int = 30000) -> dict[str, list[str]]:
 # Link checking
 # ---------------------------------------------------------------------------
 
+
 def check_url(url: str, session: requests.Session) -> tuple[int | None, str]:
     """Return (status_code, error_message). status_code is None on connection error."""
     try:
@@ -98,7 +99,9 @@ def check_url(url: str, session: requests.Session) -> tuple[int | None, str]:
         return None, str(e)
 
 
-def check_links(links: dict[str, list[str]]) -> dict[str, list[tuple[str, int | None, str]]]:
+def check_links(
+    links: dict[str, list[str]],
+) -> dict[str, list[tuple[str, int | None, str]]]:
     """Check all links and return failures grouped by category."""
     session = requests.Session()
     failures: dict[str, list[tuple[str, int | None, str]]] = {}
@@ -119,13 +122,16 @@ def check_links(links: dict[str, list[str]]) -> dict[str, list[tuple[str, int | 
 # Reporting
 # ---------------------------------------------------------------------------
 
-def report(page_url: str, links: dict[str, list[str]], failures: dict[str, list[tuple]]) -> bool:
+
+def report(
+    page_url: str, links: dict[str, list[str]], failures: dict[str, list[tuple]]
+) -> bool:
     """Print results. Returns True if all links OK."""
     total = sum(len(v) for v in links.values())
     total_fail = sum(len(v) for v in failures.values())
     ok = total - total_fail
 
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"URL: {page_url}")
     print(f"  previews:  {len(links['previews'])}")
     print(f"  json:      {len(links['json'])}")
@@ -149,6 +155,7 @@ def report(page_url: str, links: dict[str, list[str]], failures: dict[str, list[
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def build_record_urls(base: str, ids: list[int]) -> list[str]:
     base = base.rstrip("/")
@@ -182,11 +189,25 @@ def fetch_all_record_ids(base: str) -> list[int]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Check CDCS record resource links for 404s")
-    parser.add_argument("url", help="Full record URL (e.g. https://host/data?id=16) or base URL with --all/--ids")
-    parser.add_argument("--all", action="store_true", help="Check all records (url should be base URL)")
-    parser.add_argument("--ids", help="Comma-separated record IDs to check (url should be base URL)")
-    parser.add_argument("--timeout", type=int, default=30, help="Page load timeout in seconds (default 30)")
+    parser = argparse.ArgumentParser(
+        description="Check CDCS record resource links for 404s"
+    )
+    parser.add_argument(
+        "url",
+        help="Full record URL (e.g. https://host/data?id=16) or base URL with --all/--ids",
+    )
+    parser.add_argument(
+        "--all", action="store_true", help="Check all records (url should be base URL)"
+    )
+    parser.add_argument(
+        "--ids", help="Comma-separated record IDs to check (url should be base URL)"
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=30,
+        help="Page load timeout in seconds (default 30)",
+    )
     args = parser.parse_args()
 
     if args.all:

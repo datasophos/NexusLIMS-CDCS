@@ -34,8 +34,8 @@ Menu.add_item(
         "Browse and Search Records",
         reverse("core_explore_keyword_app_search"),
         icon="search",
-        iconClass="fas"
-    )
+        iconClass="fas",
+    ),
 )
 
 # Custom menu links - configurable via settings
@@ -47,11 +47,15 @@ Menu.add_item(
 # ]
 from django.conf import settings
 
-custom_links = getattr(settings, 'NX_CUSTOM_MENU_LINKS', [
-    {"title": "LINK 1", "url": "https://example.com", "icon": "fish"},
-    {"title": "LINK 2", "url": "https://example.com", "icon": "fish"},
-    {"title": "LINK 3", "url": "https://example.com", "icon": "users"},
-])
+custom_links = getattr(
+    settings,
+    "NX_CUSTOM_MENU_LINKS",
+    [
+        {"title": "LINK 1", "url": "https://example.com", "icon": "fish"},
+        {"title": "LINK 2", "url": "https://example.com", "icon": "fish"},
+        {"title": "LINK 3", "url": "https://example.com", "icon": "users"},
+    ],
+)
 
 for link in custom_links:
     Menu.add_item(
@@ -60,21 +64,17 @@ for link in custom_links:
             link.get("title", "Link"),
             link.get("url", "#"),
             icon=link.get("icon", "link"),
-            iconClass=link.get("iconClass", "fas")
-        )
+            iconClass=link.get("iconClass", "fas"),
+        ),
     )
 
 # Tutorial menu item - conditional on NX_ENABLE_TUTORIALS setting
-if getattr(settings, 'NX_ENABLE_TUTORIALS', True):
+if getattr(settings, "NX_ENABLE_TUTORIALS", True):
     Menu.add_item(
         "nodropdown",
         MenuItem(
-            "Tutorial",
-            "#",
-            icon="question-circle",
-            iconClass="fas",
-            id="menu-tutorial"
-        )
+            "Tutorial", "#", icon="question-circle", iconClass="fas", id="menu-tutorial"
+        ),
     )
 
 # ============================================================================
@@ -87,7 +87,7 @@ Menu.add_item(
         "My Workspaces",
         reverse("core_dashboard_workspaces"),
         icon="folder-open",
-        iconClass="fas"
+        iconClass="fas",
     ),
 )
 
@@ -97,7 +97,7 @@ Menu.add_item(
         "My {0}s".format(get_data_label().title()),
         reverse("core_dashboard_records"),
         icon="file-alt",
-        iconClass="fas"
+        iconClass="fas",
     ),
 )
 
@@ -107,27 +107,21 @@ Menu.add_item(
         "My {0}s".format(get_form_label().title()),
         reverse("core_dashboard_forms"),
         icon="file-alt",
-        iconClass="fas"
+        iconClass="fas",
     ),
 )
 
 Menu.add_item(
     "dashboard",
     MenuItem(
-        "My Files",
-        reverse("core_dashboard_files"),
-        icon="file-alt",
-        iconClass="fas"
-    )
+        "My Files", reverse("core_dashboard_files"), icon="file-alt", iconClass="fas"
+    ),
 )
 
 Menu.add_item(
     "dashboard",
     MenuItem(
-        "My Queries",
-        reverse("core_dashboard_queries"),
-        icon="search",
-        iconClass="fas"
+        "My Queries", reverse("core_dashboard_queries"), icon="search", iconClass="fas"
     ),
 )
 
@@ -137,26 +131,21 @@ Menu.add_item(
 
 # Get documentation link from settings
 from django.conf import settings
-DOCUMENTATION_LINK = getattr(settings, 'NX_DOCUMENTATION_LINK', 'https://example.com')
+
+DOCUMENTATION_LINK = getattr(settings, "NX_DOCUMENTATION_LINK", "https://example.com")
 
 Menu.add_item(
     "help",
     MenuItem(
-        "NexusLIMS Documentation",
-        DOCUMENTATION_LINK,
-        icon="book",
-        iconClass="fas"
-    )
+        "NexusLIMS Documentation", DOCUMENTATION_LINK, icon="book", iconClass="fas"
+    ),
 )
 
 Menu.add_item(
     "help",
     MenuItem(
-        "API Documentation",
-        reverse("swagger_view"),
-        icon="cogs",
-        iconClass="fas"
-    )
+        "API Documentation", reverse("swagger_view"), icon="cogs", iconClass="fas"
+    ),
 )
 
 # ============================================================================

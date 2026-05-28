@@ -1,20 +1,17 @@
-""" Django settings for core applications.
-"""
+"""Django settings for core applications."""
 
 import os
 
 SERVER_URI = os.environ["SERVER_URI"] if "SERVER_URI" in os.environ else None
 
-PROJECT_VERSION = os.getenv("PROJECT_VERSION", "3.20.0")
+PROJECT_VERSION = os.getenv("PROJECT_VERSION", "3.21.0")
 """ :py:class:`str`: Project version number.
 """
 
 # Website customization
 WEBSITE_SHORT_TITLE = "NexusLIMS"
 CUSTOM_DATA = "Experimental Records"
-CUSTOM_NAME = (
-    os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "NexusLIMS"
-)
+CUSTOM_NAME = os.environ["SERVER_NAME"] if "SERVER_NAME" in os.environ else "NexusLIMS"
 CUSTOM_TITLE = "Welcome to NexusLIMS!"
 MAX_DOCUMENT_EDITING_SIZE = 25 * 1024 * 1024  # (25 MB)
 
@@ -124,9 +121,7 @@ ID_PROVIDER_PREFIX_DEFAULT = os.getenv(
     "ID_PROVIDER_PREFIX_DEFAULT", ID_PROVIDER_PREFIXES[0]
 )
 
-ID_PROVIDER_PREFIX_BLOB = os.getenv(
-    "ID_PROVIDER_PREFIX_BLOB", ID_PROVIDER_PREFIXES[0]
-)
+ID_PROVIDER_PREFIX_BLOB = os.getenv("ID_PROVIDER_PREFIX_BLOB", ID_PROVIDER_PREFIXES[0])
 
 PID_PATH = os.getenv("PID_PATH", os.getenv("PID_XPATH", "Experiment.@pid"))
 """ string: location of the PID in the document, specified as dot notation
@@ -140,9 +135,7 @@ ENABLE_ALLAUTH = os.getenv("ENABLE_ALLAUTH", "False").lower() == "true"
 """ boolean: enable Django-allauth
 """
 
-ENABLE_SAML2_SSO_AUTH = (
-    os.getenv("ENABLE_SAML2_SSO_AUTH", "False").lower() == "true"
-)
+ENABLE_SAML2_SSO_AUTH = os.getenv("ENABLE_SAML2_SSO_AUTH", "False").lower() == "true"
 """ boolean: enable SAML2 SSO authentication.
 """
 
@@ -150,7 +143,7 @@ ENABLE_HANDLE_PID = os.getenv("ENABLE_HANDLE_PID", "False").lower() == "true"
 """ boolean: enable handle server PID support.
 """
 
-MONGODB_INDEXING = False # always disabled in NexusLIMS
+MONGODB_INDEXING = False  # always disabled in NexusLIMS
 # MONGODB_INDEXING = os.getenv("MONGODB_INDEXING", "True").lower() == "true"
 """ :py:class:`bool`: Use MongoDB for data indexing.
     If True:
@@ -158,12 +151,12 @@ MONGODB_INDEXING = False # always disabled in NexusLIMS
         - queries will be executed against MongoDB.
 """
 
-MONGODB_ASYNC_SAVE = False # always disabled in NexusLIMS
+MONGODB_ASYNC_SAVE = False  # always disabled in NexusLIMS
 """ :py:class:`bool`: Save data in MongoDB asynchronously.
     If True, data are saved in MongoDB asynchronously.
 """
 
-GRIDFS_STORAGE = False # always disabled in NexusLIMS
+GRIDFS_STORAGE = False  # always disabled in NexusLIMS
 # GRIDFS_STORAGE = os.getenv("GRIDFS_STORAGE", "True").lower() == "true"
 """ :py:class:`bool`: Use GridFS for file storage.
 """
@@ -215,6 +208,19 @@ CAN_SET_WORKSPACE_PUBLIC = True
 """ :py:class:`bool`: Allow setting a workspace to be publicly accessible.
 """
 
+BLOB_EXTENSIONS = os.getenv(
+    "BLOB_EXTENSIONS",
+    "csv,xls,xlsx,txt,doc,docx,ppt,pptx,pdf,xml,xsl,xslt,json,yaml,jpg,jpeg,png,tiff",
+).split(",")
+""" :py:class:`list`: Allowed file extensions for blob uploads.
+"""
+
+ALLAUTH_ENABLE_GROUP_SYNC_ON_LOGIN = (
+    os.getenv("ALLAUTH_ENABLE_GROUP_SYNC_ON_LOGIN", "False").lower() == "true"
+)
+""" :py:class:`bool`: Automatically create and assign groups from Identity Provider on login.
+"""
+
 BOOTSTRAP_VERSION = os.getenv("BOOTSTRAP_VERSION", "5.1.3")
 """ :py:class:`str`: Version of the boostrap library.
 """
@@ -231,8 +237,7 @@ ENABLE_JSON_SCHEMA_SUPPORT = (
 """
 
 BACKWARD_COMPATIBILITY_DATA_XML_CONTENT = (
-    os.getenv("BACKWARD_COMPATIBILITY_DATA_XML_CONTENT", "True").lower()
-    == "true"
+    os.getenv("BACKWARD_COMPATIBILITY_DATA_XML_CONTENT", "True").lower() == "true"
 )
 """ :py:class:`bool`: Set to `True` to continue using Data.xml_content (deprecated)
     instead of Data.content in the REST API.

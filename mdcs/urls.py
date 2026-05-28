@@ -26,9 +26,7 @@ admin.autodiscover()
 urlpatterns = [
     re_path(rf"^{ADMIN_URLS_PREFIX}admin/", admin.site.urls),
     re_path(rf"^{ADMIN_URLS_PREFIX}core-admin/", core_admin_site.urls),
-    re_path(
-        r"^o/", include("oauth2_provider.urls", namespace="oauth2_provider")
-    ),
+    re_path(r"^o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
     # NexusLIMS overrides MUST come before core_main_app to override its URLs
     re_path(r"^", include("nexuslims_overrides.urls")),
     *(

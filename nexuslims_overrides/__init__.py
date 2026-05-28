@@ -11,4 +11,4 @@ Design Pattern:
 - Custom template tags for reusable components
 """
 
-default_app_config = 'nexuslims_overrides.apps.NexusLIMSOverridesConfig'
+default_app_config = "nexuslims_overrides.apps.NexusLIMSOverridesConfig"

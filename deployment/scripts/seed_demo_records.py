@@ -14,13 +14,18 @@ import random
 import sys
 from pathlib import Path
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.demo_settings"))
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.demo_settings"),
+)
 sys.path.insert(0, "/srv/nexuslims")
 
 import django
+
 django.setup()
 
 import logging
+
 logging.getLogger("core_main_app").setLevel(logging.ERROR)
 
 
@@ -32,11 +37,14 @@ SCHEMA_TITLE = "Nexus Experiment Schema"
 def log_success(msg):
     print(f"✓ {msg}")
 
+
 def log_warning(msg):
     print(f"⚠ {msg}")
 
+
 def log_error(msg):
     print(f"✗ {msg}")
+
 
 def log_info(msg):
     print(f"→ {msg}")
@@ -69,7 +77,9 @@ def seed_records():
     User = get_user_model()
     uploader = User.objects.filter(username=UPLOADER_USERNAME).first()
     if not uploader:
-        log_error(f"Uploader user '{UPLOADER_USERNAME}' not found - run init_environment.py first")
+        log_error(
+            f"Uploader user '{UPLOADER_USERNAME}' not found - run init_environment.py first"
+        )
         return
 
     factory = RequestFactory()
@@ -78,7 +88,9 @@ def seed_records():
 
     # Get the NexusLIMS template via the version manager (same pattern as init_environment.py)
     try:
-        tvm = tvm_api.get_active_global_version_manager_by_title(SCHEMA_TITLE, request=request)
+        tvm = tvm_api.get_active_global_version_manager_by_title(
+            SCHEMA_TITLE, request=request
+        )
         template = template_api.get_by_id(tvm.current, request=request)
     except Exception as e:
         log_error(f"Could not find '{SCHEMA_TITLE}' template: {e}")
@@ -125,12 +137,15 @@ def seed_records():
             errors += 1
 
     print("=" * 60)
-    log_success(f"Seeding complete: {uploaded} uploaded, {skipped} skipped, {errors} errors")
+    log_success(
+        f"Seeding complete: {uploaded} uploaded, {skipped} skipped, {errors} errors"
+    )
 
 
 def main():
     from django.conf import settings
-    if not getattr(settings, 'IS_PUBLIC_DEMO', False):
+
+    if not getattr(settings, "IS_PUBLIC_DEMO", False):
         log_warning("IS_PUBLIC_DEMO is not True - are you using demo_settings?")
 
     print("=" * 60)

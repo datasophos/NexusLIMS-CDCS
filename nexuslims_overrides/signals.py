@@ -14,23 +14,27 @@ def grant_anonymous_explore_permission(sender, **kwargs):
     This runs after migrations complete, ensuring the permission exists.
     """
     # Only run for our app or for core_explore_keyword_app
-    if sender.name not in ['nexuslims_overrides', 'core_explore_keyword_app']:
+    if sender.name not in ["nexuslims_overrides", "core_explore_keyword_app"]:
         return
 
     from django.contrib.auth.models import Group, Permission
 
     try:
         # Get or create the anonymous group
-        anonymous_group, created = Group.objects.get_or_create(name='anonymous')
+        anonymous_group, created = Group.objects.get_or_create(name="anonymous")
 
         # Get the permission (may not exist yet if this is running for nexuslims_overrides)
         try:
-            permission = Permission.objects.get(codename='access_explore_keyword')
+            permission = Permission.objects.get(codename="access_explore_keyword")
 
             # Only add if not already there
-            if not anonymous_group.permissions.filter(codename='access_explore_keyword').exists():
+            if not anonymous_group.permissions.filter(
+                codename="access_explore_keyword"
+            ).exists():
                 anonymous_group.permissions.add(permission)
-                print(f"✓ Granted 'access_explore_keyword' permission to 'anonymous' group")
+                print(
+                    "✓ Granted 'access_explore_keyword' permission to 'anonymous' group"
+                )
 
         except Permission.DoesNotExist:
             # Permission doesn't exist yet - will be handled when core_explore_keyword_app migrates

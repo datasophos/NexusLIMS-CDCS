@@ -21,18 +21,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = (
-    os.environ["DJANGO_SECRET_KEY"]
-    if "DJANGO_SECRET_KEY" in os.environ
-    else None
+    os.environ["DJANGO_SECRET_KEY"] if "DJANGO_SECRET_KEY" in os.environ else None
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = (
-    os.environ["ALLOWED_HOSTS"].split(",")
-    if "ALLOWED_HOSTS" in os.environ
-    else []
+    os.environ["ALLOWED_HOSTS"].split(",") if "ALLOWED_HOSTS" in os.environ else []
 )
 
 # Databases
@@ -41,27 +37,17 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "HOST": (
-            os.environ["POSTGRES_HOST"]
-            if "POSTGRES_HOST" in os.environ
-            else None
+            os.environ["POSTGRES_HOST"] if "POSTGRES_HOST" in os.environ else None
         ),
         "PORT": (
-            int(os.environ["POSTGRES_PORT"])
-            if "POSTGRES_PORT" in os.environ
-            else 5432
+            int(os.environ["POSTGRES_PORT"]) if "POSTGRES_PORT" in os.environ else 5432
         ),
-        "NAME": (
-            os.environ["POSTGRES_DB"] if "POSTGRES_DB" in os.environ else None
-        ),
+        "NAME": (os.environ["POSTGRES_DB"] if "POSTGRES_DB" in os.environ else None),
         "USER": (
-            os.environ["POSTGRES_USER"]
-            if "POSTGRES_USER" in os.environ
-            else None
+            os.environ["POSTGRES_USER"] if "POSTGRES_USER" in os.environ else None
         ),
         "PASSWORD": (
-            os.environ["POSTGRES_PASS"]
-            if "POSTGRES_PASS" in os.environ
-            else None
+            os.environ["POSTGRES_PASS"] if "POSTGRES_PASS" in os.environ else None
         ),
     }
 }
@@ -102,11 +88,9 @@ INSTALLED_APPS = (
     "captcha",
     "django_celery_beat",
     "fontawesomefree",
-
     # NexusLIMS customizations (must come before core apps)
-    'nexuslims_overrides',
-    'nexuslims_annotate',
-
+    "nexuslims_overrides",
+    "nexuslims_annotate",
     # Core apps
     "core_main_app",
     "core_exporters_app",
@@ -168,9 +152,9 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "core_main_app.utils.custom_context_processors.domain_context_processor",  # Needed by any curator app
                 "django.template.context_processors.i18n",
-                'nexuslims_overrides.context_processors.nexuslims_settings',
-                'nexuslims_overrides.context_processors.nexuslims_features',
-                'nexuslims_overrides.context_processors.nexuslims_colors',
+                "nexuslims_overrides.context_processors.nexuslims_settings",
+                "nexuslims_overrides.context_processors.nexuslims_features",
+                "nexuslims_overrides.context_processors.nexuslims_colors",
             ],
         },
     },
@@ -291,7 +275,8 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "TITLE": WEBSITE_SHORT_TITLE,  # noqa: F405 (core setting)
     "DESCRIPTION": os.getenv(
-        "PROJECT_DESCRIPTION", "API endpoints for programmatically accessing data from NexusLIMS"
+        "PROJECT_DESCRIPTION",
+        "API endpoints for programmatically accessing data from NexusLIMS",
     ),
     "VERSION": PROJECT_VERSION,  # noqa: F405 (core setting)
     "SERVE_INCLUDE_SCHEMA": False,
@@ -494,9 +479,7 @@ if ENABLE_SAML2_SSO_AUTH:  # noqa: F405 (core setting)
     if "djangosaml2" not in INSTALLED_APPS:
         INSTALLED_APPS = INSTALLED_APPS + ("djangosaml2",)
     if "djangosaml2.middleware.SamlSessionMiddleware" not in MIDDLEWARE:
-        MIDDLEWARE = MIDDLEWARE + (
-            "djangosaml2.middleware.SamlSessionMiddleware",
-        )
+        MIDDLEWARE = MIDDLEWARE + ("djangosaml2.middleware.SamlSessionMiddleware",)
     AUTHENTICATION_BACKENDS = (
         "django.contrib.auth.backends.ModelBackend",
         "djangosaml2.backends.Saml2Backend",
@@ -525,15 +508,13 @@ if ENABLE_SAML2_SSO_AUTH:  # noqa: F405 (core setting)
         server_uri=SERVER_URI,  # noqa: F405 (core setting)
         base_dir=BASE_DIR,  # noqa: F405 (core setting)
     )
-    SAML_ACS_FAILURE_RESPONSE_FUNCTION = (
-        "core_main_app.views.user.views.saml2_failure"
-    )
+    SAML_ACS_FAILURE_RESPONSE_FUNCTION = "core_main_app.views.user.views.saml2_failure"
 
 # configure handle server PIDs according to environment settings
 if ENABLE_HANDLE_PID:  # noqa: F405 (core setting)
     HDL_USER = (
         f"300%3A{ID_PROVIDER_PREFIX_DEFAULT}/"  # noqa: F405 (core setting)
-        f'{os.getenv("HANDLE_NET_USER", "ADMIN")}'
+        f"{os.getenv('HANDLE_NET_USER', 'ADMIN')}"
     )
 
     ID_PROVIDER_SYSTEM_NAME = "handle.net"
@@ -541,9 +522,7 @@ if ENABLE_HANDLE_PID:  # noqa: F405 (core setting)
         "class": "core_linked_records_app.utils.providers.handle_net.HandleNetSystem",
         "args": [
             os.getenv("HANDLE_NET_LOOKUP_URL", "https://hdl.handle.net"),
-            os.getenv(
-                "HANDLE_NET_REGISTRATION_URL", "https://handle-net.domain"
-            ),
+            os.getenv("HANDLE_NET_REGISTRATION_URL", "https://handle-net.domain"),
             HDL_USER,
             os.getenv("HANDLE_NET_SECRET_KEY", "admin"),
         ],

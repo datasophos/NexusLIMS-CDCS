@@ -22,24 +22,29 @@ from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from urllib.parse import urljoin
-import hashlib
 
 # Django setup for access to models
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"))
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.dev_settings"),
+)
 sys.path.insert(0, "/srv/nexuslims")
 import django
+
 django.setup()
 
 from django.contrib.auth import get_user_model
 from django.core import serializers
 from django.test import RequestFactory
 from core_main_app.components.template import api as template_api
-from core_main_app.components.template_version_manager import api as template_version_manager_api
+from core_main_app.components.template_version_manager import (
+    api as template_version_manager_api,
+)
 from core_main_app.components.xsl_transformation import api as xsl_transformation_api
-from core_main_app.components.template_xsl_rendering import api as template_xsl_rendering_api
-from core_main_app.components.data import api as data_api
+from core_main_app.components.template_xsl_rendering import (
+    api as template_xsl_rendering_api,
+)
 from core_main_app.components.data.models import Data
-from core_main_app.components.workspace.models import Workspace
 
 
 class CDCSBackup:
@@ -71,7 +76,9 @@ class CDCSBackup:
         self.backup_dir.mkdir(parents=True, exist_ok=True)
 
         # API configuration
-        self.base_url = base_url or os.getenv("SERVER_URI", "https://nexuslims-dev.localhost")
+        self.base_url = base_url or os.getenv(
+            "SERVER_URI", "https://nexuslims-dev.localhost"
+        )
         self.username = username or "admin"
         self.password = password or "admin"
         self.session = requests.Session()
@@ -85,7 +92,7 @@ class CDCSBackup:
             "blobs": 0,
             "users": 0,
             "xslt": 0,
-            "queries": 0
+            "queries": 0,
         }
 
         # Get superuser for Django ORM operations
@@ -102,7 +109,7 @@ class CDCSBackup:
         self.request = factory.get("/")
         self.request.user = self.superuser
 
-        print(f"Backup initialized:")
+        print("Backup initialized:")
         print(f"  Directory: {self.backup_dir}")
         print(f"  Base URL: {self.base_url}")
         print(f"  User: {self.superuser.username}")
@@ -119,9 +126,13 @@ class CDCSBackup:
 
         # Check for production backup mount
         backups_host_path = os.getenv("NX_CDCS_BACKUPS_HOST_PATH")
-        if backups_host_path and container_path_str.startswith("/srv/nexuslims/backups"):
+        if backups_host_path and container_path_str.startswith(
+            "/srv/nexuslims/backups"
+        ):
             # Production: specific backup directory mount
-            relative = container_path_str.replace("/srv/nexuslims/backups", "").lstrip("/")
+            relative = container_path_str.replace("/srv/nexuslims/backups", "").lstrip(
+                "/"
+            )
             host_path = Path(backups_host_path) / relative
             return host_path
 
@@ -152,7 +163,11 @@ class CDCSBackup:
 
         # Get all global template version managers using Django ORM
         try:
-            template_managers = template_version_manager_api.get_global_version_managers(request=self.request)
+            template_managers = (
+                template_version_manager_api.get_global_version_managers(
+                    request=self.request
+                )
+            )
         except Exception as e:
             print(f"  ⚠️  Could not retrieve templates: {e}")
             return
@@ -167,7 +182,7 @@ class CDCSBackup:
                 continue
 
             # Create directory for this template
-            safe_title = re.sub(r'[^\w\s-]', '', title).strip().replace(' ', '_')
+            safe_title = re.sub(r"[^\w\s-]", "", title).strip().replace(" ", "_")
             template_dir = schemas_dir / f"{safe_title}_{template_id}"
             template_dir.mkdir(exist_ok=True)
 
@@ -188,8 +203,7 @@ class CDCSBackup:
                     "version_manager_id": str(tm.id),
                 }
                 (template_dir / "metadata.json").write_text(
-                    json.dumps(metadata, indent=2),
-                    encoding="utf-8"
+                    json.dumps(metadata, indent=2), encoding="utf-8"
                 )
 
                 self.stats["templates"] += 1
@@ -212,18 +226,24 @@ class CDCSBackup:
 
             # Handle list_detail_xslt - could be a list, array, or ManyRelatedManager
             list_detail_xslt_ids = []
-            if hasattr(rendering, 'list_detail_xslt') and rendering.list_detail_xslt:
+            if hasattr(rendering, "list_detail_xslt") and rendering.list_detail_xslt:
                 # Check if it's a manager (has .all() method) or a list/array
-                if hasattr(rendering.list_detail_xslt, 'all'):
+                if hasattr(rendering.list_detail_xslt, "all"):
                     # It's a ManyRelatedManager
-                    list_detail_xslt_ids = [str(xslt.id) for xslt in rendering.list_detail_xslt.all()]
+                    list_detail_xslt_ids = [
+                        str(xslt.id) for xslt in rendering.list_detail_xslt.all()
+                    ]
                 elif isinstance(rendering.list_detail_xslt, (list, tuple)):
                     # It's already a list/tuple of IDs
-                    list_detail_xslt_ids = [str(xid) for xid in rendering.list_detail_xslt]
+                    list_detail_xslt_ids = [
+                        str(xid) for xid in rendering.list_detail_xslt
+                    ]
                 else:
                     # It might be a single value or array field
                     try:
-                        list_detail_xslt_ids = [str(xid) for xid in rendering.list_detail_xslt]
+                        list_detail_xslt_ids = [
+                            str(xid) for xid in rendering.list_detail_xslt
+                        ]
                     except TypeError:
                         list_detail_xslt_ids = []
 
@@ -231,17 +251,27 @@ class CDCSBackup:
             association = {
                 "template_id": str(template_id),
                 "rendering_id": str(rendering.id),
-                "list_xslt_id": str(rendering.list_xslt.id) if rendering.list_xslt else None,
-                "list_xslt_name": rendering.list_xslt.name if rendering.list_xslt else None,
-                "default_detail_xslt_id": str(rendering.default_detail_xslt.id) if rendering.default_detail_xslt else None,
-                "default_detail_xslt_name": rendering.default_detail_xslt.name if rendering.default_detail_xslt else None,
+                "list_xslt_id": str(rendering.list_xslt.id)
+                if rendering.list_xslt
+                else None,
+                "list_xslt_name": rendering.list_xslt.name
+                if rendering.list_xslt
+                else None,
+                "default_detail_xslt_id": str(rendering.default_detail_xslt.id)
+                if rendering.default_detail_xslt
+                else None,
+                "default_detail_xslt_name": rendering.default_detail_xslt.name
+                if rendering.default_detail_xslt
+                else None,
                 "list_detail_xslt_ids": list_detail_xslt_ids,
             }
 
             # Save association metadata
             association_path = template_dir / "xslt_association.json"
-            association_path.write_text(json.dumps(association, indent=2), encoding="utf-8")
-            print(f"    → Saved XSLT associations")
+            association_path.write_text(
+                json.dumps(association, indent=2), encoding="utf-8"
+            )
+            print("    → Saved XSLT associations")
 
         except Exception as e:
             # No XSLT rendering for this template (not an error, but log it)
@@ -265,7 +295,9 @@ class CDCSBackup:
                     self.backup_single_record_from_orm(record, files_dir, blobs_dir)
                     total_records += 1
                 except Exception as e:
-                    print(f"    ✗ Failed to backup record {getattr(record, 'title', 'unknown')}: {e}")
+                    print(
+                        f"    ✗ Failed to backup record {getattr(record, 'title', 'unknown')}: {e}"
+                    )
 
             if total_records > 0:
                 print(f"    → Saved {total_records} records")
@@ -281,7 +313,7 @@ class CDCSBackup:
         xml_content = record.get("xml_content", "")
 
         # Create safe filename
-        safe_title = re.sub(r'[^\w\s-]', '', title).strip().replace(' ', '_')[:100]
+        safe_title = re.sub(r"[^\w\s-]", "", title).strip().replace(" ", "_")[:100]
 
         # Handle duplicate titles
         counter = 1
@@ -302,7 +334,7 @@ class CDCSBackup:
         xml_content = getattr(record, "xml_content", "")
 
         # Create safe filename
-        safe_title = re.sub(r'[^\w\s-]', '', title).strip().replace(' ', '_')[:100]
+        safe_title = re.sub(r"[^\w\s-]", "", title).strip().replace(" ", "_")[:100]
 
         # Handle duplicate titles
         counter = 1
@@ -318,20 +350,20 @@ class CDCSBackup:
         metadata = {
             "id": str(record.id),
             "title": title,
-            "user_id": str(record.user_id) if hasattr(record, 'user_id') else None,
+            "user_id": str(record.user_id) if hasattr(record, "user_id") else None,
             "workspace_id": None,
             "workspace_title": None,
             "is_global_workspace": False,
         }
 
         # Capture workspace information
-        if hasattr(record, 'workspace') and record.workspace:
+        if hasattr(record, "workspace") and record.workspace:
             metadata["workspace_id"] = str(record.workspace.id)
-            metadata["workspace_title"] = getattr(record.workspace, 'title', None)
+            metadata["workspace_title"] = getattr(record.workspace, "title", None)
             metadata["is_global_workspace"] = record.workspace.is_global
 
         # Save metadata alongside XML
-        metadata_path = xml_path.with_suffix('.xml.metadata.json')
+        metadata_path = xml_path.with_suffix(".xml.metadata.json")
         metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
         # Extract and backup blobs
@@ -341,7 +373,7 @@ class CDCSBackup:
         """Extract blob references from XML and backup the files."""
         # Find blob references in XML
         # Pattern: <preview>http://127.0.0.1/pid/rest/local/cdcs/<blob-id></preview>
-        blob_pattern = r'http://127\.0\.0\.1/pid/rest/local/cdcs/([^<]+)'
+        blob_pattern = r"http://127\.0\.0\.1/pid/rest/local/cdcs/([^<]+)"
         blob_ids = re.findall(blob_pattern, xml_content)
 
         for blob_id in blob_ids:
@@ -359,7 +391,7 @@ class CDCSBackup:
 
                 self.stats["blobs"] += 1
 
-            except Exception as e:
+            except Exception:
                 # Blob might not exist or might not be accessible
                 pass
 
@@ -373,10 +405,7 @@ class CDCSBackup:
         # Serialize users to JSON
         # NOTE: We must preserve primary keys so user_id references in records remain valid
         users_json = serializers.serialize(
-            "json",
-            users,
-            indent=2,
-            use_natural_foreign_keys=True
+            "json", users, indent=2, use_natural_foreign_keys=True
         )
 
         users_path = self.backup_dir / "users.json"
@@ -408,10 +437,12 @@ class CDCSBackup:
                 metadata = {
                     "id": str(xslt.id),
                     "name": xslt.name,
-                    "filename": xslt.filename
+                    "filename": xslt.filename,
                 }
                 metadata_path = xslt_dir / f"{filename}.metadata.json"
-                metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+                metadata_path.write_text(
+                    json.dumps(metadata, indent=2), encoding="utf-8"
+                )
 
                 self.stats["xslt"] += 1
                 print(f"  ✓ {filename}")
@@ -429,7 +460,7 @@ class CDCSBackup:
         try:
             # Try to use Django ORM to get persistent queries
             from core_explore_keyword_app.components.persistent_query_keyword import (
-                api as persistent_query_api
+                api as persistent_query_api,
             )
 
             queries = persistent_query_api.get_all(self.superuser)
@@ -437,24 +468,30 @@ class CDCSBackup:
             for query in queries:
                 # Handle None query names
                 query_name = getattr(query, "name", None) or f"query_{query.id}"
-                safe_name = re.sub(r'[^\w\s-]', '', query_name).strip().replace(' ', '_')
+                safe_name = (
+                    re.sub(r"[^\w\s-]", "", query_name).strip().replace(" ", "_")
+                )
 
                 # Serialize query to dict
                 query_data = {
                     "id": str(query.id),
                     "name": query.name,
                     "content": getattr(query, "content", ""),
-                    "user_id": str(query.user_id) if hasattr(query, "user_id") else None,
+                    "user_id": str(query.user_id)
+                    if hasattr(query, "user_id")
+                    else None,
                 }
 
                 query_path = queries_dir / f"{safe_name}.json"
-                query_path.write_text(json.dumps(query_data, indent=2), encoding="utf-8")
+                query_path.write_text(
+                    json.dumps(query_data, indent=2), encoding="utf-8"
+                )
 
                 self.stats["queries"] += 1
                 print(f"  ✓ {query_name}")
 
         except ImportError:
-            print(f"  ⚠️  core_explore_keyword_app not available, skipping queries")
+            print("  ⚠️  core_explore_keyword_app not available, skipping queries")
         except Exception as e:
             print(f"  ⚠️  Could not backup queries: {e}")
 
@@ -464,14 +501,17 @@ class CDCSBackup:
 
         # Create restore script
         restore_script = self.backup_dir / "restore.sh"
-        restore_script.write_text(f"""#!/bin/bash
+        restore_script.write_text(
+            f"""#!/bin/bash
 # Auto-generated restore script
 # Created: {datetime.now().isoformat()}
 
 BACKUP_DIR="{self.backup_dir}"
 
 python /srv/scripts/restore_cdcs.py --all "$BACKUP_DIR"
-""", encoding="utf-8")
+""",
+            encoding="utf-8",
+        )
 
         restore_script.chmod(0o755)
         print(f"  ✓ Created {restore_script}")
@@ -551,6 +591,7 @@ python /srv/scripts/restore_cdcs.py --all "$BACKUP_DIR"
         except Exception as e:
             print(f"✗ Backup failed: {e}")
             import traceback
+
             traceback.print_exc()
             return 1
 
@@ -570,7 +611,7 @@ if __name__ == "__main__":
         backup_dir=args.dir,
         base_url=args.url,
         username=args.username,
-        password=args.password
+        password=args.password,
     )
 
     sys.exit(backup.run())
