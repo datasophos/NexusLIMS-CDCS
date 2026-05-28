@@ -296,6 +296,48 @@ python runtests.py
 - `INSTALLED_APPS` includes `nexuslims_annotate` and `tests`
 - `ROOT_URLCONF` points to `tests.urls`
 
+## Running E2E Tests (Playwright)
+
+E2E tests run against the full Docker stack and require the dev environment to be running.
+
+### Prerequisites (one-time setup)
+
+```bash
+# Install Playwright browsers
+uv run playwright install chromium
+
+# Enable SSO in the dev stack (required for test_sso.py)
+cd deployment && source dev-commands.sh
+dev-sso-enable && dev-up
+
+# Create the E2E test superuser
+dev-manage createsuperuser --noinput \
+  --username e2eadmin --email e2e@test.local
+dev-manage changepassword e2eadmin   # set a password interactively
+```
+
+### Running Tests
+
+```bash
+CADDY_CA_CERT=deployment/caddy/certs/ca.crt \
+E2E_USERNAME=e2eadmin \
+E2E_PASSWORD=<your-password> \
+uv run pytest tests/e2e/ -v
+```
+
+Run a single test file:
+
+```bash
+CADDY_CA_CERT=deployment/caddy/certs/ca.crt \
+E2E_USERNAME=e2eadmin \
+E2E_PASSWORD=<your-password> \
+uv run pytest tests/e2e/test_annotator.py -v
+```
+
+### CI
+
+E2E tests run in a manually-triggered GitHub Actions workflow (`.github/workflows/playwright.yml`). On PRs to `main`, the job appears in the PR checks as "Waiting" and requires approval from a reviewer before it runs. The `E2E_PASSWORD` secret is stored in the `e2e-tests` GitHub Environment.
+
 ## Planning Documents
 
 All planning, specification, and analysis documents should be stored in this repository, not in the user's home directory:
