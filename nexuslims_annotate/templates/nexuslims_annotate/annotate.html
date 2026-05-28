@@ -36,6 +36,16 @@ var NX_ELEMENT_SYMBOLS = [
 
 // Populate the datalist, wire up inputs, and initialise state once the DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
+  // ── Reset form fields to server-rendered originals ───────────────────────
+  // Browsers restore textarea/input .value across soft-refreshes even after the
+  // user confirms "Leave". data-original comes from the HTML attribute (never
+  // touched by the browser), so resetting .value here prevents false dirty state.
+  document.querySelectorAll('.annotate-textarea').forEach(function(ta) {
+    ta.value = ta.dataset.original || '';
+  });
+  var _titleInput = document.getElementById('annotate-title-input');
+  if (_titleInput) _titleInput.value = _titleInput.dataset.original || '';
+
   // ── Populate elements datalist ───────────────────────────────────────────
   var dl = document.getElementById('nx-elements-datalist');
   if (dl) {
@@ -94,6 +104,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initial render of samples list
   nxRenderSamples();
+
+  // ── Title inline edit ──────────────────────────────────────────────────────
+  var _titleBar      = document.getElementById('nx-title-bar');
+  var _titleDisplay  = document.getElementById('nx-title-display');
+  var _titleEditBtn  = document.getElementById('nx-title-edit-btn');
+  var _titleHidden   = document.getElementById('annotate-title-input');
+
+  function nxUpdateTitleDirty() {
+    if (!_titleBar || !_titleHidden) return;
+    var dirty = _titleHidden.value !== _titleHidden.dataset.original;
+    _titleBar.classList.toggle('nx-title-dirty', dirty);
+    if (typeof window.nxUpdateToolbar === 'function') window.nxUpdateToolbar();
+  }
+
+  if (_titleEditBtn) {
+    _titleEditBtn.addEventListener('click', function() {
+      var inlineInput = document.createElement('input');
+      inlineInput.type = 'text';
+      inlineInput.value = _titleHidden.value;
+      inlineInput.className = 'fw-semibold ms-1 mb-0';
+      inlineInput.style.cssText = 'font-size:0.9rem;border:1px solid #adb5bd;border-radius:0.2rem;background:#fff;padding:0 5px;flex-grow:1;min-width:0;outline:none;box-sizing:border-box;height:1.5em;';
+
+      _titleDisplay.style.display = 'none';
+      _titleEditBtn.style.visibility = 'hidden';
+      _titleBar.insertBefore(inlineInput, _titleEditBtn);
+      inlineInput.focus();
+      inlineInput.select();
+
+      var done = false;
+      function finish(save) {
+        if (done) return;
+        done = true;
+        if (save) {
+          var val = inlineInput.value.trim();
+          if (val) _titleHidden.value = val;
+          _titleDisplay.textContent = _titleHidden.value;
+        }
+        inlineInput.remove();
+        _titleDisplay.style.display = '';
+        _titleEditBtn.style.visibility = '';
+        if (save) nxUpdateTitleDirty();
+      }
+
+      inlineInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter')  { e.preventDefault(); finish(true); }
+        if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+      });
+      inlineInput.addEventListener('blur', function() { finish(true); });
+    });
+  }
 });
 
 function nxGenerateSampleId(name) {
@@ -299,6 +359,7 @@ function nxSaveSampleFromModal() {
   nxRenderSamples();
   nxUpdateActivitySampleDropdowns();
   bootstrap.Modal.getInstance(document.getElementById('nx-sample-modal')).hide();
+  if (typeof window.nxUpdateToolbar === 'function') window.nxUpdateToolbar();
 }
 
 function nxDeleteSample(sampleId) {
@@ -329,6 +390,7 @@ function nxDeleteSample(sampleId) {
   window.__nxPendingSamples = window.__nxPendingSamples.filter(function(s) { return s.id !== sampleId; });
   nxRenderSamples();
   nxUpdateActivitySampleDropdowns();
+  if (typeof window.nxUpdateToolbar === 'function') window.nxUpdateToolbar();
 }
 
 function nxUpdateActivitySampleDropdowns() {
@@ -527,6 +589,7 @@ function nxAddActivity(afterSeqno) {
   nxRenumberActivityLabels();
   if (typeof window.nxUpdateActivityCounts === 'function') window.nxUpdateActivityCounts();
   if (typeof window.nxBuildDropdown === 'function') window.nxBuildDropdown();
+  if (typeof window.nxUpdateToolbar === 'function') window.nxUpdateToolbar();
 }
 
 function nxDeleteActivity(seqno) {
@@ -557,6 +620,7 @@ function nxDeleteActivity(seqno) {
 
   nxRenumberActivityLabels();
   if (typeof window.nxBuildDropdown === 'function') window.nxBuildDropdown();
+  if (typeof window.nxUpdateToolbar === 'function') window.nxUpdateToolbar();
 }
 
 </script>
@@ -601,6 +665,8 @@ function nxDeleteActivity(seqno) {
 
   <form id="annotate-page-form" method="post" action="{% url 'nexuslims_annotate_save' record_id %}">
     {% csrf_token %}
+    <input type="hidden" id="annotate-title-input" name="title"
+           value="{{ record_title }}" data-original="{{ record_title }}">
     <input type="hidden" id="annotate-moves-input" name="moves" value="[]">
     <input type="hidden" id="annotate-samples-input" name="samples" value="[]">
     <input type="hidden" id="annotate-deleted-seqnos-input" name="deleted_seqnos" value="[]">
@@ -608,11 +674,17 @@ function nxDeleteActivity(seqno) {
     <input type="hidden" id="annotate-activity-sample-ids-input" name="activity_sample_ids" value="{}">
 
     {# Record title panel #}
-    <div class="border rounded px-2 py-2 mb-3 d-flex align-items-center" style="background:#eff6ff;">
+    <div id="nx-title-bar" class="border rounded px-2 py-2 mb-3 d-flex align-items-center" style="background:#eff6ff;transition:background 0.2s;">
       <span class="text-uppercase text-muted fw-semibold flex-shrink-0"
             style="font-size:0.72rem;letter-spacing:0.08em;">
         <i class="fas fa-file-alt me-1"></i>Record title:</span>
-      <span class="ms-2 fw-semibold" style="font-size:0.9rem;">{{ record_title }}</span>
+      <span id="nx-title-display" class="ms-2 fw-semibold" style="font-size:0.9rem;">{{ record_title }}</span>
+      <button type="button" id="nx-title-edit-btn"
+              class="btn btn-link btn-sm ms-1 p-0"
+              title="Edit record title"
+              style="font-size:0.75rem;color:#6c757d;line-height:1;text-decoration:none;">
+        <i class="fas fa-pencil-alt fa-xs"></i>
+      </button>
     </div>
 
     {# Samples section #}
@@ -743,8 +815,11 @@ function nxDeleteActivity(seqno) {
 
 {# Batch move toolbar (outside form, fixed at bottom) #}
 <div id="nx-move-toolbar" class="nx-move-toolbar d-none" role="toolbar" aria-label="Batch dataset actions">
-  <span id="nx-toolbar-label" class="text-muted" style="white-space:nowrap;"></span>
-  <div class="dropdown" id="nx-move-dropdown-wrap"
+  <span id="nx-toolbar-sel-count" class="text-muted small flex-shrink-0" style="white-space:nowrap;display:none;"></span>
+  <button type="button" class="btn btn-sm btn-outline-secondary flex-shrink-0" id="nx-view-changes-btn" style="display:none;">
+    <i class="fas fa-history fa-xs me-1"></i>View pending changes
+  </button>
+  <div class="dropdown d-flex align-items-center" id="nx-move-dropdown-wrap"
        data-bs-placement="top"
        title="Select one or more datasets above to move them">
     <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
@@ -905,7 +980,8 @@ function nxDeleteActivity(seqno) {
 
   // ── Toolbar ──────────────────────────────────────────────────────────────
   var toolbar         = document.getElementById('nx-move-toolbar');
-  var toolbarLabel    = document.getElementById('nx-toolbar-label');
+  var selCountEl      = document.getElementById('nx-toolbar-sel-count');
+  var viewChangesBtn  = document.getElementById('nx-view-changes-btn');
   var moveDropdownBtn = document.getElementById('nx-move-dropdown-btn');
   var moveBtnWrap     = document.getElementById('nx-move-dropdown-wrap');
   var clearSelBtn     = document.getElementById('nx-clear-selection');
@@ -929,27 +1005,230 @@ function nxDeleteActivity(seqno) {
   }
 
   function updateToolbar() {
-    var selected = getSelectedCols();
+    var selected  = getSelectedCols();
     var selCount  = selected.length;
     var moveCount = window.__nxPendingMoves.length;
-    var visible   = selCount > 0 || moveCount > 0;
+
+    var dirtyDescCount = Array.from(form.querySelectorAll('.annotate-textarea')).filter(function(ta) {
+      return ta.value.trim() !== (ta.dataset.original || '').trim();
+    }).length;
+
+    var titleEl = document.getElementById('annotate-title-input');
+    var titleDirty = titleEl && titleEl.value !== titleEl.dataset.original;
+
+    var initialSamples = JSON.parse(document.getElementById('nx-samples-data').textContent || '[]');
+    var samplesDirty = JSON.stringify(window.__nxPendingSamples) !== JSON.stringify(initialSamples);
+
+    var activitiesDirty = window.__nxDeletedSeqnos.length > 0 || window.__nxNewActivities.length > 0;
+
+    var initialIds = {};
+    if (window.__nxActivities) {
+      window.__nxActivities.forEach(function(a) {
+        if (a.sample_id) initialIds[String(a.seqno)] = a.sample_id;
+      });
+    }
+    var currentIds = window.__nxActivitySampleIds || {};
+    var assignmentsDirty = JSON.stringify(initialIds) !== JSON.stringify(currentIds);
+
+    var anyDirty = dirtyDescCount > 0 || titleDirty || samplesDirty || activitiesDirty || assignmentsDirty || moveCount > 0;
+    var visible  = selCount > 0 || anyDirty;
 
     toolbar.classList.toggle('d-none', !visible);
     document.body.classList.toggle('nx-has-selection', selCount > 0);
 
+    if (selCountEl) {
+      selCountEl.textContent = selCount + (selCount === 1 ? ' selected' : ' selected');
+      selCountEl.style.display = selCount > 0 ? '' : 'none';
+    }
+    if (viewChangesBtn) {
+      viewChangesBtn.style.display = anyDirty ? '' : 'none';
+    }
+
     if (selCount > 0) {
-      toolbarLabel.textContent = selCount + (selCount === 1 ? ' dataset' : ' datasets') + ' selected';
+      moveBtnWrap.classList.remove('d-none');
       moveDropdownBtn.disabled = false;
       setMoveBtnTooltip(false);
       clearSelBtn.style.display = '';
       undoAllBtn.style.display = 'none';
     } else {
-      toolbarLabel.textContent = moveCount + ' pending move' + (moveCount === 1 ? '' : 's');
-      moveDropdownBtn.disabled = true;
-      setMoveBtnTooltip(true);
+      moveBtnWrap.classList.add('d-none');
       clearSelBtn.style.display = 'none';
       undoAllBtn.style.display = moveCount > 0 ? '' : 'none';
     }
+  }
+
+  // ── Pending-changes modal ────────────────────────────────────────────────
+  function _esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function _sampleName(id) {
+    if (!id) return '(none)';
+    var s = (window.__nxPendingSamples || []).find(function(x) { return x.id === id; });
+    if (s) return s.name;
+    var initial = JSON.parse(document.getElementById('nx-samples-data').textContent || '[]');
+    var si = initial.find(function(x) { return x.id === id; });
+    return si ? si.name : id;
+  }
+
+  function buildPendingChangesHTML() {
+    var sections = [];
+
+    // 1. Title
+    var titleEl = document.getElementById('annotate-title-input');
+    if (titleEl && titleEl.value !== titleEl.dataset.original) {
+      sections.push(
+        '<div class="mb-3">' +
+        '<div class="fw-semibold mb-1" style="font-size:0.75em;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;">' +
+        '<i class="fas fa-file-alt me-1"></i>Record Title</div>' +
+        '<table class="table table-sm table-borderless mb-0" style="font-size:inherit;">' +
+        '<tr><td class="pe-2 text-muted py-0" style="width:3em;">Was</td>' +
+        '<td class="py-0 fst-italic">' + _esc(titleEl.dataset.original) + '</td></tr>' +
+        '<tr><td class="pe-2 text-muted py-0">Now</td>' +
+        '<td class="py-0 fw-semibold">' + _esc(titleEl.value) + '</td></tr>' +
+        '</table>' +
+        '</div>'
+      );
+    }
+
+    // 2. Descriptions
+    var changedDescs = [];
+    if (form) {
+      form.querySelectorAll('.annotate-card').forEach(function(card) {
+        var ta = card.querySelector('.annotate-textarea');
+        if (!ta || ta.value.trim() === (ta.dataset.original || '').trim()) return;
+        var nameEl = card.querySelector('.nx-dataset-name');
+        var name = nameEl
+          ? Array.from(nameEl.childNodes).filter(function(n) { return n.nodeType === 3; }).map(function(n) { return n.textContent; }).join('').trim()
+          : '(unknown)';
+        changedDescs.push(name);
+      });
+    }
+    if (changedDescs.length > 0) {
+      sections.push(
+        '<div class="mb-3">' +
+        '<div class="fw-semibold mb-1" style="font-size:0.75em;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;"><i class="fas fa-align-left fa-xs me-1 text-muted"></i>Dataset Descriptions (' + changedDescs.length + ')</div>' +
+        '<ul class="mb-0 ps-3 small">' + changedDescs.map(function(n) { return '<li>' + _esc(n) + '</li>'; }).join('') + '</ul>' +
+        '</div>'
+      );
+    }
+
+    // 3. Samples
+    var initialSamples = JSON.parse(document.getElementById('nx-samples-data').textContent || '[]');
+    var currentSamples = window.__nxPendingSamples || [];
+    if (JSON.stringify(currentSamples) !== JSON.stringify(initialSamples)) {
+      var initById = {}, curById = {};
+      initialSamples.forEach(function(s) { initById[s.id] = s; });
+      currentSamples.forEach(function(s) { curById[s.id] = s; });
+      var sItems = [];
+      currentSamples.forEach(function(s) {
+        if (!initById[s.id]) sItems.push('<li><span class="badge bg-success me-1">Added</span>' + _esc(s.name || s.id) + '</li>');
+      });
+      initialSamples.forEach(function(s) {
+        if (!curById[s.id]) sItems.push('<li><span class="badge bg-danger me-1">Removed</span>' + _esc(s.name || s.id) + '</li>');
+      });
+      currentSamples.forEach(function(s) {
+        if (initById[s.id] && JSON.stringify(s) !== JSON.stringify(initById[s.id]))
+          sItems.push('<li><span class="badge text-bg-warning me-1">Edited</span>' + _esc(s.name || s.id) + '</li>');
+      });
+      if (sItems.length > 0) {
+        sections.push(
+          '<div class="mb-3">' +
+          '<div class="fw-semibold mb-1" style="font-size:0.75em;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;"><i class="fas fa-flask fa-xs me-1 text-muted"></i>Samples</div>' +
+          '<ul class="mb-0 ps-3 small">' + sItems.join('') + '</ul>' +
+          '</div>'
+        );
+      }
+    }
+
+    // 4. Activities
+    var actItems = [];
+    (window.__nxNewActivities || []).forEach(function(a) {
+      var lbl = document.querySelector('#nx-activity-header-' + a.temp_id + ' .nx-activity-label');
+      var label = lbl ? lbl.textContent.trim().replace(/:$/, '') : 'New Activity';
+      actItems.push('<li><span class="badge bg-success me-1">Added</span>' + _esc(label) + '</li>');
+    });
+    (window.__nxDeletedSeqnos || []).forEach(function(seqno) {
+      actItems.push('<li><span class="badge bg-danger me-1">Deleted</span>Activity #' + _esc(seqno) + '</li>');
+    });
+    if (actItems.length > 0) {
+      sections.push(
+        '<div class="mb-3">' +
+        '<div class="fw-semibold mb-1" style="font-size:0.75em;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;"><i class="fas fa-layer-group fa-xs me-1 text-muted"></i>Activities</div>' +
+        '<ul class="mb-0 ps-3 small">' + actItems.join('') + '</ul>' +
+        '</div>'
+      );
+    }
+
+    // 5. Sample assignments -- rendered as a compact table
+    var initialIds = {};
+    (window.__nxActivities || []).forEach(function(a) {
+      if (a.sample_id) initialIds[String(a.seqno)] = a.sample_id;
+    });
+    var currentIds = window.__nxActivitySampleIds || {};
+    var allSeqnos = Array.from(new Set(Object.keys(initialIds).concat(Object.keys(currentIds))));
+    var asnRows = [];
+    allSeqnos.forEach(function(seqno) {
+      var oldId = initialIds[seqno] || '', curId = currentIds[seqno] || '';
+      if (oldId === curId) return;
+      var lbl = document.querySelector('#nx-activity-header-' + seqno + ' .nx-activity-label');
+      var actLabel = (lbl ? lbl.textContent.trim() : 'Activity #' + seqno).replace(/:$/, '');
+      asnRows.push(
+        '<tr>' +
+        '<td class="pe-2 text-nowrap">' + _esc(actLabel) + '</td>' +
+        '<td class="pe-2 text-muted fst-italic text-nowrap">' + _esc(_sampleName(oldId)) + '</td>' +
+        '<td class="text-nowrap"><strong>' + _esc(_sampleName(curId)) + '</strong></td>' +
+        '</tr>'
+      );
+    });
+    if (asnRows.length > 0) {
+      sections.push(
+        '<div class="mb-3">' +
+        '<div class="fw-semibold mb-1" style="font-size:0.75em;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;"><i class="fas fa-link fa-xs me-1 text-muted"></i>Sample Assignments</div>' +
+        '<table class="table table-sm table-borderless mb-0" style="font-size:inherit;">' +
+        '<thead class="text-muted" style="font-size:0.75em;">' +
+        '<tr><th class="pb-0 fw-semibold">Activity</th><th class="pb-0 fw-semibold">Was</th><th class="pb-0 fw-semibold">Now</th></tr>' +
+        '</thead>' +
+        '<tbody>' + asnRows.join('') + '</tbody>' +
+        '</table>' +
+        '</div>'
+      );
+    }
+
+    // 6. Pending moves
+    var moves = window.__nxPendingMoves || [];
+    if (moves.length > 0) {
+      var mvItems = moves.map(function(m) {
+        var col = document.querySelector('.nx-dataset-col[data-dataset-index="' + m.datasetIndex + '"]');
+        var nameEl = col && col.querySelector('.nx-dataset-name');
+        var dsName = nameEl
+          ? Array.from(nameEl.childNodes).filter(function(n) { return n.nodeType === 3; }).map(function(n) { return n.textContent; }).join('').trim()
+          : 'Dataset #' + m.datasetIndex;
+        var tgtLbl = document.querySelector('#nx-activity-header-' + m.targetActivitySeqno + ' .nx-activity-label');
+        var tgtName = (tgtLbl ? tgtLbl.textContent.trim() : 'Activity #' + m.targetActivitySeqno).replace(/:$/, '');
+        return '<li>' + _esc(dsName) + ' &rarr; <strong>' + _esc(tgtName) + '</strong></li>';
+      });
+      sections.push(
+        '<div class="mb-3">' +
+        '<div class="fw-semibold mb-1" style="font-size:0.75em;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;"><i class="fas fa-arrows-alt fa-xs me-1 text-muted"></i>Pending Moves (' + moves.length + ')</div>' +
+        '<ul class="mb-0 ps-3 small">' + mvItems.join('') + '</ul>' +
+        '</div>'
+      );
+    }
+
+    return sections.length > 0
+      ? sections.join('<hr class="my-2">')
+      : '<p class="text-muted mb-0 small">No pending changes.</p>';
+  }
+
+  if (viewChangesBtn) {
+    viewChangesBtn.addEventListener('click', function() {
+      var body = document.getElementById('nx-pending-changes-body');
+      if (body) body.innerHTML = buildPendingChangesHTML();
+      var modalEl = document.getElementById('nx-pending-changes-modal');
+      if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    });
   }
 
   // Build move dropdown from activity metadata
@@ -1020,6 +1299,7 @@ function nxDeleteActivity(seqno) {
     } else {
       delete window.__nxActivitySampleIds[seqno];
     }
+    updateToolbar();
   });
 
   // ── Add/delete activity buttons ──────────────────────────────────────────
@@ -1221,6 +1501,8 @@ function nxDeleteActivity(seqno) {
     // Check if samples list changed
     var initialSamples = JSON.parse(document.getElementById('nx-samples-data').textContent || '[]');
     if (JSON.stringify(initialSamples) !== JSON.stringify(window.__nxPendingSamples)) return true;
+    var titleEl = document.getElementById('annotate-title-input');
+    if (titleEl && titleEl.value !== titleEl.dataset.original) return true;
     return false;
   }
 
@@ -1365,6 +1647,24 @@ function nxDeleteActivity(seqno) {
         <button type="button" class="btn btn-primary btn-sm" id="nx-sample-modal-save">
           <i class="fas fa-save fa-xs me-1"></i>Save Sample
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Pending changes detail modal #}
+<div class="modal fade" id="nx-pending-changes-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" style="max-width:480px;">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title">
+          <i class="fas fa-history me-2"></i>Pending Changes
+        </h6>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body py-3" id="nx-pending-changes-body" style="font-size:0.82rem;"></div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
