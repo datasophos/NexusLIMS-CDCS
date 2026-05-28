@@ -21,7 +21,8 @@ on PRs targeting `main`.
 ```
 tests/e2e/
 ├── conftest.py           # shared fixtures
-├── test_auth.py          # login / logout
+├── test_auth.py          # login / logout (username/password)
+├── test_sso.py           # SSO login / logout via SimpleSAMLphp IdP
 ├── test_record_list.py   # record browsing and search
 ├── test_record_detail.py # XSLT-rendered detail page
 └── test_annotator.py     # annotator editor interactions
@@ -45,7 +46,8 @@ Three compose files:
 `docker-compose.ci.yml` overrides from dev:
 - Removes local source code mount (uses baked image)
 - Removes `deployment/caddy/certs/` mount (Caddy generates its own CA fresh)
-- Removes `simplesamlphp` service
+- Keeps `simplesamlphp` service and its `authsources.php` mount (needed for SSO tests)
+- Loads `deployment/saml2/.env.sso-dev.example` as an `env_file` on the `cdcs` service (equivalent to running `dev-sso-enable` locally)
 - Exposes Caddy port 443 on `127.0.0.1:443`
 
 ### TLS / HTTPS
@@ -111,6 +113,14 @@ with the same credentials and export the env vars.
 - Detail page loads for a known record ID (XSLT-rendered)
 - Key fields visible (title, date, instrument)
 - "Annotate" button is present and navigates to the annotator
+
+### `test_sso.py`
+- Clicking "SSO Login" button redirects to the SimpleSAMLphp IdP login page (`sso.nexuslims-dev.localhost`)
+- Entering IdP credentials `admin/admin` and submitting redirects back to CDCS and logs in as the `admin` user
+- Logged-in state is verified (username visible in nav)
+- SSO logout clears the session
+
+Test credentials (`admin/admin`) are hardcoded in `deployment/dev-sso/authsources.php` and are dev-only -- no additional secrets needed. The `sso.nexuslims-dev.localhost` domain resolves to `127.0.0.1` on Linux the same way the main domain does; the same Caddy CA cert covers it.
 
 ### `test_annotator.py`
 - Title inline edit: clicking title activates input, typing changes value
@@ -182,8 +192,8 @@ No other new dependencies. `playwright` is a transitive dependency of `pytest-pl
 To run E2E tests locally against the dev stack:
 
 ```bash
-# Start dev stack (if not already running)
-cd deployment && source dev-commands.sh && dev-up
+# Start dev stack with SSO enabled (required for test_sso.py)
+cd deployment && source dev-commands.sh && dev-sso-enable && dev-up
 
 # Create test superuser (once)
 dev-manage createsuperuser --noinput \
