@@ -1,0 +1,47 @@
+# CI overrides for docker-compose.base.yml.
+# Usage: COMPOSE_FILE=docker-compose.base.yml:docker-compose.ci.yml docker compose ...
+#
+# Key differences from dev:
+#   - No local source mount (uses baked image and production entrypoint)
+#   - No pre-baked Caddy CA certs (Caddyfile.ci uses auto-generated internal CA)
+#   - simplesamlphp included (needed for SSO tests)
+#   - SSO env loaded from saml2/.env.sso-dev.example
+#   - Test data XML files mounted for init_environment.py
+
+services:
+  caddy:
+    environment:
+      - SSO_DOMAIN=${SSO_DOMAIN}
+
+  cdcs:
+    volumes:
+      - cdcs_media:/srv/nexuslims/media
+      - cdcs_socket:/tmp/nexuslims/
+      - cdcs_static:/srv/nexuslims/static.prod
+      - ./scripts:/srv/scripts:ro
+      - ./schemas/nexus-experiment.xsd:/srv/nexuslims/schemas/nexus-experiment.xsd:ro
+      - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
+      - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
+      - ./test-data/example_record_multisample.xml:/srv/test-data/example_record_multisample.xml:ro
+      # Caddy CA cert is copied here by the CI workflow after Caddy starts
+      - ./caddy/ci-ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
+    environment:
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
+      - CURL_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
+    env_file:
+      - path: ./saml2/.env.sso-dev.example
+        required: true
+    extra_hosts:
+      - "${SSO_DOMAIN:-sso.nexuslims-dev.localhost}:host-gateway"
+
+  simplesamlphp:
+    image: druidfi/saml-idp:2.4.4
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs_sso
+    environment:
+      - SIMPLESAMLPHP_IDP_BASEURLPATH=https://${SSO_DOMAIN}/simplesaml/
+      - SIMPLESAMLPHP_SP_ENTITY_ID=https://${DOMAIN}/saml2/metadata/
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://${DOMAIN}/saml2/acs/
+      - SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://${DOMAIN}/saml2/ls/
+    volumes:
+      - ./dev-sso/authsources.php:/app/simplesamlphp/config/authsources.php:ro
+      - ./dev-sso/saml20-sp-remote.php:/app/simplesamlphp/metadata/saml20-sp-remote.php:ro
