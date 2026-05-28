@@ -57,6 +57,7 @@ dependencies = [
 dev = [
     # Used by test_settings.py and deployment settings to load .env files
     "python-dotenv",
+    "pytest-playwright",
 ]
 
 [build-system]
