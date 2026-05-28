@@ -4,6 +4,15 @@ import requests
 _USERNAME = "admin"
 _PASSWORD = "admin"
 _BASE_URL = "https://nexuslims-dev.localhost"
+_TIMEOUT_MS = 5_000
+
+
+def new_context(browser, browser_context_args):
+    """Create a browser context with project-wide defaults applied."""
+    ctx = browser.new_context(**browser_context_args)
+    ctx.set_default_timeout(_TIMEOUT_MS)
+    ctx.set_default_navigation_timeout(_TIMEOUT_MS)
+    return ctx
 
 
 @pytest.fixture(scope="session")
@@ -19,7 +28,7 @@ def browser_context_args(browser_context_args):
 @pytest.fixture(scope="session")
 def auth_state(browser, browser_context_args, base_url):
     """Log in once with username/password and return Playwright storage state."""
-    ctx = browser.new_context(**browser_context_args)
+    ctx = new_context(browser, browser_context_args)
     page = ctx.new_page()
     page.goto(f"{base_url}/accounts/login/")
     page.locator("#id_login").fill(_USERNAME)
@@ -35,6 +44,8 @@ def auth_state(browser, browser_context_args, base_url):
 def authenticated_page(browser, browser_context_args, auth_state):
     """Fresh page pre-loaded with auth session."""
     ctx = browser.new_context(**browser_context_args, storage_state=auth_state)
+    ctx.set_default_timeout(_TIMEOUT_MS)
+    ctx.set_default_navigation_timeout(_TIMEOUT_MS)
     page = ctx.new_page()
     yield page
     ctx.close()
