@@ -3,8 +3,8 @@ import pytest
 import requests
 
 _CA_CERT = os.environ.get("CADDY_CA_CERT", "")
-_USERNAME = os.environ.get("E2E_USERNAME", "e2eadmin")
-_PASSWORD = os.environ.get("E2E_PASSWORD", "")
+_USERNAME = "admin"
+_PASSWORD = "admin"
 _BASE_URL = os.environ.get("PLAYWRIGHT_BASE_URL", "https://nexuslims-dev.localhost")
 
 

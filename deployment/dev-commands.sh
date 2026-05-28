@@ -62,6 +62,10 @@ alias dev-uv-upgrade='(cd "$_DEV_DIR/.." && uv lock --upgrade)'
 alias dev-uv-sync='(cd "$_DEV_DIR/.." && uv sync)'
 alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev-build-clean"'
 
+# E2E tests (Playwright) -- uses admin/admin credentials from init_environment.py
+alias dev-e2e='(cd "$_DEV_DIR/.." && CADDY_CA_CERT="$_DEV_DIR/caddy/certs/ca.crt" uv run pytest tests/e2e/ -v)'
+alias dev-e2e-headed='(cd "$_DEV_DIR/.." && CADDY_CA_CERT="$_DEV_DIR/caddy/certs/ca.crt" uv run pytest tests/e2e/ -v --headed --slowmo=500)'
+
 # SSO / SimpleSAMLphp helpers
 alias dev-sso-enable='cp "$_DEV_DIR/saml2/.env.sso-dev.example" "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO enabled. Run dev-up to apply."'
 alias dev-sso-disable='rm -f "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO disabled. Run dev-up to apply."'
@@ -114,6 +118,11 @@ echo "    dev-uv-upgrade         - Upgrade all dependencies (respecting version 
 echo "    dev-uv-sync            - Sync local environment with lockfile (for local dev outside Docker)"
 echo "    dev-uv-add             - Show usage for adding new dependencies"
 echo "                             (After adding deps, run dev-build-clean to rebuild Docker)"
+echo ""
+echo "  🎭 E2E Tests (Playwright):"
+echo "    dev-e2e             - Run all E2E tests (headless)"
+echo "    dev-e2e-headed      - Run all E2E tests in a visible browser (slowmo=500ms)"
+echo "    (Pass extra args after the alias, e.g.: dev-e2e tests/e2e/test_auth.py)"
 echo ""
 echo "  🔐 SSO (SimpleSAMLphp):"
 echo "    dev-sso-enable      - Copy sso-dev example to saml2/.env (enables SAML SSO)"

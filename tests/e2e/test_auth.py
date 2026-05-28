@@ -1,6 +1,8 @@
 """E2E tests for username/password authentication."""
-import os
 import pytest
+
+_USERNAME = "admin"
+_PASSWORD = "admin"
 
 
 def test_valid_login(browser, browser_context_args, base_url):
@@ -8,8 +10,8 @@ def test_valid_login(browser, browser_context_args, base_url):
     page = ctx.new_page()
     try:
         page.goto(f"{base_url}/accounts/login/")
-        page.locator("#id_login").fill("e2eadmin")
-        page.locator("#id_password").fill(os.environ["E2E_PASSWORD"])
+        page.locator("#id_login").fill(_USERNAME)
+        page.locator("#id_password").fill(_PASSWORD)
         page.locator("[type=submit]").first.click()
         page.wait_for_url(lambda url: "/accounts/login/" not in url, timeout=10_000)
         assert "/accounts/login/" not in page.url

@@ -66,29 +66,18 @@ jobs:
             curl --silent --insecure \
               --output /dev/null --write-out "%{http_code}" \
               https://nexuslims-dev.localhost/ | grep -qE "^[23]" && break
-            echo "Waiting for CDCS... attempt $i"
+            echo "Waiting for CDCS..."
             sleep 10
           done
 
-      - name: Run init_environment.py (loads schema, XSLT, test records)
+      - name: Run init_environment.py (loads schema, XSLT, test records, admin/admin user)
         run: |
           docker exec nexuslims_ci_cdcs \
             python /srv/scripts/init_environment.py
 
-      - name: Create E2E test superuser
-        run: |
-          docker exec \
-            -e DJANGO_SUPERUSER_PASSWORD=${{ secrets.E2E_PASSWORD }} \
-            nexuslims_ci_cdcs \
-            python manage.py createsuperuser --noinput \
-            --username e2eadmin --email e2e@test.local
-        continue-on-error: true  # User may already exist on re-runs
-
       - name: Run Playwright tests
         run: |
           CADDY_CA_CERT=${{ github.workspace }}/deployment/caddy/ci-ca.crt \
-          E2E_USERNAME=e2eadmin \
-          E2E_PASSWORD=${{ secrets.E2E_PASSWORD }} \
           uv run pytest tests/e2e/ \
             --screenshot=only-on-failure \
             --output=deployment/test-results/ \

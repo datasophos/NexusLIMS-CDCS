@@ -309,34 +309,29 @@ uv run playwright install chromium
 # Enable SSO in the dev stack (required for test_sso.py)
 cd deployment && source dev-commands.sh
 dev-sso-enable && dev-up
-
-# Create the E2E test superuser
-dev-manage createsuperuser --noinput \
-  --username e2eadmin --email e2e@test.local
-dev-manage changepassword e2eadmin   # set a password interactively
 ```
+
+Tests use the `admin/admin` account created automatically by `init_environment.py` -- no separate test user needed.
 
 ### Running Tests
 
 ```bash
-CADDY_CA_CERT=deployment/caddy/certs/ca.crt \
-E2E_USERNAME=e2eadmin \
-E2E_PASSWORD=<your-password> \
-uv run pytest tests/e2e/ -v
+cd deployment && source dev-commands.sh
+dev-e2e                                    # headless
+dev-e2e-headed                             # headed, slowmo=500ms
+dev-e2e tests/e2e/test_annotator.py       # single file, headless
+dev-e2e-headed tests/e2e/test_auth.py     # single file, headed
 ```
 
-Run a single test file:
+Or directly with pytest:
 
 ```bash
-CADDY_CA_CERT=deployment/caddy/certs/ca.crt \
-E2E_USERNAME=e2eadmin \
-E2E_PASSWORD=<your-password> \
-uv run pytest tests/e2e/test_annotator.py -v
+CADDY_CA_CERT=deployment/caddy/certs/ca.crt uv run pytest tests/e2e/ -v
 ```
 
 ### CI
 
-E2E tests run in a manually-triggered GitHub Actions workflow (`.github/workflows/playwright.yml`). On PRs to `main`, the job appears in the PR checks as "Waiting" and requires approval from a reviewer before it runs. The `E2E_PASSWORD` secret is stored in the `e2e-tests` GitHub Environment.
+E2E tests run in a manually-triggered GitHub Actions workflow (`.github/workflows/playwright.yml`). On PRs to `main`, the job appears in the PR checks as "Waiting" and requires approval from a reviewer before it runs. The `admin/admin` credentials are created by `init_environment.py` during CI setup -- no secrets needed.
 
 ## Planning Documents
 
