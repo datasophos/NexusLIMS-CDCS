@@ -16,7 +16,8 @@ COPY pyproject.toml uv.lock README.md ./
 # Install all dependencies using UV sync
 # UV_PROJECT_ENVIRONMENT: Install to system Python instead of creating venv
 # --frozen: Use exact versions from uv.lock (reproducible builds)
-RUN UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen
+# --no-dev: Skip dev dependencies (e.g. pytest-playwright) -- they run on the host, not in Docker
+RUN UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen --no-dev
 
 # Copy application source code and configuration
 COPY manage.py ./
