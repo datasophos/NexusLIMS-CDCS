@@ -63,8 +63,13 @@ alias dev-uv-sync='(cd "$_DEV_DIR/.." && uv sync)'
 alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev-build-clean"'
 
 # E2E tests (Playwright) -- uses admin/admin credentials from init_environment.py
-alias dev-e2e='(cd "$_DEV_DIR/.." && CADDY_CA_CERT="$_DEV_DIR/caddy/certs/ca.crt" uv run pytest tests/e2e/ -v)'
-alias dev-e2e-headed='(cd "$_DEV_DIR/.." && CADDY_CA_CERT="$_DEV_DIR/caddy/certs/ca.crt" uv run pytest tests/e2e/ -v --headed --slowmo=500)'
+_dev_e2e_run() {
+    cd "$_DEV_DIR/.." || return 1
+    uv run playwright install chromium
+    CADDY_CA_CERT="$_DEV_DIR/caddy/certs/ca.crt" uv run pytest tests/e2e/ -v "$@"
+}
+alias dev-e2e='_dev_e2e_run'
+alias dev-e2e-headed='_dev_e2e_run --headed --slowmo=500'
 
 # SSO / SimpleSAMLphp helpers
 alias dev-sso-enable='cp "$_DEV_DIR/saml2/.env.sso-dev.example" "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO enabled. Run dev-up to apply."'
