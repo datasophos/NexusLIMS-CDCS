@@ -51,6 +51,15 @@ def authenticated_page(browser, browser_context_args, auth_state):
     ctx.close()
 
 
+@pytest.fixture
+def unauthenticated_page(browser, browser_context_args):
+    """Fresh page with no auth session, for testing public/anonymous access."""
+    ctx = new_context(browser, browser_context_args)
+    page = ctx.new_page()
+    yield page
+    ctx.close()
+
+
 @pytest.fixture(scope="session")
 def test_record_id(auth_state, base_url):
     """Return the ID of the first record in CDCS via the REST API."""

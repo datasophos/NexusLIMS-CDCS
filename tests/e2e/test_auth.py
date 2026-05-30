@@ -1,5 +1,4 @@
 """E2E tests for username/password authentication."""
-import pytest
 from tests.e2e.conftest import new_context
 
 _USERNAME = "admin"
