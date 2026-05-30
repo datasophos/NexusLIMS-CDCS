@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 import requests
 
@@ -5,6 +7,14 @@ _USERNAME = "admin"
 _PASSWORD = "admin"
 _BASE_URL = "https://nexuslims-dev.localhost"
 _TIMEOUT_MS = 5_000
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+_RESETTABLE_RECORDS = {
+    "Example record": _REPO_ROOT / "deployment/test-data/example_record.xml",
+    "Example record large": _REPO_ROOT / "deployment/test-data/example_record_large.xml",
+    "Example record multisample": _REPO_ROOT
+    / "deployment/test-data/example_record_multisample.xml",
+}
 
 
 def new_context(browser, browser_context_args):
@@ -60,10 +70,7 @@ def unauthenticated_page(browser, browser_context_args):
     ctx.close()
 
 
-@pytest.fixture(scope="session")
-def test_record_id(auth_state, base_url):
-    """Return the ID of the first record in CDCS via the REST API."""
-    cookies = {c["name"]: c["value"] for c in auth_state["cookies"]}
+def _fetch_records(cookies, base_url):
     resp = requests.get(
         f"{base_url}/rest/data/",
         cookies=cookies,
@@ -72,6 +79,70 @@ def test_record_id(auth_state, base_url):
     )
     resp.raise_for_status()
     data = resp.json()
-    records = data.get("results", data) if isinstance(data, dict) else data
+    return data.get("results", data) if isinstance(data, dict) else data
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _reset_mutable_records(auth_state, base_url):
+    """Restore example records to their canonical XML before the test session runs.
+
+    Annotator tests that save (dataset moves, title edits, sample changes) persist
+    changes to the live record. Without this reset, later runs see the mutated
+    state from prior runs -- eventually draining activity 0's datasets and
+    causing state-dependent tests (e.g. test_undo_individual_move_via_badge)
+    to silently skip.
+    """
+    cookies = {c["name"]: c["value"] for c in auth_state["cookies"]}
+    csrf = cookies.get("csrftoken", "")
+    headers = {"X-CSRFToken": csrf, "Referer": base_url}
+
+    records = _fetch_records(cookies, base_url)
+    by_title = {r["title"]: r["id"] for r in records if isinstance(r, dict)}
+
+    for title, xml_path in _RESETTABLE_RECORDS.items():
+        rid = by_title.get(title)
+        if rid is None or not xml_path.exists():
+            continue
+        content = xml_path.read_text(encoding="utf-8")
+        resp = requests.patch(
+            f"{base_url}/rest/data/{rid}/",
+            cookies=cookies,
+            verify=False,
+            headers=headers,
+            json={"content": content},
+        )
+        resp.raise_for_status()
+
+
+@pytest.fixture(scope="session")
+def _all_records(auth_state, base_url, _reset_mutable_records):
+    """Fetch all records from CDCS once per session (after the reset has run)."""
+    cookies = {c["name"]: c["value"] for c in auth_state["cookies"]}
+    records = _fetch_records(cookies, base_url)
     assert records, "No records found -- run init_environment.py first"
-    return records[0]["id"]
+    return records
+
+
+@pytest.fixture(scope="session")
+def test_record_id(_all_records):
+    """Return the ID of the first record in CDCS via the REST API."""
+    return _all_records[0]["id"]
+
+
+def _find_record_id(records, title):
+    for r in records:
+        if r.get("title") == title:
+            return r["id"]
+    pytest.skip(f"Record with title {title!r} not found -- run init_environment.py")
+
+
+@pytest.fixture(scope="session")
+def normal_record_id(_all_records):
+    """ID of the standard 48-dataset example record (full interactive layout)."""
+    return _find_record_id(_all_records, "Example record")
+
+
+@pytest.fixture(scope="session")
+def simple_display_record_id(_all_records):
+    """ID of the 200-dataset example record that triggers the simple display."""
+    return _find_record_id(_all_records, "Example record large")

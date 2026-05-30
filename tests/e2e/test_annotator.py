@@ -712,8 +712,8 @@ class TestKeyboardAndToolbar:
         inp.wait_for(state="visible")
         inp.fill("Ctrl Enter Save")
         inp.press("Enter")
-        page.keyboard.press("Control+Enter")
-        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.keyboard.press("Control+Enter")
         assert f"id={test_record_id}" in page.url
 
     def test_toolbar_save_button_submits_form(self, annotator_page, base_url, test_record_id):
@@ -725,8 +725,8 @@ class TestKeyboardAndToolbar:
         inp.fill("Toolbar Save Button")
         inp.press("Enter")
         page.locator("#nx-toolbar-save-btn").wait_for(state="visible")
-        page.locator("#nx-toolbar-save-btn").click()
-        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.locator("#nx-toolbar-save-btn").click()
         assert f"id={test_record_id}" in page.url
 
     def test_help_modal_opens(self, annotator_page):
