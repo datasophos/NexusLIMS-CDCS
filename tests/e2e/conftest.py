@@ -30,11 +30,11 @@ def auth_state(browser, browser_context_args, base_url):
     """Log in once with username/password and return Playwright storage state."""
     ctx = new_context(browser, browser_context_args)
     page = ctx.new_page()
-    page.goto(f"{base_url}/accounts/login/")
-    page.locator("#id_login").fill(_USERNAME)
+    page.goto(f"{base_url}/login")
+    page.locator("#id_username").fill(_USERNAME)
     page.locator("#id_password").fill(_PASSWORD)
     page.locator("[type=submit]").first.click()
-    page.wait_for_url(f"{base_url}/**")
+    page.wait_for_url(lambda url: "/login" not in url)
     state = ctx.storage_state()
     ctx.close()
     return state
@@ -62,6 +62,7 @@ def test_record_id(auth_state, base_url):
         headers={"Accept": "application/json"},
     )
     resp.raise_for_status()
-    records = resp.json()
+    data = resp.json()
+    records = data.get("results", data) if isinstance(data, dict) else data
     assert records, "No records found -- run init_environment.py first"
     return records[0]["id"]

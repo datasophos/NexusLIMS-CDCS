@@ -64,9 +64,14 @@ alias dev-uv-add='echo "Usage: cd \"$_DEV_DIR/..\" && uv add package-name && dev
 
 # E2E tests (Playwright) -- uses admin/admin credentials from init_environment.py
 _dev_e2e_run() {
+    local flags=() paths=()
+    for arg in "$@"; do
+        [[ "$arg" == -* ]] && flags+=("$arg") || paths+=("$arg")
+    done
+    [[ ${#paths[@]} -eq 0 ]] && paths=("tests/e2e/")
     cd "$_DEV_DIR/.." || return 1
     uv run playwright install chromium
-    uv run pytest tests/e2e/ -v "$@"
+    uv run pytest -v "${flags[@]}" "${paths[@]}"
 }
 alias dev-e2e='_dev_e2e_run'
 alias dev-e2e-headed='_dev_e2e_run --headed --slowmo=500'

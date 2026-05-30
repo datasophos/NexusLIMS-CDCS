@@ -12,7 +12,7 @@ def test_sso_login_redirects_to_idp(browser, browser_context_args, base_url):
     ctx = new_context(browser, browser_context_args)
     page = ctx.new_page()
     try:
-        page.goto(f"{base_url}/accounts/login/")
+        page.goto(f"{base_url}/login")
         sso_btn = page.locator("a.btn-lge, a[href*='saml2/login']").first
         sso_btn.click()
         page.wait_for_load_state("networkidle")
@@ -26,7 +26,7 @@ def test_sso_login_full_flow(browser, browser_context_args, base_url):
     ctx = new_context(browser, browser_context_args)
     page = ctx.new_page()
     try:
-        page.goto(f"{base_url}/accounts/login/")
+        page.goto(f"{base_url}/login")
         sso_btn = page.locator("a.btn-lge, a[href*='saml2/login']").first
         sso_btn.click()
         page.wait_for_load_state("networkidle")
@@ -36,7 +36,7 @@ def test_sso_login_full_flow(browser, browser_context_args, base_url):
         page.locator("[type=submit]").first.click()
 
         page.wait_for_url(f"{base_url}/**")
-        assert "/accounts/login/" not in page.url
+        assert "/login" not in page.url
         assert "sso.nexuslims-dev.localhost" not in page.url
     finally:
         ctx.close()
@@ -47,7 +47,7 @@ def test_sso_login_user_visible_in_nav(browser, browser_context_args, base_url):
     ctx = new_context(browser, browser_context_args)
     page = ctx.new_page()
     try:
-        page.goto(f"{base_url}/accounts/login/")
+        page.goto(f"{base_url}/login")
         sso_btn = page.locator("a.btn-lge, a[href*='saml2/login']").first
         sso_btn.click()
         page.wait_for_load_state("networkidle")
