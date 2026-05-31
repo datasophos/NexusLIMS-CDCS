@@ -9,7 +9,6 @@ jobs:
   playwright:
     name: Run E2E tests
     runs-on: ubuntu-latest
-    environment: e2e-tests
     defaults:
       run:
         working-directory: deployment
