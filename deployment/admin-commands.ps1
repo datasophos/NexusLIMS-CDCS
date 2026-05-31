@@ -193,6 +193,22 @@ function admin-init {
     docker exec -it "$script:COMPOSE_PROJECT_NAME`_cdcs" python /srv/scripts/init_environment.py
 }
 
+# XSLT stylesheet update (updates existing stylesheets in the database)
+# Usage: admin-update-xslt [detail|list|all]
+function admin-update-xslt {
+    param(
+        [Parameter(Position = 0)]
+        [ValidateSet('all', 'detail', 'list')]
+        [string]$StylesheetType = 'all'
+    )
+    $env:COMPOSE_FILE = "$_adminDir/docker-compose.base.yml:$_adminDir/docker-compose.prod.yml"
+    try {
+        bash "$_adminDir/scripts/update-xslt.sh" $StylesheetType
+    } finally {
+        Remove-Item Env:\COMPOSE_FILE -ErrorAction SilentlyContinue
+    }
+}
+
 # Display help message
 Write-Host "NexusLIMS-CDCS Administrative Commands Loaded!" -ForegroundColor Green
 Write-Host "Project: $script:COMPOSE_PROJECT_NAME"
@@ -218,6 +234,7 @@ Write-Host "    admin-stats           - Show system statistics (users, records, 
 Write-Host ""
 Write-Host "  🚀 Initialization:"
 Write-Host "    admin-init            - Initialize environment (create superuser, load schema & XSLT)"
+Write-Host "    admin-update-xslt     - Update XSLT stylesheets in the database [detail|list|all]"
 Write-Host ""
 Write-Host "To use these commands, run: " -NoNewline
 Write-Host ". .\admin-commands.ps1" -ForegroundColor Cyan

@@ -156,6 +156,14 @@ alias admin-stats="docker exec ${COMPOSE_PROJECT_NAME}_cdcs python /srv/scripts/
 # Environment initialization
 alias admin-init="docker exec -it ${COMPOSE_PROJECT_NAME}_cdcs python /srv/scripts/init_environment.py"
 
+# XSLT stylesheet update (updates existing stylesheets in the database)
+# Usage: admin-update-xslt [detail|list|all]
+unalias admin-update-xslt 2>/dev/null || true
+admin-update-xslt() {
+    COMPOSE_FILE="$_ADMIN_DIR/docker-compose.base.yml:$_ADMIN_DIR/docker-compose.prod.yml" \
+        bash "$_ADMIN_DIR/scripts/update-xslt.sh" "${@:-all}"
+}
+
 echo "NexusLIMS-CDCS Administrative Commands Loaded!"
 echo "Project: ${COMPOSE_PROJECT_NAME}"
 echo ""
@@ -180,6 +188,7 @@ echo "    admin-stats           - Show system statistics (users, records, templa
 echo ""
 echo "  🚀 Initialization:"
 echo "    admin-init            - Initialize environment (create superuser, load schema & XSLT)"
+echo "    admin-update-xslt     - Update XSLT stylesheets in the database [detail|list|all]"
 echo ""
 echo "To use these commands, run: source admin-commands.sh"
 echo ""
