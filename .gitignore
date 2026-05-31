@@ -275,4 +275,6 @@ settings.local.json
 
 # Playwright E2E tests
 tests/e2e/test-results/
+deployment/test-results/
+deployment/container-logs/
 deployment/caddy/ci-ca.crt

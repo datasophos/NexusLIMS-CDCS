@@ -71,6 +71,40 @@ jobs:
             -v
         working-directory: ${{ github.workspace }}
 
+      - name: Capture container logs on failure
+        if: failure()
+        run: |
+          mkdir -p container-logs
+          for svc in cdcs caddy simplesamlphp postgres redis; do
+            docker compose logs --no-color "$svc" \
+              > "container-logs/${svc}.log" 2>&1 || true
+          done
+
+      - name: Upload container logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-logs
+          path: deployment/container-logs/
+          retention-days: 7
+
+      - name: Capture container logs on failure
+        if: failure()
+        run: |
+          mkdir -p container-logs
+          for svc in cdcs caddy simplesamlphp postgres redis; do
+            docker compose logs --no-color "$svc" \
+              > "container-logs/${svc}.log" 2>&1 || true
+          done
+
+      - name: Upload container logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-logs
+          path: deployment/container-logs/
+          retention-days: 7
+
       - name: Upload test artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4

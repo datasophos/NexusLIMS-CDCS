@@ -9,6 +9,7 @@ _BASE_URL = "https://nexuslims-dev.localhost"
 _TIMEOUT_MS = 5_000
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
+_SCREENSHOT_DIR = _REPO_ROOT / "deployment" / "test-results"
 _RESETTABLE_RECORDS = {
     "Example record": _REPO_ROOT / "deployment/test-data/example_record.xml",
     "Example record large": _REPO_ROOT / "deployment/test-data/example_record_large.xml",
@@ -23,6 +24,33 @@ def new_context(browser, browser_context_args):
     ctx.set_default_timeout(_TIMEOUT_MS)
     ctx.set_default_navigation_timeout(_TIMEOUT_MS)
     return ctx
+
+
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item, call):
+    """Expose each phase's report on the item so fixtures can inspect it on teardown."""
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, f"rep_{rep.when}", rep)
+
+
+def _screenshot_on_failure(request, page):
+    """Capture a full-page screenshot into _SCREENSHOT_DIR when the test's call phase failed.
+
+    Our pages come from custom fixtures, not pytest-playwright's `page` fixture,
+    so the plugin's --screenshot=only-on-failure never sees them. This helper
+    bridges the gap.
+    """
+    rep = getattr(request.node, "rep_call", None)
+    if rep is None or not rep.failed:
+        return
+    _SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
+    safe_name = request.node.name.replace("/", "_").replace("::", "-")
+    try:
+        page.screenshot(path=str(_SCREENSHOT_DIR / f"{safe_name}.png"), full_page=True)
+    except Exception:
+        # Page may already be closed or in an error state; best-effort capture only.
+        pass
 
 
 @pytest.fixture(scope="session")
@@ -51,22 +79,28 @@ def auth_state(browser, browser_context_args, base_url):
 
 
 @pytest.fixture
-def authenticated_page(browser, browser_context_args, auth_state):
+def authenticated_page(browser, browser_context_args, auth_state, request):
     """Fresh page pre-loaded with auth session."""
     ctx = browser.new_context(**browser_context_args, storage_state=auth_state)
     ctx.set_default_timeout(_TIMEOUT_MS)
     ctx.set_default_navigation_timeout(_TIMEOUT_MS)
     page = ctx.new_page()
     yield page
+    _screenshot_on_failure(request, page)
     ctx.close()
 
 
 @pytest.fixture
-def unauthenticated_page(browser, browser_context_args):
-    """Fresh page with no auth session, for testing public/anonymous access."""
+def unauthenticated_page(browser, browser_context_args, request):
+    """Fresh page with no auth session.
+
+    Also used by tests that drive the login/logout flow themselves (test_auth,
+    test_sso) and shouldn't reuse the session-scoped auth_state.
+    """
     ctx = new_context(browser, browser_context_args)
     page = ctx.new_page()
     yield page
+    _screenshot_on_failure(request, page)
     ctx.close()
 
 
