@@ -16,6 +16,7 @@ jobs:
 
     env:
       COMPOSE_FILE: docker-compose.base.yml:docker-compose.ci.yml
+      COMPOSE_ENV_FILES: .env.dev
       CADDYFILE: Caddyfile.ci
       COMPOSE_PROJECT_NAME: nexuslims_ci
 
