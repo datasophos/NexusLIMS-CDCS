@@ -3,13 +3,20 @@
 #
 # Key differences from dev:
 #   - No local source mount (uses baked image and production entrypoint)
-#   - No pre-baked Caddy CA certs (Caddyfile.ci uses auto-generated internal CA)
 #   - simplesamlphp included (needed for SSO tests)
 #   - SSO env loaded from saml2/.env.sso-dev.example
 #   - Test data XML files mounted for init_environment.py
+#
+# Caddy is driven by Caddyfile.dev, so the committed dev CA at caddy/certs is
+# mounted here too -- both for Caddy to sign leaf certs with and for cdcs to
+# trust when pysaml2 fetches IdP metadata over HTTPS.
 
 services:
   caddy:
+    volumes:
+      - ./caddy/certs:/etc/caddy/certs:ro
+      - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
+      - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
     environment:
       - SSO_DOMAIN=${SSO_DOMAIN}
 
@@ -23,6 +30,12 @@ services:
       - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
       - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
       - ./test-data/example_record_multisample.xml:/srv/test-data/example_record_multisample.xml:ro
+      # Caddy's root CA so pysaml2 / requests can verify the IdP cert when
+      # fetching metadata from https://${SSO_DOMAIN}/simplesaml/...
+      - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro
+    environment:
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
+      - CURL_CA_BUNDLE=/etc/ssl/certs/caddy-root-ca.crt
     env_file:
       - path: ./saml2/.env.sso-dev.example
         required: true
