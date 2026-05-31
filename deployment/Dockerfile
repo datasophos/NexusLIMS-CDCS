@@ -16,7 +16,8 @@ COPY pyproject.toml uv.lock README.md ./
 # Install all dependencies using UV sync
 # UV_PROJECT_ENVIRONMENT: Install to system Python instead of creating venv
 # --frozen: Use exact versions from uv.lock (reproducible builds)
-RUN UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen
+# --no-dev: Skip dev dependencies (e.g. pytest-playwright) -- they run on the host, not in Docker
+RUN UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen --no-dev
 
 # Copy application source code and configuration
 COPY manage.py ./
@@ -32,6 +33,8 @@ COPY nexuslims_annotate ./nexuslims_annotate
 COPY nexuslims_overrides ./nexuslims_overrides
 COPY nexuslims_annotate ./nexuslims_annotate
 COPY xslt ./xslt
+# pysaml2 attribute maps; SAML_ATTRIBUTE_MAP_DIR=attr-maps resolves to BASE_DIR/attr-maps
+COPY attr-maps ./attr-maps
 
 # Create necessary directories
 RUN mkdir -p /srv/nexuslims/media /srv/nexuslims/static.prod

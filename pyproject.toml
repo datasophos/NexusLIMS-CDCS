@@ -51,12 +51,17 @@ dependencies = [
     "psycopg2-binary",       # PostgreSQL adapter
     "uwsgi",                 # Application server
     "gunicorn[gthread]",     # Alternative application server with threading support
+    "python-dotenv",         # .env loading for dev_settings.py and test_settings.py
 ]
 
 [dependency-groups]
 dev = [
-    # Used by test_settings.py and deployment settings to load .env files
-    "python-dotenv",
+    "pytest-playwright",
+]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::urllib3.exceptions.InsecureRequestWarning",
 ]
 
 [build-system]

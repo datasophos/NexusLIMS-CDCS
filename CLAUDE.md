@@ -296,6 +296,43 @@ python runtests.py
 - `INSTALLED_APPS` includes `nexuslims_annotate` and `tests`
 - `ROOT_URLCONF` points to `tests.urls`
 
+## Running E2E Tests (Playwright)
+
+E2E tests run against the full Docker stack and require the dev environment to be running.
+
+### Prerequisites (one-time setup)
+
+```bash
+# Install Playwright browsers
+uv run playwright install chromium
+
+# Enable SSO in the dev stack (required for test_sso.py)
+cd deployment && source dev-commands.sh
+dev-sso-enable && dev-up
+```
+
+Tests use the `admin/admin` account created automatically by `init_environment.py` -- no separate test user needed.
+
+### Running Tests
+
+```bash
+cd deployment && source dev-commands.sh
+dev-e2e                                    # headless
+dev-e2e-headed                             # headed, slowmo=500ms
+dev-e2e tests/e2e/test_annotator.py       # single file, headless
+dev-e2e-headed tests/e2e/test_auth.py     # single file, headed
+```
+
+Or directly with pytest:
+
+```bash
+CADDY_CA_CERT=deployment/caddy/certs/ca.crt uv run pytest tests/e2e/ -v
+```
+
+### CI
+
+E2E tests run in a manually-triggered GitHub Actions workflow (`.github/workflows/playwright.yml`). On PRs to `main`, the job appears in the PR checks as "Waiting" and requires approval from a reviewer before it runs. The `admin/admin` credentials are created by `init_environment.py` during CI setup -- no secrets needed.
+
 ## Planning Documents
 
 All planning, specification, and analysis documents should be stored in this repository, not in the user's home directory:
