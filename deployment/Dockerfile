@@ -33,6 +33,8 @@ COPY nexuslims_annotate ./nexuslims_annotate
 COPY nexuslims_overrides ./nexuslims_overrides
 COPY nexuslims_annotate ./nexuslims_annotate
 COPY xslt ./xslt
+# pysaml2 attribute maps; SAML_ATTRIBUTE_MAP_DIR=attr-maps resolves to BASE_DIR/attr-maps
+COPY attr-maps ./attr-maps
 
 # Create necessary directories
 RUN mkdir -p /srv/nexuslims/media /srv/nexuslims/static.prod
