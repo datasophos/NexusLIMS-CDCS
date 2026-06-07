@@ -336,6 +336,102 @@
 })();
 </script>
 
+<script>
+(function () {
+  var csrfToken = '{{ csrf_token }}';
+  var recordId = '{{ data.data.id }}';
+
+  if (!recordId) return;
+
+  function curationPost(endpoint, body) {
+    return fetch('/annotate/' + recordId + '/' + endpoint + '/', {
+      method: 'POST',
+      body: new URLSearchParams(body),
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(function (r) { return r.json(); });
+  }
+
+  function initCurationControls() {
+    document.querySelectorAll('.nx-star').forEach(function (btn) {
+      if (btn.dataset.featured === 'true') btn.classList.add('nx-star--featured');
+      btn.title = btn.dataset.featured === 'true'
+        ? 'Featured — click to unfeature'
+        : 'Click to mark as featured';
+      btn.addEventListener('click', function () {
+        var featured = btn.dataset.featured !== 'true';
+        curationPost('feature', {
+          dataset_index: btn.dataset.datasetIndex,
+          featured: featured,
+        }).then(function (d) {
+          if (d.ok) {
+            btn.dataset.featured = featured ? 'true' : 'false';
+            btn.classList.toggle('nx-star--featured', featured);
+            btn.title = featured ? 'Featured — click to unfeature' : 'Click to mark as featured';
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll('.nx-rating-group').forEach(function (group) {
+      var circles = group.querySelectorAll('.nx-rc');
+      var current = parseInt(group.dataset.currentRating, 10) || 0;
+
+      circles.forEach(function (c) {
+        c.title = 'Rate this dataset: ' + c.dataset.value + '/5';
+      });
+
+      function paint(n) {
+        circles.forEach(function (c, i) { c.classList.toggle('nx-rc--filled', i < n); });
+      }
+
+      paint(current);
+
+      var clearBtn = group.querySelector('.nx-rc-clear');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (current === 0) return;
+          curationPost('rate', {
+            dataset_index: group.dataset.datasetIndex,
+            rating: 0,
+          }).then(function (d) {
+            if (d.ok) {
+              current = 0;
+              group.dataset.currentRating = '0';
+              paint(0);
+            }
+          });
+        });
+      }
+
+      group.addEventListener('mouseover', function (e) {
+        var c = e.target.closest('.nx-rc');
+        if (c) paint(parseInt(c.dataset.value, 10));
+      });
+      group.addEventListener('mouseleave', function () { paint(current); });
+      group.addEventListener('click', function (e) {
+        var c = e.target.closest('.nx-rc');
+        if (!c) return;
+        var val = parseInt(c.dataset.value, 10);
+        var newRating = val === current ? 0 : val;
+        curationPost('rate', {
+          dataset_index: group.dataset.datasetIndex,
+          rating: newRating,
+        }).then(function (d) {
+          if (d.ok) { current = newRating; group.dataset.currentRating = newRating; paint(current); }
+        });
+      });
+    });
+  }
+
+  // Run after XSLT-rendered DOM is ready
+  document.addEventListener('DOMContentLoaded', initCurationControls);
+})();
+</script>
+
 {# Annotator help modal — styles live in annotate.css #}
 <div class="modal fade" id="annotate-help-modal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered" style="max-width:520px;">

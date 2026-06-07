@@ -475,6 +475,7 @@ def upload_example_records(request, template_vm):
         Path("/srv/test-data/example_record.xml"),
         Path("/srv/test-data/example_record_large.xml"),
         Path("/srv/test-data/example_record_multisample.xml"),
+        Path("/srv/test-data/example_record_curation.xml"),
     ]
     uploaded = []
     for record_path in record_paths:

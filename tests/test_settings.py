@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     # Local apps
     "core_main_app",
     "nexuslims_annotate",
+    "nexuslims_gallery",
     "tests",
 ]
 
@@ -71,3 +72,9 @@ CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 MEDIA_ROOT = "tests_media"
 PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
 MONGODB_INDEXING = False
+
+NX_GALLERY_ROTATION_INTERVAL = 2  # Fast for tests
+NX_GALLERY_LOGO = None
+NX_GALLERY_FACILITY_NAME = "Test Facility"
+NX_ENABLE_GALLERY = True
+NX_NAV_LOGO = "nexuslims/img/logo_horizontal_light.png"

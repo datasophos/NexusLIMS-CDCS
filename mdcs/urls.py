@@ -35,6 +35,12 @@ urlpatterns = [
         and getattr(settings, "NX_ENABLE_ANNOTATOR", True)
         else []
     ),
+    *(
+        [re_path(r"^gallery/", include("nexuslims_gallery.urls"))]
+        if "nexuslims_gallery" in settings.INSTALLED_APPS
+        and getattr(settings, "NX_ENABLE_GALLERY", True)
+        else []
+    ),
     re_path(r"^", include("core_main_app.urls")),
     re_path(r"^home/", include("mdcs_home.urls")),
     re_path(r"^", include("core_website_app.urls")),

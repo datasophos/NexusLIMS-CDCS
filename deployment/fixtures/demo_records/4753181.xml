@@ -90,6 +90,10 @@ CC BY 4.0.</motivation>
       <description>SEM SE image of STO sample, 10 kV, stage tilted 55°</description>
       <preview>/4753181/Figure1/20181114_STO.tif.thumb.png</preview>
       <meta name="Creation Time">2018-11-14T22:15:08+00:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
   </acquisitionActivity>
   <acquisitionActivity seqno="1">
@@ -165,6 +169,10 @@ CC BY 4.0.</motivation>
       <meta name="TIFF DateTime">2018:11:21 11:36:55</meta>
       <meta name="Working Distance" unit="millimeter">15.2760000</meta>
       <meta name="Creation Time">2018-11-21T19:36:56+00:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>STO-50um_overview_20kV.tif</name>
@@ -203,6 +211,9 @@ CC BY 4.0.</motivation>
       <meta name="TIFF DateTime">2018:11:21 11:38:53</meta>
       <meta name="Working Distance" unit="millimeter">15.1710000</meta>
       <meta name="Creation Time">2018-11-21T19:38:54+00:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>STO-50um_overview_30kV.tif</name>

@@ -45,6 +45,10 @@ CC BY 4.0.</motivation>
       <meta name="Dwell Time" unit="microsecond">1.0</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:58.860014-06:00</meta>
       <meta name="Creation Time">2021-01-25T12:10:40-07:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Analog 0-dt_1-fb_10-rot_0.dm4</name>
@@ -55,6 +59,10 @@ CC BY 4.0.</motivation>
       <meta name="Dwell Time" unit="microsecond">1.0</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T12:39:29.510321-06:00</meta>
       <meta name="Creation Time">2021-01-25T13:51:00-07:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Analog 0-dt_1-fb_20-rot_0.dm4</name>
@@ -65,6 +73,9 @@ CC BY 4.0.</motivation>
       <meta name="Dwell Time" unit="microsecond">1.0</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T12:40:28.008756-06:00</meta>
       <meta name="Creation Time">2021-01-25T13:53:22-07:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Analog 0-dt_1-fb_30-rot_0.dm4</name>

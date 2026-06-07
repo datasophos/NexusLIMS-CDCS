@@ -5,7 +5,28 @@ These functions add variables to the template context for all templates.
 Register in settings.py under TEMPLATES['OPTIONS']['context_processors'].
 """
 
+from importlib.metadata import PackageNotFoundError, version
+
 from django.conf import settings
+from packaging.version import InvalidVersion, Version
+
+
+def _nexuslims_version():
+    """Return the full project version declared in package metadata."""
+    try:
+        return version("nexuslims-cdcs")
+    except PackageNotFoundError:
+        return getattr(settings, "PROJECT_VERSION", "")
+
+
+def _nexuslims_version_parts():
+    """Return the CDCS base version and optional NexusLIMS sub-version."""
+    raw_version = _nexuslims_version()
+    try:
+        parsed = Version(raw_version)
+    except InvalidVersion:
+        return raw_version, ""
+    return parsed.public, parsed.local or ""
 
 
 def nexuslims_settings(request):
@@ -20,7 +41,9 @@ def nexuslims_settings(request):
         {{ NX_NAV_LOGO }}
         {{ NX_FOOTER_LOGO }}
         {{ NX_FOOTER_LINK }}
+        {{ NX_VERSION }}
     """
+    nx_version, nx_subversion = _nexuslims_version_parts()
     return {
         "NX_DOCUMENTATION_LINK": getattr(settings, "NX_DOCUMENTATION_LINK", ""),
         "NX_HOMEPAGE_TEXT": getattr(settings, "NX_HOMEPAGE_TEXT", ""),
@@ -35,6 +58,9 @@ def nexuslims_settings(request):
             settings, "NX_FOOTER_LOGO", "nexuslims/img/datasophos_logo.png"
         ),
         "NX_FOOTER_LINK": getattr(settings, "NX_FOOTER_LINK", "https://datasophos.co"),
+        "NX_VERSION": _nexuslims_version(),
+        "NX_BASE_VERSION": nx_version,
+        "NX_SUBVERSION": nx_subversion,
     }
 
 

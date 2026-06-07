@@ -23,7 +23,6 @@
     {% for ds in group.datasets %}
     <div class="card annotate-card mb-1"
          data-status="{% if ds.description %}annotated{% else %}empty{% endif %}">
-      <span class="nx-status-dot"></span>
       <div class="card-body p-2">
         <div class="d-flex gap-2 align-items-start">
           {% if ds.preview_url %}
@@ -35,8 +34,29 @@
           </div>
           {% endif %}
           <div class="flex-grow-1 min-w-0">
-            <div class="text-truncate mb-1 nx-dataset-name" title="{{ ds.name }}">
-              {{ ds.name }}
+            <div class="d-flex align-items-center gap-1 mb-1 nx-card-title-row">
+              <button type="button"
+                      class="nx-star btn btn-link p-0 border-0"
+                      data-record-id="{{ record_id }}"
+                      data-dataset-index="{{ ds.index }}"
+                      data-featured="{{ ds.featured|yesno:'true,false' }}"
+                      title="{% if ds.featured %}Featured — click to unfeature{% else %}Click to mark as featured{% endif %}"
+                      aria-label="{% if ds.featured %}Featured{% else %}Not featured{% endif %}">
+                ★
+              </button>
+              <div class="text-truncate flex-grow-1 nx-dataset-name" title="{{ ds.name }}">
+                {{ ds.name }}
+              </div>
+              <div class="nx-rating-group flex-shrink-0 d-flex gap-1"
+                   data-record-id="{{ record_id }}"
+                   data-dataset-index="{{ ds.index }}"
+                   data-current-rating="{{ ds.rating|default:0 }}">
+                {% for i in "12345" %}
+                <span class="nx-rc"
+                      data-value="{{ forloop.counter }}"
+                      title="Rate this dataset: {{ forloop.counter }}/5">●</span>
+                {% endfor %}
+              </div>
             </div>
             <textarea name="dataset_{{ ds.index }}_description"
                       class="form-control form-control-sm annotate-textarea"
@@ -74,3 +94,81 @@
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+  function curationPost(url, body) {
+    return fetch(url, {
+      method: 'POST',
+      body: new URLSearchParams(body),
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(function (r) { return r.json(); });
+  }
+
+  // Featured star clicks
+  document.querySelectorAll('.nx-star').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var featured = btn.dataset.featured !== 'true';
+      curationPost(
+        '/annotate/' + btn.dataset.recordId + '/feature/',
+        { dataset_index: btn.dataset.datasetIndex, featured: featured }
+      ).then(function (data) {
+        if (data.ok) {
+          btn.dataset.featured = featured ? 'true' : 'false';
+          btn.classList.toggle('nx-star--featured', featured);
+          btn.title = featured
+            ? 'Featured — click to unfeature'
+            : 'Click to mark as featured';
+        }
+      });
+    });
+    // Apply initial state
+    if (btn.dataset.featured === 'true') btn.classList.add('nx-star--featured');
+  });
+
+  // Rating circles
+  document.querySelectorAll('.nx-rating-group').forEach(function (group) {
+    var circles = group.querySelectorAll('.nx-rc');
+    var current = parseInt(group.dataset.currentRating, 10) || 0;
+
+    function paint(n) {
+      circles.forEach(function (c, i) {
+        c.classList.toggle('nx-rc--filled', i < n);
+      });
+    }
+
+    paint(current);
+
+    group.addEventListener('mouseover', function (e) {
+      var c = e.target.closest('.nx-rc');
+      if (c) paint(parseInt(c.dataset.value, 10));
+    });
+
+    group.addEventListener('mouseleave', function () {
+      paint(current);
+    });
+
+    group.addEventListener('click', function (e) {
+      var c = e.target.closest('.nx-rc');
+      if (!c) return;
+      var val = parseInt(c.dataset.value, 10);
+      var newRating = val === current ? 0 : val;
+      curationPost(
+        '/annotate/' + group.dataset.recordId + '/rate/',
+        { dataset_index: group.dataset.datasetIndex, rating: newRating }
+      ).then(function (data) {
+        if (data.ok) {
+          current = newRating;
+          group.dataset.currentRating = newRating;
+          paint(current);
+        }
+      });
+    });
+  });
+})();
+</script>

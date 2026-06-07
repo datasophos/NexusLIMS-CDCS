@@ -50,12 +50,22 @@ jobs:
           docker compose up -d
           # Wait for the CDCS app to respond
           for _ in $(seq 1 30); do
-            curl --silent --insecure \
+            if curl --silent --insecure \
               --output /dev/null --write-out "%{http_code}" \
-              https://nexuslims-dev.localhost/ | grep -qE "^[23]" && break
+              https://nexuslims-dev.localhost/ | grep -qE "^[23]"; then
+              exit 0
+            fi
+            if ! docker compose ps --status running --services | grep -qx cdcs; then
+              echo "CDCS container stopped during startup"
+              docker compose logs --no-color cdcs
+              exit 1
+            fi
             echo "Waiting for CDCS..."
             sleep 10
           done
+          echo "Timed out waiting for CDCS"
+          docker compose ps
+          exit 1
 
       - name: Run init_environment.py (loads schema, XSLT, test records, admin/admin user)
         run: |
@@ -67,25 +77,9 @@ jobs:
           uv run pytest tests/e2e/ \
             --screenshot=only-on-failure \
             --output=deployment/test-results/ \
+            -n auto --dist=loadfile \
             -v
         working-directory: ${{ github.workspace }}
-
-      - name: Capture container logs on failure
-        if: failure()
-        run: |
-          mkdir -p container-logs
-          for svc in cdcs caddy simplesamlphp postgres redis; do
-            docker compose logs --no-color "$svc" \
-              > "container-logs/${svc}.log" 2>&1 || true
-          done
-
-      - name: Upload container logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: container-logs
-          path: deployment/container-logs/
-          retention-days: 7
 
       - name: Capture container logs on failure
         if: failure()

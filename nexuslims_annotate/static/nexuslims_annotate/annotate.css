@@ -62,22 +62,6 @@
 .annotate-card[data-status="unsaved"]   { background: #fff8e1; }
 .annotate-card[data-status="moved"]     { background: #f0f4ff; }
 
-/* Status dot in top-right corner; color driven by data-status on the card. */
-.nx-status-dot {
-    position: absolute;
-    top: 7px;
-    right: 7px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #dee2e6;
-    pointer-events: none;
-    z-index: 5;
-}
-.annotate-card[data-status="annotated"] .nx-status-dot { background: #198754; }
-.annotate-card[data-status="unsaved"]   .nx-status-dot { background: #e67e00; }
-.annotate-card[data-status="moved"]     .nx-status-dot { background: #6366f1; }
-
 /* The CDCS theme applies padding-top: 40px and margin-top: -40px to direct children
    of certain containers. Zero both so spacing is controlled via Bootstrap margin
    utilities (mt-*, mb-*) and the card's own margin-top only. */
@@ -253,3 +237,50 @@ body.nx-has-selection .nx-select-cb-label {
 #nx-title-bar.nx-title-dirty {
     background: #fff3cd !important;
 }
+
+/* Curation controls */
+.nx-star {
+  font-size: 1rem;
+  color: #aaa;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nx-star:hover,
+.nx-star--featured {
+  color: #f5a623;
+}
+
+.nx-rc {
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: #ccc;
+  transition: color 0.1s;
+  user-select: none;
+}
+.nx-rc--filled {
+  color: #f5a623;
+}
+
+/* Detail view curation controls — hover-reveal and pointer cursor for editors only */
+.aa-table tbody tr:hover .nx-name-row .nx-star,
+#simple-filelist-table tbody tr:hover .nx-name-row .nx-star { visibility: visible; }
+.aa-table tbody tr:hover .nx-name-row .nx-rating-group,
+#simple-filelist-table tbody tr:hover .nx-name-row .nx-rating-group { visibility: visible; }
+.nx-name-row .nx-star,
+.nx-name-row .nx-rc { cursor: pointer; }
+.nx-rc-clear {
+  visibility: hidden;
+  position: absolute;
+  right: 100%;
+  margin-right: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+}
+.nx-rc-clear:hover { color: #dc3545; }
+.aa-table tbody tr:hover .nx-rating-group[data-current-rating]:not([data-current-rating="0"]) .nx-rc-clear,
+#simple-filelist-table tbody tr:hover .nx-rating-group[data-current-rating]:not([data-current-rating="0"]) .nx-rc-clear { visibility: visible; }

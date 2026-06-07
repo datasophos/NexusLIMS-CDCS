@@ -47,15 +47,7 @@ def test_sso_login_full_flow(unauthenticated_page, base_url):
 def test_sso_login_user_visible_in_nav(unauthenticated_page, base_url):
     """After SSO login, the username appears in the navigation."""
     page = unauthenticated_page
-    page.goto(f"{base_url}/login")
-    sso_btn = page.locator("a.btn-lge, a[href*='saml2/login']").first
-    sso_btn.click()
-    page.wait_for_load_state("networkidle")
-    page.locator("input[name='username']").fill(_IDP_USERNAME)
-    page.locator("input[name='password']").fill(_IDP_PASSWORD)
-    page.locator("[type=submit]").first.click()
-    page.wait_for_url(f"{base_url}/**")
-
+    _sso_login(page, base_url)
     assert page.locator(f"text={_IDP_USERNAME}").count() > 0
 
 

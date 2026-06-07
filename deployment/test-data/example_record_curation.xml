@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nx="https://data.nist.gov/od/dm/nexus/experiment/v1.0">
+	<title>Example record curation</title>
+	<id>9001</id>
+	<summary ref="http://nemo.localhost/event_details/reservation/9001/">
+		<experimenter>Test User (testuser)</experimenter>
+		<instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
+		<reservationStart>2024-01-15T09:00:00-05:00</reservationStart>
+		<reservationEnd>2024-01-15T14:00:00-05:00</reservationEnd>
+		<motivation>Curation feature testing record</motivation>
+	</summary>
+	<sample id="curation-test-sample-001" ref="https://doi.org/10.1234/curation.test">
+		<name>Curation test sample</name>
+		<description>Sample used for curation E2E tests</description>
+	</sample>
+	<project>
+		<project_id>Curation Testing</project_id>
+	</project>
+	<acquisitionActivity seqno="0">
+		<startTime>2024-01-15T09:30:00-05:00</startTime>
+		<sampleID>curation-test-sample-001</sampleID>
+		<setup>
+			<param name="Instrument ID">FEI-Titan-TEM</param>
+			<param name="Data Type">TEM_Imaging</param>
+		</setup>
+		<dataset type="Image" role="Experimental">
+			<name>curation_test_001.dm3</name>
+			<location>/Titan_TEM/researcher_a/project_alpha/20181113/image_001.dm3</location>
+			<description>Featured and rated 3 — tests read-only display and clear interactions</description>
+			<preview>/Titan_TEM/researcher_a/project_alpha/20181113/image_001.dm3.thumb.png</preview>
+			<curation>
+				<rating>3</rating>
+				<featured>true</featured>
+			</curation>
+		</dataset>
+		<dataset type="Image" role="Experimental">
+			<name>curation_test_002.dm3</name>
+			<location>/Titan_TEM/researcher_a/project_alpha/20181113/image_002.dm3</location>
+			<description>Rated 5 only — tests max-fill circle display</description>
+			<preview>/Titan_TEM/researcher_a/project_alpha/20181113/image_002.dm3.thumb.png</preview>
+			<curation>
+				<rating>5</rating>
+			</curation>
+		</dataset>
+		<dataset type="Image" role="Experimental">
+			<name>curation_test_003.dm3</name>
+			<location>/Titan_TEM/researcher_a/project_alpha/20181113/image_003.dm3</location>
+			<description>Featured only — tests featured-without-rating display</description>
+			<preview>/Titan_TEM/researcher_a/project_alpha/20181113/image_003.dm3.thumb.png</preview>
+			<curation>
+				<featured>true</featured>
+			</curation>
+		</dataset>
+	</acquisitionActivity>
+	<acquisitionActivity seqno="1">
+		<startTime>2024-01-15T11:00:00-05:00</startTime>
+		<sampleID>curation-test-sample-001</sampleID>
+		<setup>
+			<param name="Instrument ID">FEI-Titan-TEM</param>
+			<param name="Data Type">TEM_Imaging</param>
+		</setup>
+		<dataset type="Image" role="Experimental">
+			<name>curation_test_004.dm3</name>
+			<location>/Titan_TEM/researcher_a/project_alpha/20181113/image_004.dm3</location>
+			<description>No curation — target for featuring interaction tests</description>
+			<preview>/Titan_TEM/researcher_a/project_alpha/20181113/image_004.dm3.thumb.png</preview>
+		</dataset>
+		<dataset type="Image" role="Experimental">
+			<name>curation_test_005.dm3</name>
+			<location>/Titan_TEM/researcher_a/project_alpha/20181113/image_005.dm3</location>
+			<description>No curation — target for rating interaction tests</description>
+			<preview>/Titan_TEM/researcher_a/project_alpha/20181113/image_005.dm3.thumb.png</preview>
+		</dataset>
+	</acquisitionActivity>
+</Experiment>

@@ -8,9 +8,11 @@ services:
     volumes:
       # Dev CA certificates for local HTTPS
       - ./caddy/certs:/etc/caddy/certs:ro
-      # File server test data
+      # File server: demo fixture data (primary), example record data (fallback)
       - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
+      - ./test-data/nx-data:/srv/nx-data-test:ro
       - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
+      - ./test-data/nx-instrument-data:/srv/nx-instrument-data-test:ro
     environment:
       - SSO_DOMAIN=${SSO_DOMAIN}
 
@@ -27,6 +29,7 @@ services:
       - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
       - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
       - ./test-data/example_record_multisample.xml:/srv/test-data/example_record_multisample.xml:ro
+      - ./test-data/example_record_curation.xml:/srv/test-data/example_record_curation.xml:ro
 
     environment:
       # Use Caddy's root CA certificate for development

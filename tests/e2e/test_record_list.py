@@ -23,6 +23,7 @@ def test_search_filters_records(authenticated_page, base_url):
     page.wait_for_load_state("networkidle")
 
     record_links = "a[href*='/data?id=']"
+    assert page.locator(record_links).count() > 0
 
     # The keyword field is a jQuery Tag-it widget: the real input is hidden and
     # the visible field registers a tag on Enter before the search is submitted.
@@ -34,21 +35,21 @@ def test_search_filters_records(authenticated_page, base_url):
 
     filtered_count = page.locator(record_links).count()
     assert filtered_count == 0
+    expect(page.get_by_text("No results found")).to_be_visible()
 
 
 def test_keyword_search_returns_matching_record(unauthenticated_page, base_url):
     """Searching for a keyword returns only the records that match it.
 
-    Of the three public test records, only one mentions "simple" (the record
-    whose 200 datasets trigger the simple display), so the search narrows the
-    list to that single record.
+    Of the public records, only "Example record large" mentions "simple" (it
+    triggers the simple display), so the search narrows the list to that one.
     """
     page = unauthenticated_page
     page.goto(f"{base_url}/explore/keyword/")
     page.wait_for_load_state("networkidle")
 
     record_links = page.locator("a[href*='/data?id=']")
-    expect(record_links).to_have_count(3)
+    assert record_links.count() >= 3
 
     # The keyword field is a jQuery Tag-it widget: the real input is hidden and
     # the visible field registers a tag on Enter before the search is submitted.
@@ -63,34 +64,41 @@ def test_keyword_search_returns_matching_record(unauthenticated_page, base_url):
 def test_instrument_badge_filters_records(unauthenticated_page, base_url):
     """Clicking an instrument badge filters the record list to that instrument.
 
-    The three public test records span two instruments: two on the FEI Titan
-    TEM and one on the FEI Titan STEM. Clicking a badge adds an
-    ``instrument-pid:`` tag to the keyword search and re-runs it.
+    Public records span multiple instruments. Clicking a badge adds an
+    ``instrument-pid:`` tag to the keyword search and re-runs it. We verify
+    that each filter reduces the count and that TEM has more records than STEM.
     """
     page = unauthenticated_page
     page.goto(f"{base_url}/explore/keyword/")
     page.wait_for_load_state("networkidle")
 
     record_links = page.locator("a[href*='/data?id=']")
-    expect(record_links).to_have_count(3)
+    total = record_links.count()
+    assert total >= 3
 
-    # Filter to the FEI Titan TEM instrument -> two records.
+    # Filter to the FEI Titan TEM instrument.
     page.locator(
         "span.instrument-badge-clickable[data-instrument-pid='FEI-Titan-TEM']"
     ).first.click()
-    expect(record_links).to_have_count(2)
+    page.wait_for_load_state("networkidle")
+    tem_count = record_links.count()
+    assert tem_count >= 1
 
-    # Clear the filter: remove the keyword tag and re-run the search to show
-    # all records again (the STEM badge is only present once they are shown).
+    # Clear the filter and restore the full list.
     page.locator(".tagit-choice .tagit-close").first.click()
     page.locator("button:has-text('Search')").click()
-    expect(record_links).to_have_count(3)
+    page.wait_for_load_state("networkidle")
+    assert record_links.count() == total
 
-    # Filter to the FEI Titan STEM instrument -> one record.
+    # Filter to the FEI Titan STEM instrument.
     page.locator(
         "span.instrument-badge-clickable[data-instrument-pid='FEI-Titan-STEM']"
-    ).click()
-    expect(record_links).to_have_count(1)
+    ).first.click()
+    page.wait_for_load_state("networkidle")
+    stem_count = record_links.count()
+    assert stem_count >= 1
+    assert stem_count < total
+    assert stem_count < tem_count
 
 
 def test_record_link_navigates_to_detail(authenticated_page, base_url):
@@ -102,4 +110,5 @@ def test_record_link_navigates_to_detail(authenticated_page, base_url):
     first_link = page.locator("a[href*='/data?id=']").first
     first_link.click()
     page.wait_for_load_state("networkidle")
-    assert "/data?id=" in page.url or page.locator("text=Annotate").count() > 0
+    assert "/data?id=" in page.url
+    expect(page.locator(".list-record-title")).to_be_visible()

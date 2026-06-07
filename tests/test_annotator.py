@@ -11,7 +11,9 @@ from django.test import SimpleTestCase, TestCase
 from nexuslims_annotate.views import (
     _apply_activity_mutations,
     _apply_descriptions,
+    _apply_featured,
     _apply_moves,
+    _apply_rating,
     _apply_samples,
     _apply_title,
     _dataset_creation_time,
@@ -2126,3 +2128,281 @@ class MalformedXmlViewTest(TestCase):
         self.assertEqual(response.status_code, 500)
         body = json.loads(response.content)
         self.assertIn("error", body)
+
+
+# ===========================================================================
+# _parse_datasets — curation fields
+# ===========================================================================
+
+NS_CURATION = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+
+_CURATION_XML = f"""\
+<?xml version='1.0' encoding='UTF-8'?>
+<Experiment xmlns="{NS_CURATION}">
+  <title>Curation Test</title>
+  <acquisitionActivity seqno="0">
+    <dataset type="Image">
+      <name>rated.dm3</name>
+      <location>/data/rated.dm3</location>
+      <preview>/previews/rated.png</preview>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
+    </dataset>
+    <dataset type="Image">
+      <name>unrated.dm3</name>
+      <location>/data/unrated.dm3</location>
+    </dataset>
+  </acquisitionActivity>
+</Experiment>"""
+
+
+class ParseDatasetsCurationTests(SimpleTestCase):
+    def test_rating_parsed_from_curation_element(self):
+        datasets = _parse_datasets(_CURATION_XML)
+        self.assertEqual(datasets[0]["rating"], 4)
+
+    def test_featured_parsed_as_true(self):
+        datasets = _parse_datasets(_CURATION_XML)
+        self.assertTrue(datasets[0]["featured"])
+
+    def test_rating_none_when_no_curation(self):
+        datasets = _parse_datasets(_CURATION_XML)
+        self.assertIsNone(datasets[1]["rating"])
+
+    def test_featured_false_when_no_curation(self):
+        datasets = _parse_datasets(_CURATION_XML)
+        self.assertFalse(datasets[1]["featured"])
+
+    def test_existing_datasets_unaffected(self):
+        datasets = _parse_datasets(_TWO_ACTIVITY_XML)
+        for d in datasets:
+            self.assertIn("rating", d)
+            self.assertIn("featured", d)
+            self.assertIsNone(d["rating"])
+            self.assertFalse(d["featured"])
+
+
+# ===========================================================================
+# _apply_rating / _apply_featured
+# ===========================================================================
+
+
+def _get_curation(xml_str, ds_index):
+    """Return (rating, featured) tuple for dataset at flat index."""
+    datasets = _parse_datasets(xml_str)
+    if ds_index >= len(datasets):
+        return None, None
+    return datasets[ds_index]["rating"], datasets[ds_index]["featured"]
+
+
+class ApplyRatingTests(SimpleTestCase):
+    def test_sets_rating_on_dataset(self):
+        result = _apply_rating(_CURATION_XML, 1, 3)
+        rating, _ = _get_curation(result, 1)
+        self.assertEqual(rating, 3)
+
+    def test_overwrites_existing_rating(self):
+        result = _apply_rating(_CURATION_XML, 0, 2)
+        rating, _ = _get_curation(result, 0)
+        self.assertEqual(rating, 2)
+
+    def test_zero_clears_rating(self):
+        result = _apply_rating(_CURATION_XML, 0, 0)
+        rating, _ = _get_curation(result, 0)
+        self.assertIsNone(rating)
+
+    def test_zero_on_unrated_dataset_is_no_op(self):
+        result = _apply_rating(_CURATION_XML, 1, 0)
+        # dataset 1 has no curation — clearing rating on it must not add a block
+        root = ET.fromstring(result)
+        act = root.find("nx:acquisitionActivity", NS_MAP)
+        datasets = act.findall("nx:dataset", NS_MAP)
+        self.assertIsNone(datasets[1].find(f"{{{NS}}}curation"))
+
+    def test_removes_curation_block_when_both_cleared(self):
+        # Dataset 0 has featured=true AND rating=4; clear rating alone should keep featured
+        result = _apply_rating(_CURATION_XML, 0, 0)
+        _, featured = _get_curation(result, 0)
+        self.assertTrue(featured)
+
+    def test_removes_curation_block_when_rating_only_and_cleared(self):
+        xml = f"""\
+<Experiment xmlns="{NS_CURATION}">
+  <acquisitionActivity seqno="0">
+    <dataset><name>x.dm3</name><location>/x</location><curation><rating>3</rating></curation></dataset>
+  </acquisitionActivity>
+</Experiment>"""
+        result = _apply_rating(xml, 0, 0)
+        root = ET.fromstring(result)
+        act = root.find("nx:acquisitionActivity", NS_MAP)
+        ds = act.find("nx:dataset", NS_MAP)
+        self.assertIsNone(ds.find("nx:curation", NS_MAP))
+
+    def test_out_of_range_index_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            _apply_rating(_CURATION_XML, 99, 3)
+
+    def test_returns_valid_xml_string(self):
+        result = _apply_rating(_CURATION_XML, 0, 5)
+        ET.fromstring(result)
+
+
+class ApplyFeaturedTests(SimpleTestCase):
+    def test_sets_featured_true(self):
+        result = _apply_featured(_CURATION_XML, 1, True)
+        _, featured = _get_curation(result, 1)
+        self.assertTrue(featured)
+
+    def test_clears_featured(self):
+        result = _apply_featured(_CURATION_XML, 0, False)
+        _, featured = _get_curation(result, 0)
+        self.assertFalse(featured)
+
+    def test_setting_false_on_missing_curation_is_no_op(self):
+        result = _apply_featured(_CURATION_XML, 1, False)
+        # dataset 1 has no curation; clearing featured on it must not add a block
+        root = ET.fromstring(result)
+        act = root.find("nx:acquisitionActivity", NS_MAP)
+        datasets = act.findall("nx:dataset", NS_MAP)
+        self.assertIsNone(datasets[1].find(f"{{{NS}}}curation"))
+
+    def test_removes_curation_block_when_featured_cleared_and_no_rating(self):
+        xml = f"""\
+<Experiment xmlns="{NS_CURATION}">
+  <acquisitionActivity seqno="0">
+    <dataset><name>x.dm3</name><location>/x</location><curation><featured>true</featured></curation></dataset>
+  </acquisitionActivity>
+</Experiment>"""
+        result = _apply_featured(xml, 0, False)
+        root = ET.fromstring(result)
+        act = root.find("nx:acquisitionActivity", NS_MAP)
+        ds = act.find("nx:dataset", NS_MAP)
+        self.assertIsNone(ds.find("nx:curation", NS_MAP))
+
+    def test_clearing_featured_keeps_rating(self):
+        result = _apply_featured(_CURATION_XML, 0, False)
+        rating, _ = _get_curation(result, 0)
+        self.assertEqual(rating, 4)
+
+    def test_returns_valid_xml_string(self):
+        result = _apply_featured(_CURATION_XML, 0, False)
+        ET.fromstring(result)
+
+
+# ===========================================================================
+# annotate_rate / annotate_feature views
+# ===========================================================================
+
+
+class AnnotateRateViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="rate_user", password="pass")
+        self.client.force_login(self.user)
+
+    def test_unauthenticated_returns_302(self):
+        self.client.logout()
+        response = self.client.post("/annotate/some-id/rate/",
+                                    {"dataset_index": 0, "rating": 3})
+        self.assertEqual(response.status_code, 302)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_valid_rating_returns_ok(self, mock_upsert, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data(_CURATION_XML)
+        response = self.client.post("/annotate/test-id/rate/",
+                                    {"dataset_index": 1, "rating": 3})
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"ok": True})
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_rating_zero_clears_rating(self, mock_upsert, _mock_check, mock_get):
+        data_obj = _make_mock_data(_CURATION_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post("/annotate/test-id/rate/",
+                                    {"dataset_index": 0, "rating": 0})
+        self.assertEqual(response.status_code, 200)
+        # After clearing, dataset 0 should have no rating
+        rating, _ = _get_curation(data_obj.content, 0)
+        self.assertIsNone(rating)
+
+    def test_missing_dataset_index_returns_400(self):
+        response = self.client.post("/annotate/test-id/rate/", {"rating": 3})
+        self.assertEqual(response.status_code, 400)
+
+    def test_missing_rating_returns_400(self):
+        response = self.client.post("/annotate/test-id/rate/", {"dataset_index": 0})
+        self.assertEqual(response.status_code, 400)
+
+    def test_rating_out_of_range_returns_400(self):
+        response = self.client.post("/annotate/test-id/rate/",
+                                    {"dataset_index": 0, "rating": 6})
+        self.assertEqual(response.status_code, 400)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_no_write_access_returns_403(self, mock_check, mock_get):
+        from core_main_app.access_control.exceptions import AccessControlError
+        mock_get.return_value = _make_mock_data()
+        mock_check.side_effect = AccessControlError("denied")
+        response = self.client.post("/annotate/test-id/rate/",
+                                    {"dataset_index": 0, "rating": 3})
+        self.assertEqual(response.status_code, 403)
+
+
+class AnnotateFeatureViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="feat_user", password="pass")
+        self.client.force_login(self.user)
+
+    def test_unauthenticated_returns_302(self):
+        self.client.logout()
+        response = self.client.post("/annotate/some-id/feature/",
+                                    {"dataset_index": 0, "featured": "true"})
+        self.assertEqual(response.status_code, 302)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_feature_true_returns_ok(self, mock_upsert, _mock_check, mock_get):
+        mock_get.return_value = _make_mock_data(_CURATION_XML)
+        response = self.client.post("/annotate/test-id/feature/",
+                                    {"dataset_index": 1, "featured": "true"})
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"ok": True})
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    @patch("nexuslims_annotate.views.data_api.upsert")
+    def test_feature_false_clears_flag(self, mock_upsert, _mock_check, mock_get):
+        data_obj = _make_mock_data(_CURATION_XML)
+        mock_get.return_value = data_obj
+        response = self.client.post("/annotate/test-id/feature/",
+                                    {"dataset_index": 0, "featured": "false"})
+        self.assertEqual(response.status_code, 200)
+        _, featured = _get_curation(data_obj.content, 0)
+        self.assertFalse(featured)
+
+    def test_missing_dataset_index_returns_400(self):
+        response = self.client.post("/annotate/test-id/feature/",
+                                    {"featured": "true"})
+        self.assertEqual(response.status_code, 400)
+
+    def test_missing_featured_returns_400(self):
+        response = self.client.post("/annotate/test-id/feature/",
+                                    {"dataset_index": 0})
+        self.assertEqual(response.status_code, 400)
+
+    @patch("nexuslims_annotate.views.data_api.get_by_id")
+    @patch("nexuslims_annotate.views.check_can_write")
+    def test_no_write_access_returns_403(self, mock_check, mock_get):
+        from core_main_app.access_control.exceptions import AccessControlError
+        mock_get.return_value = _make_mock_data()
+        mock_check.side_effect = AccessControlError("denied")
+        response = self.client.post("/annotate/test-id/feature/",
+                                    {"dataset_index": 0, "featured": "true"})
+        self.assertEqual(response.status_code, 403)

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <title>The microstructure and He+ ion irradiation behavior of novel low-activation W-Ta-Cr-V refractory high entropy alloy f...</title>
+  <title>The microstructure and He+ ion irradiation behavior of novel low-activation W-Ta-Cr-V refractory high entropy alloy for nuclear applications</title>
   <summary ref="https://zenodo.org/records/10512463">
     <experimenter>Luca Ferretti</experimenter>
     <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
@@ -108,6 +108,10 @@ CC BY 4.0.</motivation>
       <meta name="Zoom Pan Y">0.5</meta>
       <meta name="warnings">['Operator']</meta>
       <meta name="Creation Time">2022-06-02T16:57:54+00:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>SEM_surface_2.tif</name>
@@ -194,6 +198,9 @@ CC BY 4.0.</motivation>
       <meta name="Zoom Pan Y">0.5</meta>
       <meta name="warnings">['Operator']</meta>
       <meta name="Creation Time">2022-09-20T16:53:04+00:00</meta>
+      <curation>
+        <rating>4</rating>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>TKD_SEM_as-deposited.tif</name>
@@ -267,6 +274,9 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:49.478423-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
       <meta name="Creation Time">2024-01-08T13:52:00-07:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>EDS_map_V.tif</name>
@@ -278,6 +288,9 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:55.451880-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
       <meta name="Creation Time">2024-01-08T13:52:40-07:00</meta>
+      <curation>
+        <rating>2</rating>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>EDS_map_W.tif</name>
@@ -300,6 +313,10 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T11:20:51.474537-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
       <meta name="Creation Time">2023-07-28T08:09:54-06:00</meta>
+      <curation>
+        <rating>3</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>View000 Cr K.bmp</name>

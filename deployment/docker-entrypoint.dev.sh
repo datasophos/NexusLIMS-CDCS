@@ -16,6 +16,9 @@ python manage.py collectstatic --noinput
 echo "********* Initializing Development Environment *********"
 python /srv/scripts/init_environment.py || true
 
+echo "********* Seeding Demo Records *********"
+python /srv/scripts/seed_demo_records.py || true
+
 echo "********* Starting Celery... *********"
 celery -A mdcs worker -E -l info &
 celery -A mdcs beat -l info &

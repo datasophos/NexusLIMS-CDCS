@@ -38,6 +38,8 @@ except ImportError as e:
 
 NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
 NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
+DEMO_RATINGS = (5, 4, 3)
+DEMO_FEATURED_COUNT = 2
 
 FAKE_NAMES = [
     "Sarah Chen",
@@ -530,6 +532,54 @@ def _el(parent, tag, text=None, **attrs):
     return el
 
 
+def ensure_demo_curation(root):
+    """Ensure previewable demo datasets include representative curation state."""
+    datasets = root.findall(f".//{{{NS}}}dataset")
+    candidates = [
+        dataset
+        for dataset in datasets
+        if dataset.find(f"{{{NS}}}preview") is not None
+    ]
+
+    rated = [
+        dataset
+        for dataset in candidates
+        if dataset.find(f"{{{NS}}}curation/{{{NS}}}rating") is not None
+    ]
+    for dataset, rating in zip(
+        (dataset for dataset in candidates if dataset not in rated),
+        DEMO_RATINGS,
+        strict=False,
+    ):
+        if len(rated) >= len(DEMO_RATINGS):
+            break
+        curation = dataset.find(f"{{{NS}}}curation")
+        if curation is None:
+            curation = _el(dataset, "curation")
+        rating_el = etree.Element(f"{{{NS}}}rating")
+        rating_el.text = str(rating)
+        curation.insert(0, rating_el)
+        rated.append(dataset)
+
+    featured = [
+        dataset
+        for dataset in candidates
+        if dataset.findtext(f"{{{NS}}}curation/{{{NS}}}featured") == "true"
+    ]
+    for dataset in candidates:
+        if len(featured) >= DEMO_FEATURED_COUNT:
+            break
+        if dataset in featured:
+            continue
+        curation = dataset.find(f"{{{NS}}}curation")
+        if curation is None:
+            curation = _el(dataset, "curation")
+        _el(curation, "featured", "true")
+        featured.append(dataset)
+
+    return root
+
+
 def build_xml(
     folder_name: str,
     activities: dict[str, list[Path]],
@@ -549,8 +599,6 @@ def build_xml(
 
     # Title
     title_text = metadata.get("title", webloc_title) or folder_name
-    if len(title_text) > 120:
-        title_text = title_text[:117] + "..."
 
     # Motivation
     motivation = build_motivation(metadata, webloc_title)
@@ -686,7 +734,7 @@ def build_xml(
                     m = _el(ds, "meta", ct)
                     m.set("name", "Creation Time")
 
-    return root
+    return ensure_demo_curation(root)
 
 
 # ---------------------------------------------------------------------------

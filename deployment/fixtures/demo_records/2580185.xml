@@ -54,6 +54,10 @@ CC BY 4.0.</motivation>
       <meta name="Data Type">STEM_Imaging</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:29.427531-06:00</meta>
       <meta name="Creation Time">2026-03-27T06:19:08-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="SpectrumImage" role="Experimental">
       <name>EELS Spectrum Image.dm4</name>
@@ -78,6 +82,10 @@ CC BY 4.0.</motivation>
       <meta name="Exposure Time" unit="second">0.00246016</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:23.253726-06:00</meta>
       <meta name="Creation Time">2026-03-27T06:19:08-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Gatan STEM Image.dm3</name>
@@ -90,6 +98,9 @@ CC BY 4.0.</motivation>
       <meta name="Data Type">STEM_Imaging</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:50:18.779324-06:00</meta>
       <meta name="Creation Time">2026-03-27T06:19:08-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
   </acquisitionActivity>
 </Experiment>

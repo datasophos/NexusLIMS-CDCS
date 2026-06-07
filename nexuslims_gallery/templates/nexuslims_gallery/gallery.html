@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NexusLIMS Gallery{% endblock %}</title>
+  {% load static %}
+  <link rel="icon" href="{% static 'nexuslims/img/favicon.png' %}" sizes="16x16" type="image/png">
+  <link rel="stylesheet" href="{% static 'nexuslims_gallery/gallery.css' %}">
+</head>
+<body class="nx-gallery-body">
+  <div id="nx-gallery-bg"></div>
+  <img id="nx-gallery-img" src="" alt="Dataset preview">
+  <section id="nx-gallery-info" aria-live="polite">
+    <div id="nx-gallery-title"></div>
+    <div id="nx-gallery-desc">
+      <span class="nx-gallery-desc-label">Dataset:</span>
+      <span id="nx-gallery-desc-text"></span>
+    </div>
+    <div id="nx-gallery-meta">
+      <span id="nx-gallery-featured" title="Featured dataset" hidden>
+        <span class="nx-gallery-featured-star" aria-hidden="true">&#9733;</span>
+        Featured
+      </span>
+      <span id="nx-gallery-experimenter"></span>
+      <span class="nx-sep" id="nx-gallery-inst-sep">·</span>
+      <span id="nx-gallery-instrument"></span>
+      <span class="nx-sep" id="nx-gallery-date-sep">·</span>
+      <span id="nx-gallery-date"></span>
+      <a id="nx-gallery-link" href="#" target="_blank">View record &#x2197;</a>
+    </div>
+  </section>
+  <div id="nx-gallery-facility-name">{{ NX_GALLERY_FACILITY_NAME }}</div>
+  {% if NX_GALLERY_LOGO %}
+  <div id="nx-gallery-logo-wrap">
+    <img src="{% static NX_GALLERY_LOGO %}" alt="{{ NX_GALLERY_FACILITY_NAME }}" id="nx-gallery-logo">
+  </div>
+  {% endif %}
+  <button class="nx-arrow nx-arrow-left" id="nx-prev" aria-label="Previous slide">&#8249;</button>
+  <button class="nx-arrow nx-arrow-right" id="nx-next" aria-label="Next slide">&#8250;</button>
+  <button
+    id="nx-fullscreen-btn"
+    aria-label="Make gallery full screen"
+    title="Make gallery full screen"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 3 21 3 21 9"/>
+      <polyline points="9 21 3 21 3 15"/>
+      <line x1="21" y1="3" x2="14" y2="10"/>
+      <line x1="3" y1="21" x2="10" y2="14"/>
+    </svg>
+  </button>
+  <div id="nx-progress-bar"></div>
+  <script>
+    var GALLERY_API_URL = "{% url 'nexuslims_gallery_api_next' %}";
+    var ROTATION_INTERVAL = {{ NX_GALLERY_ROTATION_INTERVAL }} * 1000;
+  </script>
+  <script src="{% static 'nexuslims_gallery/gallery.js' %}"></script>
+</body>
+</html>

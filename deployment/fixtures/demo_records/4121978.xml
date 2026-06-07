@@ -35,6 +35,10 @@ CC BY 4.0.</motivation>
       <meta name="Data Dimensions">(178, 2048, 2048)</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T11:39:11.526093-06:00</meta>
       <meta name="Creation Time">2026-03-27T11:38:30.402141-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>collection1_1.35m_0.85s_nogain_c2_20_num2_1.ser</name>
@@ -45,6 +49,10 @@ CC BY 4.0.</motivation>
       <meta name="Data Dimensions">(80, 2048, 2048)</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T11:38:56.738330-06:00</meta>
       <meta name="Creation Time">2026-03-27T11:38:07.817652-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>collection1_1.35m_0.85s_nogain_c2_20_num6_1.ser</name>
@@ -55,6 +63,9 @@ CC BY 4.0.</motivation>
       <meta name="Data Dimensions">(80, 2048, 2048)</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T11:38:21.652705-06:00</meta>
       <meta name="Creation Time">2026-03-27T11:38:06.841141-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>collection1_1.35m_0.85s_nogain_c2_20_num7_1.ser</name>
