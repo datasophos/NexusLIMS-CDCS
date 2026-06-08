@@ -96,7 +96,13 @@ def migrate_records(old_template_ids, new_template):
 
     Returns count of migrated records.
     """
-    pass  # implemented in Task 4
+    from core_main_app.components.data.models import Data
+
+    if not old_template_ids:
+        return 0
+    return Data.objects.filter(template_id__in=old_template_ids).update(
+        template=new_template
+    )
 
 
 def update_xslt(xslt_dir=XSLT_DIR):

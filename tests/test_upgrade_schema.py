@@ -164,3 +164,34 @@ class TestAddSchemaVersion(django.test.SimpleTestCase):
             self.assertEqual(instance.filename, "nexus-experiment.xsd")
             self.assertEqual(instance.content, new_content)
             self.assertEqual(instance.hash, expected_hash)
+
+
+class TestMigrateRecords(django.test.SimpleTestCase):
+    """migrate_records() tests."""
+
+    def test_updates_records_on_old_versions(self):
+        old_ids = ["1", "2"]
+        mock_new_template = MagicMock()
+        mock_new_template.id = 3
+
+        with patch(
+            "core_main_app.components.data.models.Data"
+        ) as MockData:
+            MockData.objects.filter.return_value.update.return_value = 5
+
+            count = upgrade_schema.migrate_records(old_ids, mock_new_template)
+
+        MockData.objects.filter.assert_called_once_with(template_id__in=old_ids)
+        MockData.objects.filter.return_value.update.assert_called_once_with(
+            template=mock_new_template
+        )
+        self.assertEqual(count, 5)
+
+    def test_returns_zero_for_empty_old_ids(self):
+        mock_new_template = MagicMock()
+
+        with patch("core_main_app.components.data.models.Data") as MockData:
+            count = upgrade_schema.migrate_records([], mock_new_template)
+
+        MockData.objects.filter.assert_not_called()
+        self.assertEqual(count, 0)
