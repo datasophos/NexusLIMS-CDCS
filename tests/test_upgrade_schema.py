@@ -109,3 +109,58 @@ class TestDetectSchemaChange(django.test.SimpleTestCase):
                 MockTVM.objects.filter.return_value.first.return_value = None
                 with self.assertRaises(RuntimeError):
                     upgrade_schema.detect_schema_change(schema_path=schema_file)
+
+
+class TestAddSchemaVersion(django.test.SimpleTestCase):
+    """add_schema_version() tests."""
+
+    def test_calls_insert_and_set_current(self):
+        new_content = "<xs:schema>v2</xs:schema>"
+        mock_tvm = MagicMock()
+        mock_request = MagicMock()
+        mock_new_template = MagicMock()
+
+        with (
+            patch(
+                "core_main_app.components.template.models.Template"
+            ) as MockTemplate,
+            patch(
+                "core_main_app.components.template_version_manager.api"
+            ) as mock_tvm_api,
+            patch(
+                "core_main_app.components.version_manager.api"
+            ) as mock_vm_api,
+        ):
+            MockTemplate.return_value = mock_new_template
+
+            result = upgrade_schema.add_schema_version(
+                mock_tvm, new_content, mock_request
+            )
+
+        mock_tvm_api.insert.assert_called_once_with(
+            mock_tvm, mock_new_template, request=mock_request
+        )
+        mock_vm_api.set_current.assert_called_once_with(
+            mock_new_template, request=mock_request
+        )
+        self.assertIs(result, mock_new_template)
+
+    def test_sets_correct_filename_content_and_hash(self):
+        import hashlib
+        new_content = "<xs:schema>v2</xs:schema>"
+        expected_hash = hashlib.sha1(new_content.encode()).hexdigest()
+        mock_tvm = MagicMock()
+        mock_request = MagicMock()
+
+        with (
+            patch(
+                "core_main_app.components.template.models.Template"
+            ) as MockTemplate,
+            patch("core_main_app.components.template_version_manager.api"),
+            patch("core_main_app.components.version_manager.api"),
+        ):
+            instance = MockTemplate.return_value
+            upgrade_schema.add_schema_version(mock_tvm, new_content, mock_request)
+            self.assertEqual(instance.filename, "nexus-experiment.xsd")
+            self.assertEqual(instance.content, new_content)
+            self.assertEqual(instance.hash, expected_hash)

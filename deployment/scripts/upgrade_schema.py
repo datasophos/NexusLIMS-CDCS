@@ -77,7 +77,18 @@ def add_schema_version(tvm, new_content, request):
 
     Returns the new Template object.
     """
-    pass  # implemented in Task 3
+    from core_main_app.components.template.models import Template
+    from core_main_app.components.template_version_manager import api as tvm_api
+    from core_main_app.components.version_manager import api as vm_api
+
+    new_template = Template()
+    new_template.filename = "nexus-experiment.xsd"
+    new_template.content = new_content
+    new_template.hash = hashlib.sha1(new_content.encode("utf-8")).hexdigest()
+
+    tvm_api.insert(tvm, new_template, request=request)
+    vm_api.set_current(new_template, request=request)
+    return new_template
 
 
 def migrate_records(old_template_ids, new_template):
