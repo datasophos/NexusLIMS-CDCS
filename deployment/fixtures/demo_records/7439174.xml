@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <title>Electron energy loss spectroscopy (EELS) and energy dispersive spectroscopy (EDS) data from two pyroxene grains from ...</title>
+  <title>Electron energy loss spectroscopy (EELS) and energy dispersive spectroscopy (EDS) data from two pyroxene grains from Apollo 17 soil 71501</title>
   <summary ref="https://zenodo.org/records/7439174">
     <experimenter>Yuki Tanaka</experimenter>
     <instrument pid="FEI-Titan-STEM">FEI Titan STEM</instrument>
@@ -36,6 +36,10 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T22:16:55.810376-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
       <meta name="Creation Time">2022-12-07T16:18:54-07:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>Air Glass_Fe3+EELS Standard.msa</name>
@@ -104,6 +108,9 @@ CC BY 4.0.</motivation>
       <meta name="STEM Camera Length" unit="millimeter">0.0</meta>
       <meta name="Specimen">Fe/Ni alloy</meta>
       <meta name="Creation Time">2022-12-07T16:19:20-07:00</meta>
+      <curation>
+        <rating>1</rating>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>FeNi_Fe0EELS Standard.msa</name>
@@ -161,6 +168,9 @@ CC BY 4.0.</motivation>
       <meta name="STEM Camera Length" unit="millimeter">0.0</meta>
       <meta name="Specimen">FeO</meta>
       <meta name="Creation Time">2022-12-07T16:19:46-07:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>FeO_Fe2+EELS Standard.msa</name>
@@ -280,6 +290,10 @@ CC BY 4.0.</motivation>
       <meta name="Spectrum Imaging – Acquisition Duration" unit="second">114</meta>
       <meta name="Spectrum Imaging – Pixel time" unit="second">0.005</meta>
       <meta name="Creation Time">2021-04-14T16:23:10-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="SpectrumImage" role="Experimental">
       <name>Fig. 10_EELS-SI_CaM_290-392eV_EELS Spectrum Image.dm4</name>

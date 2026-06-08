@@ -1,0 +1,287 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.nx-gallery-body {
+  background: #0a0a0f;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #fff;
+}
+
+#nx-gallery-bg {
+  position: fixed;
+  inset: 0;
+  background-color: #06090f;
+  z-index: 0;
+  transition: background-image 1s ease;
+}
+
+/* Pattern 1: dot grid */
+#nx-gallery-bg.nx-bg-0 {
+  background-image:
+    radial-gradient(circle, rgba(64, 140, 230, 0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(64, 140, 230, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px, 8px 8px;
+  background-position: 0 0, 16px 16px;
+}
+
+/* Pattern 2: hexagonal close-packed lattice (evokes atomic-resolution STEM/HAADF) */
+#nx-gallery-bg.nx-bg-1 {
+  background-image:
+    radial-gradient(circle, rgba(64, 140, 230, 0.14) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(64, 140, 230, 0.14) 1.5px, transparent 1.5px);
+  background-size: 28px 24px, 28px 24px;
+  background-position: 0 0, 14px 12px;
+}
+
+/* Pattern 3: intersecting crystal lattice fringes (evokes HRTEM two-beam condition) */
+#nx-gallery-bg.nx-bg-2 {
+  background-image:
+    repeating-linear-gradient(
+      65deg,
+      transparent 0, transparent 11px,
+      rgba(64, 140, 230, 0.08) 11px, rgba(64, 140, 230, 0.08) 12px
+    ),
+    repeating-linear-gradient(
+      -25deg,
+      transparent 0, transparent 17px,
+      rgba(64, 140, 230, 0.07) 17px, rgba(64, 140, 230, 0.07) 18px
+    );
+}
+
+#nx-gallery-img {
+  position: fixed;
+  top: calc((100% - 126px) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 96vw;
+  height: calc(94vh - 126px);
+  max-width: 96vw;
+  max-height: calc(94vh - 126px);
+  object-fit: contain;
+  z-index: 1;
+  filter: drop-shadow(0 4px 32px rgba(0,0,0,0.8));
+  transition: opacity 0.4s ease;
+}
+
+#nx-gallery-info {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "title"
+    "description"
+    "meta";
+  row-gap: 3px;
+  width: 100%;
+  min-height: 126px;
+  max-height: 35vh;
+  overflow: hidden;
+  background: rgba(8, 8, 18, 0.94);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px clamp(24px, 3vw, 56px) 16px;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.28);
+}
+
+#nx-gallery-title {
+  grid-area: title;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 2.36em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: clamp(1rem, 0.65vw + 0.7rem, 1.35rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+
+#nx-gallery-desc {
+  grid-area: description;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: clamp(0.82rem, 0.18vw + 0.76rem, 0.95rem);
+  line-height: 1.3;
+  color: #e1e3eb;
+}
+
+.nx-gallery-desc-label {
+  flex: 0 0 auto;
+  color: #a4acbd;
+  font-style: italic;
+  font-weight: 600;
+  line-height: inherit;
+}
+
+#nx-gallery-desc-text {
+  min-width: 0;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#nx-gallery-meta {
+  grid-area: meta;
+  min-width: 0;
+  font-size: clamp(0.78rem, 0.2vw + 0.72rem, 0.95rem);
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#nx-gallery-featured {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 4px;
+  padding-right: 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+  color: #e5bd62;
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#nx-gallery-featured[hidden] {
+  display: none;
+}
+
+.nx-gallery-featured-star {
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+#nx-gallery-link {
+  color: #aac;
+  text-decoration: none;
+  margin-left: auto;
+  white-space: nowrap;
+}
+#nx-gallery-link:hover { text-decoration: underline; }
+
+.nx-sep { color: #555; }
+
+#nx-gallery-facility-name {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  background: rgba(8, 8, 18, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+
+#nx-gallery-logo-wrap {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+#nx-gallery-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.nx-arrow {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 3;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 3rem;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+.nx-arrow-left  { left: 0; }
+.nx-arrow-right { right: 0; }
+.nx-arrow.nx-visible { opacity: 1; }
+
+#nx-fullscreen-btn {
+  position: fixed;
+  bottom: 146px;
+  right: 20px;
+  z-index: 3;
+  background: rgba(8, 8, 18, 0.75);
+  backdrop-filter: blur(12px);
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  color: #fff;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  line-height: 0;
+}
+#nx-fullscreen-btn.nx-visible { opacity: 1; }
+#nx-fullscreen-btn svg { width: 20px; height: 20px; display: block; }
+
+@media (max-width: 700px) {
+  #nx-gallery-img {
+    top: calc((100% - 150px) / 2);
+    height: calc(94vh - 150px);
+    max-height: calc(94vh - 150px);
+  }
+
+  #nx-gallery-info {
+    gap: 3px;
+    min-height: 150px;
+    padding: 12px 20px 14px;
+  }
+
+  #nx-gallery-meta {
+    align-items: flex-start;
+  }
+
+  #nx-gallery-link {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+
+  #nx-fullscreen-btn {
+    bottom: 170px;
+  }
+}
+
+#nx-progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: #bbb;
+  z-index: 4;
+  transition: none;
+}

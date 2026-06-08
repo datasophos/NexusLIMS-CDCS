@@ -1,6 +1,6 @@
 [project]
 name = "nexuslims-cdcs"
-version = "3.21.0+nx0"
+version = "3.21.0+nx1"
 description = "NexusLIMS-CDCS: An automated laboratory information management system for microscopy data management"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -57,9 +57,11 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest-playwright",
+    "pytest-xdist",
 ]
 
 [tool.pytest.ini_options]
+pythonpath = ["tests/e2e"]
 filterwarnings = [
     "ignore::urllib3.exceptions.InsecureRequestWarning",
 ]

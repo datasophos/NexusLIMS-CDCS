@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <title>Structure of metal-organic framework nanocrystals obtained from electron diffraction data by iterative phase retrieva...</title>
+  <title>Structure of metal-organic framework nanocrystals obtained from electron diffraction data by iterative phase retrieval</title>
   <summary ref="https://zenodo.org/records/18299303">
     <experimenter>James Okafor</experimenter>
     <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
@@ -48,6 +48,10 @@ CC BY 4.0.</motivation>
       <meta name="Operation Mode">IMAGING</meta>
       <meta name="magnification">69000.0</meta>
       <meta name="Creation Time">2026-03-27T19:33:18-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Fig_3a_3c_Ni-DUT8_diff_1.2m_11.dm3</name>
@@ -63,6 +67,10 @@ CC BY 4.0.</motivation>
       <meta name="Operation Mode">DIFFRACTION</meta>
       <meta name="magnification">1200.0</meta>
       <meta name="Creation Time">2026-03-27T19:33:16-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Fig_3b_Ni-DUT8_img_diff_11.dm3</name>
@@ -78,6 +86,9 @@ CC BY 4.0.</motivation>
       <meta name="Operation Mode">IMAGING</meta>
       <meta name="magnification">27000.0</meta>
       <meta name="Creation Time">2026-03-27T19:33:18-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Fig_4a_Ni-DUT8_diff_1.2m_5.dm3</name>

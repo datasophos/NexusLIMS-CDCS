@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <title>Catalytic reactivity of Glucose-coated FeO@Fe3O4 Nanoparticles for biomedical applications: safety assessment using a...</title>
+  <title>Catalytic reactivity of Glucose-coated FeO@Fe3O4 Nanoparticles for biomedical applications: safety assessment using a 3D hepatic in vitro model</title>
   <summary ref="https://zenodo.org/records/18205062">
     <experimenter>Thomas Kirchner</experimenter>
     <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
@@ -57,6 +57,10 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – z" unit="millimeter">151.277</meta>
       <meta name="magnification">40000.0</meta>
       <meta name="Creation Time">2023-08-03T11:42:30-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>img_0002.dm3</name>
@@ -77,6 +81,10 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – z" unit="millimeter">151.277</meta>
       <meta name="magnification">40000.0</meta>
       <meta name="Creation Time">2023-08-03T11:43:08-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>img_0003.dm3</name>
@@ -97,6 +105,9 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – z" unit="millimeter">151.277</meta>
       <meta name="magnification">40000.0</meta>
       <meta name="Creation Time">2023-08-03T11:43:44-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>img_0004.dm3</name>

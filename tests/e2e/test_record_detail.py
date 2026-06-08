@@ -6,10 +6,10 @@ from playwright.sync_api import expect
 def test_detail_page_loads(authenticated_page, base_url, normal_record_id):
     """Detail page renders without error for a known record."""
     page = authenticated_page
-    page.goto(f"{base_url}/data?id={normal_record_id}")
+    response = page.goto(f"{base_url}/data?id={normal_record_id}")
     page.wait_for_load_state("networkidle")
-    assert page.locator("text=Server Error, text=Exception").count() == 0
-    assert page.title() != ""
+    assert response.status == 200
+    expect(page.locator(".list-record-title")).to_be_visible()
 
 
 def test_detail_shows_key_fields(authenticated_page, base_url, normal_record_id):
@@ -17,8 +17,10 @@ def test_detail_shows_key_fields(authenticated_page, base_url, normal_record_id)
     page = authenticated_page
     page.goto(f"{base_url}/data?id={normal_record_id}")
     page.wait_for_load_state("networkidle")
-    content = page.locator("body").inner_text()
-    assert len(content.strip()) > 100, "Detail page body appears empty -- XSLT may have failed"
+    expect(page.locator(".list-record-title")).not_to_be_empty()
+    expect(page.locator("#instr-badge")).not_to_be_empty()
+    expect(page.locator(".list-record-experimenter")).not_to_be_empty()
+    expect(page.locator("#summary-info")).to_contain_text("data files")
 
 
 def test_annotate_button_navigates(authenticated_page, base_url, normal_record_id):

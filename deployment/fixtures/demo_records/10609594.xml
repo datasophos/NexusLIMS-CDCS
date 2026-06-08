@@ -73,6 +73,10 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – Tilt Alpha" unit="degree">0.949999988079071</meta>
       <meta name="warnings">['EDS', 'Active layer']; ['EDS', 'Azimuthal angle']; ['EDS', 'Dead layer']; ['EDS', 'Detector type']; ['EDS', 'Elevation angle']; ['EDS', 'Gold layer']; ['EDS', 'Stage tilt']; ['EDS', 'Window thickness']; ['EDS', 'Window type']; ['EDS', 'Zero fwhm']</meta>
       <meta name="Creation Time">2026-03-27T18:08:44-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="SpectrumImage" role="Experimental">
       <name>EELS Spectrum Image (high-loss) (aligned).dm4</name>
@@ -98,6 +102,10 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
       <meta name="Stage Position – Tilt Alpha" unit="degree">0.949999988079071</meta>
       <meta name="Creation Time">2026-03-27T18:08:40-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="SpectrumImage" role="Experimental">
       <name>EELS Spectrum Image (low-loss) (aligned).dm4</name>
@@ -123,6 +131,9 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
       <meta name="Stage Position – Tilt Alpha" unit="degree">0.949999988079071</meta>
       <meta name="Creation Time">2026-03-27T18:08:48-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>HAADF Image (SI Survey).dm4</name>

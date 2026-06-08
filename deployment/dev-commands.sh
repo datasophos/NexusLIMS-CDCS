@@ -16,7 +16,7 @@ alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
 alias dev-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs'
 
 # Start in development mode (with local code mounting)
-alias dev-up='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d'
+alias dev-up='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d && echo "NexusLIMS-CDCS available at: https://nexuslims-dev.localhost"'
 alias dev-up-logs='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d && docker compose logs -f'
 
 # Stop development environment
@@ -75,6 +75,17 @@ _dev_e2e_run() {
 }
 alias dev-e2e='_dev_e2e_run'
 alias dev-e2e-headed='_dev_e2e_run --headed --slowmo=500'
+alias dev-e2e-parallel='_dev_e2e_run_parallel'
+
+# Parallel E2E: each test file runs on its own worker; annotator and detail operate on
+# different CDCS records so they can safely run simultaneously.
+_dev_e2e_run_parallel() {
+    local paths=("$@")
+    [[ ${#paths[@]} -eq 0 ]] && paths=("tests/e2e/")
+    cd "$_DEV_DIR/.." || return 1
+    uv run playwright install chromium
+    uv run pytest -v -n auto --dist=loadfile "${paths[@]}"
+}
 
 # SSO / SimpleSAMLphp helpers
 alias dev-sso-enable='cp "$_DEV_DIR/saml2/.env.sso-dev.example" "$_DEV_DIR/saml2/.env.sso-dev" && echo "SAML SSO enabled. Run dev-up to apply."'
@@ -130,8 +141,9 @@ echo "    dev-uv-add             - Show usage for adding new dependencies"
 echo "                             (After adding deps, run dev-build-clean to rebuild Docker)"
 echo ""
 echo "  🎭 E2E Tests (Playwright):"
-echo "    dev-e2e             - Run all E2E tests (headless)"
+echo "    dev-e2e             - Run all E2E tests (headless, sequential)"
 echo "    dev-e2e-headed      - Run all E2E tests in a visible browser (slowmo=500ms)"
+echo "    dev-e2e-parallel    - Run all E2E tests in parallel (one worker per file)"
 echo "    (Pass extra args after the alias, e.g.: dev-e2e tests/e2e/test_auth.py)"
 echo ""
 echo "  🔐 SSO (SimpleSAMLphp):"

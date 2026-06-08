@@ -79,6 +79,10 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T12:31:48.014932-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
       <meta name="Creation Time">2023-12-11T11:27:48-07:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>EBSD K1.png</name>
@@ -90,6 +94,10 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T12:31:49.998636-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
       <meta name="Creation Time">2023-12-11T11:27:34-07:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>EBSD K2 SEM.png.tiff</name>
@@ -101,6 +109,9 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-27T12:31:41.237460-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.basic_file_info_extractor</meta>
       <meta name="Creation Time">2023-12-11T11:28:34-07:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>EBSD K2.png</name>

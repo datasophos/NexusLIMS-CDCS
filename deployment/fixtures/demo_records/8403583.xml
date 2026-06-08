@@ -63,6 +63,10 @@ CC BY 4.0.</motivation>
       <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">82</meta>
       <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">82</meta>
       <meta name="Creation Time">2026-03-27T06:13:36-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Fig3c_apatite_HAADF.dm4</name>
@@ -74,6 +78,10 @@ CC BY 4.0.</motivation>
       <meta name="Data Type">TEM_Imaging</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:34:50.755940-06:00</meta>
       <meta name="Creation Time">2026-03-27T06:13:54-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="SpectrumImage" role="Experimental">
       <name>Fig4_apatite79221_OKedge_vesicle.dm4</name>
@@ -92,6 +100,9 @@ CC BY 4.0.</motivation>
       <meta name="Spectrum Imaging – Spatial Sampling (Horizontal)">52</meta>
       <meta name="Spectrum Imaging – Spatial Sampling (Vertical)">50</meta>
       <meta name="Creation Time">2026-03-27T06:13:50-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="SpectrumImage" role="Experimental">
       <name>Fig4_apatite79221_lowloss_vesicle.dm4</name>

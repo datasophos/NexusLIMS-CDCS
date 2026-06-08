@@ -109,6 +109,10 @@ CC BY 4.0.</motivation>
       <meta name="Vertical Field Width" unit="meter">0.000002210</meta>
       <meta name="Working Distance" unit="meter">0.008159830</meta>
       <meta name="Creation Time">2026-03-27T12:14:52+00:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>AJ-1-04-20-200000x.tif</name>
@@ -136,6 +140,10 @@ CC BY 4.0.</motivation>
       <meta name="Vertical Field Width" unit="meter">0.0000011050</meta>
       <meta name="Working Distance" unit="meter">0.008162010</meta>
       <meta name="Creation Time">2026-03-27T12:14:50+00:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>AJ-1-04-20-50000x.tif</name>
@@ -163,6 +171,9 @@ CC BY 4.0.</motivation>
       <meta name="Vertical Field Width" unit="meter">0.000004420</meta>
       <meta name="Working Distance" unit="meter">0.008159830</meta>
       <meta name="Creation Time">2026-03-27T12:14:48+00:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>AJ-2-04-20-100000x.tif</name>

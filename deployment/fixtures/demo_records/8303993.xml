@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Experiment xmlns="https://data.nist.gov/od/dm/nexus/experiment/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <title>Anisotropic Gold Nanomaterial Synthesis Using Peptide Facet Specificity and Timed Intervention: Experiment and simula...</title>
+  <title>Anisotropic Gold Nanomaterial Synthesis Using Peptide Facet Specificity and Timed Intervention: Experiment and simulation data, figures, and notebooks for recreating figures</title>
   <summary ref="https://zenodo.org/records/8303993">
     <experimenter>Sarah Chen</experimenter>
     <instrument pid="FEI-Titan-TEM">FEI Titan TEM</instrument>
@@ -33,6 +33,10 @@ CC BY 4.0.</motivation>
       <description>Image comparing gold nanomaterial morphology at t0 and t5</description>
       <preview>/8303993/Images/t0_t5.png.thumb.png</preview>
       <meta name="Creation Time">2023-02-05T17:57:54-07:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
   </acquisitionActivity>
   <acquisitionActivity seqno="1">
@@ -127,6 +131,10 @@ CC BY 4.0.</motivation>
       <meta name="Vertical Field Width" unit="meter">0.000001302560</meta>
       <meta name="Working Distance" unit="meter">0.002964120</meta>
       <meta name="Creation Time">2023-01-12T18:22:20+00:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Fig_9A.tif</name>
@@ -166,6 +174,9 @@ CC BY 4.0.</motivation>
       <meta name="Vertical Field Width" unit="meter">7.055560E-7</meta>
       <meta name="Working Distance" unit="meter">0.002925810</meta>
       <meta name="Creation Time">2023-01-12T18:54:58+00:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Fig_9B.tif</name>

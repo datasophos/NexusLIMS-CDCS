@@ -54,6 +54,10 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – y" unit="micrometer">-151.271</meta>
       <meta name="Stage Position – z" unit="micrometer">37.466</meta>
       <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>BF_1a.tif</name>
@@ -74,6 +78,10 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – y" unit="micrometer">-151.542</meta>
       <meta name="Stage Position – z" unit="micrometer">37.466</meta>
       <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>BF_2.tif</name>
@@ -94,6 +102,9 @@ CC BY 4.0.</motivation>
       <meta name="Stage Position – y" unit="micrometer">-190.189</meta>
       <meta name="Stage Position – z" unit="micrometer">37.466</meta>
       <meta name="Creation Time">2024-01-31T19:43:14+00:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>BF_2a.tif</name>

@@ -69,6 +69,10 @@ U.S. Government work (public domain).</motivation>
       <meta name="Stage Position – x" unit="micrometer">-0.039</meta>
       <meta name="Stage Position – y" unit="micrometer">5.554399999999999</meta>
       <meta name="Creation Time">2023-04-04T17:28:00-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>LL_EELS_002.dm3</name>
@@ -84,6 +88,10 @@ U.S. Government work (public domain).</motivation>
       <meta name="Stage Position – x" unit="micrometer">2.3985</meta>
       <meta name="Stage Position – y" unit="micrometer">5.5806000000000004</meta>
       <meta name="Creation Time">2023-04-04T17:28:00-06:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>LL_EELS_003.dm3</name>
@@ -99,6 +107,9 @@ U.S. Government work (public domain).</motivation>
       <meta name="Stage Position – x" unit="micrometer">5.186999999999999</meta>
       <meta name="Stage Position – y" unit="micrometer">3.4584</meta>
       <meta name="Creation Time">2023-04-04T17:28:00-06:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
   </acquisitionActivity>
   <acquisitionActivity seqno="1">

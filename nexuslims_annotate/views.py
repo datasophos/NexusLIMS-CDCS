@@ -185,6 +185,21 @@ def _parse_datasets(xml_content):
                 f"{preview_base}/{preview_path.lstrip('/')}" if preview_path else None
             )
 
+            curation_el = dataset_el.find(f"{{{NS}}}curation")
+            rating = None
+            featured = False
+            if curation_el is not None:
+                rating_el = curation_el.find(f"{{{NS}}}rating")
+                featured_el = curation_el.find(f"{{{NS}}}featured")
+                if rating_el is not None and rating_el.text:
+                    try:
+                        rating = int(rating_el.text)
+                    except ValueError:
+                        pass
+                featured = (
+                    featured_el is not None and featured_el.text == "true"
+                )
+
             datasets.append(
                 {
                     "index": index,
@@ -192,6 +207,8 @@ def _parse_datasets(xml_content):
                     "description": description or "",
                     "preview_url": preview_url,
                     "activity_seqno": seqno,
+                    "rating": rating,
+                    "featured": featured,
                 }
             )
             index += 1
@@ -675,6 +692,162 @@ def _apply_descriptions(xml_content, post_data):
             index += 1
 
     return ET.tostring(root, encoding="unicode", xml_declaration=False)
+
+
+def _get_dataset_el(root, dataset_index):
+    """Return the dataset Element at the given flat index, or None."""
+    idx = 0
+    for activity in root.findall("nx:acquisitionActivity", NS_MAP):
+        for dataset_el in activity.findall("nx:dataset", NS_MAP):
+            if idx == dataset_index:
+                return dataset_el
+            idx += 1
+    return None
+
+
+def _prune_curation(curation_el, dataset_el):
+    """Remove <curation> from dataset_el if it has no child elements."""
+    if len(curation_el) == 0:
+        dataset_el.remove(curation_el)
+
+
+def _apply_rating(xml_content, dataset_index, rating):
+    """Set or clear the <rating> inside <curation> for a dataset.
+
+    rating=0 clears the rating. Removes the <curation> block if both
+    <rating> and <featured> would be absent afterward.
+    Returns updated XML string.
+    Raises ValueError if dataset_index is out of range.
+    """
+    ET.register_namespace("", NS)
+    root = ET.fromstring(xml_content)
+    ds = _get_dataset_el(root, dataset_index)
+    if ds is None:
+        raise ValueError(f"dataset_index {dataset_index} out of range")
+
+    curation_el = ds.find(f"{{{NS}}}curation")
+
+    if rating == 0:
+        if curation_el is None:
+            return ET.tostring(root, encoding="unicode", xml_declaration=False)
+        rating_el = curation_el.find(f"{{{NS}}}rating")
+        if rating_el is not None:
+            curation_el.remove(rating_el)
+        _prune_curation(curation_el, ds)
+        return ET.tostring(root, encoding="unicode", xml_declaration=False)
+
+    if curation_el is None:
+        curation_el = ET.SubElement(ds, f"{{{NS}}}curation")
+
+    rating_el = curation_el.find(f"{{{NS}}}rating")
+    if rating_el is None:
+        rating_el = ET.Element(f"{{{NS}}}rating")
+        curation_el.insert(0, rating_el)  # schema xs:sequence requires rating before featured
+    rating_el.text = str(rating)
+
+    return ET.tostring(root, encoding="unicode", xml_declaration=False)
+
+
+def _apply_featured(xml_content, dataset_index, featured):
+    """Set or clear the <featured> flag inside <curation> for a dataset.
+
+    featured=False clears the flag. Removes the <curation> block if both
+    <rating> and <featured> would be absent afterward.
+    Returns updated XML string.
+    Raises ValueError if dataset_index is out of range.
+    """
+    ET.register_namespace("", NS)
+    root = ET.fromstring(xml_content)
+    ds = _get_dataset_el(root, dataset_index)
+    if ds is None:
+        raise ValueError(f"dataset_index {dataset_index} out of range")
+
+    curation_el = ds.find(f"{{{NS}}}curation")
+
+    if not featured:
+        if curation_el is None:
+            return ET.tostring(root, encoding="unicode", xml_declaration=False)
+        featured_el = curation_el.find(f"{{{NS}}}featured")
+        if featured_el is not None:
+            curation_el.remove(featured_el)
+        _prune_curation(curation_el, ds)
+        return ET.tostring(root, encoding="unicode", xml_declaration=False)
+
+    if curation_el is None:
+        curation_el = ET.SubElement(ds, f"{{{NS}}}curation")
+
+    featured_el = curation_el.find(f"{{{NS}}}featured")
+    if featured_el is None:
+        featured_el = ET.SubElement(curation_el, f"{{{NS}}}featured")
+    featured_el.text = "true"
+
+    return ET.tostring(root, encoding="unicode", xml_declaration=False)
+
+
+@login_required
+@require_POST
+def annotate_rate(request, record_id):
+    """AJAX POST: set or clear the curation rating for a dataset."""
+    raw_idx = request.POST.get("dataset_index")
+    raw_rating = request.POST.get("rating")
+    if raw_idx is None or raw_rating is None:
+        return JsonResponse(
+            {"error": "dataset_index and rating are required"}, status=400
+        )
+    try:
+        idx = int(raw_idx)
+        rating = int(raw_rating)
+        if idx < 0:
+            return JsonResponse({"error": "Invalid dataset_index"}, status=400)
+        if not (0 <= rating <= 5):
+            return JsonResponse({"error": "rating must be 0-5"}, status=400)
+    except ValueError:
+        return JsonResponse(
+            {"error": "dataset_index and rating must be integers"}, status=400
+        )
+    try:
+        data = data_api.get_by_id(record_id, request.user)
+        check_can_write(data, request.user)
+        data.content = _apply_rating(data.content, idx, rating)
+        data_api.upsert(data, request)
+        return JsonResponse({"ok": True})
+    except (DoesNotExist, ModelError):
+        return JsonResponse({"error": "Record not found"}, status=404)
+    except AccessControlError as e:
+        return JsonResponse({"error": str(e)}, status=403)
+    except ValueError as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+
+@login_required
+@require_POST
+def annotate_feature(request, record_id):
+    """AJAX POST: set or clear the featured flag for a dataset."""
+    raw_idx = request.POST.get("dataset_index")
+    raw_featured = request.POST.get("featured")
+    if raw_idx is None or raw_featured is None:
+        return JsonResponse(
+            {"error": "dataset_index and featured are required"}, status=400
+        )
+    try:
+        idx = int(raw_idx)
+        if idx < 0:
+            return JsonResponse({"error": "Invalid dataset_index"}, status=400)
+    except ValueError:
+        return JsonResponse({"error": "dataset_index must be an integer"}, status=400)
+    featured = raw_featured.lower() in ("true", "1", "yes")
+    try:
+        data = data_api.get_by_id(record_id, request.user)
+        check_can_write(data, request.user)
+        data.content = _apply_featured(data.content, idx, featured)
+        data_api.upsert(data, request)
+        return JsonResponse({"ok": True})
+    except (DoesNotExist, ModelError):
+        return JsonResponse({"error": "Record not found"}, status=404)
+    except AccessControlError as e:
+        return JsonResponse({"error": str(e)}, status=403)
+    except ValueError as e:
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 @login_required

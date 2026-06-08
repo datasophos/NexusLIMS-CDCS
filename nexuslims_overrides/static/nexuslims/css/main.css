@@ -281,12 +281,41 @@ a.cdcs-menu-item > i.fa {
     height: 3em;
 }
 
-/* CDCS logo in footer - increase size */
-.cdcs-logo {
-    vertical-align: middle;
-    width: 1.5em !important;
-    margin-left: 0.25em !important;
-    bottom: auto !important;
+.footer-meta {
+    display: flex;
+    align-items: center;
+}
+
+.footer-separator {
+    margin: 0 0.5em;
+}
+
+.nexuslims-version-link {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+}
+
+.nexuslims-version-icon {
+    align-self: center;
+    display: block;
+    width: 1.15em;
+    height: 1.15em;
+    margin-right: 0.3em;
+}
+
+.nexuslims-subversion {
+    margin-left: 0.2em;
+    color: inherit;
+    font-size: 0.62em;
+    line-height: 1;
+}
+
+.nexuslims-version-link .fa-external-link-alt {
+    position: relative;
+    top: -1.5em;
+    margin-left: 0.12em;
+    font-size: 0.35em;
 }
 
 

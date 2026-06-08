@@ -16,7 +16,9 @@ services:
     volumes:
       - ./caddy/certs:/etc/caddy/certs:ro
       - ${NX_DATA_HOST_PATH}:${NX_DATA_PATH}:ro
+      - ./test-data/nx-data:/srv/nx-data-test:ro
       - ${NX_INSTRUMENT_DATA_HOST_PATH}:${NX_INSTRUMENT_DATA_PATH}:ro
+      - ./test-data/nx-instrument-data:/srv/nx-instrument-data-test:ro
     environment:
       - SSO_DOMAIN=${SSO_DOMAIN}
 
@@ -30,6 +32,7 @@ services:
       - ./test-data/example_record.xml:/srv/test-data/example_record.xml:ro
       - ./test-data/example_record_large.xml:/srv/test-data/example_record_large.xml:ro
       - ./test-data/example_record_multisample.xml:/srv/test-data/example_record_multisample.xml:ro
+      - ./test-data/example_record_curation.xml:/srv/test-data/example_record_curation.xml:ro
       # Caddy's root CA so pysaml2 / requests can verify the IdP cert when
       # fetching metadata from https://${SSO_DOMAIN}/simplesaml/...
       - ./caddy/certs/ca.crt:/etc/ssl/certs/caddy-root-ca.crt:ro

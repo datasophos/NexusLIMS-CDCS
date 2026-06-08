@@ -44,6 +44,10 @@ CC BY 4.0.</motivation>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:44:14.463148-06:00</meta>
       <meta name="NexusLIMS Extraction – Module">nexusLIMS.extractors.plugins.dm3_extractor</meta>
       <meta name="Creation Time">2026-03-27T06:14:16-06:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Unknown" role="Experimental">
       <name>Hbn_spectra_overlaid.dm5</name>
@@ -69,6 +73,10 @@ CC BY 4.0.</motivation>
       <meta name="Offset">1.188217</meta>
       <meta name="X Units Per Channel">0.00534</meta>
       <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>MoS2_different sampleEELS-REF.msa</name>
@@ -99,6 +107,9 @@ CC BY 4.0.</motivation>
       <meta name="Offset">0.5477922</meta>
       <meta name="X Units Per Channel">0.00534</meta>
       <meta name="Creation Time">2026-03-27T12:14:18+00:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Spectrum" role="Experimental">
       <name>WSe2 MoS2 large twist.msa</name>

@@ -10,6 +10,12 @@ urlpatterns = [
     path(
         "<str:record_id>/panel/", views.annotate_panel, name="nexuslims_annotate_panel"
     ),
+    path("<str:record_id>/rate/", views.annotate_rate, name="nexuslims_annotate_rate"),
+    path(
+        "<str:record_id>/feature/",
+        views.annotate_feature,
+        name="nexuslims_annotate_feature",
+    ),
     path("<str:record_id>/save/", views.annotate_save, name="nexuslims_annotate_save"),
     path(
         "<str:record_id>/save-one/",

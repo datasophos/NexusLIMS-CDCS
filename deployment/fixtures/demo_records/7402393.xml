@@ -35,6 +35,10 @@ CC BY 4.0.</motivation>
       <meta name="Data Dimensions">(26, 80)</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:53:18.626956-06:00</meta>
       <meta name="Creation Time">2022-12-05T16:39:42-07:00</meta>
+      <curation>
+        <rating>5</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>SI 26 x 80 x 2048.dm3</name>
@@ -46,6 +50,10 @@ CC BY 4.0.</motivation>
       <meta name="Data Dimensions">(26, 80, 2048)</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:53:20.699013-06:00</meta>
       <meta name="Creation Time">2022-12-05T16:39:38-07:00</meta>
+      <curation>
+        <rating>4</rating>
+        <featured>true</featured>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>Snapshot of SuperScan (HAADF)-SI.dm3</name>
@@ -56,6 +64,9 @@ CC BY 4.0.</motivation>
       <meta name="Data Dimensions">(1024, 1024)</meta>
       <meta name="NexusLIMS Extraction – Date">2026-03-26T23:53:16.357068-06:00</meta>
       <meta name="Creation Time">2022-12-05T16:39:30-07:00</meta>
+      <curation>
+        <rating>3</rating>
+      </curation>
     </dataset>
     <dataset type="Image" role="Experimental">
       <name>SI (HAADF SubScan).dm3</name>

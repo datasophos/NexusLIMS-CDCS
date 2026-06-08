@@ -189,3 +189,17 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
     font-size: smaller;
     font-style: oblique;
 }
+
+/* Curation controls layout */
+.nx-name-row { display: flex; align-items: center; gap: 4px; }
+/* Keep controls in the layout so revealing them on hover does not move the target. */
+.nx-name-row .nx-star { visibility: hidden; }
+.nx-name-row .nx-rating-group { visibility: hidden; }
+.nx-rc-clear { visibility: hidden; }
+/* Visual styles — applied for all users (editors and read-only) */
+.nx-name-row .nx-star { display: inline; font-size: 0.9rem; color: #aaa; transition: color 0.15s; text-decoration: none; line-height: 1; margin-bottom: 2px; cursor: default; }
+.nx-name-row .nx-star--featured { color: #f5a623; visibility: visible; }
+.nx-name-row .nx-rating-group { display: flex; gap: 2px; margin-left: auto; margin-bottom: 2px; position: relative; }
+.nx-name-row .nx-rating-group[data-current-rating]:not([data-current-rating="0"]) { visibility: visible; }
+.nx-name-row .nx-rc { font-size: 0.65rem; color: #ccc; cursor: default; }
+.nx-name-row .nx-rc--filled { color: #f5a623; }

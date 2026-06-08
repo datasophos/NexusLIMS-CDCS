@@ -85,9 +85,22 @@ https://{$FILES_DOMAIN} {
             @options method OPTIONS
             respond @options 204
 
-            root * {$NX_DATA_PATH}
-            file_server {
-                browse
+            # Serve from demo fixtures first; fall back to example record test data
+            @in_demo file {
+                root {$NX_DATA_PATH}
+                try_files {path}
+            }
+            handle @in_demo {
+                root * {$NX_DATA_PATH}
+                file_server {
+                    browse
+                }
+            }
+            handle {
+                root * /srv/nx-data-test
+                file_server {
+                    browse
+                }
             }
         }
 
@@ -102,9 +115,22 @@ https://{$FILES_DOMAIN} {
             @options method OPTIONS
             respond @options 204
 
-            root * {$NX_INSTRUMENT_DATA_PATH}
-            file_server {
-                browse
+            # Serve from demo fixtures first; fall back to example record test data
+            @in_demo_instr file {
+                root {$NX_INSTRUMENT_DATA_PATH}
+                try_files {path}
+            }
+            handle @in_demo_instr {
+                root * {$NX_INSTRUMENT_DATA_PATH}
+                file_server {
+                    browse
+                }
+            }
+            handle {
+                root * /srv/nx-instrument-data-test
+                file_server {
+                    browse
+                }
             }
         }
     }

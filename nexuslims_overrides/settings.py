@@ -101,3 +101,19 @@ NX_ENABLE_ANNOTATOR = True
 
 # Enable/disable public demo mode (auto-login, demo homepage, stub file warning)
 IS_PUBLIC_DEMO = False
+
+# ============================================================================
+# GALLERY CONFIGURATION
+# ============================================================================
+
+import os as _os
+
+NX_ENABLE_GALLERY = _os.getenv("NX_ENABLE_GALLERY", "true").lower() not in ("0", "false", "no")
+
+_interval = _os.getenv("NX_GALLERY_ROTATION_INTERVAL")
+NX_GALLERY_ROTATION_INTERVAL = int(_interval) if _interval else 30
+
+_logo = _os.getenv("NX_GALLERY_LOGO")
+NX_GALLERY_LOGO = _logo if _logo else None  # Falls back to NX_NAV_LOGO
+
+NX_GALLERY_FACILITY_NAME = _os.getenv("NX_GALLERY_FACILITY_NAME", "NexusLIMS")

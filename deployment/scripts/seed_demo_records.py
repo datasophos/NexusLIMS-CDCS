@@ -145,7 +145,9 @@ def seed_records():
 def main():
     from django.conf import settings
 
-    if not getattr(settings, "IS_PUBLIC_DEMO", False):
+    if not getattr(settings, "IS_PUBLIC_DEMO", False) and not getattr(
+        settings, "DEBUG", False
+    ):
         log_warning("IS_PUBLIC_DEMO is not True - are you using demo_settings?")
 
     print("=" * 60)

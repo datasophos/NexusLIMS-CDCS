@@ -9,14 +9,28 @@
                 </a>
             {% endif %}
         </div>
-        <div class="p-1 pe-0 pe-lg-5">
-            <a class="small" href="{% url "core_website_app_terms" %}" style="margin-right: 0.5em;">Terms of Use</a>
-            <span>|</span>
-            <span style="margin-left: 0.5em; margin-right: 0.25em">
-                Powered by:
-            </span>
-            <img src="{% static 'img/cdcs_logo.png' %}" alt="cdcs-logo" class="cdcs-logo"/>
-            <a href="https://github.com/usnistgov/mdcs">CDCS v. {% include "theme/footer/version.html" %}</a>
+        <div class="footer-meta p-1 pe-0 pe-lg-5">
+            <a class="small" href="{% url "core_website_app_terms" %}">Terms of Use</a>
+            <span class="footer-separator">|</span>
+            <a
+                class="nexuslims-version-link small"
+                href="https://datasophos.github.io/NexusLIMS/stable/frontend_guide/changelog.html"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <img
+                    src="{% static 'nexuslims/img/icon.svg' %}"
+                    alt=""
+                    class="nexuslims-version-icon"
+                    aria-hidden="true"
+                />
+                NexusLIMS Frontend v. {{ NX_BASE_VERSION }}
+                {% if NX_SUBVERSION %}
+                    <code class="nexuslims-subversion">({{ NX_SUBVERSION }})</code>
+                {% endif %}
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
         </div>
     </div>
 </div>

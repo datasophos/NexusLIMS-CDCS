@@ -1720,8 +1720,39 @@ Use it like:
       -->
     <xsl:template name="dataset-name-cell">
         <xsl:param name="dataset-index"/>
+        <xsl:variable name="cur-rating">
+            <xsl:choose>
+                <xsl:when test="nx:curation/nx:rating/text()"><xsl:value-of select="nx:curation/nx:rating"/></xsl:when>
+                <xsl:otherwise>0</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="is-featured">
+            <xsl:choose>
+                <xsl:when test="nx:curation/nx:featured = 'true'">true</xsl:when>
+                <xsl:otherwise>false</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:element name="td">
-            <div><xsl:value-of select="nx:name"/></div>
+            <div class="nx-name-row">
+                <span><xsl:value-of select="nx:name"/></span>
+                <button type="button"
+                        data-dataset-index="{$dataset-index}"
+                        data-featured="{$is-featured}"
+                        title="Featured dataset">
+                    <xsl:attribute name="class">nx-star btn btn-link p-0 border-0<xsl:if test="$is-featured = 'true'"> nx-star--featured</xsl:if></xsl:attribute>
+                    &#x2605;
+                </button>
+                <div data-dataset-index="{$dataset-index}"
+                     data-current-rating="{$cur-rating}">
+                    <xsl:attribute name="class">nx-rating-group</xsl:attribute>
+                    <span class="nx-rc-clear" title="Clear rating">&#x2715;</span>
+                    <span data-value="1" title="Rating: {$cur-rating}/5"><xsl:attribute name="class">nx-rc<xsl:if test="number($cur-rating) &gt;= 1"> nx-rc--filled</xsl:if></xsl:attribute>&#x25CF;</span>
+                    <span data-value="2" title="Rating: {$cur-rating}/5"><xsl:attribute name="class">nx-rc<xsl:if test="number($cur-rating) &gt;= 2"> nx-rc--filled</xsl:if></xsl:attribute>&#x25CF;</span>
+                    <span data-value="3" title="Rating: {$cur-rating}/5"><xsl:attribute name="class">nx-rc<xsl:if test="number($cur-rating) &gt;= 3"> nx-rc--filled</xsl:if></xsl:attribute>&#x25CF;</span>
+                    <span data-value="4" title="Rating: {$cur-rating}/5"><xsl:attribute name="class">nx-rc<xsl:if test="number($cur-rating) &gt;= 4"> nx-rc--filled</xsl:if></xsl:attribute>&#x25CF;</span>
+                    <span data-value="5" title="Rating: {$cur-rating}/5"><xsl:attribute name="class">nx-rc<xsl:if test="number($cur-rating) &gt;= 5"> nx-rc--filled</xsl:if></xsl:attribute>&#x25CF;</span>
+                </div>
+            </div>
             <div class="nx-desc-row">
                 <div class="nx-table-desc">
                     <xsl:if test="nx:description/text()">
