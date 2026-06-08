@@ -164,6 +164,13 @@ admin-update-xslt() {
         bash "$_ADMIN_DIR/scripts/update-xslt.sh" "${@:-all}"
 }
 
+# Usage: admin-upgrade-schema
+unalias admin-upgrade-schema 2>/dev/null || true
+admin-upgrade-schema() {
+    COMPOSE_FILE="$_ADMIN_DIR/docker-compose.base.yml:$_ADMIN_DIR/docker-compose.prod.yml" \
+        docker compose exec -T cdcs python /srv/scripts/upgrade_schema.py
+}
+
 echo "NexusLIMS-CDCS Administrative Commands Loaded!"
 echo "Project: ${COMPOSE_PROJECT_NAME}"
 echo ""
@@ -189,6 +196,7 @@ echo ""
 echo "  🚀 Initialization:"
 echo "    admin-init            - Initialize environment (create superuser, load schema & XSLT)"
 echo "    admin-update-xslt     - Update XSLT stylesheets in the database [detail|list|all]"
+echo "    admin-upgrade-schema  - Upgrade schema version, migrate records, and update XSLT"
 echo ""
 echo "To use these commands, run: source admin-commands.sh"
 echo ""
