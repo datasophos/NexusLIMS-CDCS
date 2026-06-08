@@ -107,7 +107,34 @@ def migrate_records(old_template_ids, new_template):
 
 def update_xslt(xslt_dir=XSLT_DIR):
     """Refresh both XSLT stylesheets in the DB from mounted xslt/ directory."""
-    pass  # implemented in Task 5
+    from core_main_app.components.xsl_transformation import api as xslt_api
+
+    dataset_base_url = os.environ.get(
+        "XSLT_DATASET_BASE_URL",
+        "https://files.nexuslims-dev.localhost/instrument-data",
+    )
+    preview_base_url = os.environ.get(
+        "XSLT_PREVIEW_BASE_URL",
+        "https://files.nexuslims-dev.localhost/data",
+    )
+
+    for xsl_name in ["detail_stylesheet.xsl", "list_stylesheet.xsl"]:
+        content = (xslt_dir / xsl_name).read_text(encoding="utf-8")
+
+        if xsl_name == "detail_stylesheet.xsl":
+            content = content.replace(
+                '<xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
+                f'<xsl:variable name="datasetBaseUrl">{dataset_base_url}</xsl:variable>',
+            )
+            content = content.replace(
+                '<xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>',
+                f'<xsl:variable name="previewBaseUrl">{preview_base_url}</xsl:variable>',
+            )
+
+        xslt = xslt_api.get_by_name(xsl_name)
+        xslt.content = content
+        xslt_api.upsert(xslt)
+        log_success(f"{xsl_name} updated")
 
 
 def main():

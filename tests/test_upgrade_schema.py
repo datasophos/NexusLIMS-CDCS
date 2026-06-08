@@ -195,3 +195,67 @@ class TestMigrateRecords(django.test.SimpleTestCase):
 
         MockData.objects.filter.assert_not_called()
         self.assertEqual(count, 0)
+
+
+class TestUpdateXslt(django.test.SimpleTestCase):
+    """update_xslt() tests."""
+
+    def _make_xslt_dir(self, tmpdir):
+        xslt_dir = Path(tmpdir) / "xslt"
+        xslt_dir.mkdir()
+
+        detail = (
+            '<xsl:stylesheet>\n'
+            '  <xsl:variable name="datasetBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>\n'
+            '  <xsl:variable name="previewBaseUrl">https://CHANGE.THIS.VALUE</xsl:variable>\n'
+            '</xsl:stylesheet>'
+        )
+        (xslt_dir / "detail_stylesheet.xsl").write_text(detail)
+        (xslt_dir / "list_stylesheet.xsl").write_text("<xsl:stylesheet/>")
+        return xslt_dir
+
+    def test_patches_urls_in_detail_stylesheet(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            xslt_dir = self._make_xslt_dir(tmpdir)
+            mock_detail = MagicMock()
+            mock_list = MagicMock()
+
+            with (
+                patch.dict(
+                    "os.environ",
+                    {
+                        "XSLT_DATASET_BASE_URL": "https://files.example.com/instrument-data",
+                        "XSLT_PREVIEW_BASE_URL": "https://files.example.com/data",
+                    },
+                ),
+                patch(
+                    "core_main_app.components.xsl_transformation.api"
+                ) as mock_xslt_api,
+            ):
+                mock_xslt_api.get_by_name.side_effect = lambda name: (
+                    mock_detail if "detail" in name else mock_list
+                )
+
+                upgrade_schema.update_xslt(xslt_dir=xslt_dir)
+
+            self.assertIn("https://files.example.com/instrument-data", mock_detail.content)
+            self.assertIn("https://files.example.com/data", mock_detail.content)
+            self.assertNotIn("CHANGE.THIS.VALUE", mock_detail.content)
+            self.assertEqual(mock_xslt_api.upsert.call_count, 2)
+
+    def test_upsert_called_for_both_stylesheets(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            xslt_dir = self._make_xslt_dir(tmpdir)
+
+            with (
+                patch.dict("os.environ", {}, clear=False),
+                patch(
+                    "core_main_app.components.xsl_transformation.api"
+                ) as mock_xslt_api,
+            ):
+                mock_xslt_api.get_by_name.return_value = MagicMock()
+                upgrade_schema.update_xslt(xslt_dir=xslt_dir)
+
+            self.assertEqual(mock_xslt_api.upsert.call_count, 2)
