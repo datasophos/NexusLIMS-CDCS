@@ -85,10 +85,12 @@ def add_schema_version(tvm, new_content, request):
     from core_main_app.components.template_version_manager import api as tvm_api
     from core_main_app.components.version_manager import api as vm_api
 
+    from xml_utils.xsd_hash import xsd_hash as _xsd_hash
+
     new_template = Template()
     new_template.filename = "nexus-experiment.xsd"
     new_template.content = new_content
-    new_template.hash = hashlib.sha1(new_content.encode("utf-8")).hexdigest()
+    new_template.hash = _xsd_hash.get_hash(new_content)
 
     tvm_api.insert(tvm, new_template, request=request)
     vm_api.set_current(new_template, request=request)

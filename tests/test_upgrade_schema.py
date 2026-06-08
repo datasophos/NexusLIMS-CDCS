@@ -140,6 +140,7 @@ class TestAddSchemaVersion(django.test.SimpleTestCase):
             patch(
                 "core_main_app.components.version_manager.api"
             ) as mock_vm_api,
+            patch("xml_utils.xsd_hash.xsd_hash.get_hash", return_value="mock-hash"),
         ):
             MockTemplate.return_value = mock_new_template
 
@@ -156,11 +157,10 @@ class TestAddSchemaVersion(django.test.SimpleTestCase):
         self.assertIs(result, mock_new_template)
 
     def test_sets_correct_filename_content_and_hash(self):
-        import hashlib
         new_content = "<xs:schema>v2</xs:schema>"
-        expected_hash = hashlib.sha1(new_content.encode()).hexdigest()
         mock_tvm = MagicMock()
         mock_request = MagicMock()
+        sentinel_hash = "normalized-xsd-hash"
 
         with (
             patch(
@@ -168,12 +168,16 @@ class TestAddSchemaVersion(django.test.SimpleTestCase):
             ) as MockTemplate,
             patch("core_main_app.components.template_version_manager.api"),
             patch("core_main_app.components.version_manager.api"),
+            patch(
+                "xml_utils.xsd_hash.xsd_hash.get_hash",
+                return_value=sentinel_hash,
+            ),
         ):
             instance = MockTemplate.return_value
             upgrade_schema.add_schema_version(mock_tvm, new_content, mock_request)
             self.assertEqual(instance.filename, "nexus-experiment.xsd")
             self.assertEqual(instance.content, new_content)
-            self.assertEqual(instance.hash, expected_hash)
+            self.assertEqual(instance.hash, sentinel_hash)
 
 
 class TestMigrateRecords(django.test.SimpleTestCase):
