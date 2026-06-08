@@ -79,13 +79,26 @@ def detect_schema_change(schema_path=SCHEMA_PATH):
 def add_schema_version(tvm, new_content, request):
     """Add a new template version with new_content and set it as current.
 
+    Copies the XSL rendering association from the old current version so the
+    new version has working detail and list stylesheets immediately.
+
     Returns the new Template object.
     """
     from core_main_app.components.template.models import Template
+    from core_main_app.components.template import api as template_api
     from core_main_app.components.template_version_manager import api as tvm_api
+    from core_main_app.components.template_xsl_rendering import (
+        api as template_xsl_rendering_api,
+    )
     from core_main_app.components.version_manager import api as vm_api
-
     from xml_utils.xsd_hash import xsd_hash as _xsd_hash
+
+    # Capture old rendering before inserting the new version
+    old_template = template_api.get_by_id(tvm.current, request=request)
+    try:
+        old_rendering = template_xsl_rendering_api.get_by_template_id(old_template.id)
+    except Exception:
+        old_rendering = None
 
     new_template = Template()
     new_template.filename = "nexus-experiment.xsd"
@@ -94,6 +107,17 @@ def add_schema_version(tvm, new_content, request):
 
     tvm_api.insert(tvm, new_template, request=request)
     vm_api.set_current(new_template, request=request)
+
+    # Copy the XSL rendering to the new template version
+    if old_rendering is not None:
+        list_detail_ids = [x.id for x in old_rendering.list_detail_xslt.all()]
+        template_xsl_rendering_api.upsert(
+            template=new_template,
+            list_xslt=old_rendering.list_xslt,
+            default_detail_xslt=old_rendering.default_detail_xslt,
+            list_detail_xslt=list_detail_ids,
+        )
+
     return new_template
 
 

@@ -124,6 +124,16 @@ class TestDetectSchemaChange(django.test.SimpleTestCase):
 class TestAddSchemaVersion(django.test.SimpleTestCase):
     """add_schema_version() tests."""
 
+    def _common_patches(self):
+        return (
+            patch("core_main_app.components.template.models.Template"),
+            patch("core_main_app.components.template.api"),
+            patch("core_main_app.components.template_version_manager.api"),
+            patch("core_main_app.components.version_manager.api"),
+            patch("core_main_app.components.template_xsl_rendering.api"),
+            patch("xml_utils.xsd_hash.xsd_hash.get_hash", return_value="mock-hash"),
+        )
+
     def test_calls_insert_and_set_current(self):
         new_content = "<xs:schema>v2</xs:schema>"
         mock_tvm = MagicMock()
@@ -134,12 +144,14 @@ class TestAddSchemaVersion(django.test.SimpleTestCase):
             patch(
                 "core_main_app.components.template.models.Template"
             ) as MockTemplate,
+            patch("core_main_app.components.template.api"),
             patch(
                 "core_main_app.components.template_version_manager.api"
             ) as mock_tvm_api,
             patch(
                 "core_main_app.components.version_manager.api"
             ) as mock_vm_api,
+            patch("core_main_app.components.template_xsl_rendering.api"),
             patch("xml_utils.xsd_hash.xsd_hash.get_hash", return_value="mock-hash"),
         ):
             MockTemplate.return_value = mock_new_template
@@ -166,8 +178,10 @@ class TestAddSchemaVersion(django.test.SimpleTestCase):
             patch(
                 "core_main_app.components.template.models.Template"
             ) as MockTemplate,
+            patch("core_main_app.components.template.api"),
             patch("core_main_app.components.template_version_manager.api"),
             patch("core_main_app.components.version_manager.api"),
+            patch("core_main_app.components.template_xsl_rendering.api"),
             patch(
                 "xml_utils.xsd_hash.xsd_hash.get_hash",
                 return_value=sentinel_hash,
