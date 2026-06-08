@@ -56,7 +56,11 @@ def detect_schema_change(schema_path=SCHEMA_PATH):
         raise FileNotFoundError(f"Schema file not found: {schema_path}")
 
     new_content = schema_path.read_text(encoding="utf-8")
-    new_hash = hashlib.sha1(new_content.encode("utf-8")).hexdigest()
+    # Use the same normalized XSD hash that CDCS computes on insert so that the
+    # comparison is apples-to-apples (CDCS strips whitespace, comments, and
+    # annotations before hashing — a raw SHA-1 of file bytes would never match).
+    from xml_utils.xsd_hash import xsd_hash as _xsd_hash
+    new_hash = _xsd_hash.get_hash(new_content)
 
     tvm = TemplateVersionManager.objects.filter(
         title=TEMPLATE_TITLE, is_disabled=False
@@ -159,11 +163,69 @@ def main():
     request = RequestFactory().get("/")
     request.user = admin
 
+    upgraded = False
+
+    # ── Step 1: Schema ──────────────────────────────────────────────────────
     print("\nStep 1/3: Schema check")
+    try:
+        result = detect_schema_change()
+    except FileNotFoundError as exc:
+        log_error(str(exc))
+        sys.exit(1)
+    except RuntimeError as exc:
+        log_error(str(exc))
+        sys.exit(1)
+
+    if result is None:
+        log_success("Active version hash matches on-disk schema — no upgrade needed")
+    else:
+        tvm, new_content = result
+        old_ids = list(tvm.versions)
+        try:
+            new_template = add_schema_version(tvm, new_content, request)
+        except Exception as exc:
+            log_error(f"Failed to add schema version: {exc}")
+            sys.exit(1)
+        version_number = len(tvm.versions)
+        log_success(f"Added Version {version_number} to '{TEMPLATE_TITLE}'")
+        log_success(f"Version {version_number} set as current")
+        upgraded = True
+
+    # ── Step 2: Records ─────────────────────────────────────────────────────
     print("\nStep 2/3: Record migration")
+    # Always check — handles both "just upgraded" and "records left behind" cases.
+    from core_main_app.components.template_version_manager.models import (
+        TemplateVersionManager,
+    )
+    from core_main_app.components.template.models import Template
+
+    tvm_now = TemplateVersionManager.objects.filter(
+        title=TEMPLATE_TITLE, is_disabled=False
+    ).first()
+    current_tmpl = Template.objects.get(id=tvm_now.current)
+    non_current_ids = [v for v in tvm_now.versions if str(v) != str(current_tmpl.id)]
+
+    try:
+        count = migrate_records(non_current_ids, current_tmpl)
+    except Exception as exc:
+        log_error(f"Record migration failed: {exc}")
+        sys.exit(1)
+
+    if count:
+        log_success(f"Migrated {count} record(s) to current schema version")
+        upgraded = True
+    else:
+        log_success("All records already on current version — no migration needed")
+
+    # ── Step 3: XSLT ────────────────────────────────────────────────────────
     print("\nStep 3/3: XSLT update")
+    try:
+        update_xslt()
+    except Exception as exc:
+        log_warning(f"XSLT update failed (schema/records unchanged): {exc}")
+
     print()
-    print("(stub — tasks 2-5 will fill this in)")
+    print("Schema upgrade complete." if upgraded else "Nothing to upgrade.")
 
 
 if __name__ == "__main__":

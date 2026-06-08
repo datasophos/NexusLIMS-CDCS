@@ -1,8 +1,6 @@
 """Tests for deployment/scripts/upgrade_schema.py."""
-import hashlib
 import sys
 import tempfile
-import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -16,27 +14,37 @@ import upgrade_schema  # noqa: E402
 class TestDetectSchemaChange(django.test.SimpleTestCase):
     """detect_schema_change() tests."""
 
+    # Stable sentinel hashes for use in tests — the actual value is arbitrary,
+    # what matters is that "same" and "different" are distinguishable.
+    _HASH_V1 = "aabbccdd" * 5  # 40-char fake SHA-1
+    _HASH_V2 = "11223344" * 5
+
     def _make_tvm(self, current_id, versions=None):
         tvm = MagicMock()
         tvm.current = str(current_id)
         tvm.versions = versions or [str(current_id)]
         return tvm
 
-    def _make_template(self, content):
+    def _make_template(self, fake_hash):
         tmpl = MagicMock()
-        tmpl.hash = hashlib.sha1(content.encode()).hexdigest()
+        tmpl.hash = fake_hash
         return tmpl
 
+    def _patch_xsd_hash(self, return_value):
+        """Return a context manager that patches xsd_hash.get_hash inside the module."""
+        return patch("xml_utils.xsd_hash.xsd_hash.get_hash", return_value=return_value)
+
     def test_returns_none_when_hash_matches(self):
-        content = "<xs:schema>v1</xs:schema>"
+        content = "dummy schema content v1"
         with tempfile.TemporaryDirectory() as tmpdir:
             schema_file = Path(tmpdir) / "nexus-experiment.xsd"
             schema_file.write_text(content)
 
             tvm = self._make_tvm(current_id=1)
-            tmpl = self._make_template(content)
+            tmpl = self._make_template(self._HASH_V1)
 
             with (
+                self._patch_xsd_hash(self._HASH_V1),
                 patch(
                     "core_main_app.components.template_version_manager"
                     ".models.TemplateVersionManager"
@@ -53,16 +61,17 @@ class TestDetectSchemaChange(django.test.SimpleTestCase):
         self.assertIsNone(result)
 
     def test_returns_tuple_when_hash_differs(self):
-        old_content = "<xs:schema>v1</xs:schema>"
-        new_content = "<xs:schema>v2</xs:schema>"
+        new_content = "dummy schema content v2"
         with tempfile.TemporaryDirectory() as tmpdir:
             schema_file = Path(tmpdir) / "nexus-experiment.xsd"
             schema_file.write_text(new_content)
 
             tvm = self._make_tvm(current_id=1)
-            tmpl = self._make_template(old_content)
+            # DB has v1's hash; on-disk file computes v2's hash
+            tmpl = self._make_template(self._HASH_V1)
 
             with (
+                self._patch_xsd_hash(self._HASH_V2),
                 patch(
                     "core_main_app.components.template_version_manager"
                     ".models.TemplateVersionManager"
@@ -97,9 +106,10 @@ class TestDetectSchemaChange(django.test.SimpleTestCase):
     def test_raises_if_tvm_not_in_db(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             schema_file = Path(tmpdir) / "nexus-experiment.xsd"
-            schema_file.write_text("<xs:schema/>")
+            schema_file.write_text("dummy schema content")
 
             with (
+                self._patch_xsd_hash(self._HASH_V1),
                 patch(
                     "core_main_app.components.template_version_manager"
                     ".models.TemplateVersionManager"
