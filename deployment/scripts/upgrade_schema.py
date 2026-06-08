@@ -47,7 +47,29 @@ def detect_schema_change(schema_path=SCHEMA_PATH):
     Raises FileNotFoundError if schema file is missing.
     Raises RuntimeError if template version manager is not in the DB.
     """
-    pass  # implemented in Task 2
+    from core_main_app.components.template_version_manager.models import (
+        TemplateVersionManager,
+    )
+    from core_main_app.components.template.models import Template
+
+    if not schema_path.exists():
+        raise FileNotFoundError(f"Schema file not found: {schema_path}")
+
+    new_content = schema_path.read_text(encoding="utf-8")
+    new_hash = hashlib.sha1(new_content.encode("utf-8")).hexdigest()
+
+    tvm = TemplateVersionManager.objects.filter(
+        title=TEMPLATE_TITLE, is_disabled=False
+    ).first()
+    if tvm is None:
+        raise RuntimeError(
+            f"Template '{TEMPLATE_TITLE}' not found in DB. Run init_environment.py first."
+        )
+
+    current_template = Template.objects.get(id=tvm.current)
+    if current_template.hash == new_hash:
+        return None
+    return (tvm, new_content)
 
 
 def add_schema_version(tvm, new_content, request):
