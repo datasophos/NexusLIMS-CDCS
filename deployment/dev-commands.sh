@@ -55,9 +55,6 @@ alias dev-update-xslt='bash "$_DEV_DIR/scripts/update-xslt.sh"'
 alias dev-update-xslt-detail='bash "$_DEV_DIR/scripts/update-xslt.sh" detail'
 alias dev-update-xslt-list='bash "$_DEV_DIR/scripts/update-xslt.sh" list'
 
-# Schema upgrade
-alias dev-upgrade-schema='docker exec nexuslims_dev_cdcs python /srv/scripts/upgrade_schema.py'
-
 # UV dependency management
 # Note: --no-install-project skips building the project itself (Django app, not a package)
 alias dev-uv-lock='(cd "$_DEV_DIR/.." && uv lock)'
@@ -124,7 +121,6 @@ echo "  🎨 XSLT Stylesheets:"
 echo "    dev-update-xslt        - Update both detail and list stylesheets in database"
 echo "    dev-update-xslt-detail - Update detail_stylesheet.xsl only"
 echo "    dev-update-xslt-list   - Update list_stylesheet.xsl only"
-echo "    dev-upgrade-schema     - Upgrade schema version, migrate records, and update XSLT"
 echo ""
 echo "  📦 UV Dependencies:"
 echo "    dev-uv-lock            - Regenerate uv.lock from pyproject.toml"
