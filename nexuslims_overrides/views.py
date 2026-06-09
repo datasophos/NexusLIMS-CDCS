@@ -21,10 +21,10 @@ def tiles(request):
     NexusLIMS customized tiles for homepage.
 
     Customizations from base mdcs_home.views.tiles():
-    - Reordered: Search first, then Curate
+    - Reordered: Search first, then Gallery
     - Disabled: "Build your own queries", "Compose a template"
     - Custom text: "Browse and Search Records" instead of "Search by keyword"
-    - Added IDs: "app_search" and "curator" for JavaScript targeting
+    - Added IDs for JavaScript targeting
     - NexusLIMS-specific descriptions
 
     :param request:
@@ -44,7 +44,20 @@ def tiles(request):
         }
         context["tiles"].append(explore_keywords_tile)
 
-    # Second tile: Create a new record (curate) - currently disabled
+    # Second tile: Visual Gallery
+    if "nexuslims_gallery" in installed_apps and getattr(
+        settings, "NX_ENABLE_GALLERY", True
+    ):
+        gallery_tile = {
+            "logo": "fa-images",
+            "link": reverse("nexuslims_gallery_page"),
+            "title": "Visual Gallery",
+            "text": "Explore featured images and datasets from NexusLIMS records",
+            "id": "visual_gallery",
+        }
+        context["tiles"].append(gallery_tile)
+
+    # Third tile: Create a new record (curate) - currently disabled
     if "core_curate_app" in installed_apps:
         curate_tile = {
             "logo": "fa-edit",
@@ -57,7 +70,7 @@ def tiles(request):
         # Uncomment to enable manual record creation:
         # context["tiles"].append(curate_tile)
 
-    # Third tile: Build your own queries - disabled for NexusLIMS
+    # Fourth tile: Build your own queries - disabled for NexusLIMS
     if "core_explore_example_app" in installed_apps:
         explore_example_tile = {
             "logo": "fa-flask",
@@ -69,7 +82,7 @@ def tiles(request):
         # Uncomment to enable:
         # context["tiles"].append(explore_example_tile)
 
-    # Fourth tile: Compose a template - disabled for NexusLIMS
+    # Fifth tile: Compose a template - disabled for NexusLIMS
     if "core_composer_app" in installed_apps:
         compose_tile = {
             "logo": "fa-file-code",

@@ -76,6 +76,10 @@ def nexuslims_features(request):
     return {
         "NX_ENABLE_TUTORIALS": getattr(settings, "NX_ENABLE_TUTORIALS", True),
         "NX_ENABLE_ANNOTATOR": getattr(settings, "NX_ENABLE_ANNOTATOR", True),
+        "NX_ENABLE_GALLERY": (
+            "nexuslims_gallery" in settings.INSTALLED_APPS
+            and getattr(settings, "NX_ENABLE_GALLERY", True)
+        ),
         "IS_PUBLIC_DEMO": getattr(settings, "IS_PUBLIC_DEMO", False),
     }
 

@@ -66,6 +66,24 @@ def test_next_param_redirects_after_login(unauthenticated_page, base_url):
     assert "/annotate/check-auth-only/" in page.url
 
 
+def test_nav_login_redirects_to_current_page(unauthenticated_page, base_url):
+    """Logging in from the navigation returns to the page where login was clicked."""
+    page = unauthenticated_page
+    return_url = f"{base_url}/explore/keyword/?source=login-test"
+    page.goto(return_url)
+    page.locator("a.btn-custom", has_text="Log In / Sign Up").click()
+    page.wait_for_load_state("networkidle")
+    assert "/login" in page.url
+    assert "next=" in page.url
+
+    page.locator("#id_username").fill(_USERNAME)
+    page.locator("#id_password").fill(_PASSWORD)
+    page.locator("[type=submit]").first.click()
+    page.wait_for_load_state("networkidle")
+
+    assert page.url == return_url
+
+
 def test_login_page_redirects_when_already_authenticated(authenticated_page, base_url):
     """Navigating to /login while already logged in redirects away from the login form."""
     page = authenticated_page

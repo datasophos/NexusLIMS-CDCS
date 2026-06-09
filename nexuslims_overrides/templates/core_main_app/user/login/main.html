@@ -1,0 +1,58 @@
+<div class="form-login">
+    {% if data.ENABLE_SAML2_SSO_AUTH %}
+    <h3><div class="text-center" style="margin: 1em;">Sign in with:</div></h3>
+    <div class="text-center">
+        <a href="{% url 'core_main_app_saml2_login' %}?next={{ request.GET.next|urlencode }}"
+           class="p-2 btn btn-primary text-center">
+            <i class="fas fa-globe"></i> Single Sign-on
+        </a>
+    </div>
+    <h3><div class="text-center" style="margin: 1em;">Or:</div></h3>
+    {% else %}
+    <h3><div class="text-center" style="margin: 1em;">Sign in</div></h3>
+    {% endif %}
+    {% if data.login_error %}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i> Invalid username and/or password. Please try again or
+        contact an administrator for any assistance.
+    </div>
+    {% endif %}
+    {% if data.login_locked %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> Your username is not activated yet. Please check back soon or
+        contact an administrator for any assistance.
+    </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'core_main_app_login' %}" class="form-horizontal">
+        {% csrf_token %}
+        {% for field in data.login_form.visible_fields %}
+        <div class="form-group">
+            <div>
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+
+        {% for field in data.login_form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+
+        <div class="form-group">
+            <div class=" {% if BOOTSTRAP_VERSION|first == "4" %}float-right{% elif BOOTSTRAP_VERSION|first == "5"  %}float-end{% endif %} ">
+                <a href="{% url 'password_reset' %}">
+                    <i class="fas fa-lock" aria-hidden="true"></i> Forgot password?&nbsp;
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-arrow-right-to-bracket"></i> Login
+                </button>
+            </div>
+        </div>
+        {% if data.with_website_features %}
+        <div class="text-center" style="margin-top: 5em;">
+            <p>No account? <a href="{% url 'core_website_app_account_request' %}">Request one</a></p>
+        </div>
+        {% endif %}
+    </form>
+</div>

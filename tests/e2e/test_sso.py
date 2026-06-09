@@ -1,5 +1,4 @@
 """E2E tests for SAML SSO authentication."""
-import pytest
 
 # Dev IdP test credentials -- hardcoded in deployment/dev-sso/authsources.php
 _IDP_USERNAME = "admin"
@@ -91,22 +90,12 @@ def test_sso_logout_clears_session(unauthenticated_page, base_url):
     assert "/login" in page.url or page.locator("#id_username").count() > 0
 
 
-@pytest.mark.xfail(
-    reason=(
-        "CDCS shortcoming: the upstream login template "
-        "core_main_app/templates/core_main_app/user/login/main.html renders the "
-        "SSO button as a static <a href='{% url core_main_app_saml2_login %}'> "
-        "without appending ?next=, so the redirect target is lost on click. "
-        "Fix in nexuslims_overrides/templates/core_main_app/user/login/main.html "
-        "by appending '?next={{ request.GET.next|urlencode }}' to the SSO link "
-        "(and verify the saml2 view forwards it via RelayState)."
-    ),
-    strict=True,
-)
 def test_sso_next_param_redirects_after_login(unauthenticated_page, base_url):
-    """SSO preserves Django's ?next= param and returns the user to the original URL."""
+    """SSO from the navigation returns to the page where login was clicked."""
     page = unauthenticated_page
-    page.goto(f"{base_url}/annotate/check-auth-only/")
+    return_url = f"{base_url}/explore/keyword/?source=sso-login-test"
+    page.goto(return_url)
+    page.locator("a.btn-custom", has_text="Log In / Sign Up").click()
     page.wait_for_load_state("networkidle")
     assert "/login" in page.url
     assert "next=" in page.url
@@ -118,7 +107,7 @@ def test_sso_next_param_redirects_after_login(unauthenticated_page, base_url):
     page.locator("[type=submit]").first.click()
     page.wait_for_url(f"{base_url}/**")
 
-    assert "/annotate/check-auth-only/" in page.url
+    assert page.url == return_url
 
 
 def test_sso_admin_user_has_staff_access(unauthenticated_page, base_url):
@@ -128,14 +117,18 @@ def test_sso_admin_user_has_staff_access(unauthenticated_page, base_url):
 
     # Staff users see the 'Administration' link in the user dropdown.
     page.locator("#dropdownDashboard").click()
-    admin_link = page.locator("#dropdownDashboard").locator(
-        "xpath=following-sibling::ul"
-    ).locator("a:has-text('Administration')")
+    admin_link = (
+        page.locator("#dropdownDashboard")
+        .locator("xpath=following-sibling::ul")
+        .locator("a:has-text('Administration')")
+    )
     admin_link.wait_for(state="visible")
     assert admin_link.count() > 0
 
 
-def test_sso_when_already_authenticated_preserves_session(unauthenticated_page, base_url):
+def test_sso_when_already_authenticated_preserves_session(
+    unauthenticated_page, base_url
+):
     """Visiting /login (or re-clicking the SSO button) while authenticated keeps the session."""
     page = unauthenticated_page
     _sso_login(page, base_url)

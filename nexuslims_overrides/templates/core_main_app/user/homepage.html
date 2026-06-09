@@ -3,6 +3,7 @@
 
 {# NexusLIMS Homepage Template #}
 {# Migrated from templates/core_main_app/user/homepage.html #}
+<link rel="stylesheet" href="{% static 'nexuslims/css/homepage.css' %}">
 
 {% if IS_PUBLIC_DEMO %}
 <div class="row align-items-center rounded mb-2" id="intro"
@@ -23,6 +24,12 @@
                class="btn btn-light btn-lg fw-semibold">
                 <i class="fas fa-search me-1"></i> Browse demo records
             </a>
+            {% if NX_ENABLE_GALLERY %}
+            <a href="{% url 'nexuslims_gallery_page' %}"
+               class="btn btn-light btn-lg fw-semibold">
+                <i class="fas fa-images me-1"></i> Visual gallery
+            </a>
+            {% endif %}
             <a href="https://datasophos.github.io/NexusLIMS/stable/frontend_guide.html" target="_blank" rel="noopener noreferrer"
                class="btn btn-light btn-lg fw-semibold">
                 <i class="fas fa-book me-1"></i> Learn more
@@ -55,8 +62,7 @@
                 {% endif %}
                 {% if NX_DOCUMENTATION_LINK %}visit the
                 <a href="{{ NX_DOCUMENTATION_LINK }}" target="_blank">documentation page</a>{% endif %}.
-                To get started, please click the link below to start
-                browsing experimental records:
+                To get started, use the links below to explore experimental records.
             </p>
         </div>
         <div id="homepage-logo-col" class="col-md-3">

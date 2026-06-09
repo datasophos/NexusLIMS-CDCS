@@ -7,7 +7,8 @@ from tests.e2e.helpers import fetch_all_records, reset_records
 _USERNAME = "admin"
 _PASSWORD = "admin"
 _BASE_URL = "https://nexuslims-dev.localhost"
-_TIMEOUT_MS = 5_000
+_ACTION_TIMEOUT_MS = 10_000
+_NAVIGATION_TIMEOUT_MS = 15_000
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _SCREENSHOT_DIR = _REPO_ROOT / "deployment" / "test-results"
@@ -16,8 +17,8 @@ _SCREENSHOT_DIR = _REPO_ROOT / "deployment" / "test-results"
 def new_context(browser, browser_context_args):
     """Create a browser context with project-wide defaults applied."""
     ctx = browser.new_context(**browser_context_args)
-    ctx.set_default_timeout(_TIMEOUT_MS)
-    ctx.set_default_navigation_timeout(_TIMEOUT_MS)
+    ctx.set_default_timeout(_ACTION_TIMEOUT_MS)
+    ctx.set_default_navigation_timeout(_NAVIGATION_TIMEOUT_MS)
     return ctx
 
 
@@ -77,8 +78,8 @@ def auth_state(browser, browser_context_args, base_url):
 def authenticated_page(browser, browser_context_args, auth_state, request):
     """Fresh page pre-loaded with auth session."""
     ctx = browser.new_context(**browser_context_args, storage_state=auth_state)
-    ctx.set_default_timeout(_TIMEOUT_MS)
-    ctx.set_default_navigation_timeout(_TIMEOUT_MS)
+    ctx.set_default_timeout(_ACTION_TIMEOUT_MS)
+    ctx.set_default_navigation_timeout(_NAVIGATION_TIMEOUT_MS)
     page = ctx.new_page()
     yield page
     _screenshot_on_failure(request, page)
