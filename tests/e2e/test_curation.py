@@ -76,8 +76,13 @@ def _star(page, idx):
 
 
 def _click_star(page, idx):
-    """Click a star already revealed by the parent row hover."""
-    _star(page, idx).click(force=True)
+    """Dispatch a star click and wait for the feature request to succeed."""
+    star = _star(page, idx)
+    expect(star).to_be_visible()
+    with page.expect_response(lambda response: response.url.endswith("/feature/")) as info:
+        star.dispatch_event("click")
+    assert info.value.ok
+    assert info.value.json()["ok"]
 
 
 def _group(page, idx):
@@ -94,8 +99,13 @@ def _circle(page, idx, value):
 
 
 def _click_circle(page, idx, value):
-    """Click a rating circle already revealed by the parent row hover."""
-    _circle(page, idx, value).click(force=True)
+    """Dispatch a circle click and wait for the rating request to succeed."""
+    circle = _circle(page, idx, value)
+    expect(circle).to_be_visible()
+    with page.expect_response(lambda response: response.url.endswith("/rate/")) as info:
+        circle.dispatch_event("click")
+    assert info.value.ok
+    assert info.value.json()["ok"]
 
 
 def _clear(page, idx):
@@ -103,8 +113,13 @@ def _clear(page, idx):
 
 
 def _click_clear(page, idx):
-    """Click a clear button already revealed by the parent row hover."""
-    _clear(page, idx).click(force=True)
+    """Dispatch a clear click and wait for the rating request to succeed."""
+    clear = _clear(page, idx)
+    expect(clear).to_be_visible()
+    with page.expect_response(lambda response: response.url.endswith("/rate/")) as info:
+        clear.dispatch_event("click")
+    assert info.value.ok
+    assert info.value.json()["ok"]
 
 
 # ---------------------------------------------------------------------------
