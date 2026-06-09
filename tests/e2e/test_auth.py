@@ -1,5 +1,7 @@
 """E2E tests for username/password authentication."""
 
+import re
+
 from playwright.sync_api import expect
 
 _USERNAME = "admin"
@@ -72,9 +74,8 @@ def test_nav_login_redirects_to_current_page(unauthenticated_page, base_url):
     return_url = f"{base_url}/explore/keyword/?source=login-test"
     page.goto(return_url)
     page.locator("a.btn-custom", has_text="Log In / Sign Up").click()
-    page.wait_for_url("**/login?next=*")
-    assert "/login" in page.url
-    assert "next=" in page.url
+    expect(page).to_have_url(re.compile(r"/login\?next="))
+    expect(page.locator("#id_username")).to_be_visible()
 
     page.locator("#id_username").fill(_USERNAME)
     page.locator("#id_password").fill(_PASSWORD)

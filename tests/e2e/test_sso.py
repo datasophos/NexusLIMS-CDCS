@@ -1,5 +1,7 @@
 """E2E tests for SAML SSO authentication."""
 
+import re
+
 from playwright.sync_api import expect
 
 # Dev IdP test credentials -- hardcoded in deployment/dev-sso/authsources.php
@@ -97,9 +99,8 @@ def test_sso_next_param_redirects_after_login(unauthenticated_page, base_url):
     return_url = f"{base_url}/explore/keyword/?source=sso-login-test"
     page.goto(return_url)
     page.locator("a.btn-custom", has_text="Log In / Sign Up").click()
-    page.wait_for_url("**/login?next=*")
-    assert "/login" in page.url
-    assert "next=" in page.url
+    expect(page).to_have_url(re.compile(r"/login\?next="))
+    expect(page.locator("#id_username")).to_be_visible()
 
     page.locator("a.btn-lge, a[href*='saml2/login']").first.click()
     expect(page.locator("input[name='username']")).to_be_visible()
@@ -108,7 +109,7 @@ def test_sso_next_param_redirects_after_login(unauthenticated_page, base_url):
     page.locator("[type=submit]").first.click()
     page.wait_for_url(f"{base_url}/**")
 
-    assert page.url == return_url
+    expect(page).to_have_url(return_url)
 
 
 def test_sso_admin_user_has_staff_access(unauthenticated_page, base_url):
