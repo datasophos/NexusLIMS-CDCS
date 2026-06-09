@@ -4,6 +4,8 @@ None of the tests in this module save to CDCS, so they are safe to run in parall
 with other annotator test modules.
 """
 
+from playwright.sync_api import expect
+
 from tests.e2e.helpers import add_sample, add_new_activity
 
 
@@ -15,7 +17,7 @@ class TestActivityManagement:
         page = annotator_page
         before = page.locator(".nx-sortable-activity").count()
         page.locator("#nx-add-activity-btn").click()
-        assert page.locator(".nx-sortable-activity").count() == before + 1
+        expect(page.locator(".nx-sortable-activity")).to_have_count(before + 1)
 
     def test_insert_activity_below(self, annotator_page):
         """Clicking '+ below' on an activity inserts a new row directly after it."""
@@ -25,7 +27,7 @@ class TestActivityManagement:
         )
         before = page.locator(".nx-sortable-activity").count()
         page.locator(".nx-insert-activity-below").first.click()
-        assert page.locator(".nx-sortable-activity").count() == before + 1
+        expect(page.locator(".nx-sortable-activity")).to_have_count(before + 1)
 
     def test_delete_empty_activity(self, annotator_page):
         """Deleting a newly added (empty) activity removes its row from the DOM."""
@@ -33,7 +35,7 @@ class TestActivityManagement:
         before = page.locator(".nx-sortable-activity").count()
         page.locator("#nx-add-activity-btn").click()
         page.locator(".nx-delete-activity:not([disabled])").last.click()
-        assert page.locator(".nx-sortable-activity").count() == before
+        expect(page.locator(".nx-sortable-activity")).to_have_count(before)
 
     def test_delete_button_disabled_when_activity_has_datasets(self, annotator_page):
         """The trash button is disabled for activities that contain datasets."""
@@ -67,7 +69,7 @@ class TestDatasetSelection:
         )
         page.locator(".nx-select-cb").first.click()
         page.locator("#nx-move-toolbar").wait_for(state="visible")
-        assert page.locator("#nx-move-toolbar").is_visible()
+        expect(page.locator("#nx-move-toolbar")).to_be_visible()
 
     def test_selection_count_badge_updates(self, annotator_page):
         """Checking two datasets shows '2' in the selection count badge."""
@@ -79,7 +81,7 @@ class TestDatasetSelection:
         page.locator(".nx-select-cb").nth(1).click()
         count_el = page.locator("#nx-toolbar-sel-count")
         count_el.wait_for(state="visible")
-        assert "2" in count_el.inner_text()
+        expect(count_el).to_contain_text("2")
 
     def test_clear_selection_unchecks_all_datasets(self, annotator_page):
         """Clicking 'Clear selection' unchecks every dataset card."""
@@ -91,7 +93,7 @@ class TestDatasetSelection:
         clear_btn = page.locator("#nx-clear-selection")
         clear_btn.wait_for(state="visible")
         clear_btn.click()
-        assert page.locator(".nx-select-cb:checked").count() == 0
+        expect(page.locator(".nx-select-cb:checked")).to_have_count(0)
 
 
 class TestBatchMove:
@@ -113,13 +115,13 @@ class TestBatchMove:
         page = annotator_page
         new_seqno = self._select_first_and_move_to_new(page)
         target_row = page.locator(f".nx-sortable-activity[data-seqno='{new_seqno}']")
-        assert target_row.locator(".nx-dataset-col").count() > 0
+        expect(target_row.locator(".nx-dataset-col")).not_to_have_count(0)
 
     def test_moved_dataset_shows_moved_badge(self, annotator_page):
         """A dataset that has been moved carries a 'Moved' badge."""
         page = annotator_page
         self._select_first_and_move_to_new(page)
-        assert page.locator(".nx-moved-badge").count() > 0
+        expect(page.locator(".nx-moved-badge")).not_to_have_count(0)
 
     def test_undo_individual_move_via_badge(self, annotator_page):
         """Clicking the 'Moved' badge returns the card to its original activity."""
@@ -133,8 +135,8 @@ class TestBatchMove:
         badge.wait_for(state="visible")
         badge.click()
 
-        assert page.locator(".nx-moved-badge").count() == 0
-        assert orig_row.locator(".nx-dataset-col").count() == orig_count
+        expect(page.locator(".nx-moved-badge")).to_have_count(0)
+        expect(orig_row.locator(".nx-dataset-col")).to_have_count(orig_count)
 
     def test_undo_all_moves_reverts_every_pending_move(self, annotator_page):
         """The 'Undo all moves' button removes all pending-move badges."""
@@ -145,7 +147,7 @@ class TestBatchMove:
         undo_all.wait_for(state="visible")
         undo_all.click()
 
-        assert page.locator(".nx-moved-badge").count() == 0
+        expect(page.locator(".nx-moved-badge")).to_have_count(0)
 
 
 class TestShiftClickSelection:
@@ -159,7 +161,7 @@ class TestShiftClickSelection:
         )
         page.locator(".nx-select-cb").first.click()
         page.locator(".nx-select-cb").nth(2).click(modifiers=["Shift"])
-        assert page.locator(".nx-select-cb:checked").count() == 3
+        expect(page.locator(".nx-select-cb:checked")).to_have_count(3)
 
 
 class TestActivitySampleAssignment:
@@ -175,7 +177,7 @@ class TestActivitySampleAssignment:
         add_sample(page, "Assignment Test")
         page.locator(".nx-activity-sample").first.select_option(label="Assignment Test")
         page.locator("#nx-move-toolbar").wait_for(state="visible")
-        assert page.locator("#nx-move-toolbar").is_visible()
+        expect(page.locator("#nx-move-toolbar")).to_be_visible()
 
     def test_assignment_appears_in_pending_changes_modal(self, annotator_page):
         """Changing an activity's sample appears under 'Sample Assignments' in the modal."""
@@ -281,7 +283,7 @@ class TestCardStatusDot:
             "Canonical annotator record has no dataset textareas"
         )
         page.locator(".annotate-textarea").first.fill("Status dot test content")
-        assert page.locator(".annotate-card[data-status='unsaved']").count() > 0
+        expect(page.locator(".annotate-card[data-status='unsaved']")).not_to_have_count(0)
 
     def test_restoring_original_text_clears_unsaved_status(self, annotator_page):
         """Restoring a textarea to its original value reverts data-status."""
@@ -292,4 +294,6 @@ class TestCardStatusDot:
         ta.fill("Temporary change")
         ta.fill(original)
         expected = "annotated" if original.strip() else "empty"
-        assert page.locator(f".annotate-card[data-status='{expected}']").count() > 0
+        expect(
+            page.locator(f".annotate-card[data-status='{expected}']")
+        ).not_to_have_count(0)

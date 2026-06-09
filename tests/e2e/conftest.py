@@ -1,6 +1,8 @@
+import fcntl
 from pathlib import Path
 
 import pytest
+from playwright.sync_api import expect
 
 from tests.e2e.helpers import fetch_all_records, reset_records
 
@@ -104,13 +106,13 @@ def unauthenticated_page(browser, browser_context_args, request):
 def annotator_page(authenticated_page, base_url, test_record_id):
     """Authenticated page pre-navigated to the annotator for the test record."""
     page = authenticated_page
-    page.goto(f"{base_url}/annotate/{test_record_id}/")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/annotate/{test_record_id}/", wait_until="domcontentloaded")
+    expect(page.locator("#annotate-save-btn")).to_be_visible()
     return page
 
 
 @pytest.fixture(scope="session")
-def _reset_mutable_records(auth_state, base_url):
+def _reset_mutable_records(auth_state, base_url, testrun_uid):
     """Restore example records to their canonical XML before the test session runs.
 
     Annotator tests that save (dataset moves, title edits, sample changes) persist
@@ -122,8 +124,16 @@ def _reset_mutable_records(auth_state, base_url):
     and detail tests). Auth/SSO/gallery/list workers skip this to avoid resetting
     the annotator's working record mid-session during parallel runs.
     """
-    cookies = {c["name"]: c["value"] for c in auth_state["cookies"]}
-    reset_records(cookies, base_url)
+    _SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
+    marker = _SCREENSHOT_DIR / f".records-reset-{testrun_uid}"
+    with marker.open("a+") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX)
+        lock_file.seek(0)
+        if not lock_file.read():
+            cookies = {c["name"]: c["value"] for c in auth_state["cookies"]}
+            reset_records(cookies, base_url)
+            lock_file.write("complete")
+            lock_file.flush()
 
 
 @pytest.fixture(scope="session")

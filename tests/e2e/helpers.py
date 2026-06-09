@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import requests
+from playwright.sync_api import expect
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -48,15 +49,18 @@ def add_sample(page, name, pid="", description="", elements=()):
     for sym in elements:
         page.locator("#nx-elements-input").fill(sym)
         page.locator("#nx-elements-input").press("Enter")
-    page.locator("#nx-sample-modal-save").click()
-    page.locator("#nx-sample-modal").wait_for(state="hidden")
+    save_btn = page.locator("#nx-sample-modal-save")
+    expect(save_btn).to_be_enabled()
+    save_btn.click()
+    expect(page.locator("#nx-sample-modal")).to_be_hidden()
+    expect(page.locator("#nx-samples-list")).to_contain_text(name)
 
 
 def add_new_activity(page):
     """Click 'Add Activity' and return the seqno of the newly added row."""
     before = page.locator(".nx-sortable-activity").count()
     page.locator("#nx-add-activity-btn").click()
-    page.locator(".nx-sortable-activity").nth(before).wait_for(state="visible")
+    expect(page.locator(".nx-sortable-activity")).to_have_count(before + 1)
     return page.locator(".nx-sortable-activity").last.get_attribute("data-seqno")
 
 

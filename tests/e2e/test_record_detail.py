@@ -6,8 +6,9 @@ from playwright.sync_api import expect
 def test_detail_page_loads(authenticated_page, base_url, normal_record_id):
     """Detail page renders without error for a known record."""
     page = authenticated_page
-    response = page.goto(f"{base_url}/data?id={normal_record_id}")
-    page.wait_for_load_state("networkidle")
+    response = page.goto(
+        f"{base_url}/data?id={normal_record_id}", wait_until="domcontentloaded"
+    )
     assert response.status == 200
     expect(page.locator(".list-record-title")).to_be_visible()
 
@@ -15,8 +16,9 @@ def test_detail_page_loads(authenticated_page, base_url, normal_record_id):
 def test_detail_shows_key_fields(authenticated_page, base_url, normal_record_id):
     """Key metadata fields are visible on the rendered detail page."""
     page = authenticated_page
-    page.goto(f"{base_url}/data?id={normal_record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(
+        f"{base_url}/data?id={normal_record_id}", wait_until="domcontentloaded"
+    )
     expect(page.locator(".list-record-title")).not_to_be_empty()
     expect(page.locator("#instr-badge")).not_to_be_empty()
     expect(page.locator(".list-record-experimenter")).not_to_be_empty()
@@ -26,8 +28,9 @@ def test_detail_shows_key_fields(authenticated_page, base_url, normal_record_id)
 def test_annotate_button_navigates(authenticated_page, base_url, normal_record_id):
     """'Annotate Record' button on the detail page opens the full-page annotator."""
     page = authenticated_page
-    page.goto(f"{base_url}/data?id={normal_record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(
+        f"{base_url}/data?id={normal_record_id}", wait_until="domcontentloaded"
+    )
 
     annotate_btn = page.locator("#annotate-record-btn")
     annotate_btn.wait_for(state="visible")
@@ -42,8 +45,9 @@ def test_annotate_button_navigates(authenticated_page, base_url, normal_record_i
 def test_detail_shows_expected_normal_content(authenticated_page, base_url, normal_record_id):
     """Normal record's XSLT output contains title, instrument, motivation, and counts."""
     page = authenticated_page
-    page.goto(f"{base_url}/data?id={normal_record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(
+        f"{base_url}/data?id={normal_record_id}", wait_until="domcontentloaded"
+    )
 
     expect(page.locator(".list-record-title")).to_contain_text(
         "Test record with a multi-dataset file"
@@ -64,8 +68,10 @@ def test_simple_display_record_renders_warning(
 ):
     """Large record triggers the simple display wrapper class and warning alert."""
     page = authenticated_page
-    page.goto(f"{base_url}/data?id={simple_display_record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(
+        f"{base_url}/data?id={simple_display_record_id}",
+        wait_until="domcontentloaded",
+    )
 
     assert page.locator(".simple-display").count() > 0, (
         "Expected .simple-display wrapper class on a 200-dataset record"
@@ -82,8 +88,10 @@ def test_simple_display_shows_expected_content(
 ):
     """Simple-display record's XSLT output contains title, instrument, motivation, and counts."""
     page = authenticated_page
-    page.goto(f"{base_url}/data?id={simple_display_record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(
+        f"{base_url}/data?id={simple_display_record_id}",
+        wait_until="domcontentloaded",
+    )
 
     expect(page.locator(".list-record-title")).to_contain_text(
         "Test record to trigger simple display"

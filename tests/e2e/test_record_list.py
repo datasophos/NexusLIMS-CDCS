@@ -1,5 +1,7 @@
 """E2E tests for the record list and search."""
 
+import re
+
 from playwright.sync_api import expect
 
 
@@ -10,20 +12,17 @@ def test_record_list_renders(unauthenticated_page, base_url):
     workspace, so no login is needed to see them on the list page.
     """
     page = unauthenticated_page
-    page.goto(f"{base_url}/explore/keyword/")
-    page.wait_for_load_state("networkidle")
-    records = page.locator("a[href*='/data?id=']").all()
-    assert len(records) > 0, "No record links found on the list page"
+    page.goto(f"{base_url}/explore/keyword/", wait_until="domcontentloaded")
+    expect(page.locator("a[href*='/data?id=']")).not_to_have_count(0)
 
 
 def test_search_filters_records(authenticated_page, base_url):
     """Typing in the search box filters the record list."""
     page = authenticated_page
-    page.goto(f"{base_url}/explore/keyword/")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/explore/keyword/", wait_until="domcontentloaded")
 
     record_links = "a[href*='/data?id=']"
-    assert page.locator(record_links).count() > 0
+    expect(page.locator(record_links)).not_to_have_count(0)
 
     # The keyword field is a jQuery Tag-it widget: the real input is hidden and
     # the visible field registers a tag on Enter before the search is submitted.
@@ -31,10 +30,8 @@ def test_search_filters_records(authenticated_page, base_url):
     keyword_input.fill("zzznomatch")
     keyword_input.press("Enter")
     page.locator("button:has-text('Search')").click()
-    page.wait_for_load_state("networkidle")
 
-    filtered_count = page.locator(record_links).count()
-    assert filtered_count == 0
+    expect(page.locator(record_links)).to_have_count(0)
     expect(page.get_by_text("No results found")).to_be_visible()
 
 
@@ -45,11 +42,10 @@ def test_keyword_search_returns_matching_record(unauthenticated_page, base_url):
     triggers the simple display), so the search narrows the list to that one.
     """
     page = unauthenticated_page
-    page.goto(f"{base_url}/explore/keyword/")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/explore/keyword/", wait_until="domcontentloaded")
 
     record_links = page.locator("a[href*='/data?id=']")
-    assert record_links.count() >= 3
+    expect(record_links).not_to_have_count(0)
 
     # The keyword field is a jQuery Tag-it widget: the real input is hidden and
     # the visible field registers a tag on Enter before the search is submitted.
@@ -69,32 +65,34 @@ def test_instrument_badge_filters_records(unauthenticated_page, base_url):
     that each filter reduces the count and that TEM has more records than STEM.
     """
     page = unauthenticated_page
-    page.goto(f"{base_url}/explore/keyword/")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/explore/keyword/", wait_until="domcontentloaded")
 
     record_links = page.locator("a[href*='/data?id=']")
+    expect(record_links).not_to_have_count(0)
     total = record_links.count()
     assert total >= 3
 
     # Filter to the FEI Titan TEM instrument.
-    page.locator(
-        "span.instrument-badge-clickable[data-instrument-pid='FEI-Titan-TEM']"
-    ).first.click()
-    page.wait_for_load_state("networkidle")
+    with page.expect_navigation():
+        page.locator(
+            "span.instrument-badge-clickable[data-instrument-pid='FEI-Titan-TEM']"
+        ).first.click()
+    expect(record_links).not_to_have_count(0)
     tem_count = record_links.count()
     assert tem_count >= 1
 
     # Clear the filter and restore the full list.
     page.locator(".tagit-choice .tagit-close").first.click()
-    page.locator("button:has-text('Search')").click()
-    page.wait_for_load_state("networkidle")
-    assert record_links.count() == total
+    with page.expect_navigation():
+        page.locator("button:has-text('Search')").click()
+    expect(record_links).to_have_count(total)
 
     # Filter to the FEI Titan STEM instrument.
-    page.locator(
-        "span.instrument-badge-clickable[data-instrument-pid='FEI-Titan-STEM']"
-    ).first.click()
-    page.wait_for_load_state("networkidle")
+    with page.expect_navigation():
+        page.locator(
+            "span.instrument-badge-clickable[data-instrument-pid='FEI-Titan-STEM']"
+        ).first.click()
+    expect(record_links).not_to_have_count(0)
     stem_count = record_links.count()
     assert stem_count >= 1
     assert stem_count < total
@@ -104,11 +102,9 @@ def test_instrument_badge_filters_records(unauthenticated_page, base_url):
 def test_record_link_navigates_to_detail(authenticated_page, base_url):
     """Clicking a record link navigates to the detail page."""
     page = authenticated_page
-    page.goto(f"{base_url}/explore/keyword/")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/explore/keyword/", wait_until="domcontentloaded")
 
     first_link = page.locator("a[href*='/data?id=']").first
     first_link.click()
-    page.wait_for_load_state("networkidle")
-    assert "/data?id=" in page.url
+    expect(page).to_have_url(re.compile(r"/data\?id="))
     expect(page.locator(".list-record-title")).to_be_visible()

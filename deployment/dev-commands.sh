@@ -77,14 +77,19 @@ alias dev-e2e='_dev_e2e_run'
 alias dev-e2e-headed='_dev_e2e_run --headed --slowmo=500'
 alias dev-e2e-parallel='_dev_e2e_run_parallel'
 
-# Parallel E2E: each test file runs on its own worker; annotator and detail operate on
-# different CDCS records so they can safely run simultaneously.
+# Parallel E2E: non-persistent files run concurrently, then tests that write to
+# the shared annotator record run sequentially.
 _dev_e2e_run_parallel() {
     local paths=("$@")
-    [[ ${#paths[@]} -eq 0 ]] && paths=("tests/e2e/")
     cd "$_DEV_DIR/.." || return 1
     uv run playwright install chromium
-    uv run pytest -v -n auto --dist=loadfile "${paths[@]}"
+    if [[ ${#paths[@]} -eq 0 ]]; then
+        uv run pytest -v -n auto --dist=loadfile \
+            --ignore=tests/e2e/test_annotator_persistence.py tests/e2e/ &&
+            uv run pytest -v tests/e2e/test_annotator_persistence.py
+    else
+        uv run pytest -v -n auto --dist=loadfile "${paths[@]}"
+    fi
 }
 
 # SSO / SimpleSAMLphp helpers

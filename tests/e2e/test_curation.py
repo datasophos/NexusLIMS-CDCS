@@ -44,8 +44,8 @@ def reset_curation(auth_state, base_url, curation_record_id):
 
 
 def _go(page, base_url, record_id):
-    page.goto(f"{base_url}/data?id={record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/data?id={record_id}", wait_until="domcontentloaded")
+    expect(page.locator(".nx-name-row")).not_to_have_count(0)
 
 
 def _name_row(page, idx):
@@ -76,8 +76,13 @@ def _star(page, idx):
 
 
 def _click_star(page, idx):
-    """Click a star already revealed by the parent row hover."""
-    _star(page, idx).click(force=True)
+    """Dispatch a star click and wait for the feature request to succeed."""
+    star = _star(page, idx)
+    expect(star).to_be_visible()
+    with page.expect_response(lambda response: response.url.endswith("/feature/")) as info:
+        star.dispatch_event("click")
+    assert info.value.ok
+    assert info.value.json()["ok"]
 
 
 def _group(page, idx):
@@ -94,8 +99,13 @@ def _circle(page, idx, value):
 
 
 def _click_circle(page, idx, value):
-    """Click a rating circle already revealed by the parent row hover."""
-    _circle(page, idx, value).click(force=True)
+    """Dispatch a circle click and wait for the rating request to succeed."""
+    circle = _circle(page, idx, value)
+    expect(circle).to_be_visible()
+    with page.expect_response(lambda response: response.url.endswith("/rate/")) as info:
+        circle.dispatch_event("click")
+    assert info.value.ok
+    assert info.value.json()["ok"]
 
 
 def _clear(page, idx):
@@ -103,8 +113,13 @@ def _clear(page, idx):
 
 
 def _click_clear(page, idx):
-    """Click a clear button already revealed by the parent row hover."""
-    _clear(page, idx).click(force=True)
+    """Dispatch a clear click and wait for the rating request to succeed."""
+    clear = _clear(page, idx)
+    expect(clear).to_be_visible()
+    with page.expect_response(lambda response: response.url.endswith("/rate/")) as info:
+        clear.dispatch_event("click")
+    assert info.value.ok
+    assert info.value.json()["ok"]
 
 
 # ---------------------------------------------------------------------------
@@ -291,10 +306,11 @@ def test_editor_hover_preview_fill(
     page = authenticated_page
     _go(page, base_url, curation_record_id)
     _hover_row(page, 4)
-    _circle(page, 4, 5).hover(force=True)
+    circle = _circle(page, 4, 5)
+    expect(circle).to_be_visible()
+    circle.dispatch_event("mouseover")
     expect(_filled(page, 4)).to_have_count(5)
-    # Move mouse away from the rating group to trigger its mouseleave
-    page.mouse.move(0, 0)
+    _group(page, 4).dispatch_event("mouseleave")
     expect(_filled(page, 4)).to_have_count(0)
 
 
@@ -359,8 +375,7 @@ def test_rating_persists_after_reload(
     _hover_row(page, 4)
     _click_circle(page, 4, 4)
     expect(_group(page, 4)).to_have_attribute("data-current-rating", "4")
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_filled(page, 4)).to_have_count(4)
     expect(_group(page, 4)).to_have_attribute("data-current-rating", "4")
 
@@ -374,8 +389,7 @@ def test_featured_persists_after_reload(
     _hover_row(page, 3)
     _click_star(page, 3)
     expect(_star(page, 3)).to_have_class(re.compile(r"nx-star--featured"))
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_star(page, 3)).to_have_class(re.compile(r"nx-star--featured"))
 
 
@@ -388,8 +402,7 @@ def test_clear_rating_persists_after_reload(
     _hover_row(page, 0)
     _click_clear(page, 0)
     expect(_group(page, 0)).to_have_attribute("data-current-rating", "0")
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_filled(page, 0)).to_have_count(0)
     expect(_group(page, 0)).to_have_attribute("data-current-rating", "0")
 
@@ -403,6 +416,5 @@ def test_unfeature_persists_after_reload(
     _hover_row(page, 0)
     _click_star(page, 0)
     expect(_star(page, 0)).not_to_have_class(re.compile(r"nx-star--featured"))
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_star(page, 0)).not_to_have_class(re.compile(r"nx-star--featured"))
