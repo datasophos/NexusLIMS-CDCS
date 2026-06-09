@@ -72,12 +72,21 @@ jobs:
           docker exec nexuslims_ci_cdcs \
             python /srv/scripts/init_environment.py
 
-      - name: Run Playwright tests
+      - name: Run parallel Playwright tests
         run: |
           uv run pytest tests/e2e/ \
+            --ignore=tests/e2e/test_annotator_persistence.py \
             --screenshot=only-on-failure \
             --output=deployment/test-results/ \
             -n auto --dist=loadfile \
+            -v
+        working-directory: ${{ github.workspace }}
+
+      - name: Run persistence Playwright tests
+        run: |
+          uv run pytest tests/e2e/test_annotator_persistence.py \
+            --screenshot=only-on-failure \
+            --output=deployment/test-results/ \
             -v
         working-directory: ${{ github.workspace }}
 

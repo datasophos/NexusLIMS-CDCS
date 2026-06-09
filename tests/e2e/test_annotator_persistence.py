@@ -7,6 +7,9 @@ modules run in parallel.
 """
 
 import datetime
+import re
+
+from playwright.sync_api import expect
 
 from tests.e2e.helpers import add_sample, add_new_activity
 
@@ -25,12 +28,12 @@ class TestPersistence:
         inline_input.fill(new_title)
         inline_input.press("Enter")
 
-        page.locator("#annotate-save-btn").click()
-        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.locator("#annotate-save-btn").click()
 
-        assert f"id={test_record_id}" in page.url
+        expect(page).to_have_url(re.compile(rf"[?&]id={test_record_id}(?:&|$)"))
         title_el = page.locator(".list-record-title.page-header")
-        assert new_title in title_el.inner_text()
+        expect(title_el).to_contain_text(new_title)
 
     def test_ctrl_enter_submits_form(self, annotator_page, base_url, test_record_id):
         """Pressing Ctrl+Enter saves the form and redirects to the detail page."""
@@ -42,8 +45,8 @@ class TestPersistence:
         inp.press("Enter")
         with page.expect_navigation():
             page.keyboard.press("Control+Enter")
-        assert f"id={test_record_id}" in page.url
-        assert "Ctrl Enter Save" in page.locator(".list-record-title").inner_text()
+        expect(page).to_have_url(re.compile(rf"[?&]id={test_record_id}(?:&|$)"))
+        expect(page.locator(".list-record-title")).to_contain_text("Ctrl Enter Save")
 
     def test_toolbar_save_button_submits_form(self, annotator_page, base_url, test_record_id):
         """Clicking the toolbar's Save button submits the form."""
@@ -56,8 +59,10 @@ class TestPersistence:
         page.locator("#nx-toolbar-save-btn").wait_for(state="visible")
         with page.expect_navigation():
             page.locator("#nx-toolbar-save-btn").click()
-        assert f"id={test_record_id}" in page.url
-        assert "Toolbar Save Button" in page.locator(".list-record-title").inner_text()
+        expect(page).to_have_url(re.compile(rf"[?&]id={test_record_id}(?:&|$)"))
+        expect(page.locator(".list-record-title")).to_contain_text(
+            "Toolbar Save Button"
+        )
 
     def test_saved_sample_appears_on_reload(self, annotator_page, base_url, test_record_id):
         """A sample added and saved is still present when the annotator reloads."""
@@ -65,12 +70,12 @@ class TestPersistence:
         unique = datetime.datetime.now().strftime("%H%M%S%f")
         name = f"Persist-{unique}"
         add_sample(page, name)
-        page.locator("#annotate-save-btn").click()
-        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.locator("#annotate-save-btn").click()
 
         page.goto(f"{base_url}/annotate/{test_record_id}/")
         page.wait_for_load_state("networkidle")
-        assert name in page.locator("#nx-samples-list").inner_text()
+        expect(page.locator("#nx-samples-list")).to_contain_text(name)
 
     def test_save_with_pending_move_succeeds(self, annotator_page, base_url, test_record_id):
         """Saving with a pending move redirects to the detail page without an error."""
@@ -87,14 +92,14 @@ class TestPersistence:
         page.locator("#nx-move-dropdown-btn").click()
         page.locator(f"#nx-move-dropdown [data-seqno='{new_seqno}']").click()
 
-        page.locator("#annotate-save-btn").click()
-        page.wait_for_load_state("networkidle")
+        with page.expect_navigation():
+            page.locator("#annotate-save-btn").click()
 
-        assert f"id={test_record_id}" in page.url
+        expect(page).to_have_url(re.compile(rf"[?&]id={test_record_id}(?:&|$)"))
         assert "error" not in page.url
 
         page.goto(f"{base_url}/annotate/{test_record_id}/")
         page.wait_for_load_state("networkidle")
         expect_count = activity_count + 1
-        assert page.locator(".nx-sortable-activity").count() == expect_count
-        assert moved_name in page.locator(".nx-sortable-activity").last.inner_text()
+        expect(page.locator(".nx-sortable-activity")).to_have_count(expect_count)
+        expect(page.locator(".nx-sortable-activity").last).to_contain_text(moved_name)

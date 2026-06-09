@@ -1,5 +1,7 @@
 """E2E tests for the record list and search."""
 
+import re
+
 from playwright.sync_api import expect
 
 
@@ -12,8 +14,7 @@ def test_record_list_renders(unauthenticated_page, base_url):
     page = unauthenticated_page
     page.goto(f"{base_url}/explore/keyword/")
     page.wait_for_load_state("networkidle")
-    records = page.locator("a[href*='/data?id=']").all()
-    assert len(records) > 0, "No record links found on the list page"
+    expect(page.locator("a[href*='/data?id=']")).not_to_have_count(0)
 
 
 def test_search_filters_records(authenticated_page, base_url):
@@ -23,7 +24,7 @@ def test_search_filters_records(authenticated_page, base_url):
     page.wait_for_load_state("networkidle")
 
     record_links = "a[href*='/data?id=']"
-    assert page.locator(record_links).count() > 0
+    expect(page.locator(record_links)).not_to_have_count(0)
 
     # The keyword field is a jQuery Tag-it widget: the real input is hidden and
     # the visible field registers a tag on Enter before the search is submitted.
@@ -33,8 +34,7 @@ def test_search_filters_records(authenticated_page, base_url):
     page.locator("button:has-text('Search')").click()
     page.wait_for_load_state("networkidle")
 
-    filtered_count = page.locator(record_links).count()
-    assert filtered_count == 0
+    expect(page.locator(record_links)).to_have_count(0)
     expect(page.get_by_text("No results found")).to_be_visible()
 
 
@@ -49,7 +49,7 @@ def test_keyword_search_returns_matching_record(unauthenticated_page, base_url):
     page.wait_for_load_state("networkidle")
 
     record_links = page.locator("a[href*='/data?id=']")
-    assert record_links.count() >= 3
+    expect(record_links).not_to_have_count(0)
 
     # The keyword field is a jQuery Tag-it widget: the real input is hidden and
     # the visible field registers a tag on Enter before the search is submitted.
@@ -88,7 +88,7 @@ def test_instrument_badge_filters_records(unauthenticated_page, base_url):
     page.locator(".tagit-choice .tagit-close").first.click()
     page.locator("button:has-text('Search')").click()
     page.wait_for_load_state("networkidle")
-    assert record_links.count() == total
+    expect(record_links).to_have_count(total)
 
     # Filter to the FEI Titan STEM instrument.
     page.locator(
@@ -110,5 +110,5 @@ def test_record_link_navigates_to_detail(authenticated_page, base_url):
     first_link = page.locator("a[href*='/data?id=']").first
     first_link.click()
     page.wait_for_load_state("networkidle")
-    assert "/data?id=" in page.url
+    expect(page).to_have_url(re.compile(r"/data\?id="))
     expect(page.locator(".list-record-title")).to_be_visible()
