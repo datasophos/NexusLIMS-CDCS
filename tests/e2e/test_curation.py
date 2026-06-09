@@ -291,7 +291,9 @@ def test_editor_hover_preview_fill(
     page = authenticated_page
     _go(page, base_url, curation_record_id)
     _hover_row(page, 4)
-    _circle(page, 4, 5).hover(force=True)
+    circle = _circle(page, 4, 5)
+    expect(circle).to_be_visible()
+    circle.hover()
     expect(_filled(page, 4)).to_have_count(5)
     # Move mouse away from the rating group to trigger its mouseleave
     page.mouse.move(0, 0)
