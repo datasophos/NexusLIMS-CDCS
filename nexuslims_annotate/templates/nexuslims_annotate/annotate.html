@@ -325,7 +325,13 @@ function nxOpenSampleModal(sampleId) {
   _nxModalElements = sample ? (sample.elements || []).slice() : [];
   nxRenderElementTags();
 
-  var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('nx-sample-modal'));
+  var modalEl = document.getElementById('nx-sample-modal');
+  var saveBtn = document.getElementById('nx-sample-modal-save');
+  var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  saveBtn.disabled = true;
+  modalEl.addEventListener('shown.bs.modal', function() {
+    saveBtn.disabled = false;
+  }, {once: true});
   modal.show();
 }
 
