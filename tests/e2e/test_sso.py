@@ -1,5 +1,7 @@
 """E2E tests for SAML SSO authentication."""
 
+from playwright.sync_api import expect
+
 # Dev IdP test credentials -- hardcoded in deployment/dev-sso/authsources.php
 _IDP_USERNAME = "admin"
 _IDP_PASSWORD = "admin"
@@ -9,7 +11,7 @@ def _sso_login(page, base_url, username=_IDP_USERNAME, password=_IDP_PASSWORD):
     """Walk through the full SSO flow starting from /login. Caller owns the page."""
     page.goto(f"{base_url}/login")
     page.locator("a.btn-lge, a[href*='saml2/login']").first.click()
-    page.wait_for_load_state("networkidle")
+    expect(page.locator("input[name='username']")).to_be_visible()
     page.locator("input[name='username']").fill(username)
     page.locator("input[name='password']").fill(password)
     page.locator("[type=submit]").first.click()
@@ -22,7 +24,7 @@ def test_sso_login_redirects_to_idp(unauthenticated_page, base_url):
     page.goto(f"{base_url}/login")
     sso_btn = page.locator("a.btn-lge, a[href*='saml2/login']").first
     sso_btn.click()
-    page.wait_for_load_state("networkidle")
+    expect(page.locator("input[name='username']")).to_be_visible()
     assert "sso.nexuslims-dev.localhost" in page.url or "saml" in page.url.lower()
 
 
@@ -32,7 +34,7 @@ def test_sso_login_full_flow(unauthenticated_page, base_url):
     page.goto(f"{base_url}/login")
     sso_btn = page.locator("a.btn-lge, a[href*='saml2/login']").first
     sso_btn.click()
-    page.wait_for_load_state("networkidle")
+    expect(page.locator("input[name='username']")).to_be_visible()
 
     page.locator("input[name='username']").fill(_IDP_USERNAME)
     page.locator("input[name='password']").fill(_IDP_PASSWORD)
@@ -62,11 +64,11 @@ def test_sso_invalid_credentials_stays_on_idp(unauthenticated_page, base_url):
     page = unauthenticated_page
     page.goto(f"{base_url}/login")
     page.locator("a.btn-lge, a[href*='saml2/login']").first.click()
-    page.wait_for_load_state("networkidle")
+    expect(page.locator("input[name='username']")).to_be_visible()
     page.locator("input[name='username']").fill(_IDP_USERNAME)
     page.locator("input[name='password']").fill("definitely-wrong-password")
     page.locator("[type=submit]").first.click()
-    page.wait_for_load_state("networkidle")
+    expect(page.locator("input[name='username']")).to_be_visible()
     # Should still be on the IdP host, not redirected back to the CDCS app.
     assert "sso.nexuslims-dev.localhost" in page.url
     assert "/login" not in page.url or "sso.nexuslims-dev.localhost" in page.url
@@ -80,14 +82,13 @@ def test_sso_logout_clears_session(unauthenticated_page, base_url):
     # Logout via the user dropdown.
     page.locator("#dropdownDashboard").click()
     page.locator("a[href*='logout'].cdcs-menu-item").wait_for(state="visible")
-    page.locator("a[href*='logout'].cdcs-menu-item").click()
-    page.wait_for_load_state("networkidle")
+    with page.expect_navigation():
+        page.locator("a[href*='logout'].cdcs-menu-item").click()
 
     # Visiting a @login_required page should now bounce back to login.
     if "/login" not in page.url and page.locator("#id_username").count() == 0:
         page.goto(f"{base_url}/annotate/check-auth-only/")
-        page.wait_for_load_state("networkidle")
-    assert "/login" in page.url or page.locator("#id_username").count() > 0
+    expect(page.locator("#id_username")).to_be_visible()
 
 
 def test_sso_next_param_redirects_after_login(unauthenticated_page, base_url):
@@ -96,12 +97,12 @@ def test_sso_next_param_redirects_after_login(unauthenticated_page, base_url):
     return_url = f"{base_url}/explore/keyword/?source=sso-login-test"
     page.goto(return_url)
     page.locator("a.btn-custom", has_text="Log In / Sign Up").click()
-    page.wait_for_load_state("networkidle")
+    page.wait_for_url("**/login?next=*")
     assert "/login" in page.url
     assert "next=" in page.url
 
     page.locator("a.btn-lge, a[href*='saml2/login']").first.click()
-    page.wait_for_load_state("networkidle")
+    expect(page.locator("input[name='username']")).to_be_visible()
     page.locator("input[name='username']").fill(_IDP_USERNAME)
     page.locator("input[name='password']").fill(_IDP_PASSWORD)
     page.locator("[type=submit]").first.click()

@@ -2,6 +2,7 @@ import fcntl
 from pathlib import Path
 
 import pytest
+from playwright.sync_api import expect
 
 from tests.e2e.helpers import fetch_all_records, reset_records
 
@@ -105,8 +106,8 @@ def unauthenticated_page(browser, browser_context_args, request):
 def annotator_page(authenticated_page, base_url, test_record_id):
     """Authenticated page pre-navigated to the annotator for the test record."""
     page = authenticated_page
-    page.goto(f"{base_url}/annotate/{test_record_id}/")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/annotate/{test_record_id}/", wait_until="domcontentloaded")
+    expect(page.locator("#annotate-save-btn")).to_be_visible()
     return page
 
 

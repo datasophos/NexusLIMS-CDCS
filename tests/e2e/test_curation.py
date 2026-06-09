@@ -44,8 +44,8 @@ def reset_curation(auth_state, base_url, curation_record_id):
 
 
 def _go(page, base_url, record_id):
-    page.goto(f"{base_url}/data?id={record_id}")
-    page.wait_for_load_state("networkidle")
+    page.goto(f"{base_url}/data?id={record_id}", wait_until="domcontentloaded")
+    expect(page.locator(".nx-name-row")).not_to_have_count(0)
 
 
 def _name_row(page, idx):
@@ -375,8 +375,7 @@ def test_rating_persists_after_reload(
     _hover_row(page, 4)
     _click_circle(page, 4, 4)
     expect(_group(page, 4)).to_have_attribute("data-current-rating", "4")
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_filled(page, 4)).to_have_count(4)
     expect(_group(page, 4)).to_have_attribute("data-current-rating", "4")
 
@@ -390,8 +389,7 @@ def test_featured_persists_after_reload(
     _hover_row(page, 3)
     _click_star(page, 3)
     expect(_star(page, 3)).to_have_class(re.compile(r"nx-star--featured"))
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_star(page, 3)).to_have_class(re.compile(r"nx-star--featured"))
 
 
@@ -404,8 +402,7 @@ def test_clear_rating_persists_after_reload(
     _hover_row(page, 0)
     _click_clear(page, 0)
     expect(_group(page, 0)).to_have_attribute("data-current-rating", "0")
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_filled(page, 0)).to_have_count(0)
     expect(_group(page, 0)).to_have_attribute("data-current-rating", "0")
 
@@ -419,6 +416,5 @@ def test_unfeature_persists_after_reload(
     _hover_row(page, 0)
     _click_star(page, 0)
     expect(_star(page, 0)).not_to_have_class(re.compile(r"nx-star--featured"))
-    page.reload()
-    page.wait_for_load_state("networkidle")
+    page.reload(wait_until="domcontentloaded")
     expect(_star(page, 0)).not_to_have_class(re.compile(r"nx-star--featured"))

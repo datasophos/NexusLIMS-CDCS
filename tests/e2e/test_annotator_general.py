@@ -129,7 +129,6 @@ class TestKeyboardAndToolbar:
         """Clicking Cancel navigates to the record detail page."""
         page = annotator_page
         page.locator("a.btn.btn-outline-secondary:has-text('Cancel')").click()
-        page.wait_for_load_state("networkidle")
         expect(page).to_have_url(re.compile(rf"[?&]id={test_record_id}(?:&|$)"))
 
 
@@ -139,6 +138,8 @@ class TestErrorBanners:
     def test_error_query_param_shows_danger_alert(self, annotator_page, base_url, test_record_id):
         """Navigating to the annotator with ?error=1 renders the error alert."""
         page = annotator_page
-        page.goto(f"{base_url}/annotate/{test_record_id}/?error=1")
-        page.wait_for_load_state("networkidle")
+        page.goto(
+            f"{base_url}/annotate/{test_record_id}/?error=1",
+            wait_until="domcontentloaded",
+        )
         expect(page.locator(".alert-danger")).to_be_visible()

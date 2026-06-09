@@ -1,5 +1,7 @@
 """E2E tests for the nexuslims_gallery jumbotron page."""
 
+import re
+
 import pytest
 from playwright.sync_api import expect
 
@@ -122,6 +124,5 @@ def test_view_record_link_opens_record(gallery_page):
     with gallery_page.expect_popup() as popup_info:
         gallery_page.locator("#nx-gallery-link").click()
     detail_page = popup_info.value
-    detail_page.wait_for_load_state("networkidle")
-    assert "/data?id=" in detail_page.url
+    expect(detail_page).to_have_url(re.compile(r"/data\?id="))
     expect(detail_page.locator(".list-record-title")).not_to_be_empty()

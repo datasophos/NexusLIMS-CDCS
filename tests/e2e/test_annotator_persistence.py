@@ -73,8 +73,9 @@ class TestPersistence:
         with page.expect_navigation():
             page.locator("#annotate-save-btn").click()
 
-        page.goto(f"{base_url}/annotate/{test_record_id}/")
-        page.wait_for_load_state("networkidle")
+        page.goto(
+            f"{base_url}/annotate/{test_record_id}/", wait_until="domcontentloaded"
+        )
         expect(page.locator("#nx-samples-list")).to_contain_text(name)
 
     def test_save_with_pending_move_succeeds(self, annotator_page, base_url, test_record_id):
@@ -98,8 +99,9 @@ class TestPersistence:
         expect(page).to_have_url(re.compile(rf"[?&]id={test_record_id}(?:&|$)"))
         assert "error" not in page.url
 
-        page.goto(f"{base_url}/annotate/{test_record_id}/")
-        page.wait_for_load_state("networkidle")
+        page.goto(
+            f"{base_url}/annotate/{test_record_id}/", wait_until="domcontentloaded"
+        )
         expect_count = activity_count + 1
         expect(page.locator(".nx-sortable-activity")).to_have_count(expect_count)
         expect(page.locator(".nx-sortable-activity").last).to_contain_text(moved_name)
