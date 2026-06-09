@@ -291,6 +291,7 @@
 
         // Check viewport at tour creation time
         var mobile = isMobileView();
+        var galleryEnabled = $('#visual_gallery').length > 0;
 
         tour.addStep({
             id: 'welcome',
@@ -398,18 +399,55 @@
                 buttons: [buttons.back(true), buttons.next]
             });
 
+            if (galleryEnabled) {
+                tour.addStep({
+                    id: 'tut-visual-gallery',
+                    title: 'Visual Gallery',
+                    text: 'Open the visual gallery to browse featured dataset images from across the NexusLIMS record repository.',
+                    attachTo: {
+                        element: '#visual_gallery',
+                        on: 'top'
+                    },
+                    buttons: [buttons.back(true), buttons.next]
+                });
+            }
+
             tour.addStep({
                 id: 'get-started',
                 title: 'Get Started!',
-                text: 'That\'s it! Click the "Browse and Search Records" link to explore experimental data, or close this tutorial to continue exploring the homepage.',
+                text: galleryEnabled
+                    ? 'That\'s it! Browse and search experimental records or open the visual gallery to explore featured datasets.'
+                    : 'That\'s it! Click the "Browse and Search Records" link to explore experimental data, or close this tutorial to continue exploring the homepage.',
                 buttons: [buttons.back(true), buttons.end]
             });
         } else {
             // Desktop-specific steps
+            function openExploreDropdown() {
+                var dropdownEl = document.getElementById('dropdownExploration');
+                if (dropdownEl && typeof bootstrap !== 'undefined') {
+                    var dropdown = bootstrap.Dropdown.getOrCreateInstance(dropdownEl);
+                    dropdown.show();
+                }
+            }
+
+            function closeExploreDropdown() {
+                var dropdownEl = document.getElementById('dropdownExploration');
+                if (dropdownEl && typeof bootstrap !== 'undefined') {
+                    var dropdown = bootstrap.Dropdown.getInstance(dropdownEl);
+                    if (dropdown) {
+                        dropdown.hide();
+                    }
+                }
+            }
+
             tour.addStep({
                 id: 'browse-link',
                 title: 'Browse Records',
                 text: 'Click here to browse and search all experimental records in the system. You can filter by keywords, instruments, dates, and more.',
+                beforeShowPromise: function() {
+                    openExploreDropdown();
+                    return Promise.resolve();
+                },
                 attachTo: {
                     element: '#nav a[href*="explore/keyword"]',
                     on: 'bottom'
@@ -421,12 +459,29 @@
                 id: 'tut-browse-records-tile',
                 title: 'Browse Records',
                 text: 'You can also access the record browser through the link below',
+                beforeShowPromise: function() {
+                    closeExploreDropdown();
+                    return Promise.resolve();
+                },
                 attachTo: {
                     element: '#app_search',
                     on: 'top'
                 },
                 buttons: [buttons.back(true), buttons.next]
             });
+
+            if (galleryEnabled) {
+                tour.addStep({
+                    id: 'tut-visual-gallery',
+                    title: 'Visual Gallery',
+                    text: 'Open the visual gallery to browse featured dataset images from across the NexusLIMS record repository.',
+                    attachTo: {
+                        element: '#visual_gallery',
+                        on: 'top'
+                    },
+                    buttons: [buttons.back(true), buttons.next]
+                });
+            }
 
             tour.addStep({
                 id: 'tut-tutorial',
@@ -500,7 +555,9 @@
             tour.addStep({
                 id: 'get-started',
                 title: 'Get Started!',
-                text: 'That\'s it! Click the "Browse and Search Records" link to explore experimental data, or close this tutorial to continue exploring the homepage.',
+                text: galleryEnabled
+                    ? 'That\'s it! Browse and search experimental records or open the visual gallery to explore featured datasets.'
+                    : 'That\'s it! Click the "Browse and Search Records" link to explore experimental data, or close this tutorial to continue exploring the homepage.',
                 beforeShowPromise: () => {
                     closeHelpDropdown();
                     return Promise.resolve();
@@ -508,9 +565,15 @@
                 buttons: [buttons.back(true), buttons.end]
             });
 
-            // Cleanup: close dropdown when tour ends (desktop only)
-            tour.on('complete', closeHelpDropdown);
-            tour.on('cancel', closeHelpDropdown);
+            // Cleanup: close dropdowns when tour ends (desktop only)
+            tour.on('complete', function() {
+                closeExploreDropdown();
+                closeHelpDropdown();
+            });
+            tour.on('cancel', function() {
+                closeExploreDropdown();
+                closeHelpDropdown();
+            });
         }
 
         // Cleanup: close navPanel when tour ends (mobile)

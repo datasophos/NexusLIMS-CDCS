@@ -32,7 +32,46 @@
     font-weight: 500;
 }
 
-/* tiles css */
+/* Public demo feature summary */
+.nx-demo-feature-card {
+    min-height: 0;
+}
+
+.nx-demo-feature-body {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.7rem;
+    align-items: start;
+    padding: 0.85rem 1rem !important;
+}
+
+.nx-demo-feature-icon {
+    width: 2rem;
+    margin-top: 0.15rem;
+    font-size: 1.35rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.nx-demo-feature-copy {
+    min-width: 0;
+}
+
+.nx-demo-feature-title {
+    margin: 0 0 0.35rem;
+    color: #3f454b;
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+.nx-demo-feature-description {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-align: left;
+}
 
 /* Media queries for responsive layout */
 @media (max-width: 767.98px) {
@@ -46,55 +85,119 @@
     #homepage-logo-col {
         display: none;
     }
+
+    .tile-link {
+        padding: 1.25rem;
+    }
 }
 
-.tile .icon {
-    background-color: var(--nx-primary-color, #11659c);
-    background-image: -moz-linear-gradient(center top , rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15)), url("../img/bg01.png");
-    border-radius: 100%;
-    box-shadow: 0 0 0 7px white, 0 0 0 8px #e0e0e0;
-    color: #fff;
-    cursor: default;
-    display: inline-block;
-    height: 2em;
-    line-height: 2em;
-    margin: 0.5em 0.75em 0.25em 0.25em;
-    width: 2em;
-    font-size: 2em;
-
-    float: left;
-    text-align: center;
+/* Homepage action cards */
+#tiles {
+    margin-top: 1.5rem;
 }
 
 .tile {
-    display: inline-block;
     width: 100%;
-    border-radius: 20px;
-    background-color: inherit;
-    padding: 0px 30px;
-    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    border: 1px solid #e1e7ec;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(20, 45, 70, 0.07);
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
-.tile a > i {
-    color: white;
+.tile:hover {
+    border-color: color-mix(
+        in srgb,
+        var(--nx-primary-color, #11659c) 35%,
+        #e1e7ec
+    );
+    box-shadow: 0 9px 24px rgba(20, 45, 70, 0.13);
+    transform: translateY(-2px);
 }
 
-.tile a:hover {
-    color: var(--nx-primary-color)
+.tile-link {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    min-height: 9rem;
+    padding: 1.5rem;
+    color: inherit;
+    text-decoration: none;
 }
 
-.tile a div.icon {
-    cursor: pointer;
+.tile-link:hover,
+.tile-link:focus {
+    color: inherit;
+    text-decoration: none;
 }
 
-.tile a div.icon:hover {
-    background-color: #f5c636;
-    color: #333;
-    transition: all 0.3s ease-in-out;
+.tile-link:focus-visible {
+    outline: 3px solid var(--nx-warning-color, #f5c636);
+    outline-offset: -3px;
 }
 
-.tile a div.icon:hover + a {
-    background-color: #f5c636;
-    color: #333;
-    transition: all 0.3s ease-in-out;
+.tile .icon {
+    display: inline-flex;
+    flex: 0 0 4rem;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 12px;
+    background: color-mix(
+        in srgb,
+        var(--nx-primary-color, #11659c) 12%,
+        white
+    );
+    color: var(--nx-primary-color, #11659c);
+    font-size: 1.8rem;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.tile:hover .icon {
+    background: var(--nx-primary-color, #11659c);
+    color: #fff;
+}
+
+.tile .text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.tile-title {
+    color: var(--nx-primary-color, #11659c);
+    font-size: 1.2rem;
+    font-weight: 650;
+    line-height: 1.25;
+}
+
+.tile-description {
+    color: #5d6872;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.tile-arrow {
+    flex: 0 0 auto;
+    color: #9aa5ae;
+    font-size: 1rem;
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.tile:hover .tile-arrow {
+    color: var(--nx-primary-color, #11659c);
+    transform: translateX(3px);
 }

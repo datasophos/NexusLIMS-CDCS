@@ -13,40 +13,72 @@
 
 <section class="nx-demo-features mb-4">
     <h6 class="text-uppercase text-muted fw-semibold mb-3 mt-2" style="letter-spacing: 0.08em;">NexusLIMS Features:</h6>
-    <div class="row g-3">
-        <div class="col-sm-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-th-list fa-2x text-primary mb-2"></i>
-                    <h5 class="card-title">Browse Records</h5>
-                    <p class="card-text text-muted small">Explore your facility's experiment records with full metadata and dataset previews.</p>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm nx-demo-feature-card">
+                <div class="card-body nx-demo-feature-body">
+                    <i class="fas fa-sync-alt text-info nx-demo-feature-icon"></i>
+                    <div class="nx-demo-feature-copy">
+                        <h5 class="nx-demo-feature-title">Automated Data Harvesting</h5>
+                        <p class="nx-demo-feature-description">Turn instrument data and metadata into structured records automatically.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-search fa-2x text-info mb-2"></i>
-                    <h5 class="card-title">Full-text Search</h5>
-                    <p class="card-text text-muted small">Search across all record metadata, sample names, researchers, and instrument types.</p>
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm nx-demo-feature-card">
+                <div class="card-body nx-demo-feature-body">
+                    <i class="fas fa-th-list text-primary nx-demo-feature-icon"></i>
+                    <div class="nx-demo-feature-copy">
+                        <h5 class="nx-demo-feature-title">Browse Records</h5>
+                        <p class="nx-demo-feature-description">Explore experiment records with full metadata and dataset previews.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-download fa-2x text-warning mb-2"></i>
-                    <h5 class="card-title">Download Files</h5>
-                    <p class="card-text text-muted small">Access instrument data files directly from record detail pages.</p>
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm nx-demo-feature-card">
+                <div class="card-body nx-demo-feature-body">
+                    <i class="fas fa-search text-info nx-demo-feature-icon"></i>
+                    <div class="nx-demo-feature-copy">
+                        <h5 class="nx-demo-feature-title">Full-text Search</h5>
+                        <p class="nx-demo-feature-description">Search record metadata, sample names, researchers, and instruments.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center p-3">
-                <div class="card-body">
-                    <i class="fas fa-pencil-alt fa-2x text-success mb-2"></i>
-                    <h5 class="card-title">Annotate Data Records</h5>
-                    <p class="card-text text-muted small">Easily add descriptions and organize datasets within records using the inline annotator.</p>
+        {% if NX_ENABLE_GALLERY %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm nx-demo-feature-card">
+                <div class="card-body nx-demo-feature-body">
+                    <i class="fas fa-images text-primary nx-demo-feature-icon"></i>
+                    <div class="nx-demo-feature-copy">
+                        <h5 class="nx-demo-feature-title">Visual Gallery</h5>
+                        <p class="nx-demo-feature-description">Showcases featured datasets in a full-screen rotating display.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm nx-demo-feature-card">
+                <div class="card-body nx-demo-feature-body">
+                    <i class="fas fa-download text-warning nx-demo-feature-icon"></i>
+                    <div class="nx-demo-feature-copy">
+                        <h5 class="nx-demo-feature-title">Download Files</h5>
+                        <p class="nx-demo-feature-description">Access instrument data files directly from record detail pages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm nx-demo-feature-card">
+                <div class="card-body nx-demo-feature-body">
+                    <i class="fas fa-pencil-alt text-success nx-demo-feature-icon"></i>
+                    <div class="nx-demo-feature-copy">
+                        <h5 class="nx-demo-feature-title">Annotate Data Records</h5>
+                        <p class="nx-demo-feature-description">Add descriptions and organize datasets with the inline annotator.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,18 +87,21 @@
 {% endif %}
 
 <!-- <h2 id="available-options">Available Options</h2> -->
-{% for tile in tiles %}
-<div class="tile" id="{{ tile.id }}">
-    <a href="{{ tile.link }}">
-        <div class="icon">
-            <i class="fas {{ tile.logo }}"></i>
+<div class="row g-3">
+    {% for tile in tiles %}
+    <div class="{% if tiles|length > 1 %}col-md-6{% else %}col-12{% endif %}">
+        <div class="tile h-100" id="{{ tile.id }}">
+            <a class="tile-link" href="{{ tile.link }}">
+                <span class="icon" aria-hidden="true">
+                    <i class="fas {{ tile.logo }}"></i>
+                </span>
+                <span class="text">
+                    <span class="tile-title">{{ tile.title }}</span>
+                    <span class="tile-description">{{ tile.text }}</span>
+                </span>
+                <i class="fas fa-arrow-right tile-arrow" aria-hidden="true"></i>
+            </a>
         </div>
-    </a>
-    <div class="text">
-        <h3><a href="{{ tile.link }}">{{ tile.title }}</a></h3>
-        <p>
-            {{ tile.text }}
-        </p>
     </div>
+    {% endfor %}
 </div>
-{% endfor %}

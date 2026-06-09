@@ -88,7 +88,7 @@ git pull
 
 ##### Rebuild Required
 (Include if Dockerfile / pyproject.toml / uv.lock changed)
-Python dependencies or the container definition changed. Rebuild before restarting:
+Python dependencies, files baked into the container (XSLT, schema, etc.) or the container definition changed. Rebuild before restarting:
 ```bash
 cd deployment
 source admin-commands.sh
@@ -108,11 +108,7 @@ Re-upload the updated stylesheets to the database after restarting:
 ```bash
 cd deployment
 source admin-commands.sh
-admin-init
-```
-Or to update only XSLT without a full re-init:
-```bash
-docker exec ${COMPOSE_PROJECT_NAME}_cdcs bash /srv/scripts/update-xslt.sh
+admin-update-xslt
 ```
 
 ##### Schema Updated
@@ -121,7 +117,7 @@ Re-upload the updated schema to the database:
 ```bash
 cd deployment
 source admin-commands.sh
-admin-init
+admin-upgrade-schema
 ```
 
 #### 4. Restart the stack

@@ -17,17 +17,6 @@
         <!-- Start float left menu-->
         {% block navigation_menu %}
             {% generate_menu %}
-            {% for item in menus.nodropdown %}
-                <li>
-                    <a href="{{ item.url }}"{% if item|get_attribute:'id' %} id="{{ item.id }}"{% endif %}{% if item|get_attribute:'css_class' %} class="{{ item.css_class }}"{% endif %}>
-                        {% if item|get_attribute:'icon' %}<i class="{{ item.iconClass }} fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
-                    </a>
-                </li>
-            {% endfor %}
-            {% comment %}
-            Explorer and Composer dropdowns are disabled in NexusLIMS.
-            Uncomment and add menu items in nexuslims_overrides/menus.py to enable.
-            {% endcomment %}
             {% if menus.explorer %}
             <li class="nested">
                 <div class="dropdown">
@@ -37,7 +26,7 @@
                        data-bs-toggle="dropdown"
                        aria-haspopup="true"
                        aria-expanded="false">
-                        Data Exploration
+                        <i class="fas fa-compass menu-fa"></i> Explore Data
                     </a>
                     <ul class="dropdown-menu"
                         aria-labelledby="dropdownExploration">
@@ -45,7 +34,7 @@
                         {% for item in menus.explorer %}
                             <li class="dropdown-item">
                                 <a href="{{ item.url }}">
-                                    {% if item|get_attribute:'icon' %}<i class="fas fa-{{ item.icon }}"></i>{% endif %} {{ item.title }}
+                                    {% if item|get_attribute:'icon' %}<i class="{{ item.iconClass }} fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
                                 </a>
                             </li>
                         {% endfor %}
@@ -53,6 +42,13 @@
                 </div>
             </li>
             {% endif %}
+            {% for item in menus.nodropdown %}
+                <li>
+                    <a href="{{ item.url }}"{% if item|get_attribute:'id' %} id="{{ item.id }}"{% endif %}{% if item|get_attribute:'css_class' %} class="{{ item.css_class }}"{% endif %}>
+                        {% if item|get_attribute:'icon' %}<i class="{{ item.iconClass }} fa-{{ item.icon }} menu-fa"></i>{% endif %} {{ item.title }}
+                    </a>
+                </li>
+            {% endfor %}
             {% if menus.composer %}
             <li class="nested">
                 <div class="dropdown">
@@ -133,7 +129,7 @@
                     </ul>
                 </div>
             {% else %}
-                <a class="btn-custom" href="{% url LOGIN_URL %}">
+                <a class="btn-custom" href="{% url LOGIN_URL %}?next={{ request.get_full_path|urlencode }}">
                     <i class="fas fa-sign-in-alt menu-fa"></i> Log In / Sign Up
                 </a>
             {% endif %}

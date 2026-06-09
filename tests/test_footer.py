@@ -4,9 +4,38 @@ from importlib.metadata import version
 from pathlib import Path
 
 from django.template import Context, Engine
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, override_settings
 
-from nexuslims_overrides.context_processors import nexuslims_settings
+from nexuslims_overrides.context_processors import (
+    nexuslims_features,
+    nexuslims_settings,
+)
+
+
+class FeatureContextTests(SimpleTestCase):
+    @override_settings(
+        INSTALLED_APPS=["nexuslims_gallery"],
+        NX_ENABLE_GALLERY=True,
+    )
+    def test_gallery_enabled_when_app_and_feature_are_enabled(self):
+        context = nexuslims_features(request=None)
+
+        self.assertTrue(context["NX_ENABLE_GALLERY"])
+
+    @override_settings(
+        INSTALLED_APPS=["nexuslims_gallery"],
+        NX_ENABLE_GALLERY=False,
+    )
+    def test_gallery_disabled_by_feature_flag(self):
+        context = nexuslims_features(request=None)
+
+        self.assertFalse(context["NX_ENABLE_GALLERY"])
+
+    @override_settings(INSTALLED_APPS=[], NX_ENABLE_GALLERY=True)
+    def test_gallery_disabled_when_app_is_not_installed(self):
+        context = nexuslims_features(request=None)
+
+        self.assertFalse(context["NX_ENABLE_GALLERY"])
 
 
 class FooterTemplateTests(SimpleTestCase):

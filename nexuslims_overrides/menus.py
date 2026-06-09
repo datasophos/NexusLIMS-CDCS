@@ -28,16 +28,6 @@ for category in ["nodropdown", "explorer", "composer", "dashboard", "help", "use
 # NO DROPDOWN MENU - Top-level navigation items
 # ============================================================================
 
-Menu.add_item(
-    "nodropdown",
-    MenuItem(
-        "Browse and Search Records",
-        reverse("core_explore_keyword_app_search"),
-        icon="search",
-        iconClass="fas",
-    ),
-)
-
 # Custom menu links - configurable via settings
 # Set NX_CUSTOM_MENU_LINKS in settings.py as a list of dicts:
 # NX_CUSTOM_MENU_LINKS = [
@@ -149,12 +139,31 @@ Menu.add_item(
 )
 
 # ============================================================================
-# EXPLORER MENU - Commented out in 2.21.0, keeping empty
+# EXPLORER MENU
 # ============================================================================
-# Menu.add_item(
-#     "explorer",
-#     MenuItem("Search by Keyword", reverse("core_explore_keyword_app_search")),
-# )
+
+Menu.add_item(
+    "explorer",
+    MenuItem(
+        "Browse and Search Records",
+        reverse("core_explore_keyword_app_search"),
+        icon="search",
+        iconClass="fas",
+    ),
+)
+
+if "nexuslims_gallery" in settings.INSTALLED_APPS and getattr(
+    settings, "NX_ENABLE_GALLERY", True
+):
+    Menu.add_item(
+        "explorer",
+        MenuItem(
+            "Visual Gallery",
+            reverse("nexuslims_gallery_page"),
+            icon="images",
+            iconClass="fas",
+        ),
+    )
 
 # ============================================================================
 # COMPOSER MENU - Commented out in 2.21.0, keeping empty

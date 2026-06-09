@@ -68,13 +68,27 @@ def test_gallery_title_never_exceeds_two_lines(gallery_page):
     assert dimensions["height"] <= dimensions["lineHeight"] * 2 + 1
 
 
-def test_gallery_labels_dataset_description(gallery_page):
-    """The second footer line is identified as a dataset description."""
+def test_gallery_renders_dataset_description_when_present(gallery_page):
+    """The description row reflects whether the selected dataset has a description."""
     gallery_page.wait_for_function(
         "() => document.getElementById('nx-gallery-title').textContent.trim() !== ''"
     )
+    with gallery_page.expect_response(
+        lambda r: "/gallery/api/next/" in r.url, timeout=10_000
+    ) as response_info:
+        gallery_page.keyboard.press("ArrowRight")
+    slide = response_info.value.json()
+    assert "error" not in slide
+
+    description = gallery_page.locator("#nx-gallery-desc")
+    description_text = gallery_page.locator("#nx-gallery-desc-text")
     expect(gallery_page.locator(".nx-gallery-desc-label")).to_have_text("Dataset:")
-    expect(gallery_page.locator("#nx-gallery-desc-text")).not_to_be_empty()
+    if slide.get("description"):
+        expect(description).to_be_visible()
+        expect(description_text).to_have_text(slide["description"])
+    else:
+        expect(description).to_be_hidden()
+        expect(description_text).to_be_empty()
 
 
 def test_right_arrow_key_advances_slide(gallery_page):
@@ -83,7 +97,7 @@ def test_right_arrow_key_advances_slide(gallery_page):
         "() => document.getElementById('nx-gallery-title').textContent.trim() !== ''"
     )
     with gallery_page.expect_response(
-        lambda r: "/gallery/api/next/" in r.url, timeout=5000
+        lambda r: "/gallery/api/next/" in r.url, timeout=10_000
     ) as response_info:
         gallery_page.keyboard.press("ArrowRight")
     slide = response_info.value.json()

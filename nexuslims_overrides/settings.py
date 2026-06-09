@@ -54,12 +54,11 @@ NX_XSLT_DEBUG = False
 # ============================================================================
 
 NX_HOMEPAGE_TEXT = (
-    "This laboratory information management system (LIMS) allows for the "
-    "automated creation and curation of microscopy experimental records using "
-    "the schema co-developed by ODI and the MML Electron Microscopy Nexus Facility. "
-    "Experimental records are automatically harvested from multiple data sources to "
-    "facilitate browsing and searching of data collected from the varied instruments "
-    "in the Nexus Facility."
+    "NexusLIMS automates the creation and curation of microscopy experimental "
+    "records by harvesting data and metadata from multiple sources. It organizes "
+    "experimental information into structured, searchable records that make it "
+    "easier to find, understand, and share data collected across a facility's "
+    "instruments."
 )
 
 NX_HOMEPAGE_LOGO = "nexuslims/img/logo_stacked_modern.png"  # Path relative to static/
