@@ -199,7 +199,8 @@ i.help-filelist-modal > div.tooltip > div.tooltip-inner {
 /* Visual styles — applied for all users (editors and read-only) */
 .nx-name-row .nx-star { display: inline; font-size: 0.9rem; color: #aaa; transition: color 0.15s; text-decoration: none; line-height: 1; margin-bottom: 2px; cursor: default; }
 .nx-name-row .nx-star--featured { color: #f5a623; visibility: visible; }
-.nx-name-row .nx-rating-group { display: flex; gap: 2px; margin-left: auto; margin-bottom: 2px; position: relative; }
+.nx-name-row .nx-rating-group { display: flex; align-items: center; gap: 2px; margin-left: auto; margin-bottom: 2px; position: relative; line-height: 1; }
 .nx-name-row .nx-rating-group[data-current-rating]:not([data-current-rating="0"]) { visibility: visible; }
-.nx-name-row .nx-rc { font-size: 0.65rem; color: #ccc; cursor: default; }
+.nx-name-row .nx-rc-clear { display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; line-height: 1; }
+.nx-name-row .nx-rc { display: inline-flex; align-items: center; font-size: 0.65rem; line-height: 1; color: #ccc; cursor: default; }
 .nx-name-row .nx-rc--filled { color: #f5a623; }
