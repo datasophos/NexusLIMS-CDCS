@@ -381,7 +381,9 @@ latest code, rebuilds the CDCS and demo Caddy containers, restarts the stack,
 and downloads fixture data if absent.
 
 The public demo uses `caddy/Caddyfile.demo` and a Caddy image with the pinned
-`caddy-ratelimit` module. Caddy serves `caddy/robots.txt` directly. Requests
+`caddy-ratelimit` module. Production and demo import their common application
+and file routes from `caddy/Caddyfile.shared`; only the demo entry file contains
+the crawler rules. Caddy serves `caddy/robots.txt` directly. Requests
 to `/staff-admin/` are limited to 120 per minute across all visitors and 30
 per minute per client IP; excess requests return HTTP 429 before reaching
 Gunicorn. This protects the application even when crawlers ignore `robots.txt`.

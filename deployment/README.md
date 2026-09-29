@@ -118,6 +118,8 @@ deployment/
 │   ├── Dockerfile             # Custom Caddy with plugins
 │   ├── Caddyfile.dev          # Development file server and reverse proxy (local CA with self-signed certs)
 │   ├── Caddyfile.prod         # Production file server and reverse proxy (using ACME/Let's Encrypt)
+│   ├── Caddyfile.demo         # Public demo rules and rate limits
+│   ├── Caddyfile.shared       # Application and file routes shared by prod and demo
 │   └── certs/                 # Dev CA certificates
 │
 ├── scripts/
