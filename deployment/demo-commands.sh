@@ -11,9 +11,9 @@ fi
 COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-nexuslims_demo}
 DOMAIN=${DOMAIN:-nexuslims-demo.datasophos.co}
 
-# Build the CDCS container
-alias demo-build='COMPOSE_BAKE=true docker compose build cdcs'
-alias demo-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs'
+# Build the application and demo Caddy containers
+alias demo-build='COMPOSE_BAKE=true docker compose build cdcs caddy'
+alias demo-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs caddy'
 
 # Start the demo stack
 alias demo-up='docker compose up -d'
@@ -46,8 +46,8 @@ alias demo-collectstatic='docker exec ${COMPOSE_PROJECT_NAME}_cdcs python manage
 echo "NexusLIMS-CDCS Demo aliases loaded! Available commands:"
 echo ""
 echo "  Build:"
-echo "    demo-build           - Build CDCS container (with cache)"
-echo "    demo-build-clean     - Build CDCS container (no cache, clean build)"
+echo "    demo-build           - Build CDCS and demo Caddy containers (with cache)"
+echo "    demo-build-clean     - Build CDCS and demo Caddy containers (no cache)"
 echo ""
 echo "  Lifecycle:"
 echo "    demo-up              - Start demo stack"
