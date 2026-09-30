@@ -386,8 +386,14 @@ and file routes from `caddy/Caddyfile.shared`; only the demo entry file contains
 the crawler rules. Caddy serves `caddy/robots.txt` directly. Requests
 to `/staff-admin/` are limited to 120 per minute across all visitors and 30
 per minute per client IP; excess requests return HTTP 429 before reaching
-Gunicorn. This protects the application even when crawlers ignore `robots.txt`.
-Adjust both limits after checking real visitor traffic and Caddy's access logs.
+Gunicorn. The per-client limit uses Cloudflare's `CF-Connecting-IP` header;
+Caddy rejects direct requests to `/staff-admin/` unless the connection comes
+from a Cloudflare IP range. This is necessary because the DNS-only files
+hostname exposes the shared origin IP. Other demo routes and the files hostname
+remain directly accessible. Keep the Cloudflare ranges in `Caddyfile.demo`
+current with https://www.cloudflare.com/ips/; an outdated list can block
+legitimate admin requests. Adjust both limits after checking real visitor
+traffic and Caddy's access logs.
 The demo Compose override mounts `DEMO_CADDYFILE`, defaulting to
 `Caddyfile.demo`; set it to `Caddyfile.dev` when testing `.localhost` with the
 local CA.
