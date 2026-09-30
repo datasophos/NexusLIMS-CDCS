@@ -13,6 +13,7 @@ services:
       - cdcs_socket:/tmp/nexuslims/
       - cdcs_static:/srv/nexuslims_static
       - ./caddy/${CADDYFILE}:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile.shared:/etc/caddy/Caddyfile.shared:ro
       - caddy_data:/data
       - caddy_config:/config
     environment:

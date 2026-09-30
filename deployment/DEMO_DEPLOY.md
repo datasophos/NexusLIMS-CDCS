@@ -307,7 +307,8 @@ Edit `.env` and make these changes for local testing:
 |---|---|---|
 | `DOMAIN` | `nexuslims-demo.datasophos.co` | `nexuslims-demo.localhost` |
 | `FILES_DOMAIN` | `files.nexuslims-demo.datasophos.co` | `files.nexuslims-demo.localhost` |
-| `CADDYFILE` | `Caddyfile.prod` | `Caddyfile.dev` |
+| `CADDYFILE` | `Caddyfile.demo` | `Caddyfile.dev` |
+| `DEMO_CADDYFILE` | `Caddyfile.demo` | `Caddyfile.dev` |
 | `REQUESTS_CA_BUNDLE` | `/etc/ssl/certs/ca-certificates.crt` | `/etc/ssl/certs/caddy-root-ca.crt` |
 | `CURL_CA_BUNDLE` | `/etc/ssl/certs/ca-certificates.crt` | `/etc/ssl/certs/caddy-root-ca.crt` |
 
@@ -376,8 +377,29 @@ when fixture content is updated.
 
 Deploys are automated via GitHub Actions (`.github/workflows/deploy-demo.yml`). Every
 push to `main` triggers the self-hosted runner on the OCI instance, which pulls the
-latest code, rebuilds the CDCS container, restarts the stack, and downloads fixture
-data if absent.
+latest code, rebuilds the CDCS and demo Caddy containers, restarts the stack,
+and downloads fixture data if absent.
+
+The public demo uses `caddy/Caddyfile.demo` and a Caddy image with the pinned
+`caddy-ratelimit` module. Production and demo import their common application
+and file routes from `caddy/Caddyfile.shared`; only the demo entry file contains
+the crawler rules. Caddy serves `caddy/robots.txt` directly. Requests
+to `/staff-admin/` are limited to 120 per minute across all visitors and 30
+per minute per client IP; excess requests return HTTP 429 before reaching
+Gunicorn. The per-client limit uses Cloudflare's `CF-Connecting-IP` header;
+Caddy rejects direct requests to `/staff-admin/` unless the connection comes
+from a Cloudflare IP range. This is necessary because the DNS-only files
+hostname exposes the shared origin IP. Other demo routes and the files hostname
+remain directly accessible. Keep the Cloudflare ranges in `Caddyfile.demo`
+current with https://www.cloudflare.com/ips/; an outdated list can block
+legitimate admin requests. The `Check Cloudflare origin IPs` workflow compares
+this allowlist against Cloudflare's IPv4 and IPv6 text feeds on pull requests,
+relevant pushes, and each Monday. A mismatch fails the check; main-branch and
+manual runs also open one GitHub issue while the mismatch remains. Adjust both
+limits after checking real visitor traffic and Caddy's access logs.
+The demo Compose override mounts `DEMO_CADDYFILE`, defaulting to
+`Caddyfile.demo`; set it to `Caddyfile.dev` when testing `.localhost` with the
+local CA.
 
 To trigger a deploy manually, push to `main` or re-run the workflow in the GitHub
 Actions UI.
@@ -389,7 +411,7 @@ cd /opt/nexuslims-cdcs
 git pull
 cd deployment
 source demo-commands.sh
-demo-build        # rebuild if Dockerfile or Python dependencies changed
+demo-build        # rebuild the CDCS and demo Caddy images
 demo-restart-all  # restart all services with updated code
 ```
 

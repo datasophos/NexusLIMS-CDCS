@@ -3,8 +3,14 @@
 
 services:
   caddy:
+    image: nexuslims-caddy-demo:2.11.2
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile.demo
     restart: unless-stopped
     volumes:
+      - ./caddy/${DEMO_CADDYFILE:-Caddyfile.demo}:/etc/caddy/Caddyfile:ro
+      - ./caddy/robots.txt:/etc/caddy/robots.txt:ro
       # Local CA certificates for .localhost HTTPS (same as dev)
       - ./caddy/certs:/etc/caddy/certs:ro
       # Demo preview images and instrument data stubs served by Caddy file server

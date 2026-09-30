@@ -34,7 +34,9 @@ jobs:
           set -e
           cd /opt/nexuslims-cdcs/deployment
           export COMPOSE_FILE="docker-compose.base.yml:docker-compose.demo.yml"
-          COMPOSE_BAKE=true docker compose build cdcs
+          COMPOSE_BAKE=true docker compose build cdcs caddy
+          docker compose run --rm --no-deps --entrypoint caddy caddy \
+            validate --config /etc/caddy/Caddyfile --adapter caddyfile
           docker compose down
           docker compose up -d
           echo "=== Deploy complete ==="
