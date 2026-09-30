@@ -392,8 +392,11 @@ from a Cloudflare IP range. This is necessary because the DNS-only files
 hostname exposes the shared origin IP. Other demo routes and the files hostname
 remain directly accessible. Keep the Cloudflare ranges in `Caddyfile.demo`
 current with https://www.cloudflare.com/ips/; an outdated list can block
-legitimate admin requests. Adjust both limits after checking real visitor
-traffic and Caddy's access logs.
+legitimate admin requests. The `Check Cloudflare origin IPs` workflow compares
+this allowlist against Cloudflare's IPv4 and IPv6 text feeds on pull requests,
+relevant pushes, and each Monday. A mismatch fails the check; main-branch and
+manual runs also open one GitHub issue while the mismatch remains. Adjust both
+limits after checking real visitor traffic and Caddy's access logs.
 The demo Compose override mounts `DEMO_CADDYFILE`, defaulting to
 `Caddyfile.demo`; set it to `Caddyfile.dev` when testing `.localhost` with the
 local CA.

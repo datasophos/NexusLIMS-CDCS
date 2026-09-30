@@ -1,0 +1,79 @@
+name: Check Cloudflare origin IPs
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/check-cloudflare-ips.yml
+      - deployment/caddy/Caddyfile.demo
+      - .github/scripts/check_cloudflare_ips.py
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/check-cloudflare-ips.yml
+      - deployment/caddy/Caddyfile.demo
+      - .github/scripts/check_cloudflare_ips.py
+  schedule:
+    - cron: "17 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      diverged: ${{ steps.compare.outputs.diverged }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test comparison logic
+        run: python3 -m unittest tests.test_cloudflare_ip_check -v
+
+      - name: Compare Caddy allowlist with Cloudflare
+        id: compare
+        shell: bash
+        run: |
+          set +e
+          python3 .github/scripts/check_cloudflare_ips.py
+          result=$?
+          if (( result == 1 )); then
+            echo "diverged=true" >> "$GITHUB_OUTPUT"
+            echo "::error::Cloudflare origin IP ranges differ from Caddyfile.demo"
+          fi
+          exit "$result"
+
+  alert:
+    needs: check
+    if: ${{ always() && github.event_name != 'pull_request' && needs.check.outputs.diverged == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open an issue if one is not already open
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          title="Cloudflare origin IP allowlist is out of date"
+          existing=$(gh issue list --state open --search "in:title \"$title\"" \
+            --json title,number --jq ".[] | select(.title == \"$title\") | .number")
+          if [[ -n "$existing" ]]; then
+            echo "Existing alert issue: #$existing"
+            exit 0
+          fi
+
+          body_file=$(mktemp)
+          trap 'rm -f "$body_file"' EXIT
+          cat > "$body_file" <<EOF
+          Cloudflare's published origin IP ranges differ from the allowlist in
+          [Caddyfile.demo](https://github.com/$GH_REPO/blob/main/deployment/caddy/Caddyfile.demo).
+
+          Review the additions and removals in the [failed check]($RUN_URL), update
+          the Caddyfile, and close this issue after the check passes. Until the
+          allowlist is updated, some legitimate Cloudflare requests to the demo
+          admin route may receive HTTP 403.
+          EOF
+          gh issue create --title "$title" --body-file "$body_file"
