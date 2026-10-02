@@ -449,6 +449,7 @@ def _inject_setup_into_dataset(dataset_el, activity_el):
     setup_el = activity_el.find(f"{{{NS}}}setup")
     if setup_el is None:
         return
+    curation_el = dataset_el.find(f"{{{NS}}}curation")
     existing_names = {m.get("name") for m in dataset_el.findall(f"{{{NS}}}meta")}
     for param in setup_el.findall(f"{{{NS}}}param"):
         name = param.get("name")
@@ -459,7 +460,10 @@ def _inject_setup_into_dataset(dataset_el, activity_el):
             if unit:
                 meta_el.set("unit", unit)
             meta_el.text = param.text
-            dataset_el.append(meta_el)
+            if curation_el is None:
+                dataset_el.append(meta_el)
+            else:
+                dataset_el.insert(list(dataset_el).index(curation_el), meta_el)
 
 
 def _recompute_activity_setup(activity_el, skip_inject=None):
