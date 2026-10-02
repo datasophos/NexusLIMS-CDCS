@@ -3,10 +3,12 @@
 import json
 import os
 import xml.etree.ElementTree as ET
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase, TestCase
+from lxml import etree
 
 from nexuslims_annotate.views import (
     _apply_activity_mutations,
@@ -1355,6 +1357,39 @@ class ApplyMovesOrderingTests(SimpleTestCase):
         )
         names = self._names_in_activity(result, "0")
         self.assertEqual(names, ["image_002.dm3"])
+
+    def test_moving_curated_dataset_preserves_schema_valid_meta_order(self):
+        root = ET.fromstring(_TWO_ACTIVITY_XML)
+        summary = ET.Element(_t("summary"))
+        root.insert(1, summary)
+        dataset = root.find("nx:acquisitionActivity/nx:dataset", NS_MAP)
+        curation = ET.SubElement(dataset, _t("curation"))
+        ET.SubElement(curation, _t("rating")).text = "3"
+        xml = ET.tostring(root, encoding="unicode")
+        schema = etree.XMLSchema(
+            etree.parse(
+                str(
+                    Path(__file__).resolve().parents[1]
+                    / "deployment/schemas/nexus-experiment.xsd"
+                )
+            )
+        )
+        self.assertTrue(schema.validate(etree.fromstring(xml.encode())))
+
+        moved = _apply_moves(
+            xml, [{"datasetIndex": 0, "targetActivitySeqno": "1"}]
+        )
+
+        moved_dataset = _get_dataset(moved, "image_001.dm3")
+        self.assertEqual(
+            moved_dataset.find("nx:curation/nx:rating", NS_MAP).text, "3"
+        )
+        self.assertEqual(
+            _find_meta(moved_dataset, "Magnification").text, "17677.0"
+        )
+        self.assertTrue(
+            schema.validate(etree.fromstring(moved.encode())), schema.error_log
+        )
 
 
 # ===========================================================================
