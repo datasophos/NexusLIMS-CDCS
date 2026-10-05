@@ -22,6 +22,13 @@ class DemoAutoLoginMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        # Let DRF authenticate API tokens before demo auto-login can turn the
+        # request into a session-authenticated request that requires CSRF.
+        if request.path.startswith("/rest/") and request.META.get(
+            "HTTP_AUTHORIZATION", ""
+        ).startswith("Token "):
+            return self.get_response(request)
+
         if (
             getattr(settings, "IS_PUBLIC_DEMO", False)
             and not request.user.is_authenticated
