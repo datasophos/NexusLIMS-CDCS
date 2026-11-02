@@ -43,14 +43,12 @@ class FooterTemplateTests(SimpleTestCase):
         context = nexuslims_settings(request=None)
 
         self.assertEqual(context["NX_VERSION"], version("nexuslims-cdcs"))
-        self.assertEqual(context["NX_BASE_VERSION"], "3.21.0")
-        self.assertEqual(context["NX_SUBVERSION"], "nx1")
+        self.assertEqual(context["NX_BASE_VERSION"], "3.23.0")
+        self.assertEqual(context["NX_SUBVERSION"], "nx0")
 
     def test_version_links_to_frontend_changelog(self):
         template_dir = (
-            Path(__file__).resolve().parents[1]
-            / "nexuslims_overrides"
-            / "templates"
+            Path(__file__).resolve().parents[1] / "nexuslims_overrides" / "templates"
         )
         engine = Engine(
             dirs=[template_dir, Path(__file__).resolve().parents[1] / "templates"],
