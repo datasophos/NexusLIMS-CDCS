@@ -52,7 +52,7 @@ services:
 
   simplesamlphp:
     profiles: [sso]
-    image: cirrusid/simplesamlphp:v2.5.3.1
+    image: cirrusid/simplesamlphp:v2.4.4
     container_name: ${COMPOSE_PROJECT_NAME}_cdcs_sso
     environment:
       - SSP_BASE_URL_PATH=https://${SSO_DOMAIN}/simplesaml/
