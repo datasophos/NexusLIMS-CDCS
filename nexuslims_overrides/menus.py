@@ -12,6 +12,7 @@ Menu Categories:
   * help - Help dropdown items
 """
 
+from django.conf import settings
 from django.urls import reverse
 from menu import Menu, MenuItem
 
@@ -35,7 +36,6 @@ for category in ["nodropdown", "explorer", "composer", "dashboard", "help", "use
 #     {"title": "Link 2", "url": "https://example.com", "icon": "fish"},
 #     {"title": "Link 3", "url": "https://example.com", "icon": "users"},
 # ]
-from django.conf import settings
 
 custom_links = getattr(
     settings,
@@ -120,7 +120,6 @@ Menu.add_item(
 # ============================================================================
 
 # Get documentation link from settings
-from django.conf import settings
 
 DOCUMENTATION_LINK = getattr(settings, "NX_DOCUMENTATION_LINK", "https://example.com")
 
@@ -172,3 +171,6 @@ if "nexuslims_gallery" in settings.INSTALLED_APPS and getattr(
 #     "composer",
 #     MenuItem("Create New Template", reverse("core_composer_index"))
 # )
+
+if "nexuslims_gallery" in settings.INSTALLED_APPS and getattr(settings, "NX_ENABLE_GALLERY", True):
+    Menu.add_item("admin", MenuItem("Visual Gallery", reverse("nexuslims_gallery_admin"), icon="images", weight=-60000))

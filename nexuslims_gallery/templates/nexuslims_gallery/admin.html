@@ -1,0 +1,23 @@
+<section class="content-header"><h1>Visual Gallery</h1></section>
+<section class="content">
+  <div class="box box-default"><div class="box-body">
+    <form method="post">{% csrf_token %}
+      {{ data.form.as_p }}
+      <button type="submit" class="btn btn-primary">Save selection</button>
+    </form>
+    <p>Records are chosen at random. Within each record, featured datasets take priority, followed by the highest rating. Ties are chosen at random.</p>
+  </div></div>
+  <div class="box box-default"><div class="box-header"><h2 class="box-title">Selectable images ({{ data.rows|length }})</h2></div>
+    <div class="box-body table-responsive">
+      {% if data.error %}<p role="alert">{{ data.error }}</p>{% else %}
+      <table class="table table-striped"><thead><tr><th>Preview</th><th>Experimenter</th><th>File</th><th>Selection reason</th><th>Record</th></tr></thead>
+        <tbody>{% for row in data.rows %}<tr>
+          <td><a href="{{ row.preview_url }}"><img src="{{ row.preview_url }}" alt="" style="max-width: 100px; max-height: 75px"></a></td>
+          <td>{{ row.experimenter|default:"—" }}</td><td>{{ row.name|default:"—" }}</td>
+          <td>{% if row.featured %}Featured{% elif row.rating is not None %}Highest rating ({{ row.rating }}){% else %}First available preview{% endif %}</td>
+          <td><a href="/data?id={{ row.record_id|urlencode }}">{{ row.title|default:"View record" }}</a></td>
+        </tr>{% empty %}<tr><td colspan="5">No selectable images found for this mode.</td></tr>{% endfor %}</tbody>
+      </table>{% endif %}
+    </div>
+  </div>
+</section>
