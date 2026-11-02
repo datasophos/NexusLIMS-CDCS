@@ -69,6 +69,12 @@ This architecture maximizes code reuse while allowing environment-specific custo
    - **Firefox**: Settings → Privacy & Security → Certificates → View Certificates → Authorities → Import
    - **Safari**: Safari → Settings → Privacy → Manage Website Data (uses system keychain on macOS)
 
+The SAML test identity provider is optional. To enable SSO testing, run
+`dev-sso-enable` and then `dev-up`; to disable it, run `dev-sso-disable` and
+`dev-restart-all`. Ordinary `dev-up` does not pull the IdP image when SSO is
+disabled. The IdP uses the checked-in development CA key for test assertions;
+never use this configuration outside local development or CI.
+
 6. **Access the application:**
    - Main app: https://nexuslims-dev.localhost
    - File server: https://files.nexuslims-dev.localhost/data/ and https://files.nexuslims-dev.localhost/instrument-data/

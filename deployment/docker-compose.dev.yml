@@ -51,15 +51,23 @@ services:
     entrypoint: ["/docker-entrypoint.dev.sh"]
 
   simplesamlphp:
-    image: druidfi/saml-idp:2.4.4
+    profiles: [sso]
+    image: cirrusid/simplesamlphp:v2.5.3.1
     container_name: ${COMPOSE_PROJECT_NAME}_cdcs_sso
     environment:
-      - SIMPLESAMLPHP_IDP_BASEURLPATH=https://${SSO_DOMAIN}/simplesaml/
+      - SSP_BASE_URL_PATH=https://${SSO_DOMAIN}/simplesaml/
+      - SSP_ENABLE_IDP=true
+      - SSP_ENABLED_MODULES=exampleauth
+      - SSP_ADMIN_PASSWORD=admin
+      - SSP_SECRET_SALT=nexuslims-local-development-only
       - SIMPLESAMLPHP_SP_ENTITY_ID=https://${DOMAIN}/saml2/metadata/
       - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://${DOMAIN}/saml2/acs/
       - SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://${DOMAIN}/saml2/ls/
     volumes:
       # Override auth sources with dev test users
-      - ./dev-sso/authsources.php:/app/simplesamlphp/config/authsources.php:ro
+      - ./dev-sso/authsources.php:/var/simplesamlphp/config/authsources.php:ro
       # Register CDCS as a known SP (with attribute release policy)
-      - ./dev-sso/saml20-sp-remote.php:/app/simplesamlphp/metadata/saml20-sp-remote.php:ro
+      - ./dev-sso/saml20-sp-remote.php:/var/simplesamlphp/metadata/saml20-sp-remote.php:ro
+      - ./dev-sso/saml20-idp-hosted.php:/var/simplesamlphp/metadata/saml20-idp-hosted.php:ro
+      - ./caddy/certs/ca.crt:/var/simplesamlphp/cert/ca.crt:ro
+      - ./caddy/certs/ca.key:/var/simplesamlphp/cert/ca.key:ro
