@@ -7,12 +7,12 @@ Overview <frontend_guide/overview>
 Deployment <frontend_guide/production>
 Administration <frontend_guide/administration>
 Development <frontend_guide/development>
+Changelog <frontend_guide/changelog>
 ```
 
 # NexusLIMS CDCS
 
-<img class="cdcs-home-logo cdcs-home-logo-light" src="_static/logo_horizontal_text.png" alt="NexusLIMS — Discovery in Data">
-<img class="cdcs-home-logo cdcs-home-logo-dark" src="_static/logo_horizontal_dark.png" alt="NexusLIMS">
+<img class="cdcs-home-logo" src="_static/logo_horizontal_text.png" alt="NexusLIMS — Discovery in Data">
 
 [NexusLIMS CDCS](https://github.com/datasophos/NexusLIMS-CDCS) is the frontend for NexusLIMS.
 It provides a web-based platform for searching, visualizing, and managing the experimental records

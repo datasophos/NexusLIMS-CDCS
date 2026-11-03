@@ -9,6 +9,11 @@
 .navbar-header-items__center { min-width: 0; }
 .navbar-brand img { width: auto; }
 .navbar-nav { flex-wrap: nowrap; }
+@media (min-width: 992px) and (max-width: 1250px) {
+  .navbar-brand img { max-height: 28px; }
+  .navbar-header-items__center .nav-link { font-size: .85rem; padding-left: .3rem; padding-right: .3rem; }
+  .navbar-icon-links .nav-link { padding-left: .25rem; padding-right: .25rem; }
+}
 
 .cdcs-version-menu { position: relative; margin-left: .75rem; font-size: .875rem; }
 .cdcs-version-menu summary {
@@ -35,9 +40,6 @@
 }
 .cdcs-version-menu-items a { display: block; padding: .35rem .75rem; white-space: nowrap; }
 .cdcs-home-logo { display: block; width: min(100%, 560px); margin: 2rem auto; margin-top: 0; }
-.cdcs-home-logo-dark { display: none; }
-html[data-theme="dark"] .cdcs-home-logo-light { display: none; }
-html[data-theme="dark"] .cdcs-home-logo-dark { display: block; }
 .cdcs-home-tagline { text-align: center; font-style: italic; margin-bottom: 1.75rem; }
 section#nexuslims-cdcs > h1 {
   position: absolute;

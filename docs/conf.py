@@ -24,7 +24,7 @@ html_theme_options = {
     "navbar_end": ["search-button", "theme-switcher", "navbar-icon-links"],
     "navbar_persistent": [],
     "collapse_navigation": True,
-    "header_links_before_dropdown": 5,
+    "header_links_before_dropdown": 6,
     "icon_links": [
         {"name": "NexusLIMS documentation", "url": "https://datasophos.github.io/NexusLIMS/stable/", "icon": "fa-solid fa-book"},
         {"name": "Datasophos", "url": "https://datasophos.co", "icon": "fa-solid fa-globe"},
