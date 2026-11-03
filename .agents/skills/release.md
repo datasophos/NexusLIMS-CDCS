@@ -213,12 +213,21 @@ Present the suggested version and ask the user to confirm or change it.
 
 Review the release notes and actual diffs against the CDCS documentation in
 `docs/frontend_guide/`. Update affected feature, configuration, deployment, and
-upgrade guidance alongside the code; add a versioned entry to
-`docs/frontend_guide/changelog.md` for user-facing changes and upgrade notes.
+upgrade guidance alongside the code.
+
+Draft the next `docs/frontend_guide/changelog.md` entry from the complete release
+notes drafted in Step 3. Use a `## VERSION -- YYYY-MM-DD` heading and the release
+date; beneath it retain the release notes' section headings and content, including
+upgrade instructions and links. Omit the release notes' redundant top-level title.
+Do not independently summarize the fragments or silently omit internal notes:
+the changelog and GitHub Release must convey the same reviewed release notes.
+Prepend the entry before the existing releases, preserving all history. If an entry
+for the version already exists, stop and reconcile it rather than duplicating it.
+Present this proposed entry for review in Step 5; do not modify the changelog yet.
 Build the site with `uv run --group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html`.
-Commit those documentation updates
-through the normal feature or release preparation workflow before tagging; the
-release commit in Step 6 stages only the version and reviewed fragments.
+Commit other documentation updates through the normal feature or release
+preparation workflow before tagging; Step 6 adds the approved changelog entry to
+the release commit together with the version and reviewed fragments.
 The CDCS site publishes Cloudflare branch previews, `latest` for main on GitHub
 Pages, and versioned and stable documentation
 when a CDCS release is published. A draft release does not publish stable docs.
@@ -231,13 +240,15 @@ worktree and branch, and outstanding commit, review, or merge work in the releas
 checklist. If no change is needed, explain why. If NexusLIMS is unavailable,
 report the missing review explicitly.
 
-For `--dry-run`, describe proposed changes and compatibility evidence without
-modifying either repository. Prepare actual updates when the release proceeds.
+For `--dry-run`, present the proposed changelog entry, other documentation changes,
+and compatibility evidence without modifying either repository. Prepare actual
+updates when the release proceeds.
 
 ### Step 5: User Review
 
-Present the full release notes, proposed version, CDCS documentation changes,
-NexusLIMS compatibility assessment, and list of fragments to consume. Ask the user to:
+Present the full release notes, proposed version, changelog entry, other CDCS
+documentation changes, NexusLIMS compatibility assessment, and list of fragments
+to consume. Ask the user to:
 1. Review and approve the release notes
 2. Confirm the version number
 
@@ -250,12 +261,18 @@ Once approved, and unless `--dry-run` was passed:
 1. **Update `pyproject.toml`**: Set `version = "<VERSION>"` using the PEP 440 local
    form (e.g. `3.20.0+nx1` for tag `v3.20.0-nx1`).
 
-2. **Consume the reviewed fragments and commit the release**: Remove only the
+2. **Update the changelog**: Prepend the approved entry to
+   `docs/frontend_guide/changelog.md`. Verify it matches the approved release
+   notes, uses the release version and date, and preserves historical entries.
+   Rebuild the documentation before committing.
+
+3. **Consume the reviewed fragments and commit the release**: Remove only the
    tracked fragment paths recorded and reviewed for this release. Do not remove
-   unrelated, newly added, or untracked files. Stage the version change and those
-   exact deletions; do not write or commit a `RELEASE_NOTES.md` file.
+   unrelated, newly added, or untracked files. Stage the version change, approved
+   changelog entry, and those exact deletions; do not write or commit a
+   `RELEASE_NOTES.md` file.
    ```bash
-   git add pyproject.toml
+   git add pyproject.toml docs/frontend_guide/changelog.md
    # For each reviewed fragment: git rm -- docs/changes/<reviewed-fragment>.md
    git commit -m "chore: release vVERSION"
    ```
@@ -263,18 +280,18 @@ Once approved, and unless `--dry-run` was passed:
    workflow and report its branch and review/merge status; do not silently include
    or overwrite unrelated work.
 
-3. **Tag the release** (lightweight tag at the release commit):
+4. **Tag the release** (lightweight tag at the release commit):
    ```bash
    git tag vVERSION
    ```
 
-4. **Push** (unless `--no-push` was passed):
+5. **Push** (unless `--no-push` was passed):
    ```bash
    git push origin main
    git push origin vVERSION
    ```
 
-5. **Create a draft GitHub Release** with the full release notes as the body:
+6. **Create a draft GitHub Release** using the same approved release notes as the body:
    ```bash
    gh release create vVERSION --draft --title "NexusLIMS-CDCS vVERSION" --notes "$(cat <<'EOF'
    <full release notes here>
