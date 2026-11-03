@@ -209,38 +209,35 @@ Base the content strictly on the commits and diffs gathered -- do not invent cha
 
 Present the suggested version and ask the user to confirm or change it.
 
-### Step 4a: Prepare the NexusLIMS Documentation Update
+### Step 4a: Prepare Documentation
 
-In the main NexusLIMS repository, prepare the CDCS documentation in a separate
-worktree, preserving unrelated changes. Review the release notes, actual diffs,
-and existing documentation to determine the required updates:
+Review the release notes and actual diffs against the CDCS documentation in
+`docs/frontend_guide/`. Update affected feature, configuration, deployment, and
+upgrade guidance alongside the code; add a versioned entry to
+`docs/frontend_guide/changelog.md` for user-facing changes and upgrade notes.
+Build the site with `sphinx-build -b html -n -W --keep-going docs docs/_build/html`
+after installing `docs/requirements.txt`. Commit those documentation updates
+through the normal feature or release preparation workflow before tagging; the
+release commit in Step 6 stages only the version and reviewed fragments.
+The CDCS site publishes previews for
+same-repository PRs, `latest` for main, and versioned and stable documentation
+when a CDCS release is published. A draft release does not publish stable docs.
 
-1. Add a versioned entry to `docs/frontend_guide/changelog.md`, covering
-   user-facing changes and relevant upgrade notes. Omit internal-only CI and
-   dependency details unless they matter to users or operators.
-2. Review `docs/reference/compatibility.md` for every release. Update its matrix
-   for the new CDCS version and supported NexusLIMS versions when warranted by
-   verified compatibility. Check version ranges and notes for overlap or ambiguity;
-   do not infer compatibility from version numbers alone. If evidence is missing,
-   explicitly report what must be verified and leave the compatibility claim open.
-   If no matrix change is needed, state why in the release checklist.
-3. Update other affected `docs/frontend_guide/` pages and relevant deployment,
-   configuration, or upgrade documentation to reflect the released behavior.
+For every release, review `docs/reference/compatibility.md` in the main NexusLIMS
+repository. Update its matrix in a separate worktree when warranted by verified
+compatibility, checking ranges for overlaps and ambiguity. Do not infer
+compatibility from version numbers. Record the evidence or open questions, the
+worktree and branch, and outstanding commit, review, or merge work in the release
+checklist. If no change is needed, explain why. If NexusLIMS is unavailable,
+report the missing review explicitly.
 
-Do not treat the two repositories as one atomic commit: record the documentation
-worktree/branch, files changed, compatibility evidence or open questions, and
-any outstanding commit, review, or merge work in the release checklist. If the
-repository is unavailable, report the missing update explicitly instead of
-claiming it is complete.
-
-For `--dry-run`, describe the proposed documentation changes, including the
-compatibility matrix assessment and evidence, for review without modifying either
-repository. Prepare the actual documentation update when the release proceeds.
+For `--dry-run`, describe proposed changes and compatibility evidence without
+modifying either repository. Prepare actual updates when the release proceeds.
 
 ### Step 5: User Review
 
-Present the full release notes, proposed version, NexusLIMS documentation changes
-(including the compatibility assessment), and list of fragments to consume. Ask the user to:
+Present the full release notes, proposed version, CDCS documentation changes,
+NexusLIMS compatibility assessment, and list of fragments to consume. Ask the user to:
 1. Review and approve the release notes
 2. Confirm the version number
 
@@ -292,8 +289,9 @@ After completing Step 6:
 
 - Check GitHub Actions: https://github.com/datasophos/NexusLIMS-CDCS/actions
 - The demo server will auto-deploy via the self-hosted runner on push to `main`
-- Track the separate NexusLIMS documentation update, including the compatibility
-  matrix assessment, through review and merge; report any remaining work.
+- Track any separate NexusLIMS compatibility matrix update through review and merge;
+  report any remaining work. Verify the CDCS documentation publishing status when
+  release publication is explicitly requested.
 - Verify the GitHub Release was created at: https://github.com/datasophos/NexusLIMS-CDCS/releases
 - If XSLT or schema changed, verify the update applied on the demo server:
   ```bash
