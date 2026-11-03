@@ -16,11 +16,20 @@ alias dev-build='COMPOSE_BAKE=true docker compose build cdcs'
 alias dev-build-clean='COMPOSE_BAKE=true docker compose build --no-cache cdcs'
 
 # Start in development mode (with local code mounting)
-alias dev-up='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d && echo "NexusLIMS-CDCS available at: https://nexuslims-dev.localhost"'
-alias dev-up-logs='bash "$_DEV_DIR/scripts/setup-test-data.sh" && docker compose up -d && docker compose logs -f'
+_dev_up() {
+    bash "$_DEV_DIR/scripts/setup-test-data.sh" || return
+    local profile_args=()
+    if [ -f "$_DEV_DIR/saml2/.env.sso-dev" ]; then
+        profile_args=(--profile sso)
+    fi
+    docker compose "${profile_args[@]}" up -d || return
+    echo "NexusLIMS-CDCS available at: https://nexuslims-dev.localhost"
+}
+alias dev-up='_dev_up'
+alias dev-up-logs='_dev_up && docker compose logs -f'
 
 # Stop development environment
-alias dev-down='docker compose down'
+alias dev-down='docker compose --profile sso down'
 alias dev-clean='docker compose down -v && rm -rf "$_DEV_DIR/test-data/nx-data" "$_DEV_DIR/test-data/nx-instrument-data" "$_DEV_DIR/test-data/example_record.xml"'
 
 # View logs
@@ -30,7 +39,7 @@ alias dev-logs-caddy='docker logs -f nexuslims_dev_cdcs_caddy'
 
 # Restart services
 alias dev-restart='docker compose down cdcs && docker compose up -d cdcs'
-alias dev-restart-all='docker compose down && docker compose up -d'
+alias dev-restart-all='docker compose --profile sso down && _dev_up'
 
 # Shell access
 alias dev-shell='docker exec -it nexuslims_dev_cdcs bash'

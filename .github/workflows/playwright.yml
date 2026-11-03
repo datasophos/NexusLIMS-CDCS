@@ -50,9 +50,10 @@ jobs:
           docker compose up -d
           # Wait for the CDCS app to respond
           for _ in $(seq 1 30); do
-            if curl --silent --insecure \
-              --output /dev/null --write-out "%{http_code}" \
-              https://nexuslims-dev.localhost/ | grep -qE "^[23]"; then
+            if curl --silent --insecure --fail --output /dev/null \
+              https://nexuslims-dev.localhost/ && \
+              curl --silent --insecure --fail --output /dev/null \
+              https://sso.nexuslims-dev.localhost/simplesaml/saml2/idp/metadata.php; then
               exit 0
             fi
             if ! docker compose ps --status running --services | grep -qx cdcs; then
@@ -60,7 +61,12 @@ jobs:
               docker compose logs --no-color cdcs
               exit 1
             fi
-            echo "Waiting for CDCS..."
+            if ! docker compose ps --status running --services | grep -qx simplesamlphp; then
+              echo "SAML test IdP stopped during startup"
+              docker compose logs --no-color simplesamlphp
+              exit 1
+            fi
+            echo "Waiting for CDCS and SAML metadata..."
             sleep 10
           done
           echo "Timed out waiting for CDCS"

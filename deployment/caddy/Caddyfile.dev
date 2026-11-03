@@ -148,7 +148,10 @@ https://{$SSO_DOMAIN} {
     # Reverse proxy to SimpleSAMLphp container
     # X-Forwarded-Proto and X-Forwarded-Host let SimpleSAMLphp auto-detect
     # its public URL so it generates correct https:// URLs in SAML messages.
-    reverse_proxy simplesamlphp:8080 {
+    reverse_proxy https://simplesamlphp:443 {
+        transport http {
+            tls_insecure_skip_verify
+        }
         header_up Host {host}
         header_up X-Real-IP {remote_host}
         header_up X-Forwarded-For {remote_host}
