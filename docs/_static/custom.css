@@ -1,0 +1,54 @@
+/* Match the main NexusLIMS documentation's compact header and branding. */
+.navbar-header-items__start {
+  flex: 0 0 auto !important;
+  max-width: none !important;
+  min-width: fit-content;
+  flex-wrap: nowrap;
+}
+.navbar-header-items { flex: 1 1 auto !important; max-width: none !important; }
+.navbar-header-items__center { min-width: 0; }
+.navbar-brand img { width: auto; }
+.navbar-nav { flex-wrap: nowrap; }
+
+.cdcs-version-menu { position: relative; margin-left: .75rem; font-size: .875rem; }
+.cdcs-version-menu summary {
+  cursor: pointer;
+  list-style: none;
+  border: 1px solid var(--pst-color-border);
+  border-radius: .25rem;
+  padding: .3rem .65rem;
+  white-space: nowrap;
+}
+.cdcs-version-menu summary::-webkit-details-marker { display: none; }
+.cdcs-version-menu summary::after { content: " ▾"; }
+.cdcs-version-menu-items {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + .3rem);
+  left: 0;
+  min-width: 12rem;
+  padding: .35rem 0;
+  border: 1px solid var(--pst-color-border);
+  border-radius: .25rem;
+  background: var(--pst-color-background);
+  box-shadow: 0 .2rem .6rem rgb(0 0 0 / 15%);
+}
+.cdcs-version-menu-items a { display: block; padding: .35rem .75rem; white-space: nowrap; }
+.cdcs-home-logo { display: block; width: min(100%, 800px); margin: 1rem auto; }
+.cdcs-home-logo-dark { display: none; }
+html[data-theme="dark"] .cdcs-home-logo-light { display: none; }
+html[data-theme="dark"] .cdcs-home-logo-dark { display: block; }
+.cdcs-home-tagline { text-align: center; font-style: italic; margin-bottom: 1.75rem; }
+section#nexuslims-cdcs > h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .navbar-brand img { max-height: 28px; }
+  .cdcs-version-menu { margin-left: .4rem; }
+}
