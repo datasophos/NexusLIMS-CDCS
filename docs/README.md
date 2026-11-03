@@ -21,3 +21,13 @@ published CDCS releases to `v<version>-nx<n>/` and `stable/` (prereleases do not
 replace `stable/`). The `gh-pages` branch must be configured as the GitHub Pages
 source. Fork PRs receive a GitHub Actions build artifact; Cloudflare Git integration
 preview availability depends on its repository integration and permissions.
+
+To build the guide and automatically rebuild it as files change, run:
+
+```sh
+./scripts/watch_docs.sh
+```
+
+The preview is available at `http://127.0.0.1:8765/`. Pass additional
+`sphinx-autobuild` options to the script, such as `--port 9000`. Stop it with
+Ctrl+C.

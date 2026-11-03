@@ -66,6 +66,7 @@ docs = [
     "sphinx-design>=0.6,<0.8",
     "sphinxcontrib-mermaid>=1.2,<2",
     "sphinx-copybutton>=0.5,<0.6",
+    "sphinx-autobuild>=2025.8.25",
     "linkify-it-py>=2,<3",
 ]
 
