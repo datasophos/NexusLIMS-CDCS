@@ -42,36 +42,32 @@ jobs:
       group: docs-gh-pages
       cancel-in-progress: false
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
       - uses: actions/download-artifact@v4
         with:
           name: documentation
           path: site
-      - name: Select destination
-        id: destination
+      - name: Update documentation and version index
         env:
           EVENT: ${{ github.event_name }}
           TAG: ${{ github.event.release.tag_name }}
+          PRERELEASE: ${{ github.event.release.prerelease }}
         run: |
-          case "$EVENT" in
-            release)
-              if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-nx[0-9]+$ ]]; then
-                echo "Unsupported CDCS release tag: $TAG" >&2
-                exit 1
-              fi
-              echo "path=$TAG" >> "$GITHUB_OUTPUT" ;;
-            *) echo "path=latest" >> "$GITHUB_OUTPUT" ;;
-          esac
+          if [[ "$EVENT" == release ]]; then
+            args=(pages site "$TAG")
+            if [[ "$PRERELEASE" != true ]]; then
+              args+=(--stable)
+            fi
+          else
+            args=(pages site latest)
+          fi
+          python scripts/docs_versions.py "${args[@]}"
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: site
-          destination_dir: ${{ steps.destination.outputs.path }}
-          keep_files: true
-      - name: Publish stable documentation
-        if: github.event_name == 'release' && !github.event.release.prerelease
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: site
-          destination_dir: stable
-          keep_files: true
+          publish_dir: pages
+          keep_files: false

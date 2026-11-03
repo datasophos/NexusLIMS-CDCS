@@ -15,30 +15,6 @@
   .navbar-icon-links .nav-link { padding-left: .25rem; padding-right: .25rem; }
 }
 
-.cdcs-version-menu { position: relative; margin-left: .75rem; font-size: .875rem; }
-.cdcs-version-menu summary {
-  cursor: pointer;
-  list-style: none;
-  border: 1px solid var(--pst-color-border);
-  border-radius: .25rem;
-  padding: .3rem .65rem;
-  white-space: nowrap;
-}
-.cdcs-version-menu summary::-webkit-details-marker { display: none; }
-.cdcs-version-menu summary::after { content: " ▾"; }
-.cdcs-version-menu-items {
-  position: absolute;
-  z-index: 100;
-  top: calc(100% + .3rem);
-  left: 0;
-  min-width: 12rem;
-  padding: .35rem 0;
-  border: 1px solid var(--pst-color-border);
-  border-radius: .25rem;
-  background: var(--pst-color-background);
-  box-shadow: 0 .2rem .6rem rgb(0 0 0 / 15%);
-}
-.cdcs-version-menu-items a { display: block; padding: .35rem .75rem; white-space: nowrap; }
 .cdcs-home-logo { display: block; width: min(100%, 560px); margin: 2rem auto; margin-top: 0; }
 .cdcs-home-tagline { text-align: center; font-style: italic; margin-bottom: 1.75rem; }
 section#nexuslims-cdcs > h1 {
@@ -52,7 +28,6 @@ section#nexuslims-cdcs > h1 {
 }
 @media (max-width: 768px) {
   .navbar-brand img { max-height: 28px; }
-  .cdcs-version-menu { margin-left: .4rem; }
 }
 
 /* Screenshot gallery remains readable as a list if JavaScript is disabled. */

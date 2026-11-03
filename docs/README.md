@@ -19,7 +19,10 @@ The Cloudflare project is for previews; production-branch deployments are disabl
 GitHub Actions builds every pull request and publishes main to `latest/` and
 published CDCS releases to `v<version>-nx<n>/` and `stable/` (prereleases do not
 replace `stable/`). The `gh-pages` branch must be configured as the GitHub Pages
-source. Fork PRs receive a GitHub Actions build artifact; Cloudflare Git integration
+source. The publish job maintains a shared `switcher.json` from the deployed
+version directories, and records the current stable tag in `stable/version.txt`.
+The version selector fetches this index and keeps readers on the same page when
+that page exists in the selected version. Fork PRs receive a GitHub Actions build artifact; Cloudflare Git integration
 preview availability depends on its repository integration and permissions.
 
 To build the guide and automatically rebuild it as files change, run:
