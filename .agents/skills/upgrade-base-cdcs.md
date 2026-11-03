@@ -237,7 +237,8 @@ Upgraded the underlying CDCS/MDCS base from PREV_MDCS_VERSION to TARGET_VERSION,
 
 These are manually reviewed fragments, not Towncrier inputs. The release workflow
 collects them with the commits and diffs, removes only the reviewed fragments in
-the release commit, and tracks the separate frontend guide changelog update.
+the release commit, and tracks the separate NexusLIMS documentation update,
+including the frontend guide and compatibility matrix assessment.
 
 ---
 

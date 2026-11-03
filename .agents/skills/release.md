@@ -209,25 +209,38 @@ Base the content strictly on the commits and diffs gathered -- do not invent cha
 
 Present the suggested version and ask the user to confirm or change it.
 
-### Step 4a: Prepare the Frontend Changelog
+### Step 4a: Prepare the NexusLIMS Documentation Update
 
-In the main NexusLIMS repository, update `docs/frontend_guide/changelog.md` in a
-separate worktree with a versioned entry based on the draft release notes.
-Include user-facing changes and relevant upgrade notes; omit internal-only CI and
-dependency details unless they matter to users or operators. Preserve existing
-unrelated changes. Do not treat the two repositories as one atomic commit: record
-the documentation worktree/branch and any outstanding commit, review, or merge
-work in the release checklist. If the repository is unavailable, report the
-missing update explicitly instead of claiming it is complete.
+In the main NexusLIMS repository, prepare the CDCS documentation in a separate
+worktree, preserving unrelated changes. Review the release notes, actual diffs,
+and existing documentation to determine the required updates:
 
-For `--dry-run`, draft the proposed frontend changelog entry for review without
-modifying either repository. Prepare the actual documentation update when the
-release proceeds.
+1. Add a versioned entry to `docs/frontend_guide/changelog.md`, covering
+   user-facing changes and relevant upgrade notes. Omit internal-only CI and
+   dependency details unless they matter to users or operators.
+2. Review `docs/reference/compatibility.md` for every release. Update its matrix
+   for the new CDCS version and supported NexusLIMS versions when warranted by
+   verified compatibility. Check version ranges and notes for overlap or ambiguity;
+   do not infer compatibility from version numbers alone. If evidence is missing,
+   explicitly report what must be verified and leave the compatibility claim open.
+   If no matrix change is needed, state why in the release checklist.
+3. Update other affected `docs/frontend_guide/` pages and relevant deployment,
+   configuration, or upgrade documentation to reflect the released behavior.
+
+Do not treat the two repositories as one atomic commit: record the documentation
+worktree/branch, files changed, compatibility evidence or open questions, and
+any outstanding commit, review, or merge work in the release checklist. If the
+repository is unavailable, report the missing update explicitly instead of
+claiming it is complete.
+
+For `--dry-run`, describe the proposed documentation changes, including the
+compatibility matrix assessment and evidence, for review without modifying either
+repository. Prepare the actual documentation update when the release proceeds.
 
 ### Step 5: User Review
 
-Present the full release notes, proposed version, frontend changelog entry, and
-list of fragments to consume. Ask the user to:
+Present the full release notes, proposed version, NexusLIMS documentation changes
+(including the compatibility assessment), and list of fragments to consume. Ask the user to:
 1. Review and approve the release notes
 2. Confirm the version number
 
@@ -279,7 +292,8 @@ After completing Step 6:
 
 - Check GitHub Actions: https://github.com/datasophos/NexusLIMS-CDCS/actions
 - The demo server will auto-deploy via the self-hosted runner on push to `main`
-- Track the separate NexusLIMS frontend changelog update through review and merge; report any remaining work.
+- Track the separate NexusLIMS documentation update, including the compatibility
+  matrix assessment, through review and merge; report any remaining work.
 - Verify the GitHub Release was created at: https://github.com/datasophos/NexusLIMS-CDCS/releases
 - If XSLT or schema changed, verify the update applied on the demo server:
   ```bash
