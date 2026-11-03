@@ -215,7 +215,7 @@ Review the release notes and actual diffs against the CDCS documentation in
 `docs/frontend_guide/`. Update affected feature, configuration, deployment, and
 upgrade guidance alongside the code; add a versioned entry to
 `docs/frontend_guide/changelog.md` for user-facing changes and upgrade notes.
-Build the site with `uv run --locked --only-group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html`.
+Build the site with `uv run --group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html`.
 Commit those documentation updates
 through the normal feature or release preparation workflow before tagging; the
 release commit in Step 6 stages only the version and reviewed fragments.

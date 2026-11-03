@@ -7,7 +7,7 @@ matrix remains in the NexusLIMS backend repository.
 To build the guide locally:
 
 ```sh
-uv run --locked --only-group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
+uv run --group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
 ```
 
 Open `docs/_build/html/index.html`. The `nexuslims-cdcs-docs` Cloudflare Pages

@@ -326,5 +326,5 @@ To add screenshots to this gallery:
 
 5. **Build docs** to verify images display correctly:
    ```bash
-   uv run --locked --only-group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
+   uv run --group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
    ```-->
