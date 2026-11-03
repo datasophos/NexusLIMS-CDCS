@@ -1,0 +1,218 @@
+.nx-gallery-settings-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+  align-items: stretch;
+  padding-bottom: 16px;
+}
+
+.nx-gallery-settings form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.nx-gallery-settings-guide {
+  flex: 1 1 360px;
+  min-width: 0;
+  padding: 14px 18px;
+  border-left: 3px solid #d8dce0;
+  background: #f7f8fa;
+  color: #555;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.nx-gallery-settings-guide h3 {
+  margin: 0 0 8px;
+  color: #333;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.nx-gallery-settings-guide p {
+  margin: 0 0 8px;
+}
+
+.nx-gallery-settings-guide ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.nx-gallery-settings-guide li + li {
+  margin-top: 4px;
+}
+
+.nx-gallery-settings-intro {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.nx-gallery-settings-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.nx-gallery-settings-fields .form-group {
+  margin-bottom: 0;
+}
+
+.nx-gallery-mode {
+  flex: 1 1 260px;
+}
+
+.nx-gallery-mode select {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23555' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+.nx-gallery-rating {
+  flex: 0 1 140px;
+}
+
+.nx-gallery-info {
+  position: relative;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.nx-gallery-info-button {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid #777;
+  border-radius: 50%;
+  background: transparent;
+  color: #555;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+}
+
+.nx-gallery-info-tooltip {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(280px, 80vw);
+  padding: 10px 12px;
+  border-radius: 4px;
+  background: #333;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.nx-gallery-info:hover .nx-gallery-info-tooltip,
+.nx-gallery-info:focus-within .nx-gallery-info-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nx-gallery-settings-help {
+  color: #666;
+  font-size: 0.95em;
+  line-height: 1.5;
+  margin: 12px 0 0;
+}
+
+.nx-gallery-settings-actions {
+  border-top: 1px solid #e5e5e5;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.nx-gallery-table-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nx-gallery-table-header::before,
+.nx-gallery-table-header::after {
+  display: none;
+}
+
+.nx-gallery-table-controls,
+.nx-gallery-search {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nx-gallery-search input {
+  width: 200px;
+  height: 34px;
+  margin: 0;
+}
+
+.nx-gallery-search .nx-gallery-search-button {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nx-gallery-pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 1px solid #d8dce0;
+  margin-left: 6px;
+  padding-left: 16px;
+  color: #555;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .nx-gallery-pagination {
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+
+.nx-gallery-page-link {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #fff;
+  color: #337ab7;
+  text-decoration: none;
+}
+
+.nx-gallery-page-link:hover,
+.nx-gallery-page-link:focus {
+  background: #f4f4f4;
+  color: #23527c;
+  text-decoration: none;
+}
+
+.nx-gallery-page-link.is-disabled {
+  color: #999;
+  background: #f7f7f7;
+}
+
+.nx-gallery-page-current {
+  white-space: nowrap;
+}

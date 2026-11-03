@@ -440,6 +440,66 @@ class GalleryCurationModeTests(TestCase):
             {"one", "two"},
         )
 
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_admin_paginates_selectable_images(self, data_api, workspace_api):
+        from django.contrib.auth import get_user_model
+        from django.shortcuts import render
+
+        self.client.force_login(
+            get_user_model().objects.create_user(username="staff", is_staff=True)
+        )
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(
+                _make_record_xml([_make_dataset_xml(f"image-{i:02d}", preview=f"{i}.png")]),
+                record_id=str(i),
+            )
+            for i in range(21)
+        ]
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            first = self.client.get("/admin/gallery/")
+            second = self.client.get("/admin/gallery/?page=2")
+        self.assertContains(first, "Selectable images (21)")
+        self.assertContains(first, "image-00")
+        self.assertNotContains(first, "image-20")
+        self.assertContains(first, '?page=2')
+        self.assertContains(second, "image-20")
+        self.assertNotContains(second, "image-00")
+        self.assertContains(second, '?page=1')
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_admin_search_filters_before_pagination(self, data_api, workspace_api):
+        from django.contrib.auth import get_user_model
+        from django.shortcuts import render
+
+        self.client.force_login(
+            get_user_model().objects.create_user(username="staff", is_staff=True)
+        )
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(
+                _make_record_xml([_make_dataset_xml(f"gold sample {i}", preview=f"{i}.png")]),
+                record_id=str(i),
+            )
+            for i in range(21)
+        ] + [_make_mock_record(_GALLERY_RECORD_XML)]
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            response = self.client.get("/admin/gallery/", {"q": "GOLD sample", "page": 2})
+        self.assertContains(response, "Selectable images (21)")
+        self.assertContains(response, "gold sample 20")
+        self.assertNotContains(response, "img001.dm3")
+        self.assertContains(response, "q=GOLD%20sample")
+
     def test_empty_preview_is_not_selectable(self):
         from nexuslims_gallery.views import _selectable_datasets
 

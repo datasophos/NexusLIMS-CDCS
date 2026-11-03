@@ -8,6 +8,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import AnonymousUser
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
@@ -125,12 +126,15 @@ def _gallery_records(mode, preview_base, minimum_rating=1):
 
 class GallerySettingsForm(forms.Form):
     selection_mode = forms.ChoiceField(
-        choices=GallerySettings.MODES, label="Gallery selection"
+        choices=GallerySettings.MODES,
+        label="Gallery selection",
+        widget=forms.Select(attrs={"class": "form-control"}),
     )
     minimum_rating = forms.IntegerField(
         min_value=1,
         max_value=5,
         label="Minimum rating",
+        widget=forms.NumberInput(attrs={"class": "form-control"}),
         help_text="In featured or rated mode, rated datasets must meet this threshold. Featured datasets always qualify. Other modes are unchanged.",
     )
 
@@ -174,10 +178,22 @@ def gallery_admin(request):
                 )
     except Exception:
         error = "Could not fetch gallery records. Please try again."
+    query = request.GET.get("q", "").strip()
+    if query:
+        search = query.casefold()
+        rows = [
+            row for row in rows
+            if any(search in str(row[key]).casefold() for key in ("name", "experimenter", "title"))
+        ]
     return admin_render(
         request,
         "nexuslims_gallery/admin.html",
-        context={"form": form, "rows": rows, "error": error},
+        context={
+            "form": form,
+            "page": Paginator(rows, 20).get_page(request.GET.get("page")),
+            "query": query,
+            "error": error,
+        },
     )
 
 
