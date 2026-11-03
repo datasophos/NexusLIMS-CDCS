@@ -226,13 +226,19 @@ Review the output and note which packages were updated (for the commit message a
 
 ## Step 8: Create Changelog Fragment
 
-Create `docs/changes/{ISSUE_NUMBER}.misc.md`:
+Add a concise, user-facing release-note input in `docs/changes/`. Use
+`<ISSUE_NUMBER>.misc.md` when an issue exists; otherwise use a PR number or a
+unique descriptive slug, such as `upgrade-mdcs-3.23.0.misc.md`. Do not skip the
+fragment solely because the upgrade has no issue. For example:
 
-```
-Upgraded the underlying CDCS/MDCS base from version PREV_MDCS_VERSION to TARGET_VERSION, bringing in the latest upstream improvements including [brief summary from all release notes].
+```text
+Upgraded the underlying CDCS/MDCS base from PREV_MDCS_VERSION to TARGET_VERSION, including [relevant upstream improvements].
 ```
 
-If there is no issue number, skip this step.
+These are manually reviewed fragments, not Towncrier inputs. The release workflow
+collects them with the commits and diffs, removes only the reviewed fragments in
+the release commit, and tracks the separate NexusLIMS documentation update,
+including the frontend guide and compatibility matrix assessment.
 
 ---
 

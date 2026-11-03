@@ -24,8 +24,11 @@ Gather the following before proceeding:
    CDCS version tags like `3.20.0` -- those mark upstream releases, not NexusLIMS-CDCS releases.
 4. **Commits since last tag:** Run `git log <last-nx-tag>..HEAD --oneline`.
 5. **Files changed since last tag:** Run `git diff <last-nx-tag>..HEAD --name-only | sort`.
+6. **Pending changelog fragments:** List and read the tracked `docs/changes/*.md`
+   fragments present at the current HEAD. Record their exact paths and contents.
+   If none exist, continue using the commits and diffs.
 
-Gather all five before proceeding.
+Gather all six before proceeding.
 
 ---
 
@@ -141,6 +144,14 @@ steps 1, 2, and 4 -- just omit step 3.
 
 ### Step 3: Draft Release Notes
 
+Read every pending `docs/changes/*.md` fragment recorded in Current State alongside
+commits and diffs. Use the fragments as inputs, not as a substitute for checking
+what actually changed. Map `feature` to New Features, `bugfix` to Bug Fixes,
+`doc` and `removal` to the appropriate user-facing section, and `misc` to
+Internal / Maintenance where relevant. Combine or edit entries for clarity and
+omit details that do not apply. Derive upgrade instructions from the actual diffs.
+Keep a list of exactly which fragments the release notes consume.
+
 Write complete release notes using this structure. Do not hard-wrap long lines.
 
 ````markdown
@@ -198,9 +209,38 @@ Base the content strictly on the commits and diffs gathered -- do not invent cha
 
 Present the suggested version and ask the user to confirm or change it.
 
+### Step 4a: Prepare the NexusLIMS Documentation Update
+
+In the main NexusLIMS repository, prepare the CDCS documentation in a separate
+worktree, preserving unrelated changes. Review the release notes, actual diffs,
+and existing documentation to determine the required updates:
+
+1. Add a versioned entry to `docs/frontend_guide/changelog.md`, covering
+   user-facing changes and relevant upgrade notes. Omit internal-only CI and
+   dependency details unless they matter to users or operators.
+2. Review `docs/reference/compatibility.md` for every release. Update its matrix
+   for the new CDCS version and supported NexusLIMS versions when warranted by
+   verified compatibility. Check version ranges and notes for overlap or ambiguity;
+   do not infer compatibility from version numbers alone. If evidence is missing,
+   explicitly report what must be verified and leave the compatibility claim open.
+   If no matrix change is needed, state why in the release checklist.
+3. Update other affected `docs/frontend_guide/` pages and relevant deployment,
+   configuration, or upgrade documentation to reflect the released behavior.
+
+Do not treat the two repositories as one atomic commit: record the documentation
+worktree/branch, files changed, compatibility evidence or open questions, and
+any outstanding commit, review, or merge work in the release checklist. If the
+repository is unavailable, report the missing update explicitly instead of
+claiming it is complete.
+
+For `--dry-run`, describe the proposed documentation changes, including the
+compatibility matrix assessment and evidence, for review without modifying either
+repository. Prepare the actual documentation update when the release proceeds.
+
 ### Step 5: User Review
 
-Present the full release notes and proposed version. Ask the user to:
+Present the full release notes, proposed version, NexusLIMS documentation changes
+(including the compatibility assessment), and list of fragments to consume. Ask the user to:
 1. Review and approve the release notes
 2. Confirm the version number
 
@@ -213,11 +253,18 @@ Once approved, and unless `--dry-run` was passed:
 1. **Update `pyproject.toml`**: Set `version = "<VERSION>"` using the PEP 440 local
    form (e.g. `3.20.0+nx1` for tag `v3.20.0-nx1`).
 
-2. **Commit only `pyproject.toml`** -- do NOT write or commit a `RELEASE_NOTES.md` file:
+2. **Consume the reviewed fragments and commit the release**: Remove only the
+   tracked fragment paths recorded and reviewed for this release. Do not remove
+   unrelated, newly added, or untracked files. Stage the version change and those
+   exact deletions; do not write or commit a `RELEASE_NOTES.md` file.
    ```bash
    git add pyproject.toml
+   # For each reviewed fragment: git rm -- docs/changes/<reviewed-fragment>.md
    git commit -m "chore: release vVERSION"
    ```
+   For the separate NexusLIMS documentation update, follow that repository's
+   workflow and report its branch and review/merge status; do not silently include
+   or overwrite unrelated work.
 
 3. **Tag the release** (lightweight tag at the release commit):
    ```bash
@@ -245,6 +292,8 @@ After completing Step 6:
 
 - Check GitHub Actions: https://github.com/datasophos/NexusLIMS-CDCS/actions
 - The demo server will auto-deploy via the self-hosted runner on push to `main`
+- Track the separate NexusLIMS documentation update, including the compatibility
+  matrix assessment, through review and merge; report any remaining work.
 - Verify the GitHub Release was created at: https://github.com/datasophos/NexusLIMS-CDCS/releases
 - If XSLT or schema changed, verify the update applied on the demo server:
   ```bash
