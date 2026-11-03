@@ -1,7 +1,7 @@
 (cdcs-production)=
 # Production Deployment
 
-This guide covers deploying NexusLIMS-CDCS to a production environment with proper security, SSL certificates, and data management.
+This guide covers deploying NexusLIMS CDCS to a production environment with proper security, SSL certificates, and data management.
 
 ## Prerequisites
 
@@ -209,7 +209,7 @@ Never commit `.env` to version control! It contains secrets.
 
 ## File Storage Setup
 
-NexusLIMS-CDCS serves two types of files:
+NexusLIMS CDCS serves two types of files:
 - **NexusLIMS data**: Thumbnail images, metadata files
 - **Instrument data**: Raw microscopy data files
 
@@ -620,3 +620,9 @@ admin-db-restore /opt/nexuslims/backups/backup_20260109_120000.sql
 - {doc}`administration` - Backup, restore, and maintenance procedures
 - {doc}`troubleshooting` - Common issues and solutions
 - {doc}`local-test-deployment` - Test production config locally with mkcert
+
+```{toctree}
+:hidden:
+
+local-test-deployment
+```

@@ -6,7 +6,7 @@ It documents only the customizations made on top of the upstream CDCS/MDCS base.
 Upstream CDCS release notes are available from the
 [MDCS project](https://github.com/usnistgov/MDCS).
 
-Version numbers for NexusLIMS-CDCS use the format `{CDCS base version}-nx{N}`
+Version numbers for NexusLIMS CDCS use the format `{CDCS base version}-nx{N}`
 (e.g., `3.18.0-nx1`), where the base version reflects the upstream CDCS release
 and `nx{N}` is an incrementing counter for NexusLIMS-specific releases on that base.
 

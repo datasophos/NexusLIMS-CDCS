@@ -1,7 +1,7 @@
 (cdcs-customization)=
 # Branding and Customization
 
-This guide explains how to customize your NexusLIMS-CDCS deployment to match your organization's branding and requirements.
+This guide explains how to customize your NexusLIMS CDCS deployment to match your organization's branding and requirements.
 
 ## Overview
 

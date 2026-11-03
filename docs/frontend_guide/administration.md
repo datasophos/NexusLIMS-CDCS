@@ -1,7 +1,7 @@
 (cdcs-administration)=
 # Administration
 
-This guide covers day-to-day administration tasks for NexusLIMS-CDCS including backups, XSLT management, user administration, and monitoring.
+This guide covers day-to-day administration tasks for NexusLIMS CDCS including backups, XSLT management, user administration, and monitoring.
 
 For the full upgrade procedure when updating to a new release, see {ref}`cdcs-production-upgrading`.
 
@@ -37,7 +37,7 @@ source admin-commands.sh
 
 ### Understanding Backup Types
 
-NexusLIMS-CDCS supports two backup approaches:
+NexusLIMS CDCS supports two backup approaches:
 
 | Type | Command | Use Case |
 |------|---------|----------|
@@ -215,7 +215,7 @@ The NexusLIMS schema (`nexus-experiment.xsd`) is located at:
 
 ### Updating the Schema
 
-After pulling a new NexusLIMS-CDCS release, apply the updated schema to the database:
+After pulling a new NexusLIMS CDCS release, apply the updated schema to the database:
 
 ```bash
 source admin-commands.sh
@@ -468,3 +468,11 @@ dc-prod config
 - {doc}`troubleshooting` - Common issues and solutions
 - {doc}`production` - Production deployment guide
 - {doc}`configuration` - Environment variable reference
+
+```{toctree}
+:hidden:
+
+configuration
+customization
+troubleshooting
+```

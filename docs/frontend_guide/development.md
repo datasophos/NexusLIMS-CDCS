@@ -1,7 +1,7 @@
 (cdcs-development)=
 # Development Setup
 
-This guide walks you through setting up a local NexusLIMS-CDCS development environment with hot-reload, test data, and HTTPS support.
+This guide walks you through setting up a local NexusLIMS CDCS development environment with hot-reload, test data, and HTTPS support.
 
 ## Prerequisites
 
@@ -360,3 +360,9 @@ Wait for services to fully start. The Django container waits for PostgreSQL to b
 - {doc}`production` - Deploy to production
 - {doc}`configuration` - Detailed environment configuration
 - {doc}`local-test-deployment` - Test production config locally with mkcert
+
+```{toctree}
+:hidden:
+
+changelog
+```

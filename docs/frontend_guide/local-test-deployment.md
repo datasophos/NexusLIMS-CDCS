@@ -27,9 +27,9 @@ Testing production configurations locally helps you:
 
 ## Setup Steps
 
-### 0. Obtain NexusLIMS-CDCS deployment files
+### 0. Obtain NexusLIMS CDCS deployment files
 
-Create a folder to store NexusLIMS files, then clone the NexusLIMS-CDCS repository to get the deployment configuration files:
+Create a folder to store NexusLIMS files, then clone the NexusLIMS CDCS repository to get the deployment configuration files:
 
 `````{tab-set}
 
@@ -74,7 +74,7 @@ cd NexusLIMS-CDCS\deployment
 
 `````
 
-**Note**: The deployment files are located in the `deployment/` directory within the root of the NexusLIMS-CDCS repository.
+**Note**: The deployment files are located in the `deployment/` directory within the root of the NexusLIMS CDCS repository.
 
 **Alternative to git clone**: If you don't have git installed or prefer not to use it, you can download the repository as a ZIP file from GitHub:
 
@@ -255,7 +255,7 @@ New-Item -ItemType Directory -Force -Path C:\nexuslims\backups
 
 ### 5. Configure Environment
 
-This section explains how to set values that will enable NexusLIMS-CDCS to work on your local machine:
+This section explains how to set values that will enable NexusLIMS CDCS to work on your local machine:
 
 ```````{tab-set}
 
@@ -413,7 +413,7 @@ NX_INSTRUMENT_DATA_HOST_PATH=C:\nexuslims\instrument-data
 (start-services)=
 ### 6. Start Services
 
-NexusLIMS-CDCS includes helper scripts that provide some useful shortcuts for interacting with the docker deployment stack, including `admin-commands.sh`/`admin-commands.ps1`. These need to be sourced once to load the functions into your current session, and you will need to "re-source" the file again if you close your terminal session.
+NexusLIMS CDCS includes helper scripts that provide some useful shortcuts for interacting with the docker deployment stack, including `admin-commands.sh`/`admin-commands.ps1`. These need to be sourced once to load the functions into your current session, and you will need to "re-source" the file again if you close your terminal session.
 
 For example, one command made available is `dc-prod`, which is a shortcut/alias for running `docker compose -f docker-compose.base.yml -f docker-compose.prod.yml`, so you don't have to type those filenames out everytime you want to run a command:
 
@@ -452,9 +452,9 @@ admin-init      # Sets up the CDCS superuser, Nexus Experiment schema, XSLT tran
 
 `````
 
-### 7. Test NexusLIMS-CDCS Access
+### 7. Test NexusLIMS CDCS Access
 
-The NexusLIMS-CDCS application should now be up and running!
+The NexusLIMS CDCS application should now be up and running!
 
 **Access the application:**
 - **Main application**: [https://nexuslims-local.test](https://nexuslims-local.test)

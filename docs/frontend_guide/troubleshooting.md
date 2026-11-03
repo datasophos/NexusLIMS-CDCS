@@ -1,7 +1,7 @@
 (cdcs-troubleshooting)=
 # Troubleshooting
 
-This guide covers common issues and their solutions for NexusLIMS-CDCS deployments.
+This guide covers common issues and their solutions for NexusLIMS CDCS deployments.
 
 ## Quick Diagnostics
 

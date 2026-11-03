@@ -1,330 +1,153 @@
 (cdcs-gallery)=
 # Screenshot Gallery
 
-This gallery showcases the NexusLIMS-CDCS web interface, demonstrating key features and workflows.
+Explore the NexusLIMS CDCS interface. Use the arrows to browse the screenshots;
+select an image to open the full-page gallery. For detailed workflows, see the
+[feature guides](overview.md).
 
-```{tip}
-Click any image to view it at full size.
-```
-
----
-
-## Homepage
-
+::::{div} cdcs-carousel
 ```{figure} ../images/cdcs/01_homepage.png
-:alt: NexusLIMS Homepage
+:alt: Homepage
+:target: ../_images/01_homepage.png
 :width: 100%
-:class: screenshot
 
-The main homepage welcomes users and provides a link to further explore records.
+**Homepage.** Start exploring records and features from the CDCS homepage. [Learn more](overview.md).
 ```
-
----
-
-## Searching Records
-
-### Explore page
 
 ```{figure} ../images/cdcs/02_explore_page.png
-:alt: Navigation Menu
+:alt: Explore records
+:target: ../_images/02_explore_page.png
 :width: 100%
-:class: screenshot
 
-The explore page shows all records in the system by default.
+**Explore records.** Browse the records available to you in the explore interface. [Learn more](search.md).
 ```
-
-
-### Keyword Search
 
 ```{figure} ../images/cdcs/03_keyword_search.png
-:alt: Keyword Search Interface
+:alt: Keyword search
+:target: ../_images/03_keyword_search.png
 :width: 100%
-:class: screenshot
 
-The search bar provides full-text keyword search across all experimental records.
+**Keyword search.** Search across experimental records using keywords. [Learn more](search.md).
 ```
-
----
-
-## Viewing Records
-
-### Record Detail View
 
 ```{figure} ../images/cdcs/04_detail_top_matter.png
-:alt: Record Detail View
+:alt: Record detail
+:target: ../_images/04_detail_top_matter.png
 :width: 100%
-:class: screenshot
 
-Full record view showing all metadata, preview images, and data file links.
+**Record detail.** View the record summary and its associated metadata. [Learn more](record-details.md).
 ```
-
-### Acquisition Activities
 
 ```{figure} ../images/cdcs/05_detail_activity_details.png
-:alt: Acquisition Activities Section
+:alt: Acquisition activities
+:target: ../_images/05_detail_activity_details.png
 :width: 100%
-:class: screenshot
 
-Acquisition activities showing grouped files and their metadata. Each activity header
-displays a linked badge identifying its associated sample.
+**Acquisition activities.** Inspect datasets grouped by acquisition activity and sample. [Learn more](record-details.md).
 ```
-
-### Dataset Metadata
 
 ```{figure} ../images/cdcs/06_detail_file_metadata.png
-:alt: Dataset Metadata
+:alt: Dataset metadata
+:target: ../_images/06_detail_file_metadata.png
 :width: 100%
-:class: screenshot
 
-Display and filtering of technical metadata for individual datasets (voltage, magnification, etc.).
+**Dataset metadata.** Display and filter technical metadata for individual datasets. [Learn more](record-details.md).
 ```
-
-### Easy Data Download
 
 ```{figure} ../images/cdcs/07_detail_file_downloader.png
-:alt: Easy Data Download
+:alt: Download files
+:target: ../_images/07_detail_file_downloader.png
 :width: 100%
-:class: screenshot
 
-Data files and metadata can be downloaded in bulk using the *file downloader tool*.
+**Download files.** Select data files and metadata for bulk download. [Learn more](record-details.md).
 ```
-
-### Simplified Display for Large Records
 
 ```{figure} ../images/cdcs/08_detail_simple_display.png
-:alt: Simple Display for Large Records
+:alt: Large records
+:target: ../_images/08_detail_simple_display.png
 :width: 100%
-:class: screenshot
 
-Large records can be displayed with a simplified view to keep the application performant.
+**Large records.** Use a simplified display for records with many datasets. [Learn more](record-details.md).
 ```
-
----
-
-## Public Dataset Gallery
-
-```{figure} ../images/cdcs/16_public_gallery.png
-:alt: Full-screen NexusLIMS public dataset gallery
-:width: 100%
-:class: screenshot
-
-The public gallery at `/gallery/` automatically rotates through dataset previews and
-shows the record title, dataset description, experimenter, instrument, and acquisition
-date. Featured datasets receive a visible badge, and **View record** opens the source
-record in a new tab.
-```
-
-The gallery is designed for unattended displays as well as interactive browsing:
-
-- Slides advance automatically after the configured interval.
-- Move the pointer to reveal previous, next, and full-screen controls.
-- Use the left and right arrow keys to browse recent slides, or press **F** to toggle
-  full-screen mode.
-- Only records with at least one previewable dataset are eligible.
-- For each selected record, the gallery chooses a featured preview first, then a
-  highest-rated preview, then the first available preview.
-
-The page does not require authentication. Administrators can disable or brand it using
-the settings described in {ref}`cdcs-gallery-configuration`.
-
-### Gallery selection
-
-Staff can open **Visual Gallery** in the administration area to choose which
-records can appear. Select a mode and save it:
-
-- **All previewable records:** any record with a preview can appear. If none of
-  its datasets is featured or rated, its first preview is used.
-- **Featured or rated records:** records need a featured preview or a rated
-  preview meeting the minimum rating. Featured previews always qualify.
-- **Featured only:** only records with featured previews qualify.
-
-The gallery chooses an eligible record at random, then a featured preview from
-that record, or otherwise a preview with the highest eligible rating. Ties are
-random. The minimum rating applies only to the featured-or-rated mode.
-
-The **Selectable images** table shows the datasets that can be selected under
-the saved settings. Search by filename, experimenter, or record title; search
-filters the whole table before pagination. The search does not change what the
-public gallery displays. The gallery itself and its slide API are public, so
-only records available in the global workspace to anonymous users are considered.
-
-
----
-
-## Record Annotation
-
-### Annotate Record Panel
 
 ```{figure} ../images/cdcs/10_annotate_side_panel.png
-:alt: Annotate Record Side Panel
+:alt: Annotate a record
+:target: ../_images/10_annotate_side_panel.png
 :width: 100%
-:class: screenshot
 
-The **Annotate Record** side panel opens from the top action bar. Datasets are shown with
-preview thumbnails and free-text description fields, which can be customized to add context
-to your experimental record.
+**Annotate a record.** Edit dataset descriptions in the annotation panel. [Learn more](record-curation.md).
 ```
-
-### Inline Dataset Editing
 
 ```{figure} ../images/cdcs/11_annotate_inline_edit.png
-:alt: Inline Dataset Annotation
+:alt: Inline editing
+:target: ../_images/11_annotate_inline_edit.png
 :width: 100%
-:class: screenshot
 
-Hovering over a dataset row in an acquisition activity table reveals a pencil icon. Clicking
-it opens a floating popup for quick single-dataset description edits.
+**Inline editing.** Edit an individual dataset description from the record detail view. [Learn more](record-curation.md).
 ```
-
-### Full-Page Editor
 
 ```{figure} ../images/cdcs/12_annotate_full_page.png
-:alt: Full-Page Annotator
+:alt: Full-page editor
+:target: ../_images/12_annotate_full_page.png
 :width: 100%
-:class: screenshot
 
-The expand icon in the side panel header opens the full-page editor. In addition to editing
-descriptions and **reassigning datasets between acquisition activities**, the full-page editor
-supports **adding, editing, and deleting samples and activities** and **inline title editing**.
+**Full-page editor.** Manage descriptions, samples, and acquisition activities in the expanded editor. [Learn more](record-curation.md).
 ```
-
-### Sample Management
 
 ```{figure} ../images/cdcs/13_annotate_sample_management.png
-:alt: Sample Management in the Annotator
+:alt: Sample management
+:target: ../_images/13_annotate_sample_management.png
 :width: 100%
-:class: screenshot
 
-The **Add Sample** modal lets users define a sample name, persistent identifier (PID),
-free-text description, and elemental composition. Samples can also be edited or removed,
-and assigned to individual acquisition activities via a dropdown in each activity header.
+**Sample management.** Add and edit sample details and elemental composition. [Learn more](record-curation.md).
 ```
-
-### Pending Changes
 
 ```{figure} ../images/cdcs/14_annotate_pending_changes.png
-:alt: Pending Changes Modal
+:alt: Review changes
+:target: ../_images/14_annotate_pending_changes.png
 :width: 100%
-:class: screenshot
 
-The **Pending Changes** modal (opened via the toolbar) summarises all unsaved edits
-before saving or navigating away: title changes, dataset description edits, added or
-modified samples, dataset moves, and activity changes.
+**Review changes.** Review pending record edits before saving. [Learn more](record-curation.md).
 ```
-
-### Dataset Ratings and Featured Status
 
 ```{figure} ../images/cdcs/17_dataset_curation_controls.png
-:alt: Dataset table with featured stars and one-to-five rating controls
-:width: 85%
-:class: screenshot
+:alt: Rate and feature datasets
+:target: ../_images/17_dataset_curation_controls.png
+:width: 100%
 
-Users with write access can mark a dataset as featured with the star control or rate it
-from 1 to 5 with the circular rating control. The same controls are available in the
-**Annotate Record** panel and save immediately.
+**Rate and feature datasets.** Curate datasets using ratings and featured status. [Learn more](record-curation.md).
 ```
-
-Click the small "x" next to an active rating again to clear it. Featured status and ratings are stored in the
-record XML under the dataset's `<curation>` element and influence which preview the public
-gallery selects for that record.
-
----
-
-## Multi-Sample Records
 
 ```{figure} ../images/cdcs/15_detail_multisample_cards.png
-:alt: Multi-Sample Bootstrap Cards
+:alt: Multiple samples
+:target: ../_images/15_detail_multisample_cards.png
 :width: 100%
-:class: screenshot
 
-Records with multiple samples display each sample as a Bootstrap card showing its name,
-persistent identifier (linked if a URL), expandable description, and elemental composition
-chips. Activity headers carry a linked badge to their associated sample.
+**Multiple samples.** View sample cards and their associated acquisition activities. [Learn more](record-details.md).
 ```
 
----
+```{figure} ../images/cdcs/16_public_gallery.png
+:alt: Public dataset gallery
+:target: ../_images/16_public_gallery.png
+:width: 100%
 
-## Branding and Customization
+**Public dataset gallery.** Display preview images and record details on a rotating public gallery. [Learn more](public-gallery.md).
+```
+
+```{figure} ../images/cdcs/18_gallery_administration.png
+:alt: Gallery settings and searchable selectable images table
+:target: ../_images/18_gallery_administration.png
+:width: 100%
+
+**Gallery administration.** Choose which datasets qualify and search the selectable images. [Learn more](public-gallery.md).
+```
 
 ```{figure} ../images/cdcs/09_customizing_nexuslims.png
-:alt: NexusLIMS Customization Example
+:alt: Branding and customization
+:target: ../_images/09_customizing_nexuslims.png
 :width: 100%
-:class: screenshot
 
-The application can easily be customized (see {ref}`cdcs-customization` for more details).
+**Branding and customization.** Customize the appearance for your facility. [Learn more](customization.md).
 ```
 
-<!--
-## Data Export
-
-### Export Options
-
-```{figure} ../images/cdcs/placeholder-export.png
-:alt: Export Options
-:width: 100%
-:class: screenshot
-
-Export records in XML, JSON, or other formats.
-```
-
----
-
-## Administration
-
-### User Management
-
-```{figure} ../images/cdcs/placeholder-users.png
-:alt: User Management
-:width: 100%
-:class: screenshot
-
-Administrative interface for managing users and permissions.
-```
-
-### Template Management
-
-```{figure} ../images/cdcs/placeholder-templates.png
-:alt: Template Management
-:width: 100%
-:class: screenshot
-
-Managing XML schemas and templates for data validation.
-```
-
---- -->
-<!--
-## Adding Screenshots
-
-To add screenshots to this gallery:
-
-1. **Capture screenshots** of the CDCS interface (PNG or JPEG format recommended)
-
-2. **Save images** to `/docs/images/cdcs/` with descriptive names:
-   ```text
-   docs/images/cdcs/
-   ├── dashboard.png
-   ├── search-interface.png
-   ├── search-results.png
-   ├── record-detail.png
-   └── ...
-   ```
-
-3. **Update this file** by replacing placeholder references with actual image paths:
-   ```markdown
-   ```{figure} ../images/cdcs/dashboard.png
-   :alt: CDCS Dashboard
-   :width: 100%
-
-   Description of what the screenshot shows.
-   ```
-   ```
-
-4. **Recommended image specs:**
-   - Width: 1200-1600px (will be scaled down for display)
-   - Format: PNG for interface screenshots, JPEG for photos
-   - File size: Optimize to under 500KB per image
-
-5. **Build docs** to verify images display correctly:
-   ```bash
-   uv run --group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
-   ```-->
+::::

@@ -1,7 +1,7 @@
 (cdcs-configuration)=
 # Configuration
 
-NexusLIMS-CDCS is configured through environment variables defined in a `.env` file. This guide documents all available configuration options.
+NexusLIMS CDCS is configured through environment variables defined in a `.env` file. This guide documents all available configuration options.
 
 ## Configuration Files
 
@@ -244,7 +244,7 @@ The following Python-level feature flags can be set in your custom settings file
 | `NX_ENABLE_TUTORIALS` | `True` | Show interactive tutorial prompts for new users |
 | `NX_MAX_DATASET_DISPLAY_COUNT` | `100` | Records with more datasets than this threshold use a simplified (non-interactive) display mode |
 
-See the [CUSTOMIZATION.md](https://github.com/datasophos/NexusLIMS-CDCS/blob/main/nexuslims_overrides/CUSTOMIZATION.md) in NexusLIMS-CDCS for full details on all available settings.
+See the [CUSTOMIZATION.md](https://github.com/datasophos/NexusLIMS-CDCS/blob/main/nexuslims_overrides/CUSTOMIZATION.md) in NexusLIMS CDCS for full details on all available settings.
 
 ---
 
