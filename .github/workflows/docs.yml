@@ -34,8 +34,7 @@ jobs:
     needs: build
     if: >-
       github.event_name == 'push' || github.event_name == 'release' ||
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -51,11 +50,9 @@ jobs:
         id: destination
         env:
           EVENT: ${{ github.event_name }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
           TAG: ${{ github.event.release.tag_name }}
         run: |
           case "$EVENT" in
-            pull_request) echo "path=pr-${PR_NUMBER}" >> "$GITHUB_OUTPUT" ;;
             release)
               if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-nx[0-9]+$ ]]; then
                 echo "Unsupported CDCS release tag: $TAG" >&2

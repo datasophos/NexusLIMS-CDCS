@@ -219,8 +219,8 @@ Build the site with `sphinx-build -b html -n -W --keep-going docs docs/_build/ht
 after installing `docs/requirements.txt`. Commit those documentation updates
 through the normal feature or release preparation workflow before tagging; the
 release commit in Step 6 stages only the version and reviewed fragments.
-The CDCS site publishes previews for
-same-repository PRs, `latest` for main, and versioned and stable documentation
+The CDCS site publishes Cloudflare branch previews, `latest` for main on GitHub
+Pages, and versioned and stable documentation
 when a CDCS release is published. A draft release does not publish stable docs.
 
 For every release, review `docs/reference/compatibility.md` in the main NexusLIMS
