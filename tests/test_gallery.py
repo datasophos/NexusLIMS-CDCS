@@ -53,7 +53,9 @@ def _make_record_xml(datasets):
 
 class NormalizeExperimenterTests(SimpleTestCase):
     def test_first_initial_and_last_name(self):
-        self.assertEqual(normalize_experimenter("Joshua Taillon (jtaillon)"), "J. Taillon")
+        self.assertEqual(
+            normalize_experimenter("Joshua Taillon (jtaillon)"), "J. Taillon"
+        )
 
     def test_strips_parenthetical_username(self):
         self.assertEqual(normalize_experimenter("Alice Smith (asmith)"), "A. Smith")
@@ -82,42 +84,52 @@ class SelectBestDatasetTests(SimpleTestCase):
         self.assertIsNone(_select_best_dataset(xml, PREVIEW_BASE))
 
     def test_returns_dataset_with_preview(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("img.dm3", preview="/p/img.png"),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("img.dm3", preview="/p/img.png"),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertIsNotNone(result)
         self.assertIn("img.png", result["preview_url"])
 
     def test_featured_takes_priority_over_rated(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("rated.dm3", preview="/p/rated.png", rating=5),
-            _make_dataset_xml("featured.dm3", preview="/p/feat.png", featured=True),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("rated.dm3", preview="/p/rated.png", rating=5),
+                _make_dataset_xml("featured.dm3", preview="/p/feat.png", featured=True),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertIn("feat.png", result["preview_url"])
 
     def test_highest_rating_wins_when_no_featured(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("low.dm3", preview="/p/low.png", rating=2),
-            _make_dataset_xml("high.dm3", preview="/p/high.png", rating=5),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("low.dm3", preview="/p/low.png", rating=2),
+                _make_dataset_xml("high.dm3", preview="/p/high.png", rating=5),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertIn("high.png", result["preview_url"])
 
     def test_first_preview_chosen_when_no_curation(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("a.dm3", preview="/p/a.png"),
-            _make_dataset_xml("b.dm3", preview="/p/b.png"),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("a.dm3", preview="/p/a.png"),
+                _make_dataset_xml("b.dm3", preview="/p/b.png"),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertIsNotNone(result)
         self.assertIn("a.png", result["preview_url"])
 
     def test_preview_url_built_from_base(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("img.dm3", preview="/previews/img.png"),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("img.dm3", preview="/previews/img.png"),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertEqual(result["preview_url"], f"{PREVIEW_BASE}/previews/img.png")
 
@@ -125,16 +137,22 @@ class SelectBestDatasetTests(SimpleTestCase):
         self.assertIsNone(_select_best_dataset("<not xml <<", PREVIEW_BASE))
 
     def test_returns_description_when_present(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("img.dm3", preview="/p/img.png", description="A nice dataset"),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml(
+                    "img.dm3", preview="/p/img.png", description="A nice dataset"
+                ),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertEqual(result["description"], "A nice dataset")
 
     def test_returns_none_description_when_absent(self):
-        xml = _make_record_xml([
-            _make_dataset_xml("img.dm3", preview="/p/img.png"),
-        ])
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("img.dm3", preview="/p/img.png"),
+            ]
+        )
         result = _select_best_dataset(xml, PREVIEW_BASE)
         self.assertIsNone(result["description"])
 
@@ -241,9 +259,7 @@ class ApiNextViewTests(TestCase):
             "TEM Imaging of Au Nanoparticles",
             long_title,
         )
-        mock_data_api.get_all_by_workspace.return_value = [
-            _make_mock_record(xml)
-        ]
+        mock_data_api.get_all_by_workspace.return_value = [_make_mock_record(xml)]
 
         body = self.client.get("/gallery/api/next/").json()
 
@@ -306,6 +322,7 @@ class ApiNextViewTests(TestCase):
     @patch("nexuslims_gallery.views.data_api")
     def test_uses_anonymous_user_for_workspace_query(self, mock_data_api, mock_ws_api):
         from django.contrib.auth.models import AnonymousUser
+
         mock_ws_api.get_global_workspace.return_value = MagicMock()
         mock_data_api.get_all_by_workspace.return_value = [
             _make_mock_record(_GALLERY_RECORD_XML)
@@ -335,3 +352,232 @@ class ApiNextViewTests(TestCase):
         ]
         body = self.client.get("/gallery/api/next/").json()
         self.assertNotIn("description", body)
+
+
+class GalleryCurationModeTests(TestCase):
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_curated_mode_excludes_uncurated_records(self, data_api, workspace_api):
+        from nexuslims_gallery.models import GallerySettings
+
+        GallerySettings.objects.create(pk=1, selection_mode="curated")
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(
+                _make_record_xml([_make_dataset_xml("plain", preview="plain.png")])
+            ),
+            _make_mock_record(_GALLERY_RECORD_XML, record_id="curated"),
+        ]
+        response = self.client.get("/gallery/api/next/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["record_url"], "/data?id=curated")
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_featured_mode_excludes_rated_only_records(self, data_api, workspace_api):
+        from nexuslims_gallery.models import GallerySettings
+
+        GallerySettings.objects.create(pk=1, selection_mode="featured")
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(_GALLERY_RECORD_XML)
+        ]
+        self.assertEqual(self.client.get("/gallery/api/next/").status_code, 404)
+
+    def test_admin_page_requires_staff(self):
+        from django.contrib.auth import get_user_model
+
+        user = get_user_model().objects.create_user(username="ordinary", password="pw")
+        self.client.force_login(user)
+        self.assertNotEqual(self.client.get("/admin/gallery/").status_code, 200)
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_staff_can_save_mode_and_see_selectable_images(
+        self, data_api, workspace_api
+    ):
+        from django.contrib.auth import get_user_model
+        from nexuslims_gallery.models import GallerySettings
+
+        user = get_user_model().objects.create_user(
+            username="staff", password="pw", is_staff=True
+        )
+        self.client.force_login(user)
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(_GALLERY_RECORD_XML)
+        ]
+        response = self.client.post(
+            "/admin/gallery/", {"selection_mode": "curated", "minimum_rating": "1"}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(GallerySettings.objects.get(pk=1).selection_mode, "curated")
+        from django.shortcuts import render
+
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            response = self.client.get("/admin/gallery/")
+        self.assertContains(response, "img001.dm3")
+        self.assertContains(response, "Joshua Taillon")
+        self.assertContains(response, "/data?id=rec-1")
+
+    def test_tied_winners_are_all_in_inventory(self):
+        from nexuslims_gallery.views import _selectable_datasets
+
+        xml = _make_record_xml(
+            [
+                _make_dataset_xml("one", preview="one.png", rating=5),
+                _make_dataset_xml("two", preview="two.png", rating=5),
+                _make_dataset_xml("three", preview="three.png", rating=3),
+            ]
+        )
+        self.assertEqual(
+            {
+                item["name"]
+                for item in _selectable_datasets(xml, PREVIEW_BASE, "curated")
+            },
+            {"one", "two"},
+        )
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_admin_paginates_selectable_images(self, data_api, workspace_api):
+        from django.contrib.auth import get_user_model
+        from django.shortcuts import render
+
+        self.client.force_login(
+            get_user_model().objects.create_user(username="staff", is_staff=True)
+        )
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(
+                _make_record_xml([_make_dataset_xml(f"image-{i:02d}", preview=f"{i}.png")]),
+                record_id=str(i),
+            )
+            for i in range(21)
+        ]
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            first = self.client.get("/admin/gallery/")
+            second = self.client.get("/admin/gallery/?page=2")
+        self.assertContains(first, "Selectable images (21)")
+        self.assertContains(first, "image-00")
+        self.assertNotContains(first, "image-20")
+        self.assertContains(first, '?page=2')
+        self.assertContains(second, "image-20")
+        self.assertNotContains(second, "image-00")
+        self.assertContains(second, '?page=1')
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_admin_search_filters_before_pagination(self, data_api, workspace_api):
+        from django.contrib.auth import get_user_model
+        from django.shortcuts import render
+
+        self.client.force_login(
+            get_user_model().objects.create_user(username="staff", is_staff=True)
+        )
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(
+                _make_record_xml([_make_dataset_xml(f"gold sample {i}", preview=f"{i}.png")]),
+                record_id=str(i),
+            )
+            for i in range(21)
+        ] + [_make_mock_record(_GALLERY_RECORD_XML)]
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            response = self.client.get("/admin/gallery/", {"q": "GOLD sample", "page": 2})
+        self.assertContains(response, "Selectable images (21)")
+        self.assertContains(response, "gold sample 20")
+        self.assertNotContains(response, "img001.dm3")
+        self.assertContains(response, "q=GOLD%20sample")
+
+    def test_empty_preview_is_not_selectable(self):
+        from nexuslims_gallery.views import _selectable_datasets
+
+        xml = _make_record_xml([f'<dataset xmlns="{NS}"><preview></preview></dataset>'])
+        self.assertEqual(_selectable_datasets(xml, PREVIEW_BASE), [])
+
+    def test_nonstaff_cannot_change_settings(self):
+        from django.contrib.auth import get_user_model
+        from nexuslims_gallery.models import GallerySettings
+
+        user = get_user_model().objects.create_user(username="ordinary", password="pw")
+        self.client.force_login(user)
+        self.client.post("/admin/gallery/", {"selection_mode": "featured"})
+        self.assertFalse(GallerySettings.objects.exists())
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_minimum_rating_filters_curated_records_but_not_featured(
+        self, data_api, workspace_api
+    ):
+        from nexuslims_gallery.models import GallerySettings
+
+        GallerySettings.objects.create(pk=1, selection_mode="curated", minimum_rating=5)
+        data_api.get_all_by_workspace.return_value = [
+            _make_mock_record(_GALLERY_RECORD_XML)
+        ]
+        self.assertEqual(self.client.get("/gallery/api/next/").status_code, 404)
+        from django.contrib.auth import get_user_model
+        from django.shortcuts import render
+
+        self.client.force_login(
+            get_user_model().objects.create_user(username="staff", is_staff=True)
+        )
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            self.assertNotContains(self.client.get("/admin/gallery/"), "img001.dm3")
+        featured = _GALLERY_RECORD_XML.replace(
+            "<rating>4</rating>", "<rating>4</rating><featured>true</featured>"
+        )
+        data_api.get_all_by_workspace.return_value = [_make_mock_record(featured)]
+        self.assertEqual(self.client.get("/gallery/api/next/").status_code, 200)
+
+    def test_threshold_does_not_change_all_records_mode(self):
+        from nexuslims_gallery.views import _selectable_datasets
+
+        xml = _make_record_xml([_make_dataset_xml("low", preview="low.png", rating=2)])
+        self.assertEqual(len(_selectable_datasets(xml, PREVIEW_BASE, "all", 5)), 1)
+        self.assertEqual(_selectable_datasets(xml, PREVIEW_BASE, "curated", 5), [])
+
+    @patch("nexuslims_gallery.views.workspace_api")
+    @patch("nexuslims_gallery.views.data_api")
+    def test_admin_can_save_threshold_and_rejects_invalid_value(
+        self, data_api, workspace_api
+    ):
+        from django.contrib.auth import get_user_model
+        from django.shortcuts import render
+        from nexuslims_gallery.models import GallerySettings
+
+        self.client.force_login(
+            get_user_model().objects.create_user(username="staff", is_staff=True)
+        )
+        response = self.client.post(
+            "/admin/gallery/", {"selection_mode": "curated", "minimum_rating": "4"}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(GallerySettings.objects.get(pk=1).minimum_rating, 4)
+        with patch(
+            "nexuslims_gallery.views.admin_render",
+            side_effect=lambda request, template, context: render(
+                request, template, {"data": context}
+            ),
+        ):
+            response = self.client.post(
+                "/admin/gallery/", {"selection_mode": "curated", "minimum_rating": "6"}
+            )
+        self.assertContains(response, "Ensure this value is less than or equal to 5")
+        self.assertEqual(GallerySettings.objects.get(pk=1).minimum_rating, 4)

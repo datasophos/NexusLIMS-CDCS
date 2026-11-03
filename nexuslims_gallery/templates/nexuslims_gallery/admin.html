@@ -1,0 +1,70 @@
+<style>{% include 'nexuslims_gallery/admin_styles.html' %}</style>
+<section class="content-header"><h1>Visual Gallery</h1></section>
+<section class="content">
+  <div class="box box-default">
+    <div class="box-header"><h2 class="box-title">Gallery settings</h2></div>
+    <div class="box-body nx-gallery-settings">
+      <div class="nx-gallery-settings-layout">
+      <form method="post">{% csrf_token %}
+        {{ data.form.non_field_errors }}
+        <p class="nx-gallery-settings-intro">Choose which datasets can appear in the public gallery.</p>
+        <div class="nx-gallery-settings-fields">
+            <div class="form-group nx-gallery-mode{% if data.form.selection_mode.errors %} has-error{% endif %}">
+              {{ data.form.selection_mode.label_tag }}
+              {{ data.form.selection_mode }}
+              {{ data.form.selection_mode.errors }}
+            </div>
+            <div class="form-group nx-gallery-rating{% if data.form.minimum_rating.errors %} has-error{% endif %}">
+              {{ data.form.minimum_rating.label_tag }}
+              <span class="nx-gallery-info">
+                <button type="button" class="nx-gallery-info-button" aria-label="Minimum rating help" aria-describedby="id_minimum_rating_helptext">i</button>
+                <span class="nx-gallery-info-tooltip" role="tooltip" id="id_minimum_rating_helptext">{{ data.form.minimum_rating.help_text }}</span>
+              </span>
+              {{ data.form.minimum_rating }}
+              {{ data.form.minimum_rating.errors }}
+            </div>
+        </div>
+        <div class="nx-gallery-settings-actions"><button type="submit" class="btn btn-primary">Save selection</button></div>
+      </form>
+      <aside class="nx-gallery-settings-guide" aria-label="How gallery selection works">
+        <h3>How selection works</h3>
+        <p>The gallery chooses an eligible record at random. Within that record, featured datasets take priority, followed by the highest rated; ties are random.</p>
+        <ul>
+          <li><strong>All previewable records:</strong> Uses the first preview if none is featured or rated.</li>
+          <li><strong>Featured or rated records:</strong> Requires a featured dataset or one meeting the minimum rating.</li>
+          <li><strong>Featured only:</strong> Includes only featured datasets.</li>
+        </ul>
+      </aside>
+      </div>
+    </div>
+  </div>
+  <div class="box box-default"><div class="box-header nx-gallery-table-header">
+    <h2 class="box-title">Selectable images ({{ data.page.paginator.count }})</h2>
+    <div class="nx-gallery-table-controls">
+    <form method="get" class="nx-gallery-search" role="search">
+      <input type="search" name="q" value="{{ data.query }}" class="form-control" placeholder="Search featured datasets" aria-label="Search featured datasets">
+      <button type="submit" class="nx-gallery-page-link nx-gallery-search-button" aria-label="Search"><svg aria-hidden="true" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="5.5"></circle><path d="M12 12l5 5"></path></svg></button>
+    </form>
+    {% if data.page.has_other_pages and not data.error %}
+    <nav class="nx-gallery-pagination" aria-label="Selectable images pages">
+      {% if data.page.has_previous %}<a href="?page={{ data.page.previous_page_number }}{% if data.query %}&amp;q={{ data.query|urlencode }}{% endif %}" class="nx-gallery-page-link">Previous</a>{% else %}<span class="nx-gallery-page-link is-disabled" aria-disabled="true">Previous</span>{% endif %}
+      <span class="nx-gallery-page-current">Page {{ data.page.number }} of {{ data.page.paginator.num_pages }}</span>
+      {% if data.page.has_next %}<a href="?page={{ data.page.next_page_number }}{% if data.query %}&amp;q={{ data.query|urlencode }}{% endif %}" class="nx-gallery-page-link">Next</a>{% else %}<span class="nx-gallery-page-link is-disabled" aria-disabled="true">Next</span>{% endif %}
+    </nav>
+    {% endif %}
+    </div>
+  </div>
+    <div class="box-body table-responsive">
+      {% if data.error %}<p role="alert">{{ data.error }}</p>{% else %}
+      <table class="table table-striped"><thead><tr><th>Preview</th><th>Experimenter</th><th>File</th><th>Selection reason</th><th>Record</th></tr></thead>
+        <tbody>{% for row in data.page %}<tr>
+          <td><a href="{{ row.preview_url }}"><img src="{{ row.preview_url }}" alt="" style="max-width: 100px; max-height: 75px"></a></td>
+          <td>{{ row.experimenter|default:"—" }}</td><td>{{ row.name|default:"—" }}</td>
+          <td>{% if row.featured %}Featured{% elif row.rating is not None %}Highest rating ({{ row.rating }}){% else %}First available preview{% endif %}</td>
+          <td><a href="/data?id={{ row.record_id|urlencode }}">{{ row.title|default:"View record" }}</a></td>
+        </tr>{% empty %}<tr><td colspan="5">{% if data.query %}No selectable images match your search.{% else %}No selectable images found for this mode.{% endif %}</td></tr>{% endfor %}</tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</section>

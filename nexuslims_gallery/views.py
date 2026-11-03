@@ -4,13 +4,20 @@ import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
+from django import forms
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import AnonymousUser
+from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
 
 from core_main_app.components.data import api as data_api
 from core_main_app.components.workspace import api as workspace_api
+from core_main_app.utils.rendering import admin_render
+
+from .models import GallerySettings
 
 NS = "https://data.nist.gov/od/dm/nexus/experiment/v1.0"
 NS_MAP = {"nx": NS}
@@ -20,7 +27,7 @@ def normalize_experimenter(raw):
     """Convert 'Firstname Lastname (username)' to 'F. Lastname'. Returns raw on fallback."""
     if not raw:
         return raw
-    s = re.sub(r'\s*\(.*?\)\s*$', '', raw).strip()
+    s = re.sub(r"\s*\(.*?\)\s*$", "", raw).strip()
     parts = s.split()
     if len(parts) >= 2:
         return f"{parts[0][0]}. {parts[-1]}"
@@ -30,9 +37,9 @@ def normalize_experimenter(raw):
 def _get_preview_url(dataset_el, preview_base):
     """Return full preview URL for a dataset element, or None."""
     preview_el = dataset_el.find("nx:preview", NS_MAP)
-    if preview_el is None or not preview_el.text:
+    if preview_el is None or not preview_el.text or not preview_el.text.strip():
         return None
-    return f"{preview_base.rstrip('/')}/{preview_el.text.lstrip('/')}"
+    return f"{preview_base.rstrip('/')}/{preview_el.text.strip().lstrip('/')}"
 
 
 def _get_curation(dataset_el):
@@ -52,46 +59,142 @@ def _get_curation(dataset_el):
     return rating, featured
 
 
-def _select_best_dataset(record_xml, preview_base):
-    """Return a dict with preview_url (and curation info) for the best dataset.
-
-    Priority: featured first, then highest rating, then first with a preview URL.
-    Returns None if the record has no previewable datasets or XML is malformed.
-    """
+def _selectable_datasets(record_xml, preview_base, mode="all", minimum_rating=1):
+    """Return all datasets that can win selection for this record and policy."""
     try:
         root = ET.fromstring(record_xml)
     except ET.ParseError:
-        return None
-
+        return []
     candidates = []
     for activity in root.findall("nx:acquisitionActivity", NS_MAP):
         for ds in activity.findall("nx:dataset", NS_MAP):
             url = _get_preview_url(ds, preview_base)
-            if url is None:
+            if not url:
                 continue
             rating, featured = _get_curation(ds)
-            desc_el = ds.find("nx:description", NS_MAP)
-            description = desc_el.text.strip() if desc_el is not None and desc_el.text else None
-            candidates.append({
-                "preview_url": url,
-                "rating": rating,
-                "featured": featured,
-                "description": description,
-            })
+            candidates.append(
+                {
+                    "preview_url": url,
+                    "rating": rating,
+                    "featured": featured,
+                    "name": ds.findtext("nx:name", default="", namespaces=NS_MAP),
+                    "description": ds.findtext(
+                        "nx:description", default="", namespaces=NS_MAP
+                    ).strip()
+                    or None,
+                }
+            )
+    featured = [candidate for candidate in candidates if candidate["featured"]]
+    if featured:
+        return featured
+    if mode == "featured":
+        return []
+    rated = [
+        candidate
+        for candidate in candidates
+        if candidate["rating"] is not None
+        and (mode != "curated" or candidate["rating"] >= minimum_rating)
+    ]
+    if rated:
+        highest = max(candidate["rating"] for candidate in rated)
+        return [candidate for candidate in rated if candidate["rating"] == highest]
+    return candidates[:1] if mode == "all" else []
 
-    if not candidates:
-        return None
 
-    featured_list = [c for c in candidates if c["featured"]]
-    if featured_list:
-        return random.choice(featured_list)
+def _select_best_dataset(record_xml, preview_base, mode="all"):
+    candidates = _selectable_datasets(record_xml, preview_base, mode)
+    return random.choice(candidates) if candidates else None
 
-    rated_list = [c for c in candidates if c["rating"] is not None]
-    if rated_list:
-        max_rating = max(c["rating"] for c in rated_list)
-        return random.choice([c for c in rated_list if c["rating"] == max_rating])
 
-    return candidates[0]
+def _gallery_settings():
+    return GallerySettings.objects.filter(pk=1).first() or GallerySettings()
+
+
+def _gallery_records(mode, preview_base, minimum_rating=1):
+    workspace = workspace_api.get_global_workspace()
+    records = data_api.get_all_by_workspace(workspace, AnonymousUser())
+    return [
+        (record, candidates)
+        for record in records
+        if (
+            candidates := _selectable_datasets(
+                record.content, preview_base, mode, minimum_rating
+            )
+        )
+    ]
+
+
+class GallerySettingsForm(forms.Form):
+    selection_mode = forms.ChoiceField(
+        choices=GallerySettings.MODES,
+        label="Gallery selection",
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    minimum_rating = forms.IntegerField(
+        min_value=1,
+        max_value=5,
+        label="Minimum rating",
+        widget=forms.NumberInput(attrs={"class": "form-control"}),
+        help_text="In featured or rated mode, rated datasets must meet this threshold. Featured datasets always qualify. Other modes are unchanged.",
+    )
+
+
+@staff_member_required
+@require_http_methods(["GET", "POST"])
+def gallery_admin(request):
+    gallery_settings = _gallery_settings()
+    mode = gallery_settings.selection_mode
+    form = GallerySettingsForm(
+        request.POST if request.method == "POST" else None,
+        initial={
+            "selection_mode": mode,
+            "minimum_rating": gallery_settings.minimum_rating,
+        },
+    )
+    if request.method == "POST" and form.is_valid():
+        GallerySettings.objects.update_or_create(pk=1, defaults=form.cleaned_data)
+        return redirect("nexuslims_gallery_admin")
+    rows = []
+    error = None
+    try:
+        for record, candidates in _gallery_records(
+            mode,
+            os.getenv("XSLT_PREVIEW_BASE_URL", ""),
+            gallery_settings.minimum_rating,
+        ):
+            root = ET.fromstring(record.content)
+            experimenter = root.findtext(
+                "nx:summary/nx:experimenter", default="", namespaces=NS_MAP
+            )
+            title = root.findtext("nx:title", default="", namespaces=NS_MAP)
+            for candidate in candidates:
+                rows.append(
+                    {
+                        **candidate,
+                        "experimenter": experimenter,
+                        "title": title,
+                        "record_id": record.id,
+                    }
+                )
+    except Exception:
+        error = "Could not fetch gallery records. Please try again."
+    query = request.GET.get("q", "").strip()
+    if query:
+        search = query.casefold()
+        rows = [
+            row for row in rows
+            if any(search in str(row[key]).casefold() for key in ("name", "experimenter", "title"))
+        ]
+    return admin_render(
+        request,
+        "nexuslims_gallery/admin.html",
+        context={
+            "form": form,
+            "page": Paginator(rows, 20).get_page(request.GET.get("page")),
+            "query": query,
+            "error": error,
+        },
+    )
 
 
 def gallery_page(request):
@@ -119,38 +222,19 @@ def api_next(request):
     preview_base = os.getenv("XSLT_PREVIEW_BASE_URL", "").rstrip("/")
 
     try:
-        workspace = workspace_api.get_global_workspace()
-        all_records = list(data_api.get_all_by_workspace(workspace, AnonymousUser()))
+        gallery_settings = _gallery_settings()
+        eligible = _gallery_records(
+            gallery_settings.selection_mode,
+            preview_base,
+            gallery_settings.minimum_rating,
+        )
     except Exception:
         return JsonResponse({"error": "Could not fetch records"}, status=500)
-
-    eligible = []
-    for record in all_records:
-        try:
-            root = ET.fromstring(record.content)
-        except ET.ParseError:
-            continue
-        has_preview = any(
-            ds.find("nx:preview", NS_MAP) is not None
-            for activity in root.findall("nx:acquisitionActivity", NS_MAP)
-            for ds in activity.findall("nx:dataset", NS_MAP)
-        )
-        if has_preview:
-            eligible.append(record)
-
     if not eligible:
         return JsonResponse({"error": "No previewable records found"}, status=404)
-
-    record = random.choice(eligible)
-
-    try:
-        root = ET.fromstring(record.content)
-    except ET.ParseError:
-        return JsonResponse({"error": "Record XML is malformed"}, status=500)
-
-    dataset = _select_best_dataset(record.content, preview_base)
-    if dataset is None:
-        return JsonResponse({"error": "No previewable dataset"}, status=500)
+    record, candidates = random.choice(eligible)
+    dataset = random.choice(candidates)
+    root = ET.fromstring(record.content)
 
     title_el = root.find("nx:title", NS_MAP)
     title = title_el.text if title_el is not None else ""
