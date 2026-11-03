@@ -7,9 +7,7 @@ matrix remains in the NexusLIMS backend repository.
 To build the guide locally:
 
 ```sh
-python -m venv /tmp/cdcs-docs-venv
-/tmp/cdcs-docs-venv/bin/pip install -r docs/requirements.txt
-/tmp/cdcs-docs-venv/bin/sphinx-build -b html -n -W --keep-going docs docs/_build/html
+uv run --locked --only-group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
 ```
 
 Open `docs/_build/html/index.html`. The `nexuslims-cdcs-docs` Cloudflare Pages
