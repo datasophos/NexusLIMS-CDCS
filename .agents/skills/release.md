@@ -45,14 +45,14 @@ understand *what* changed so you can write concrete upgrade instructions.
 | **XSLT** | `xslt/*.xsl` | Must re-upload stylesheets to database |
 | **Schema** | `deployment/schemas/*.xsd` | Must re-upload schema to database |
 | **Migrations** | `*/migrations/*.py` | Must run `migrate` (auto on restart, but note it) |
-| **Docker image** | `deployment/Dockerfile`, `pyproject.toml`, `uv.lock` | Must rebuild image |
+| **Docker image** | `deployment/Dockerfile`, `pyproject.toml`, `uv.lock`, and files copied into the image by the Dockerfile | Must rebuild image unless the changed files are overridden by production mounts |
 | **Compose config** | `deployment/docker-compose*.yml` | Must restart stack |
 | **Env variables** | `deployment/.env.demo.example`, any `settings.py` | Check `.env` for new required variables |
 | **Init/seed scripts** | `deployment/scripts/init_environment.py`, `deployment/scripts/seed_demo_records.py` | Note behaviour changes |
 | **Caddy / TLS** | `deployment/caddy/Caddyfile*`, `deployment/caddy/docker-entrypoint.sh` | Restart Caddy; TLS config may have changed |
-| **Static assets** | `nexuslims_overrides/static/**`, `nexuslims_annotate/static/**` | Run `collectstatic` (auto on restart) |
-| **Templates** | `nexuslims_overrides/templates/**`, `nexuslims_annotate/templates/**` | Restart app; no manual step |
-| **App code** | `nexuslims_overrides/**`, `nexuslims_annotate/**`, `mdcs/**` | Restart app |
+| **Static assets** | `nexuslims_overrides/static/**`, `nexuslims_annotate/static/**` | Rebuild image; run `collectstatic` (auto on restart) |
+| **Templates** | `nexuslims_overrides/templates/**`, `nexuslims_annotate/templates/**`, `nexuslims_gallery/templates/**` | Rebuild image and restart app |
+| **App code** | `nexuslims_overrides/**`, `nexuslims_annotate/**`, `nexuslims_gallery/**`, `mdcs/**` | Rebuild image and restart app |
 | **Test / CI** | `tests/**`, `.github/**` | No deployment action needed |
 
 For the **XSLT**, **Schema**, and **Env variables** buckets, always read the diff and
@@ -77,13 +77,13 @@ Available `admin-commands.sh` aliases relevant to upgrades:
 
 **Template for the Upgrade Instructions section:**
 
-```markdown
+````markdown
 ### Upgrade Instructions
 
 #### 1. Back up your data
 Always back up before upgrading:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 admin-backup
 ```
@@ -97,10 +97,10 @@ git pull
 #### 3. [Change-specific steps — include only the subsections that apply]
 
 ##### Rebuild Required
-(Include if Dockerfile / pyproject.toml / uv.lock changed)
+(Include when the Docker image needs rebuilding, including changes to application code, templates, or static assets copied into it.)
 Python dependencies, files baked into the container (XSLT, schema, etc.) or the container definition changed. Rebuild before restarting:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 dc-prod build cdcs
 ```
@@ -112,11 +112,20 @@ Add or update the following in your `.env`:
 NEW_VARIABLE=value
 ```
 
+#### 4. Restart the stack
+```bash
+cd /opt/nexuslims-cdcs/deployment
+source admin-commands.sh
+dc-prod down && dc-prod up -d
+```
+
+#### 5. Update database content
+
 ##### XSLT Stylesheets Updated
 (Include if xslt/*.xsl changed; describe what changed)
 Re-upload the updated stylesheets to the database after restarting:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 admin-update-xslt
 ```
@@ -125,22 +134,17 @@ admin-update-xslt
 (Include if deployment/schemas/*.xsd changed; describe what changed)
 Re-upload the updated schema to the database:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 admin-upgrade-schema
 ```
 
-#### 4. Restart the stack
-```bash
-cd deployment
-source admin-commands.sh
-dc-prod down && dc-prod up -d
-```
-```
+````
 
-If the only changes are in Test / CI / app code / templates (no rebuild, no env
-changes, no schema/XSLT changes), the Upgrade Instructions section still includes
-steps 1, 2, and 4 -- just omit step 3.
+Omit empty change-specific sections and renumber the remaining steps. Run database
+updates after the new container has started; when both schema and XSLT change,
+check whether the schema upgrade already updates the stylesheets before adding a
+separate command.
 
 ### Step 3: Draft Release Notes
 
@@ -209,38 +213,46 @@ Base the content strictly on the commits and diffs gathered -- do not invent cha
 
 Present the suggested version and ask the user to confirm or change it.
 
-### Step 4a: Prepare the NexusLIMS Documentation Update
+### Step 4a: Prepare Documentation
 
-In the main NexusLIMS repository, prepare the CDCS documentation in a separate
-worktree, preserving unrelated changes. Review the release notes, actual diffs,
-and existing documentation to determine the required updates:
+Review the release notes and actual diffs against the CDCS documentation in
+`docs/frontend_guide/`. Update affected feature, configuration, deployment, and
+upgrade guidance alongside the code.
 
-1. Add a versioned entry to `docs/frontend_guide/changelog.md`, covering
-   user-facing changes and relevant upgrade notes. Omit internal-only CI and
-   dependency details unless they matter to users or operators.
-2. Review `docs/reference/compatibility.md` for every release. Update its matrix
-   for the new CDCS version and supported NexusLIMS versions when warranted by
-   verified compatibility. Check version ranges and notes for overlap or ambiguity;
-   do not infer compatibility from version numbers alone. If evidence is missing,
-   explicitly report what must be verified and leave the compatibility claim open.
-   If no matrix change is needed, state why in the release checklist.
-3. Update other affected `docs/frontend_guide/` pages and relevant deployment,
-   configuration, or upgrade documentation to reflect the released behavior.
+Draft the next `docs/frontend_guide/changelog.md` entry from the complete release
+notes drafted in Step 3. Use a `## VERSION -- YYYY-MM-DD` heading and the release
+date; beneath it retain the release notes' section headings and content, including
+upgrade instructions and links. Omit the release notes' redundant top-level title.
+Do not independently summarize the fragments or silently omit internal notes:
+the changelog and GitHub Release must convey the same reviewed release notes.
+Prepend the entry before the existing releases, preserving all history. If an entry
+for the version already exists, stop and reconcile it rather than duplicating it.
+Present this proposed entry for review in Step 5; do not modify the changelog yet.
+Build the site with `uv run --group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html`.
+Commit other documentation updates through the normal feature or release
+preparation workflow before tagging; Step 6 adds the approved changelog entry to
+the release commit together with the version and reviewed fragments.
+The CDCS site publishes Cloudflare branch previews, `latest` for main on GitHub
+Pages, and versioned and stable documentation
+when a CDCS release is published. A draft release does not publish stable docs.
 
-Do not treat the two repositories as one atomic commit: record the documentation
-worktree/branch, files changed, compatibility evidence or open questions, and
-any outstanding commit, review, or merge work in the release checklist. If the
-repository is unavailable, report the missing update explicitly instead of
-claiming it is complete.
+For every release, review `docs/reference/compatibility.md` in the main NexusLIMS
+repository. Update its matrix in a separate worktree when warranted by verified
+compatibility, checking ranges for overlaps and ambiguity. Do not infer
+compatibility from version numbers. Record the evidence or open questions, the
+worktree and branch, and outstanding commit, review, or merge work in the release
+checklist. If no change is needed, explain why. If NexusLIMS is unavailable,
+report the missing review explicitly.
 
-For `--dry-run`, describe the proposed documentation changes, including the
-compatibility matrix assessment and evidence, for review without modifying either
-repository. Prepare the actual documentation update when the release proceeds.
+For `--dry-run`, present the proposed changelog entry, other documentation changes,
+and compatibility evidence without modifying either repository. Prepare actual
+updates when the release proceeds.
 
 ### Step 5: User Review
 
-Present the full release notes, proposed version, NexusLIMS documentation changes
-(including the compatibility assessment), and list of fragments to consume. Ask the user to:
+Present the full release notes, proposed version, changelog entry, other CDCS
+documentation changes, NexusLIMS compatibility assessment, and list of fragments
+to consume. Ask the user to:
 1. Review and approve the release notes
 2. Confirm the version number
 
@@ -250,15 +262,24 @@ Do not proceed to Step 6 until the user explicitly approves.
 
 Once approved, and unless `--dry-run` was passed:
 
-1. **Update `pyproject.toml`**: Set `version = "<VERSION>"` using the PEP 440 local
-   form (e.g. `3.20.0+nx1` for tag `v3.20.0-nx1`).
+1. **Update the version and lockfile**: Set `version = "<VERSION>"` in
+   `pyproject.toml` using the PEP 440 local form (e.g. `3.20.0+nx1` for tag
+   `v3.20.0-nx1`). Run `uv lock` to synchronize `uv.lock`, and verify it with
+   `uv lock --check`. Review the lockfile diff and avoid unintended dependency
+   upgrades.
 
-2. **Consume the reviewed fragments and commit the release**: Remove only the
+2. **Update the changelog**: Prepend the approved entry to
+   `docs/frontend_guide/changelog.md`. Verify it matches the approved release
+   notes, uses the release version and date, and preserves historical entries.
+   Rebuild the documentation before committing.
+
+3. **Consume the reviewed fragments and commit the release**: Remove only the
    tracked fragment paths recorded and reviewed for this release. Do not remove
-   unrelated, newly added, or untracked files. Stage the version change and those
-   exact deletions; do not write or commit a `RELEASE_NOTES.md` file.
+   unrelated, newly added, or untracked files. Stage the version and lockfile changes,
+   approved changelog entry, and those exact deletions; do not write or commit a
+   `RELEASE_NOTES.md` file.
    ```bash
-   git add pyproject.toml
+   git add pyproject.toml uv.lock docs/frontend_guide/changelog.md
    # For each reviewed fragment: git rm -- docs/changes/<reviewed-fragment>.md
    git commit -m "chore: release vVERSION"
    ```
@@ -266,18 +287,18 @@ Once approved, and unless `--dry-run` was passed:
    workflow and report its branch and review/merge status; do not silently include
    or overwrite unrelated work.
 
-3. **Tag the release** (lightweight tag at the release commit):
+4. **Tag the release** (lightweight tag at the release commit):
    ```bash
    git tag vVERSION
    ```
 
-4. **Push** (unless `--no-push` was passed):
+5. **Push** (unless `--no-push` was passed):
    ```bash
    git push origin main
    git push origin vVERSION
    ```
 
-5. **Create a draft GitHub Release** with the full release notes as the body:
+6. **Create a draft GitHub Release** using the same approved release notes as the body:
    ```bash
    gh release create vVERSION --draft --title "NexusLIMS-CDCS vVERSION" --notes "$(cat <<'EOF'
    <full release notes here>
@@ -292,8 +313,9 @@ After completing Step 6:
 
 - Check GitHub Actions: https://github.com/datasophos/NexusLIMS-CDCS/actions
 - The demo server will auto-deploy via the self-hosted runner on push to `main`
-- Track the separate NexusLIMS documentation update, including the compatibility
-  matrix assessment, through review and merge; report any remaining work.
+- Track any separate NexusLIMS compatibility matrix update through review and merge;
+  report any remaining work. Verify the CDCS documentation publishing status when
+  release publication is explicitly requested.
 - Verify the GitHub Release was created at: https://github.com/datasophos/NexusLIMS-CDCS/releases
 - If XSLT or schema changed, verify the update applied on the demo server:
   ```bash

@@ -1,0 +1,73 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+      - run: uv run --locked --only-group docs sphinx-build -b html -n -W --keep-going docs docs/_build/html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/_build/html
+
+  publish:
+    needs: build
+    if: >-
+      github.event_name == 'push' || github.event_name == 'release' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: docs-gh-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+      - uses: actions/download-artifact@v4
+        with:
+          name: documentation
+          path: site
+      - name: Update documentation and version index
+        env:
+          EVENT: ${{ github.event_name }}
+          TAG: ${{ github.event.release.tag_name }}
+          PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          if [[ "$EVENT" == release ]]; then
+            args=(pages site "$TAG")
+            if [[ "$PRERELEASE" != true ]]; then
+              args+=(--stable)
+            fi
+          else
+            args=(pages site latest)
+          fi
+          python scripts/docs_versions.py "${args[@]}"
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: pages
+          keep_files: false

@@ -1,0 +1,32 @@
+{% set sections = [
+  ("Overview", "frontend_guide/overview", ["frontend_guide/overview", "frontend_guide/gallery", "frontend_guide/search", "frontend_guide/record-details", "frontend_guide/record-curation", "frontend_guide/public-gallery"]),
+  ("Production Deployment", "frontend_guide/production", ["frontend_guide/production", "frontend_guide/local-test-deployment"]),
+  ("Administration", "frontend_guide/administration", ["frontend_guide/administration", "frontend_guide/configuration", "frontend_guide/customization", "frontend_guide/troubleshooting"]),
+  ("Development Setup", "frontend_guide/development", ["frontend_guide/development", "frontend_guide/development-workflow", "frontend_guide/development-architecture", "frontend_guide/development-xslt", "frontend_guide/development-troubleshooting"])
+] %}
+{% set current_section = namespace(value=none) %}
+{% for title, root, pages in sections %}
+  {% if pagename in pages %}{% set current_section.value = (title, root) %}{% endif %}
+{% endfor %}
+{% if current_section.value %}
+{% set title, root = current_section.value %}
+<nav class="bd-docs-nav bd-links" aria-label="{{ _('Section Navigation') }}">
+  <p class="bd-links__title" role="heading" aria-level="1">{{ _("Section Navigation") }}</p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="nav bd-sidenav">
+      <li class="toctree-l1{% if pagename == root %} current active{% endif %}">
+        <a class="reference internal{% if pagename == root %} current{% endif %}" href="{{ pathto(root) }}"{% if pagename == root %} aria-current="page"{% endif %}>{{ title }}</a>
+      </li>
+    </ul>
+    {{- generate_toctree_html(
+      "sidebar",
+      show_nav_level=theme_show_nav_level | int,
+      maxdepth=theme_navigation_depth | int,
+      collapse=theme_collapse_navigation | tobool,
+      includehidden=theme_sidebar_includehidden | tobool,
+      titles_only=True
+      )
+    -}}
+  </div>
+</nav>
+{% endif %}

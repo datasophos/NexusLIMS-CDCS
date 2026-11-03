@@ -59,6 +59,16 @@ dev = [
     "pytest-playwright",
     "pytest-xdist",
 ]
+docs = [
+    "sphinx>=8,<10",
+    "myst-parser>=4,<6",
+    "pydata-sphinx-theme>=0.16,<0.17",
+    "sphinx-design>=0.6,<0.8",
+    "sphinxcontrib-mermaid>=1.2,<2",
+    "sphinx-copybutton>=0.5,<0.6",
+    "sphinx-autobuild>=2025.8.25",
+    "linkify-it-py>=2,<3",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["tests/e2e"]
