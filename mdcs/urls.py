@@ -27,6 +27,19 @@ if "nexuslims_gallery" in settings.INSTALLED_APPS:
     from nexuslims_gallery import views as gallery_views
 
 urlpatterns = [
+    # The gallery route must precede Django admin's catch-all when its prefix is empty.
+    *(
+        [
+            re_path(
+                r"^admin/gallery/",
+                gallery_views.gallery_admin,
+                name="nexuslims_gallery_admin",
+            )
+        ]
+        if "nexuslims_gallery" in settings.INSTALLED_APPS
+        and getattr(settings, "NX_ENABLE_GALLERY", True)
+        else []
+    ),
     re_path(rf"^{ADMIN_URLS_PREFIX}admin/", admin.site.urls),
     re_path(rf"^{ADMIN_URLS_PREFIX}core-admin/", core_admin_site.urls),
     re_path(r"^o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
@@ -40,18 +53,6 @@ urlpatterns = [
     ),
     *(
         [re_path(r"^gallery/", include("nexuslims_gallery.urls"))]
-        if "nexuslims_gallery" in settings.INSTALLED_APPS
-        and getattr(settings, "NX_ENABLE_GALLERY", True)
-        else []
-    ),
-    *(
-        [
-            re_path(
-                r"^admin/gallery/",
-                gallery_views.gallery_admin,
-                name="nexuslims_gallery_admin",
-            )
-        ]
         if "nexuslims_gallery" in settings.INSTALLED_APPS
         and getattr(settings, "NX_ENABLE_GALLERY", True)
         else []
