@@ -45,14 +45,14 @@ understand *what* changed so you can write concrete upgrade instructions.
 | **XSLT** | `xslt/*.xsl` | Must re-upload stylesheets to database |
 | **Schema** | `deployment/schemas/*.xsd` | Must re-upload schema to database |
 | **Migrations** | `*/migrations/*.py` | Must run `migrate` (auto on restart, but note it) |
-| **Docker image** | `deployment/Dockerfile`, `pyproject.toml`, `uv.lock` | Must rebuild image |
+| **Docker image** | `deployment/Dockerfile`, `pyproject.toml`, `uv.lock`, and files copied into the image by the Dockerfile | Must rebuild image unless the changed files are overridden by production mounts |
 | **Compose config** | `deployment/docker-compose*.yml` | Must restart stack |
 | **Env variables** | `deployment/.env.demo.example`, any `settings.py` | Check `.env` for new required variables |
 | **Init/seed scripts** | `deployment/scripts/init_environment.py`, `deployment/scripts/seed_demo_records.py` | Note behaviour changes |
 | **Caddy / TLS** | `deployment/caddy/Caddyfile*`, `deployment/caddy/docker-entrypoint.sh` | Restart Caddy; TLS config may have changed |
-| **Static assets** | `nexuslims_overrides/static/**`, `nexuslims_annotate/static/**` | Run `collectstatic` (auto on restart) |
-| **Templates** | `nexuslims_overrides/templates/**`, `nexuslims_annotate/templates/**` | Restart app; no manual step |
-| **App code** | `nexuslims_overrides/**`, `nexuslims_annotate/**`, `mdcs/**` | Restart app |
+| **Static assets** | `nexuslims_overrides/static/**`, `nexuslims_annotate/static/**` | Rebuild image; run `collectstatic` (auto on restart) |
+| **Templates** | `nexuslims_overrides/templates/**`, `nexuslims_annotate/templates/**`, `nexuslims_gallery/templates/**` | Rebuild image and restart app |
+| **App code** | `nexuslims_overrides/**`, `nexuslims_annotate/**`, `nexuslims_gallery/**`, `mdcs/**` | Rebuild image and restart app |
 | **Test / CI** | `tests/**`, `.github/**` | No deployment action needed |
 
 For the **XSLT**, **Schema**, and **Env variables** buckets, always read the diff and
@@ -77,13 +77,13 @@ Available `admin-commands.sh` aliases relevant to upgrades:
 
 **Template for the Upgrade Instructions section:**
 
-```markdown
+````markdown
 ### Upgrade Instructions
 
 #### 1. Back up your data
 Always back up before upgrading:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 admin-backup
 ```
@@ -97,10 +97,10 @@ git pull
 #### 3. [Change-specific steps — include only the subsections that apply]
 
 ##### Rebuild Required
-(Include if Dockerfile / pyproject.toml / uv.lock changed)
+(Include when the Docker image needs rebuilding, including changes to application code, templates, or static assets copied into it.)
 Python dependencies, files baked into the container (XSLT, schema, etc.) or the container definition changed. Rebuild before restarting:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 dc-prod build cdcs
 ```
@@ -112,11 +112,20 @@ Add or update the following in your `.env`:
 NEW_VARIABLE=value
 ```
 
+#### 4. Restart the stack
+```bash
+cd /opt/nexuslims-cdcs/deployment
+source admin-commands.sh
+dc-prod down && dc-prod up -d
+```
+
+#### 5. Update database content
+
 ##### XSLT Stylesheets Updated
 (Include if xslt/*.xsl changed; describe what changed)
 Re-upload the updated stylesheets to the database after restarting:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 admin-update-xslt
 ```
@@ -125,22 +134,17 @@ admin-update-xslt
 (Include if deployment/schemas/*.xsd changed; describe what changed)
 Re-upload the updated schema to the database:
 ```bash
-cd deployment
+cd /opt/nexuslims-cdcs/deployment
 source admin-commands.sh
 admin-upgrade-schema
 ```
 
-#### 4. Restart the stack
-```bash
-cd deployment
-source admin-commands.sh
-dc-prod down && dc-prod up -d
-```
-```
+````
 
-If the only changes are in Test / CI / app code / templates (no rebuild, no env
-changes, no schema/XSLT changes), the Upgrade Instructions section still includes
-steps 1, 2, and 4 -- just omit step 3.
+Omit empty change-specific sections and renumber the remaining steps. Run database
+updates after the new container has started; when both schema and XSLT change,
+check whether the schema upgrade already updates the stylesheets before adding a
+separate command.
 
 ### Step 3: Draft Release Notes
 
@@ -258,8 +262,11 @@ Do not proceed to Step 6 until the user explicitly approves.
 
 Once approved, and unless `--dry-run` was passed:
 
-1. **Update `pyproject.toml`**: Set `version = "<VERSION>"` using the PEP 440 local
-   form (e.g. `3.20.0+nx1` for tag `v3.20.0-nx1`).
+1. **Update the version and lockfile**: Set `version = "<VERSION>"` in
+   `pyproject.toml` using the PEP 440 local form (e.g. `3.20.0+nx1` for tag
+   `v3.20.0-nx1`). Run `uv lock` to synchronize `uv.lock`, and verify it with
+   `uv lock --check`. Review the lockfile diff and avoid unintended dependency
+   upgrades.
 
 2. **Update the changelog**: Prepend the approved entry to
    `docs/frontend_guide/changelog.md`. Verify it matches the approved release
@@ -268,11 +275,11 @@ Once approved, and unless `--dry-run` was passed:
 
 3. **Consume the reviewed fragments and commit the release**: Remove only the
    tracked fragment paths recorded and reviewed for this release. Do not remove
-   unrelated, newly added, or untracked files. Stage the version change, approved
-   changelog entry, and those exact deletions; do not write or commit a
+   unrelated, newly added, or untracked files. Stage the version and lockfile changes,
+   approved changelog entry, and those exact deletions; do not write or commit a
    `RELEASE_NOTES.md` file.
    ```bash
-   git add pyproject.toml docs/frontend_guide/changelog.md
+   git add pyproject.toml uv.lock docs/frontend_guide/changelog.md
    # For each reviewed fragment: git rm -- docs/changes/<reviewed-fragment>.md
    git commit -m "chore: release vVERSION"
    ```
