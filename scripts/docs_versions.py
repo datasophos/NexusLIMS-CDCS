@@ -49,6 +49,15 @@ def main():
         if target == "stable":
             (dest / "version.txt").write_text(args.destination + "\n")
     (args.pages / "switcher.json").write_text(json.dumps(build_entries(args.pages), indent=2) + "\n")
+    (args.pages / "index.html").write_text(
+        '<!doctype html>\n<html lang="en">\n<head>\n'
+        '<meta charset="utf-8">\n'
+        '<meta http-equiv="refresh" content="0; url=stable/">\n'
+        '<title>NexusLIMS-CDCS documentation</title>\n'
+        '</head>\n<body>\n'
+        '<p>Redirecting to the <a href="stable/">stable documentation</a>.</p>\n'
+        '</body>\n</html>\n'
+    )
 
 
 if __name__ == "__main__":
