@@ -1,0 +1,115 @@
+/* Match the main NexusLIMS documentation's compact header and branding. */
+.navbar-header-items__start {
+  flex: 0 0 auto !important;
+  max-width: none !important;
+  min-width: fit-content;
+  flex-wrap: nowrap;
+}
+.navbar-header-items { flex: 1 1 auto !important; max-width: none !important; }
+.navbar-header-items__center { min-width: 0; }
+.navbar-brand img { width: auto; }
+.navbar-nav { flex-wrap: nowrap; }
+@media (min-width: 992px) and (max-width: 1250px) {
+  .navbar-brand img { max-height: 28px; }
+  .navbar-header-items__center .nav-link { font-size: .85rem; padding-left: .3rem; padding-right: .3rem; }
+  .navbar-icon-links .nav-link { padding-left: .25rem; padding-right: .25rem; }
+}
+
+.cdcs-home-logo { display: block; width: min(100%, 560px); margin: 2rem auto; margin-top: 0; }
+.cdcs-home-tagline { text-align: center; font-style: italic; margin-bottom: 1.75rem; }
+section#nexuslims-cdcs > h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .navbar-brand img { max-height: 28px; }
+}
+
+/* Screenshot gallery remains readable as a list if JavaScript is disabled. */
+.cdcs-carousel figure { margin: 1.5rem 0; }
+.cdcs-carousel figure[hidden] { display: none; }
+.cdcs-carousel figure > a.image-reference {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(14rem, 55vh, 36rem);
+}
+.cdcs-carousel figure img {
+  display: block;
+  max-height: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.cdcs-carousel figcaption { margin-top: .75rem; min-height: 5rem; }
+.cdcs-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  margin: 1rem 0 2rem;
+}
+.cdcs-carousel-controls button,
+.cdcs-lightbox-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--pst-color-border);
+  border-radius: 50%;
+  background: var(--pst-color-background);
+  color: var(--pst-color-text-base);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+.cdcs-carousel-controls button:hover,
+.cdcs-lightbox-close:hover { background: var(--pst-color-surface); border-color: var(--pst-color-primary); }
+.cdcs-control-icon {
+  display: block;
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cdcs-carousel-controls span { color: var(--pst-color-text-muted); font-size: .9rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) {
+  .cdcs-carousel figcaption { min-height: 8rem; }
+}
+.cdcs-carousel-controls button:focus-visible { outline: 2px solid var(--pst-color-primary); outline-offset: 2px; }
+
+.cdcs-lightbox {
+  position: fixed;
+  width: min(96vw, 120rem);
+  max-width: none;
+  height: 94vh;
+  max-height: none;
+  padding: 1rem;
+  border: 0;
+  border-radius: .4rem;
+  background: var(--pst-color-background);
+  color: var(--pst-color-text-base);
+}
+.cdcs-lightbox[open] { display: flex; flex-direction: column; align-items: center; }
+.cdcs-lightbox::backdrop { background: rgb(0 0 0 / 85%); }
+.cdcs-lightbox > img { min-height: 0; max-width: 100%; flex: 1 1 auto; object-fit: contain; }
+.cdcs-lightbox-close {
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+.cdcs-lightbox-caption { text-align: center; margin: .75rem 0 0; }
+.cdcs-lightbox-caption p { margin: 0; }
+.cdcs-lightbox .cdcs-carousel-controls { margin: .75rem 0 0; }
+.cdcs-lightbox button:focus-visible { outline: 2px solid var(--pst-color-primary); outline-offset: 2px; }

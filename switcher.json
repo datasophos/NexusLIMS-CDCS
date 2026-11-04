@@ -3,5 +3,11 @@
     "name": "Latest development",
     "version": "dev",
     "url": "https://datasophos.github.io/NexusLIMS-CDCS/latest/"
+  },
+  {
+    "name": "v3.23.0-nx0 (stable)",
+    "version": "v3.23.0-nx0",
+    "url": "https://datasophos.github.io/NexusLIMS-CDCS/stable/",
+    "preferred": true
   }
 ]
