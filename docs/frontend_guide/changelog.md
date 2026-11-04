@@ -12,6 +12,82 @@ and `nx{N}` is an incrementing counter for NexusLIMS-specific releases on that b
 
 ---
 
+## 3.23.0-nx0 -- 2026-11-03
+
+### Highlights
+
+This release upgrades the underlying CDCS platform to 3.23.0 and adds administration controls for selecting images in the public gallery. It also fixes dataset moves that could produce invalid XML and moves the frontend guide to a dedicated documentation site.
+
+This release is intended for compatibility NexusLIMS backend version 2.9.0.
+
+As always, if you need assistance with configuration or deployment of NexusLIMS-CDCS, contact [Datasophos](https://datasophos.co/#contact).
+
+### Upgrade Instructions
+
+These instructions assume you have installed following the instructions in the NexusLIMS docs. If you have customized your
+installation, you may need to modify the following commands.
+
+#### 1. Back up your data
+
+```bash
+cd /opt/nexuslims-cdcs/deployment
+source admin-commands.sh
+admin-backup
+```
+
+#### 2. Pull the new code
+
+```bash
+cd /opt/nexuslims-cdcs
+git pull
+```
+
+#### 3. Rebuild the application image
+
+```bash
+cd /opt/nexuslims-cdcs/deployment
+source admin-commands.sh
+dc-prod build cdcs
+```
+
+> The included Caddy configuration has been updated and the file server and application file routes have been moved to a shared file. If you maintain a custom Caddyfile or Compose configuration, review the changes when updating it, as the example `Caddyfile.prod` has been changed to use the shared routes.
+
+#### 4. Restart the stack
+
+```bash
+cd /opt/nexuslims-cdcs/deployment
+source admin-commands.sh
+dc-prod down && dc-prod up -d
+```
+
+No schema or XSLT update is required for this release.
+
+### New Features
+
+- Added a gallery administration page with selection modes, a minimum rating, and a searchable view of eligible images. [#42](https://github.com/datasophos/NexusLIMS-CDCS/pull/42)
+- Added a dedicated, versioned CDCS documentation site containing the frontend guide. [#49](https://github.com/datasophos/NexusLIMS-CDCS/pull/49)
+- Upgraded the CDCS/MDCS base to 3.23.0, including upstream PID improvements and a health endpoint. [#43](https://github.com/datasophos/NexusLIMS-CDCS/pull/43)
+
+### Bug Fixes
+
+- Preserve valid XML element order when moving curated datasets between activities. [#38](https://github.com/datasophos/NexusLIMS-CDCS/pull/38)
+- Allow token-authenticated API requests to bypass demo auto-login and authenticate correctly. [#39](https://github.com/datasophos/NexusLIMS-CDCS/pull/39)
+- Include upstream fixes for data-processing recursion. [#43](https://github.com/datasophos/NexusLIMS-CDCS/pull/43)
+
+### Internal / Maintenance
+
+- Updated core application packages to the 2.23 series and refreshed the dependency lockfile. [#43](https://github.com/datasophos/NexusLIMS-CDCS/pull/43)
+- Added crawler protections and rate limits to the public demo’s administrative routes. [#36](https://github.com/datasophos/NexusLIMS-CDCS/pull/36)
+- Restore the development and CI SAML test provider and allow local development without starting it. [#41](https://github.com/datasophos/NexusLIMS-CDCS/pull/41)
+- Updated release and changelog workflows. [#47](https://github.com/datasophos/NexusLIMS-CDCS/pull/47)
+- Added a documentation root redirect to the stable release. [#50](https://github.com/datasophos/NexusLIMS-CDCS/pull/50)
+
+### Full Changelog
+
+https://github.com/datasophos/NexusLIMS-CDCS/compare/v3.21.0-nx1...v3.23.0-nx0
+
+---
+
 ## 3.21.0-nx1 -- 2026-06-08
 
 This version is intended to be used with NexusLIMS backend versions 2.7.3+.
