@@ -476,6 +476,86 @@ Upstream CDCS release notes are available from the
 (e.g., <code class="docutils literal notranslate"><span class="pre">3.18.0-nx1</span></code>), where the base version reflects the upstream CDCS release
 and <code class="docutils literal notranslate"><span class="pre">nx{N}</span></code> is an incrementing counter for NexusLIMS-specific releases on that base.</p>
 <hr class="docutils" />
+<section id="nx0-2026-11-03">
+<h2>3.23.0-nx0 – 2026-11-03<a class="headerlink" href="#nx0-2026-11-03" title="Link to this heading">#</a></h2>
+<section id="highlights">
+<h3>Highlights<a class="headerlink" href="#highlights" title="Link to this heading">#</a></h3>
+<p>This release upgrades the underlying CDCS platform to 3.23.0 and adds administration controls for selecting images in the public gallery. It also fixes dataset moves that could produce invalid XML and moves the frontend guide to a dedicated documentation site.</p>
+<p>This release is intended for compatibility NexusLIMS backend version 2.9.0.</p>
+<p>As always, if you need assistance with configuration or deployment of NexusLIMS-CDCS, contact <a class="reference external" href="https://datasophos.co/#contact">Datasophos</a>.</p>
+</section>
+<section id="upgrade-instructions">
+<h3>Upgrade Instructions<a class="headerlink" href="#upgrade-instructions" title="Link to this heading">#</a></h3>
+<p>These instructions assume you have installed following the instructions in the NexusLIMS docs. If you have customized your
+installation, you may need to modify the following commands.</p>
+<section id="back-up-your-data">
+<h4>1. Back up your data<a class="headerlink" href="#back-up-your-data" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/opt/nexuslims-cdcs/deployment
+<span class="nb">source</span><span class="w"> </span>admin-commands.sh
+admin-backup
+</pre></div>
+</div>
+</section>
+<section id="pull-the-new-code">
+<h4>2. Pull the new code<a class="headerlink" href="#pull-the-new-code" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/opt/nexuslims-cdcs
+git<span class="w"> </span>pull
+</pre></div>
+</div>
+</section>
+<section id="rebuild-the-application-image">
+<h4>3. Rebuild the application image<a class="headerlink" href="#rebuild-the-application-image" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/opt/nexuslims-cdcs/deployment
+<span class="nb">source</span><span class="w"> </span>admin-commands.sh
+dc-prod<span class="w"> </span>build<span class="w"> </span>cdcs
+</pre></div>
+</div>
+<blockquote>
+<div><p>The included Caddy configuration has been updated and the file server and application file routes have been moved to a shared file. If you maintain a custom Caddyfile or Compose configuration, review the changes when updating it, as the example <code class="docutils literal notranslate"><span class="pre">Caddyfile.prod</span></code> has been changed to use the shared routes.</p>
+</div></blockquote>
+</section>
+<section id="restart-the-stack">
+<h4>4. Restart the stack<a class="headerlink" href="#restart-the-stack" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/opt/nexuslims-cdcs/deployment
+<span class="nb">source</span><span class="w"> </span>admin-commands.sh
+dc-prod<span class="w"> </span>down<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>dc-prod<span class="w"> </span>up<span class="w"> </span>-d
+</pre></div>
+</div>
+<p>No schema or XSLT update is required for this release.</p>
+</section>
+</section>
+<section id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added a gallery administration page with selection modes, a minimum rating, and a searchable view of eligible images. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/42">#42</a></p></li>
+<li><p>Added a dedicated, versioned CDCS documentation site containing the frontend guide. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/49">#49</a></p></li>
+<li><p>Upgraded the CDCS/MDCS base to 3.23.0, including upstream PID improvements and a health endpoint. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/43">#43</a></p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Preserve valid XML element order when moving curated datasets between activities. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/38">#38</a></p></li>
+<li><p>Allow token-authenticated API requests to bypass demo auto-login and authenticate correctly. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/39">#39</a></p></li>
+<li><p>Include upstream fixes for data-processing recursion. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/43">#43</a></p></li>
+</ul>
+</section>
+<section id="internal-maintenance">
+<h3>Internal / Maintenance<a class="headerlink" href="#internal-maintenance" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Updated core application packages to the 2.23 series and refreshed the dependency lockfile. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/43">#43</a></p></li>
+<li><p>Added crawler protections and rate limits to the public demo’s administrative routes. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/36">#36</a></p></li>
+<li><p>Restore the development and CI SAML test provider and allow local development without starting it. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/41">#41</a></p></li>
+<li><p>Updated release and changelog workflows. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/47">#47</a></p></li>
+<li><p>Added a documentation root redirect to the stable release. <a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/pull/50">#50</a></p></li>
+</ul>
+</section>
+<section id="full-changelog">
+<h3>Full Changelog<a class="headerlink" href="#full-changelog" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://github.com/datasophos/NexusLIMS-CDCS/compare/v3.21.0-nx1...v3.23.0-nx0">https://github.com/datasophos/NexusLIMS-CDCS/compare/v3.21.0-nx1…v3.23.0-nx0</a></p>
+</section>
+</section>
+<hr class="docutils" />
 <section id="nx1-2026-06-08">
 <h2>3.21.0-nx1 – 2026-06-08<a class="headerlink" href="#nx1-2026-06-08" title="Link to this heading">#</a></h2>
 <p>This version is intended to be used with NexusLIMS backend versions 2.7.3+.</p>
@@ -527,15 +607,15 @@ its associated sample</p></li>
 <li><p>“Edit Record” button label and tooltip refined</p></li>
 </ul>
 </section>
-<section id="bug-fixes">
-<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">#</a></h3>
+<section id="id2">
+<h3>Bug Fixes<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Fixed SSO login button styling – the “Sign in with SSO” button now matches the
 primary button style with correct contrast</p></li>
 </ul>
 </section>
-<section id="id2">
-<h3>Upgrade Notes<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h3>Upgrade Notes<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>Rebuilding the Docker image is required (Python dependencies changed). Re-upload
 the XSLT stylesheet after restarting (<code class="docutils literal notranslate"><span class="pre">admin-update-xslt</span></code>).</p>
 </section>
@@ -544,8 +624,8 @@ the XSLT stylesheet after restarting (<code class="docutils literal notranslate"
 <section id="nx0-2026-03-29">
 <h2>3.20.0-nx0 – 2026-03-29<a class="headerlink" href="#nx0-2026-03-29" title="Link to this heading">#</a></h2>
 <p>This version is intended to be used with NexusLIMS backend versions 2.6.1+.</p>
-<section id="id3">
-<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>Added<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Annotator app</strong> (<code class="docutils literal notranslate"><span class="pre">nexuslims_annotate</span></code>): Added a new Django app for reviewing and
 annotating NexusLIMS experiment records directly in the browser</p>
@@ -561,8 +641,8 @@ also allows moving/reassigning datasets between acquisition activities</p></li>
 every push and pull request (also added basic Django tests for certain functions)</p></li>
 </ul>
 </section>
-<section id="id4">
-<h3>Changed<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h3>Changed<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>XSLT translator received some updates to better display dataset descriptions
 in the record view</p></li>
@@ -573,16 +653,16 @@ in the record view</p></li>
 <hr class="docutils" />
 <section id="nx1-2026-01-31">
 <h2>3.18.0-nx1 – 2026-01-31<a class="headerlink" href="#nx1-2026-01-31" title="Link to this heading">#</a></h2>
-<section id="id5">
-<h3>Added<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="id6">
+<h3>Added<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Automatic local TLS certificate provisioning via Caddy, eliminating manual
 certificate setup for development deployments</p></li>
 <li><p>Improved documentation for local HTTPS deployment workflow</p></li>
 </ul>
 </section>
-<section id="id6">
-<h3>Changed<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<section id="id7">
+<h3>Changed<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Simplified <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> configuration for local development with HTTPS</p></li>
 </ul>
@@ -595,8 +675,8 @@ certificate setup for development deployments</p></li>
 incorporating a major refactor and a large set of frontend improvements.
 This version is intended to be used with NexusLIMS backend versions 2.0 through
 2.6.0.</p>
-<section id="id7">
-<h3>Added<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h3>Added<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>Guided tour system</strong>: Shepherd.js-based tours for the home, explore, and
 detail pages; tours can be enabled/disabled per user; mobile-responsive</p></li>
@@ -613,8 +693,8 @@ records with more than <code class="docutils literal notranslate"><span class="p
 <li><p>Bandwidth limit on the Caddy file server image</p></li>
 </ul>
 </section>
-<section id="id8">
-<h3>Changed<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<section id="id9">
+<h3>Changed<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Migrated Python dependency management from pip/requirements files to
 <a class="reference external" href="https://github.com/astral-sh/uv">uv</a> with a committed lockfile
@@ -671,6 +751,21 @@ fixed header for large file lists</p></li>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nx0-2026-11-03">3.23.0-nx0 – 2026-11-03</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#highlights">Highlights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrade-instructions">Upgrade Instructions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#back-up-your-data">1. Back up your data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-the-new-code">2. Pull the new code</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rebuild-the-application-image">3. Rebuild the application image</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#restart-the-stack">4. Restart the stack</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-fixes">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-maintenance">Internal / Maintenance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-changelog">Full Changelog</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nx1-2026-06-08">3.21.0-nx1 – 2026-06-08</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrade-notes">Upgrade Notes</a></li>
@@ -679,23 +774,23 @@ fixed header for large file lists</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nx0-2026-05-30">3.21.0-nx0 – 2026-05-30</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-fixes">Bug Fixes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Upgrade Notes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Bug Fixes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Upgrade Notes</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nx0-2026-03-29">3.20.0-nx0 – 2026-03-29</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Changed</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nx1-2026-01-31">3.18.0-nx1 – 2026-01-31</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Added</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Changed</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nx0-2026-01-19">3.18.0-nx0 – 2026-01-19</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Added</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Changed</a></li>
 </ul>
 </li>
 </ul>
